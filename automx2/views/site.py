@@ -20,5 +20,5 @@ class SiteRoot(MethodView):
             url = url_for('initdb')
             return f'Operational error. Did you remember to <a href="{url}">initialise</a> the database?'
         address = 'alice@example.com'
-        url = f'{url_for("mailcfg")}?{ADDRESS_KEY}={address}'
+        url = f'{url_for("mozilla")}?{ADDRESS_KEY}={address}'
         return f'Show Thunderbird <a href="{url}">XML configuration</a> for {address}.'

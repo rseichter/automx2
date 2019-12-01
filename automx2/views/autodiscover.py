@@ -1,5 +1,5 @@
 """
-App views: Autoconfigure mail, Mozilla-style.
+App views: Autoconfigure mail, M$-style.
 """
 from flask import request
 from flask.views import MethodView
