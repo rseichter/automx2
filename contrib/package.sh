@@ -2,7 +2,8 @@
 # vim:ts=4:noet
 #
 # Utility script to package automx2 for distribution
-# and to handle PyPI uploads.
+# and to handle PyPI uploads. You need Python modules
+# 'wheel' and 'twine' to use this script.
 
 set -e
 
