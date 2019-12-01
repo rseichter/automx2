@@ -3,6 +3,45 @@
 Successor to **automx**, designed to be easier to configure and use.
 Written by Ralph Seichter for [sys4 AG](https://sys4.de/).
 
-This software is considered to be in Alpha status. Make sure to use protection.
+This software is considered to be in Alpha state, so make sure to use protection. I do not accept third party
+contributions at this time, because the code is still so much in flux.
 
-TODO: Write documentation
+TODO: Write proper documentation
+
+## Installing the software
+
+TODO
+
+## Configuring automx2
+
+When run by user `alice`, automx2 attempts to load configuration data from the following files, in the specified order,
+stopping at the first match:
+
+1. Value of `AUTOMX2_CONF` environment variable (if available)
+2. `~alice/automx2.conf`
+2. `/etc/automx2.conf`
+
+While automx2 can be launched without a configuration file, the internal defaults are only suitable for testing, in
+particular because an in-memory sqlite database will be used, meaning all data is lost once the application terminates.
+
+The file format is an [INI variant](https://docs.python.org/3.7/library/configparser.html#supported-ini-file-structure).
+An example configuration file is available [here](contrib/automx2-sample.conf). A minimal configuration file for
+production use only needs to contain one `db_uri` entry in the defaults section, pointing to a non-transient database.
+
+## Database support
+
+This application uses the excellent SQLAlchemy toolkit which supports various SQL
+[dialects](https://docs.sqlalchemy.org/dialects/). While you probably already have SQLite support available on your
+local machine, you may need to install additional Python packages for PostgreSQL, MySQL, etc. Detailed instructions
+to support a particular database dialect are out of scope for this document, but there are numerous guides available.
+
+## Launching automx2
+
+Once configured, you can launch the configured application from a shell on UNIX-like systems:
+
+```shell
+cd /path/to/automx2
+contrib/flask.sh run
+```
+
+See [flask.sh](contrib/flask.sh) for a descriptions of additional parameter you can use, like hostname and port.
