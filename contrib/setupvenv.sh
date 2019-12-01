@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
+# vim:ts=4:noet
 #
-# Creates a Python virtual environment in the current directory.
+# Creates a Python 3.7 virtual environment in the current directory.
 
 set -e
 if [ -d venv ]; then

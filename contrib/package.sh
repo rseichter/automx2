@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
+# vim:ts=4:noet
 #
-# Package automx2 for distribution.
+# Utility script to package automx2 for distribution
+# and to handle PyPI uploads.
 
 set -e
 
