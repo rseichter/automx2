@@ -5,12 +5,10 @@ import unittest
 from typing import List
 from uuid import uuid1
 from xml.etree.ElementTree import Element
-from xml.etree.ElementTree import fromstring
 
 from flask import Response
 
 from automx2 import ADDRESS_KEY
-from automx2 import IDENTIFIER
 from automx2.model import Domain
 from automx2.model import Provider
 from automx2.model import Server
@@ -135,91 +133,6 @@ class TestCase(unittest.TestCase):
     @staticmethod
     def smtp_hostname(element: Element) -> List[Element]:
         return element.findall('emailProvider/outgoingServer/[@type="smtp"]/hostname')
-
-
-class RouteTests(TestCase):
-    def test_index(self):
-        with self.app:
-            r = self.get('/')
-            self.assertEqual(200, r.status_code)
-            self.assertEqual('text/html', r.mimetype)
-            x = body(r).find(f'<a href="{MOZILLA_CONFIG_ROUTE}?')
-            self.assertNotEqual(-1, x)
-
-    def test_mozilla_missing_arg(self):
-        with self.app:
-            r = self.get(MOZILLA_CONFIG_ROUTE)
-            self.assertEqual(400, r.status_code)
-
-    def test_mozilla_no_domain_match(self):
-        with self.app:
-            r = self.get_mozilla_config('a@b.c')
-            self.assertEqual(200, r.status_code)
-            self.assertEqual('text/xml', r.mimetype)
-            e: Element = fromstring(body(r))
-            self.assertEqual('clientConfig', e.tag)
-            self.assertEqual('1.1', e.attrib['version'])
-            self.assertEqual([], list(e))
-
-    def test_mozilla_domain_match(self):
-        with self.app:
-            r = self.get_mozilla_config(f'a@{EXAMPLE_COM}')
-            self.assertEqual(200, r.status_code)
-            self.assertEqual('text/xml', r.mimetype)
-            e: Element = fromstring(body(r))
-            x = e.findall('emailProvider/displayName')
-            self.assertEqual(BIGCORP_NAME, x[0].text)
-
-    def test_mozilla_imap(self):
-        with self.app:
-            r = self.get_mozilla_config(f'a@{EXAMPLE_ORG}')
-            x = self.imap_hostname(fromstring(body(r)))
-            self.assertEqual(self.imap2_name, x[0].text)
-
-    def test_mozilla_smtp(self):
-        with self.app:
-            r = self.get_mozilla_config(f'a@{EXAMPLE_NET}')
-            x = self.smtp_hostname(fromstring(body(r)))
-            self.assertEqual(self.smtp1_name, x[0].text)
-
-    def test_broken_provider_id(self):
-        with self.app:
-            with self.assertRaises(AttributeError):
-                self.get_mozilla_config(f'a@{ORPHAN_DOMAIN}')
-
-    def test_domain_without_servers(self):
-        with self.app:
-            r = self.get_mozilla_config(f'a@{SERVERLESS_DOMAIN}')
-            b = fromstring(body(r))
-            self.assertEqual([], self.imap_hostname(b))
-            self.assertEqual([], self.smtp_hostname(b))
-
-    def test_horus_imap(self):
-        with self.app:
-            r = self.get_mozilla_config(f'a@horus-it.com')
-            b = fromstring(body(r))
-            imap = self.imap_hostname(b)
-            self.assertEqual(1, len(imap))
-            self.assertEqual(HORUS_IMAP, imap[0].text)
-
-    def test_horus_smtp(self):
-        with self.app:
-            r = self.get_mozilla_config(f'a@horus-it.de')
-            b = fromstring(body(r))
-            smtp = self.smtp_hostname(b)
-            self.assertEqual(1, len(smtp))
-            self.assertEqual(HORUS_SMTP, smtp[0].text)
-
-    def test_sys4_servers(self):
-        with self.app:
-            r = self.get_mozilla_config(f'a@sys4.de')
-            b = fromstring(body(r))
-            imap = self.imap_hostname(b)
-            self.assertEqual(1, len(imap))
-            smtp = self.smtp_hostname(b)
-            self.assertEqual(1, len(smtp))
-            self.assertEqual(SYS4_MAILSERVER, imap[0].text)
-            self.assertEqual(SYS4_MAILSERVER, smtp[0].text)
 
 
 if __name__ == '__main__':

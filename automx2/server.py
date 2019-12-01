@@ -11,7 +11,7 @@ from automx2.views.database import InitDatabase
 from automx2.views.site import SiteRoot
 
 MOZILLA_CONFIG_ROUTE = '/mail/config-v1.1.xml'
-OUTLOOK_CONFIG_ROUTE = '/autodiscover/autodiscover.xml '
+MSOFT_CONFIG_ROUTE = '/autodiscover/autodiscover.xml '
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = config.db_uri()
@@ -20,6 +20,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.add_url_rule('/', view_func=SiteRoot.as_view('root'), methods=['GET'])
 app.add_url_rule('/initdb/', view_func=InitDatabase.as_view('initdb'), methods=['GET'])
 app.add_url_rule(MOZILLA_CONFIG_ROUTE, view_func=autoconfig.MailConfig.as_view('mozilla'), methods=['GET'])
-app.add_url_rule(OUTLOOK_CONFIG_ROUTE, view_func=autodiscover.MailConfig.as_view('outlook'), methods=['GET'])
+app.add_url_rule(MSOFT_CONFIG_ROUTE, view_func=autodiscover.MailConfig.as_view('msoft'), methods=['GET'])
 
 db.init_app(app)
