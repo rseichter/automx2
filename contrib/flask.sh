@@ -14,8 +14,6 @@ set -e
 source venv/bin/activate
 
 # User configurable section -- START
-export DATABASE_URI='sqlite:////tmp/automx2.sqlite'
-export DATABASE_ECHO='yes'
 export FLASK_ENV='development'
 # User configurable section -- END
 
