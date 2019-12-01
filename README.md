@@ -45,3 +45,11 @@ contrib/flask.sh run
 ```
 
 See [flask.sh](contrib/flask.sh) for a descriptions of additional parameter you can use, like hostname and port.
+
+## Web server integration
+
+In a production environment, it is recommended that you run automx2 behind a web server like Apache or NGINX, with
+your web server acting as a reverse proxy, potentially also providing HTTPS support.
+
+* Apache: TODO
+* NGINX: [Example configuration snippet](contrib/nginx-sample.conf)
