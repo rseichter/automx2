@@ -1,21 +1,13 @@
 #!/usr/bin/env bash
-# vim:tabsize=4:noexpandtab
+# vim:tabstop=4:noexpandtab
 #
 # Runs unittests for automx2.
 
 set -e
-conf="$(mktemp)"
-trap 'rm ${conf}' EXIT
-
-# Generate temporary configuration file for this test run
-cat >${conf} <<EOT
-[DEFAULT]
-db_echo = no
-db_uri = sqlite:///:memory:
-loglevel = FATAL
-EOT
-
 source venv/bin/activate
-export AUTOMX2_CONF="${conf}"
-export PYTHONPATH=".:${PYTHONPATH}"
-python -m unittest discover tests/ "$@"
+export AUTOMX2_CONF='tests/unittest.conf'
+if [ ! -f ${AUTOMX2_CONF} ]; then
+	echo "Missing config file ${AUTOMX2_CONF}" >&2
+	exit 1
+fi
+PYTHONPATH=".:${PYTHONPATH}" python -m unittest discover tests/ "$@"

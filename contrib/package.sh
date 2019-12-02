@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim:tabsize=4:noexpandtab
+# vim:tabstop=4:noexpandtab
 #
 # Utility script to package automx2 for distribution
 # and to handle PyPI uploads. You need Python modules

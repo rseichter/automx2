@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim:tabsize=4:noexpandtab
+# vim:tabstop=4:noexpandtab
 #
 # Launches automx2 as a Flask application. Execute this script from
 # within the parent directory of your Python venv. Example usage:
