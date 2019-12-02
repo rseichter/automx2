@@ -17,5 +17,5 @@ source venv/bin/activate
 export FLASK_ENV='development'
 # User configurable section -- END
 
-export FLASK_APP=automx2.server:app
+export FLASK_APP='automx2.server:app'
 flask "$@"
