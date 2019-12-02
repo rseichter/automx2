@@ -17,6 +17,7 @@ from automx2.server import MSOFT_CONFIG_ROUTE
 from automx2.server import app
 from automx2.views import CONTENT_TYPE_XML
 from automx2.views import EMAIL_MOZILLA
+from automx2.views import EMAIL_OUTLOOK
 
 EXAMPLE_COM = 'example.com'
 EXAMPLE_NET = 'example.net'
@@ -84,7 +85,7 @@ class TestCase(unittest.TestCase):
             f'<Autodiscover xmlns="{NS_AUTODISCOVER}">'
             f'<AcceptableResponseSchema>{NS_RESPONSE}</AcceptableResponseSchema>'
             '<Request>'
-            f'<EMailAddress>{address}</EMailAddress>'
+            f'<{EMAIL_OUTLOOK}>{address}</{EMAIL_OUTLOOK}>'
             '</Request>'
             '</Autodiscover>'
         )

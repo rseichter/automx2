@@ -18,28 +18,6 @@ from tests.base import TestCase
 from tests.base import body
 
 
-class IndexRoute(TestCase):
-    def test_index(self):
-        with self.app:
-            r = self.get('/')
-            self.assertEqual(200, r.status_code)
-            self.assertEqual('text/html', r.mimetype)
-            x = body(r).find(f'<a href="{MOZILLA_CONFIG_ROUTE}?')
-            self.assertNotEqual(-1, x)
-
-
-class OpError(TestCase):
-    create_db = False
-
-    def test_op_error(self):
-        with self.app:
-            r = self.get('/')
-            self.assertEqual(200, r.status_code)
-            self.assertEqual('text/html', r.mimetype)
-            x = body(r).find('Operational error')
-            self.assertNotEqual(-1, x)
-
-
 class MozillaRoutes(TestCase):
     @staticmethod
     def imap_server_elements(element: Element) -> List[Element]:
