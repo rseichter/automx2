@@ -1,0 +1,7 @@
+[report]
+exclude_lines =
+	pragma: no cover
+	def __repr__
+    def (from_seed|seed_)
+    log\.(debug|error|fatal|info|warn)
+    raise NotImplementedError
