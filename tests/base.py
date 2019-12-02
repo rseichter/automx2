@@ -14,6 +14,7 @@ from automx2.model import Provider
 from automx2.model import Server
 from automx2.model import db
 from automx2.server import MOZILLA_CONFIG_ROUTE
+from automx2.server import MSOFT_CONFIG_ROUTE
 from automx2.server import app
 
 HORUS_SMTP = 'smtp.horus-it.com'
@@ -72,8 +73,23 @@ class TestCase(unittest.TestCase):
         kwargs['follow_redirects'] = True
         return self.app.get(*args, **kwargs)
 
+    def post(self, *args, **kwargs) -> Response:
+        kwargs['follow_redirects'] = True
+        return self.app.post(*args, **kwargs)
+
     def get_mozilla_config(self, address: str) -> Response:
         return self.get(f'{MOZILLA_CONFIG_ROUTE}?{ADDRESS_KEY}={address}')
+
+    def get_msoft_config(self, address: str) -> Response:
+        data = (
+            '<Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006">'
+            '<AcceptableResponseSchema>http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a</AcceptableResponseSchema>'
+            '<Request>'
+            f'<EMailAddress>{address}</EMailAddress>'
+            '</Request>'
+            '</Autodiscover>'
+        )
+        return self.post(MSOFT_CONFIG_ROUTE, data=data, content_type='text/xml')
 
     def populate_db(self):
         """Populate with some fixed samples."""

@@ -20,6 +20,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.add_url_rule('/', view_func=SiteRoot.as_view('root'), methods=['GET'])
 app.add_url_rule('/initdb/', view_func=InitDatabase.as_view('initdb'), methods=['GET'])
 app.add_url_rule(MOZILLA_CONFIG_ROUTE, view_func=autoconfig.MailConfig.as_view('mozilla'), methods=['GET'])
-app.add_url_rule(MSOFT_CONFIG_ROUTE, view_func=autodiscover.MailConfig.as_view('msoft'), methods=['GET'])
+app.add_url_rule(MSOFT_CONFIG_ROUTE, view_func=autodiscover.MailConfig.as_view('msoft'), methods=['POST'])
 
 db.init_app(app)
