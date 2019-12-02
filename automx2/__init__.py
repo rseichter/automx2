@@ -7,7 +7,7 @@ Written by Ralph Seichter for sys4 AG.
 import logging
 
 IDENTIFIER = 'automx2'
-VERSION = '0.0.1.dev3'
+VERSION = '0.0.1.dev4'
 
 
 class InvalidEMailAddressError(Exception):
