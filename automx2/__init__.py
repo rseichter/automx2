@@ -6,7 +6,6 @@ Written by Ralph Seichter for sys4 AG.
 """
 import logging
 
-ADDRESS_KEY = 'emailaddress'
 IDENTIFIER = 'automx2'
 VERSION = '0.0.1.dev3'
 

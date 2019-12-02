@@ -13,11 +13,10 @@ from automx2.util import from_environ
 CONF_DB_ECHO = 'db_echo'
 CONF_DB_URI = 'db_uri'
 CONF_LOGLEVEL = 'loglevel'
-CONF_SECTION_DEFAULT = 'DEFAULT'
 
 # Default values will be overridden by user-defined values.
 _DEFAULT_CONF = {
-    CONF_SECTION_DEFAULT: {
+    IDENTIFIER: {
         CONF_DB_ECHO: 'no',
         CONF_DB_URI: 'sqlite:///:memory:',
         CONF_LOGLEVEL: 'WARNING',
@@ -35,9 +34,9 @@ class Config:
             Path(f'/etc/{IDENTIFIER}', file_name),
             Path('/etc', file_name),
         ]
-        env = from_environ('AUTOMX2_CONF')
-        if env:
-            paths.insert(0, Path(env))
+        path = from_environ('AUTOMX2_CONF')
+        if path:
+            paths.insert(0, Path(path))
         for path in paths:
             log.debug(f'Checking {path.resolve()}')
             if path.exists():
@@ -46,12 +45,12 @@ class Config:
                 return
         log.warning('No configuration file found')
 
-    def get(self, option: str, fallback=None, section: str = CONF_SECTION_DEFAULT) -> str:
+    def get(self, option: str, fallback=None, section: str = IDENTIFIER) -> str:
         value = self._parser.get(section, option, fallback=fallback)
         log.debug(f'Config.get: {option} = {value}')
         return value
 
-    def get_bool(self, option: str, fallback=None, section: str = CONF_SECTION_DEFAULT) -> bool:
+    def get_bool(self, option: str, fallback=None, section: str = IDENTIFIER) -> bool:
         value = self._parser.getboolean(section, option, fallback=fallback)
         log.debug(f'Config.get_bool: {option} = {value}')
         return value

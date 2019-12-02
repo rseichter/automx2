@@ -8,7 +8,7 @@ from xml.etree.ElementTree import Element
 
 from flask import Response
 
-from automx2 import ADDRESS_KEY
+from automx2.views import EMAIL_MOZILLA
 from automx2.generators.msoft import NS_AUTODISCOVER
 from automx2.generators.msoft import NS_RESPONSE
 from automx2.model import Domain
@@ -76,7 +76,7 @@ class TestCase(unittest.TestCase):
         return self.app.post(*args, **kwargs)
 
     def get_mozilla_config(self, address: str) -> Response:
-        return self.get(f'{MOZILLA_CONFIG_ROUTE}?{ADDRESS_KEY}={address}')
+        return self.get(f'{MOZILLA_CONFIG_ROUTE}?{EMAIL_MOZILLA}={address}')
 
     def get_msoft_config(self, address: str) -> Response:
         data = (

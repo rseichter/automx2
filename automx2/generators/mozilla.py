@@ -50,5 +50,5 @@ class MozillaGenerator(ConfigGenerator):
                     log.error(f'Unexpected server type "{server.type}"')
         else:
             log.error(f'No provider for domain "{domain_name}"')
-        data = tostring(root, 'UTF-8')
+        data = tostring(root, 'utf-8')
         return data
