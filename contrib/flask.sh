@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim:ts=4:noet
+# vim:tabsize=4:noexpandtab
 #
 # Launches automx2 as a Flask application. Execute this script from
 # within the parent directory of your Python venv. Example usage:
@@ -14,7 +14,9 @@ set -e
 source venv/bin/activate
 
 # User configurable section -- START
+#export AUTOMX2_CONF='/path/to/your/automx2.conf'
 export FLASK_ENV='development'
+#export FLASK_ENV='production'
 # User configurable section -- END
 
 export FLASK_APP='automx2.server:app'

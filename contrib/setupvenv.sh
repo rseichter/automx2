@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim:ts=4:noet
+# vim:tabsize=4:noexpandtab
 #
 # Creates a Python 3.7 virtual environment in the current directory.
 
