@@ -10,4 +10,6 @@ if [ ! -f ${AUTOMX2_CONF} ]; then
 	echo "Missing config file ${AUTOMX2_CONF}" >&2
 	exit 1
 fi
-PYTHONPATH=".:${PYTHONPATH}" python -m unittest discover tests/ "$@"
+RUNNER='coverage run --source automx2'
+#RUNNER='python'
+PYTHONPATH=".:${PYTHONPATH}" ${RUNNER} -m unittest discover tests/ "$@"

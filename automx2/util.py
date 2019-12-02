@@ -4,6 +4,8 @@ Various utility functions.
 import os
 import re
 
+from automx2 import InvalidEMailAddressError
+
 email_address_re = re.compile(r'^([^@]+)@([^@]+)$', re.IGNORECASE)
 
 
@@ -14,7 +16,8 @@ def from_environ(env_var_name: str, default: object = None):
 
 
 def parse_email_address(address: str):
-    match = email_address_re.search(address)
-    if not match:
-        return 'INVALID_LOCAL', 'INVALID_DOMAIN'
-    return match[1], match[2]
+    if address:
+        match = email_address_re.search(address)
+        if match:
+            return match[1], match[2]
+    raise InvalidEMailAddressError

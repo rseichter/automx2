@@ -64,7 +64,7 @@ class Config:
     def loglevel(self) -> str:
         return self.get(CONF_LOGLEVEL)
 
-    def _filter_sections(self, prefix: str) -> List[dict]:
+    def seed_filter_sections(self, prefix: str) -> List[dict]:
         sections = []
         section: str
         for section in self._parser.sections():
@@ -76,7 +76,7 @@ class Config:
         return sections
 
     def seed_domains(self) -> List[dict]:
-        sections = self._filter_sections('seed.domain.')
+        sections = self.seed_filter_sections('seed.domain.')
         d: dict
         for d in sections:
             d['name'] = self.get('name', section=d['section_name'])
@@ -85,7 +85,7 @@ class Config:
         return sections
 
     def seed_providers(self) -> List[dict]:
-        sections = self._filter_sections('seed.provider.')
+        sections = self.seed_filter_sections('seed.provider.')
         d: dict
         for d in sections:
             d['name'] = self.get('name', section=d['section_name'])
@@ -93,7 +93,7 @@ class Config:
         return sections
 
     def seed_servers(self) -> List[dict]:
-        sections = self._filter_sections('seed.server.')
+        sections = self.seed_filter_sections('seed.server.')
         d: dict
         for d in sections:
             d['name'] = self.get('name', section=d['section_name'])
@@ -104,6 +104,3 @@ class Config:
 
 config = Config()
 log.setLevel(config.loglevel())
-
-if __name__ == '__main__':
-    print(config.seed_providers())

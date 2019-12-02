@@ -65,6 +65,7 @@ class MsGenerator(ConfigGenerator):
         SubElement(element, 'Port').text = str(server.port)
         SubElement(element, 'LoginName').text = server.user_name
         SubElement(element, 'SSL').text = self.on_off('SSL' == server.authentication)
+        SubElement(element, 'AuthRequired').text = self.on_off(True)
         return element
 
     def client_config(self, domain_name: str) -> str:

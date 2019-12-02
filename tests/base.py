@@ -2,13 +2,10 @@
 Test basic functions of the automx2 Flask application.
 """
 import unittest
-from typing import List
 from uuid import uuid1
-from xml.etree.ElementTree import Element
 
 from flask import Response
 
-from automx2.views import EMAIL_MOZILLA
 from automx2.generators.msoft import NS_AUTODISCOVER
 from automx2.generators.msoft import NS_RESPONSE
 from automx2.model import Domain
@@ -18,6 +15,8 @@ from automx2.model import db
 from automx2.server import MOZILLA_CONFIG_ROUTE
 from automx2.server import MSOFT_CONFIG_ROUTE
 from automx2.server import app
+from automx2.views import CONTENT_TYPE_XML
+from automx2.views import EMAIL_MOZILLA
 
 EXAMPLE_COM = 'example.com'
 EXAMPLE_NET = 'example.net'
@@ -50,6 +49,7 @@ class TestCase(unittest.TestCase):
     imap2_name = unique()
     smtp1_name = unique()
     smtp2_name = unique()
+    create_db = True
 
     def setUp(self) -> None:
         app.config['TESTING'] = True
@@ -58,9 +58,10 @@ class TestCase(unittest.TestCase):
         with app.app_context():
             db.init_app(app)
             db.drop_all()
-            db.create_all()
-            self.populate_db()
-            db.session.commit()
+            if self.create_db:
+                db.create_all()
+                self.populate_db()
+                db.session.commit()
 
     def tearDown(self) -> None:
         with app.app_context():
@@ -87,34 +88,34 @@ class TestCase(unittest.TestCase):
             '</Request>'
             '</Autodiscover>'
         )
-        return self.post(MSOFT_CONFIG_ROUTE, data=data, content_type='text/xml')
+        return self.post(MSOFT_CONFIG_ROUTE, data=data, content_type=CONTENT_TYPE_XML)
 
     def populate_db(self):
         """Populate with some fixed samples."""
-        id = 1000
-        bigcorp = Provider(id=id, name=BIGCORP_NAME, short_name=BIGCORP_SHORT)
-        id += 1
-        horus = Provider(id=id, name=HORUS_NAME, short_name=HORUS_SHORT)
-        id += 1
-        sys4 = Provider(id=id, name=HORUS_NAME, short_name=HORUS_SHORT)
+        i = 1000
+        bigcorp = Provider(id=i, name=BIGCORP_NAME, short_name=BIGCORP_SHORT)
+        i += 1
+        horus = Provider(id=i, name=HORUS_NAME, short_name=HORUS_SHORT)
+        i += 1
+        sys4 = Provider(id=i, name=HORUS_NAME, short_name=HORUS_SHORT)
         db.session.add_all([bigcorp, horus, sys4])
 
-        id = 2000
-        d1 = Domain(id=id, name=EXAMPLE_COM, provider=bigcorp)
-        id += 1
-        d2 = Domain(id=id, name=EXAMPLE_NET, provider=bigcorp)
-        id += 1
-        d3 = Domain(id=id, name=EXAMPLE_ORG, provider=bigcorp)
-        id += 1
-        d1_horus = Domain(id=id, name='horus-it.de', provider=horus)
-        id += 1
-        d2_horus = Domain(id=id, name='horus-it.com', provider=horus)
-        id += 1
-        d1_sys4 = Domain(id=id, name='sys4.de', provider=sys4)
-        id += 1
-        orphan_domain = Domain(id=id, name=ORPHAN_DOMAIN, provider_id=(-1 * id))
-        id += 1
-        serverless_domain = Domain(id=id, name=SERVERLESS_DOMAIN, provider=bigcorp)
+        i = 2000
+        d1 = Domain(id=i, name=EXAMPLE_COM, provider=bigcorp)
+        i += 1
+        d2 = Domain(id=i, name=EXAMPLE_NET, provider=bigcorp)
+        i += 1
+        d3 = Domain(id=i, name=EXAMPLE_ORG, provider=bigcorp)
+        i += 1
+        d1_horus = Domain(id=i, name='horus-it.de', provider=horus)
+        i += 1
+        d2_horus = Domain(id=i, name='horus-it.com', provider=horus)
+        i += 1
+        d1_sys4 = Domain(id=i, name='sys4.de', provider=sys4)
+        i += 1
+        orphan_domain = Domain(id=i, name=ORPHAN_DOMAIN, provider_id=(-1 * i))
+        i += 1
+        serverless_domain = Domain(id=i, name=SERVERLESS_DOMAIN, provider=bigcorp)
         horus_domains = [d1_horus, d2_horus]
         sys4_domains = [d1_sys4]
         db.session.add_all([d1, d2, d3])
@@ -122,29 +123,23 @@ class TestCase(unittest.TestCase):
         db.session.add_all(sys4_domains)
         db.session.add_all([orphan_domain, serverless_domain])
 
-        id = 3000
-        s1 = Server(id=id, type='smtp', port=587, name=self.smtp1_name, domains=[d1, d2])
-        id += 1
-        s2 = Server(id=id, type='smtp', port=587, name=self.smtp2_name, domains=[d3])
-        id += 1
-        s3 = Server(id=id, type='imap', port=143, name=self.imap1_name, domains=[d1])
-        id += 1
-        s4 = Server(id=id, type='imap', port=143, name=self.imap2_name, domains=[d2, d3])
-        id += 1
-        s5 = Server(id=id, type='imap', port=993, socket_type='SSL', name=HORUS_IMAP, domains=horus_domains)
-        id += 1
-        s6 = Server(id=id, type='smtp', port=587, name=HORUS_SMTP, domains=horus_domains)
-        id += 1
-        s7 = Server(id=id, type='imap', port=143, name=SYS4_MAILSERVER, domains=sys4_domains)
-        id += 1
-        s8 = Server(id=id, type='smtp', port=587, name=SYS4_MAILSERVER, domains=sys4_domains)
+        i = 3000
+        s1 = Server(id=i, type='smtp', port=587, name=self.smtp1_name, domains=[d1, d2])
+        i += 1
+        s2 = Server(id=i, type='smtp', port=587, name=self.smtp2_name, domains=[d3])
+        i += 1
+        s3 = Server(id=i, type='imap', port=143, name=self.imap1_name, domains=[d1])
+        i += 1
+        s4 = Server(id=i, type='imap', port=143, name=self.imap2_name, domains=[d2, d3])
+        i += 1
+        s5 = Server(id=i, type='imap', port=993, socket_type='SSL', name=HORUS_IMAP, domains=horus_domains)
+        i += 1
+        s6 = Server(id=i, type='smtp', port=587, name=HORUS_SMTP, domains=horus_domains)
+        i += 1
+        s7 = Server(id=i, type='imap', port=143, name=SYS4_MAILSERVER, domains=sys4_domains)
+        i += 1
+        s8 = Server(id=i, type='smtp', port=587, name=SYS4_MAILSERVER, domains=sys4_domains)
         db.session.add_all([s1, s2, s3, s4, s5, s6, s7, s8])
-
-    def imap_server_elements(self, element: Element) -> List[Element]:
-        raise NotImplementedError
-
-    def smtp_server_elements(self, element: Element) -> List[Element]:
-        raise NotImplementedError
 
 
 if __name__ == '__main__':

@@ -6,6 +6,7 @@ from xml.etree.ElementTree import fromstring
 
 from automx2.generators.msoft import NS_RESPONSE
 from automx2.server import MSOFT_CONFIG_ROUTE
+from automx2.views import CONTENT_TYPE_XML
 from tests.base import EXAMPLE_COM
 from tests.base import EXAMPLE_NET
 from tests.base import EXAMPLE_ORG
@@ -41,18 +42,22 @@ class MsRoutes(TestCase):
     def test_ms_empty_post(self):
         with self.app:
             with self.assertRaises(ParseError):
-                r = self.post(MSOFT_CONFIG_ROUTE, data=None, content_type='text/xml')
+                self.post(MSOFT_CONFIG_ROUTE, data=None, content_type=CONTENT_TYPE_XML)
 
-    def test_ms_unexpected_content_type(self):
+    def test_ms_partial_post(self):
         with self.app:
-            r = self.post(MSOFT_CONFIG_ROUTE, data='abc', content_type='text/plain')
+            self.post(MSOFT_CONFIG_ROUTE, data='<ham/>', content_type=CONTENT_TYPE_XML)
+
+    def test_ms_no_content_type(self):
+        with self.app:
+            r = self.post(MSOFT_CONFIG_ROUTE, data='eggs')
             self.assertEqual(400, r.status_code)
 
     def test_ms_no_domain_match(self):
         with self.app:
             r = self.get_msoft_config('a@b.c')
             self.assertEqual(200, r.status_code)
-            self.assertEqual('text/xml', r.mimetype)
+            self.assertEqual(CONTENT_TYPE_XML, r.mimetype)
             e: Element = fromstring(body(r))
             e = self.response_element(e)
             self.assertIsInstance(e, Element)
@@ -62,7 +67,7 @@ class MsRoutes(TestCase):
         with self.app:
             r = self.get_msoft_config(f'a@{EXAMPLE_COM}')
             self.assertEqual(200, r.status_code)
-            self.assertEqual('text/xml', r.mimetype)
+            self.assertEqual(CONTENT_TYPE_XML, r.mimetype)
             e: Element = fromstring(body(r))
             self.assertNotEqual([], self.imap_server_elements(e))
             self.assertNotEqual([], self.smtp_server_elements(e))

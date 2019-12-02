@@ -4,6 +4,7 @@ from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import fromstring
 
 from automx2.server import MOZILLA_CONFIG_ROUTE
+from automx2.views import CONTENT_TYPE_XML
 from tests.base import BIGCORP_NAME
 from tests.base import EXAMPLE_COM
 from tests.base import EXAMPLE_NET
@@ -17,13 +18,7 @@ from tests.base import TestCase
 from tests.base import body
 
 
-class MozillaRoutes(TestCase):
-    def imap_server_elements(self, element: Element) -> List[Element]:
-        return element.findall('emailProvider/incomingServer/[@type="imap"]/hostname')
-
-    def smtp_server_elements(self, element: Element) -> List[Element]:
-        return element.findall('emailProvider/outgoingServer/[@type="smtp"]/hostname')
-
+class IndexRoute(TestCase):
     def test_index(self):
         with self.app:
             r = self.get('/')
@@ -31,6 +26,28 @@ class MozillaRoutes(TestCase):
             self.assertEqual('text/html', r.mimetype)
             x = body(r).find(f'<a href="{MOZILLA_CONFIG_ROUTE}?')
             self.assertNotEqual(-1, x)
+
+
+class OpError(TestCase):
+    create_db = False
+
+    def test_op_error(self):
+        with self.app:
+            r = self.get('/')
+            self.assertEqual(200, r.status_code)
+            self.assertEqual('text/html', r.mimetype)
+            x = body(r).find('Operational error')
+            self.assertNotEqual(-1, x)
+
+
+class MozillaRoutes(TestCase):
+    @staticmethod
+    def imap_server_elements(element: Element) -> List[Element]:
+        return element.findall('emailProvider/incomingServer/[@type="imap"]/hostname')
+
+    @staticmethod
+    def smtp_server_elements(element: Element) -> List[Element]:
+        return element.findall('emailProvider/outgoingServer/[@type="smtp"]/hostname')
 
     def test_mozilla_missing_arg(self):
         with self.app:
@@ -41,7 +58,7 @@ class MozillaRoutes(TestCase):
         with self.app:
             r = self.get_mozilla_config('a@b.c')
             self.assertEqual(200, r.status_code)
-            self.assertEqual('text/xml', r.mimetype)
+            self.assertEqual(CONTENT_TYPE_XML, r.mimetype)
             e: Element = fromstring(body(r))
             self.assertEqual('clientConfig', e.tag)
             self.assertEqual('1.1', e.attrib['version'])
@@ -51,7 +68,7 @@ class MozillaRoutes(TestCase):
         with self.app:
             r = self.get_mozilla_config(f'a@{EXAMPLE_COM}')
             self.assertEqual(200, r.status_code)
-            self.assertEqual('text/xml', r.mimetype)
+            self.assertEqual(CONTENT_TYPE_XML, r.mimetype)
             e: Element = fromstring(body(r))
             x = e.findall('emailProvider/displayName')
             self.assertEqual(BIGCORP_NAME, x[0].text)

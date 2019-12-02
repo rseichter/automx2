@@ -9,6 +9,12 @@ import logging
 IDENTIFIER = 'automx2'
 VERSION = '0.0.1.dev3'
 
+
+class InvalidEMailAddressError(Exception):
+    """Email address is invalid/unparseable."""
+    pass
+
+
 log = logging.getLogger(__name__)
 _handler = logging.StreamHandler()
 _handler.setFormatter(logging.Formatter())

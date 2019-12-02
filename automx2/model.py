@@ -71,13 +71,13 @@ class Domain(db.Model):
         return domain
 
 
-def populate_db(session):
+def populate_db(session):  # pragma: no cover
     """Populate the database with example data."""
     _populate_from_config(session)
     _populate_from_samples(session)
 
 
-def _populate_from_config(session):
+def _populate_from_config(session):  # pragma: no cover
     """Populate based on config file sections (seed.xyz)."""
     servers = {}
     for seed in config.seed_servers():
@@ -92,7 +92,7 @@ def _populate_from_config(session):
         session.add(domain)
 
 
-def _populate_from_samples(session):
+def _populate_from_samples(session):  # pragma: no cover
     """Populate with some fixed samples."""
     base = 1000
     p1 = Provider(id=base + 1, name='Example Provider #1', short_name='Provider1')
