@@ -1,4 +1,5 @@
 import unittest
+from typing import List
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import fromstring
 
@@ -17,6 +18,12 @@ from tests.base import body
 
 
 class MozillaRoutes(TestCase):
+    def imap_server_elements(self, element: Element) -> List[Element]:
+        return element.findall('emailProvider/incomingServer/[@type="imap"]/hostname')
+
+    def smtp_server_elements(self, element: Element) -> List[Element]:
+        return element.findall('emailProvider/outgoingServer/[@type="smtp"]/hostname')
+
     def test_index(self):
         with self.app:
             r = self.get('/')
@@ -52,13 +59,13 @@ class MozillaRoutes(TestCase):
     def test_mozilla_imap(self):
         with self.app:
             r = self.get_mozilla_config(f'a@{EXAMPLE_ORG}')
-            x = self.imap_hostname(fromstring(body(r)))
+            x = self.imap_server_elements(fromstring(body(r)))
             self.assertEqual(self.imap2_name, x[0].text)
 
     def test_mozilla_smtp(self):
         with self.app:
             r = self.get_mozilla_config(f'a@{EXAMPLE_NET}')
-            x = self.smtp_hostname(fromstring(body(r)))
+            x = self.smtp_server_elements(fromstring(body(r)))
             self.assertEqual(self.smtp1_name, x[0].text)
 
     def test_broken_provider_id(self):
@@ -70,14 +77,14 @@ class MozillaRoutes(TestCase):
         with self.app:
             r = self.get_mozilla_config(f'a@{SERVERLESS_DOMAIN}')
             b = fromstring(body(r))
-            self.assertEqual([], self.imap_hostname(b))
-            self.assertEqual([], self.smtp_hostname(b))
+            self.assertEqual([], self.imap_server_elements(b))
+            self.assertEqual([], self.smtp_server_elements(b))
 
     def test_horus_imap(self):
         with self.app:
             r = self.get_mozilla_config(f'a@horus-it.com')
             b = fromstring(body(r))
-            imap = self.imap_hostname(b)
+            imap = self.imap_server_elements(b)
             self.assertEqual(1, len(imap))
             self.assertEqual(HORUS_IMAP, imap[0].text)
 
@@ -85,7 +92,7 @@ class MozillaRoutes(TestCase):
         with self.app:
             r = self.get_mozilla_config(f'a@horus-it.de')
             b = fromstring(body(r))
-            smtp = self.smtp_hostname(b)
+            smtp = self.smtp_server_elements(b)
             self.assertEqual(1, len(smtp))
             self.assertEqual(HORUS_SMTP, smtp[0].text)
 
@@ -93,9 +100,9 @@ class MozillaRoutes(TestCase):
         with self.app:
             r = self.get_mozilla_config(f'a@sys4.de')
             b = fromstring(body(r))
-            imap = self.imap_hostname(b)
+            imap = self.imap_server_elements(b)
             self.assertEqual(1, len(imap))
-            smtp = self.smtp_hostname(b)
+            smtp = self.smtp_server_elements(b)
             self.assertEqual(1, len(smtp))
             self.assertEqual(SYS4_MAILSERVER, imap[0].text)
             self.assertEqual(SYS4_MAILSERVER, smtp[0].text)

@@ -9,6 +9,8 @@ from xml.etree.ElementTree import Element
 from flask import Response
 
 from automx2 import ADDRESS_KEY
+from automx2.generators.msoft import NS_AUTODISCOVER
+from automx2.generators.msoft import NS_RESPONSE
 from automx2.model import Domain
 from automx2.model import Provider
 from automx2.model import Server
@@ -16,10 +18,6 @@ from automx2.model import db
 from automx2.server import MOZILLA_CONFIG_ROUTE
 from automx2.server import MSOFT_CONFIG_ROUTE
 from automx2.server import app
-
-HORUS_SMTP = 'smtp.horus-it.com'
-
-HORUS_IMAP = 'imap.horus-it.com'
 
 EXAMPLE_COM = 'example.com'
 EXAMPLE_NET = 'example.net'
@@ -29,8 +27,10 @@ SERVERLESS_DOMAIN = 'serverless.tld'
 
 BIGCORP_NAME = 'Big Corporation, Inc.'
 BIGCORP_SHORT = 'BigCorp'
+HORUS_IMAP = 'imap.horus-it.com'
 HORUS_NAME = 'HORUS-IT Ralph Seichter'
 HORUS_SHORT = 'HORUS-IT'
+HORUS_SMTP = 'smtp.horus-it.com'
 SYS4_MAILSERVER = 'mail.sys4.de'
 SYS4_NAME = 'sys4 AG'
 SYS4_SHORT = 'sys4'
@@ -54,8 +54,6 @@ class TestCase(unittest.TestCase):
     def setUp(self) -> None:
         app.config['TESTING'] = True
         app.config['DEBUG'] = False
-        # app.config['SQLALCHEMY_ECHO'] = False
-        # app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:////tmp/{IDENTIFIER}_unittest.sqlite'
         self.app = app.test_client()
         with app.app_context():
             db.init_app(app)
@@ -82,8 +80,8 @@ class TestCase(unittest.TestCase):
 
     def get_msoft_config(self, address: str) -> Response:
         data = (
-            '<Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006">'
-            '<AcceptableResponseSchema>http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a</AcceptableResponseSchema>'
+            f'<Autodiscover xmlns="{NS_AUTODISCOVER}">'
+            f'<AcceptableResponseSchema>{NS_RESPONSE}</AcceptableResponseSchema>'
             '<Request>'
             f'<EMailAddress>{address}</EMailAddress>'
             '</Request>'
@@ -142,13 +140,11 @@ class TestCase(unittest.TestCase):
         s8 = Server(id=id, type='smtp', port=587, name=SYS4_MAILSERVER, domains=sys4_domains)
         db.session.add_all([s1, s2, s3, s4, s5, s6, s7, s8])
 
-    @staticmethod
-    def imap_hostname(element: Element) -> List[Element]:
-        return element.findall('emailProvider/incomingServer/[@type="imap"]/hostname')
+    def imap_server_elements(self, element: Element) -> List[Element]:
+        raise NotImplementedError
 
-    @staticmethod
-    def smtp_hostname(element: Element) -> List[Element]:
-        return element.findall('emailProvider/outgoingServer/[@type="smtp"]/hostname')
+    def smtp_server_elements(self, element: Element) -> List[Element]:
+        raise NotImplementedError
 
 
 if __name__ == '__main__':
