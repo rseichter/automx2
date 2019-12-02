@@ -3,22 +3,20 @@
 Successor to **automx**, designed to be easier to configure and use.
 Written by Ralph Seichter for [sys4 AG](https://sys4.de/).
 
-This software is considered to be in Alpha state, so make sure to use protection. I do not accept third party
-contributions at this time, because the code is still so much in flux.
+_This software is considered to be in Alpha state, so make sure to use protection._
 
-TODO: Write proper documentation
-
-## Installing the software
+## Installing
 
 TODO
 
-## Configuring automx2
+## Configuring
 
 When run by user `alice`, automx2 attempts to load configuration data from the following files, in the specified order,
 stopping at the first match:
 
 1. Value of `AUTOMX2_CONF` environment variable (if available)
-2. `~alice/automx2.conf`
+2. `~alice/.automx2.conf` (note the leading dot)
+2. `/etc/automx2/automx2.conf`
 2. `/etc/automx2.conf`
 
 While automx2 can be launched without a configuration file, the internal defaults are only suitable for testing, in
@@ -35,7 +33,7 @@ This application uses the excellent SQLAlchemy toolkit which supports various SQ
 local machine, you may need to install additional Python packages for PostgreSQL, MySQL, etc. Detailed instructions
 to support a particular database dialect are out of scope for this document, but there are numerous guides available.
 
-## Launching automx2
+## Launching
 
 Once configured, you can launch the configured application from a shell on UNIX-like systems:
 
