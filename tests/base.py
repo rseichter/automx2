@@ -6,8 +6,8 @@ from uuid import uuid1
 
 from flask import Response
 
-from automx2.generators.msoft import NS_AUTODISCOVER
-from automx2.generators.msoft import NS_RESPONSE
+from automx2.generators.outlook import NS_AUTODISCOVER
+from automx2.generators.outlook import NS_RESPONSE
 from automx2.model import Domain
 from automx2.model import Provider
 from automx2.model import Server

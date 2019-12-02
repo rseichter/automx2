@@ -51,7 +51,7 @@ type_map = {
 """
 
 
-class MsGenerator(ConfigGenerator):
+class OutlookGenerator(ConfigGenerator):
     @staticmethod
     def on_off(o: object):
         if o:

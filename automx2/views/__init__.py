@@ -10,7 +10,7 @@ from flask import request
 from flask import views
 
 from automx2 import log
-from automx2.generators.msoft import NS_AUTODISCOVER
+from automx2.generators.outlook import NS_AUTODISCOVER
 from automx2.util import parse_email_address
 
 # Keys are case-sensitive when used in XML

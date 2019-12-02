@@ -4,7 +4,7 @@ from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import ParseError
 from xml.etree.ElementTree import fromstring
 
-from automx2.generators.msoft import NS_RESPONSE
+from automx2.generators.outlook import NS_RESPONSE
 from automx2.server import MSOFT_CONFIG_ROUTE
 from automx2.views import CONTENT_TYPE_XML
 from tests.base import EXAMPLE_COM
