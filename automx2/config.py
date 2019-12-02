@@ -31,7 +31,8 @@ class Config:
         self._parser.read_dict(_DEFAULT_CONF)
         file_name = f'{IDENTIFIER}.conf'
         paths = [
-            Path(Path.home(), file_name),
+            Path(Path.home(), f'.{file_name}'),
+            Path(f'/etc/{IDENTIFIER}', file_name),
             Path('/etc', file_name),
         ]
         env = from_environ('AUTOMX2_CONF')
