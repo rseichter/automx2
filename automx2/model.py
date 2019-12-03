@@ -22,10 +22,12 @@ SYS4_MAILSERVER = 'mail.sys4.de'
 SYS4_NAME = 'sys4 AG'
 SYS4_SHORT = 'sys4'
 
-imap1_name = unique()
-imap2_name = unique()
-smtp1_name = unique()
-smtp2_name = unique()
+sample_server_names = {
+    'imap1': f'imap1.{unique()}.com',
+    'imap2': f'imap2.{unique()}.com',
+    'smtp1': f'primary-smtp.{unique()}.com',
+    'smtp2': f'secondary-smtp.{unique()}.com',
+}
 
 db = SQLAlchemy()
 
@@ -147,13 +149,13 @@ def _populate_from_samples():
     db.session.add_all([orphan_domain, serverless_domain])
 
     i = 3000
-    s1 = Server(id=i, type='smtp', port=587, name=smtp1_name, domains=[d1, d2])
+    s1 = Server(id=i, type='smtp', port=587, name=sample_server_names['smtp1'], domains=[d1, d2])
     i += 1
-    s2 = Server(id=i, type='smtp', port=587, name=smtp2_name, domains=[d3])
+    s2 = Server(id=i, type='smtp', port=587, name=sample_server_names['smtp2'], domains=[d3])
     i += 1
-    s3 = Server(id=i, type='imap', port=143, name=imap1_name, domains=[d1])
+    s3 = Server(id=i, type='imap', port=143, name=sample_server_names['imap1'], domains=[d1])
     i += 1
-    s4 = Server(id=i, type='imap', port=143, name=imap2_name, domains=[d2, d3])
+    s4 = Server(id=i, type='imap', port=143, name=sample_server_names['imap2'], domains=[d2, d3])
     i += 1
     s5 = Server(id=i, type='imap', port=993, socket_type='SSL', name=HORUS_IMAP, domains=horus_domains)
     i += 1

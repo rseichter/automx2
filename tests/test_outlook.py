@@ -12,8 +12,7 @@ from automx2.model import HORUS_IMAP
 from automx2.model import HORUS_SMTP
 from automx2.model import SERVERLESS_DOMAIN
 from automx2.model import SYS4_MAILSERVER
-from automx2.model import imap2_name
-from automx2.model import smtp1_name
+from automx2.model import sample_server_names
 from automx2.server import MSOFT_CONFIG_ROUTE
 from automx2.views import CONTENT_TYPE_XML
 from tests.base import TestCase
@@ -78,13 +77,13 @@ class MsRoutes(TestCase):
         with self.app:
             r = self.get_msoft_config(f'a@{EXAMPLE_ORG}')
             x = self.imap_server_elements(fromstring(body(r)))
-            self.assertEqual(imap2_name, x[0].text)
+            self.assertEqual(sample_server_names['imap2'], x[0].text)
 
     def test_ms_smtp(self):
         with self.app:
             r = self.get_msoft_config(f'a@{EXAMPLE_NET}')
             x = self.smtp_server_elements(fromstring(body(r)))
-            self.assertEqual(smtp1_name, x[0].text)
+            self.assertEqual(sample_server_names['smtp1'], x[0].text)
 
     def test_domain_without_servers(self):
         with self.app:
