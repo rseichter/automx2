@@ -28,3 +28,5 @@ jobs:
       - name: Run unit tests
         run: |
           python -m unittest discover tests/
+        env:
+          AUTOMX2_CONF: '$GITHUB_WORKSPACE/tests/unittest.conf'
