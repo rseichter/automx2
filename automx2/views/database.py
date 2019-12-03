@@ -14,7 +14,7 @@ class InitDatabase(MethodView):
     def get(self):
         db.create_all()
         if Provider.query.count() == 0:
-            populate_db(db.session)
+            populate_db()
             db.session.commit()
         url = url_for('root')
         return f'Database is now prepared. <a href="{url}">Click here</a> to go back.'

@@ -3,17 +3,19 @@ from typing import List
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import fromstring
 
+from automx2.model import BIGCORP_NAME
+from automx2.model import EXAMPLE_COM
+from automx2.model import EXAMPLE_NET
+from automx2.model import EXAMPLE_ORG
+from automx2.model import HORUS_IMAP
+from automx2.model import HORUS_SMTP
+from automx2.model import ORPHAN_DOMAIN
+from automx2.model import SERVERLESS_DOMAIN
+from automx2.model import SYS4_MAILSERVER
+from automx2.model import imap2_name
+from automx2.model import smtp1_name
 from automx2.server import MOZILLA_CONFIG_ROUTE
 from automx2.views import CONTENT_TYPE_XML
-from tests.base import BIGCORP_NAME
-from tests.base import EXAMPLE_COM
-from tests.base import EXAMPLE_NET
-from tests.base import EXAMPLE_ORG
-from tests.base import HORUS_IMAP
-from tests.base import HORUS_SMTP
-from tests.base import ORPHAN_DOMAIN
-from tests.base import SERVERLESS_DOMAIN
-from tests.base import SYS4_MAILSERVER
 from tests.base import TestCase
 from tests.base import body
 
@@ -55,13 +57,13 @@ class MozillaRoutes(TestCase):
         with self.app:
             r = self.get_mozilla_config(f'a@{EXAMPLE_ORG}')
             x = self.imap_server_elements(fromstring(body(r)))
-            self.assertEqual(self.imap2_name, x[0].text)
+            self.assertEqual(imap2_name, x[0].text)
 
     def test_mozilla_smtp(self):
         with self.app:
             r = self.get_mozilla_config(f'a@{EXAMPLE_NET}')
             x = self.smtp_server_elements(fromstring(body(r)))
-            self.assertEqual(self.smtp1_name, x[0].text)
+            self.assertEqual(smtp1_name, x[0].text)
 
     def test_broken_provider_id(self):
         with self.app:

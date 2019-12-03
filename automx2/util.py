@@ -3,6 +3,7 @@ Various utility functions.
 """
 import os
 import re
+from uuid import uuid4
 
 from automx2 import InvalidEMailAddressError
 
@@ -21,3 +22,7 @@ def parse_email_address(address: str):
         if match:
             return match[1], match[2]
     raise InvalidEMailAddressError
+
+
+def unique() -> str:
+    return uuid4().hex

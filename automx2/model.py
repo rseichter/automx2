@@ -5,6 +5,27 @@ from flask_sqlalchemy import SQLAlchemy
 
 from automx2 import log
 from automx2.config import config
+from automx2.util import unique
+
+EXAMPLE_COM = 'example.com'
+EXAMPLE_NET = 'example.net'
+EXAMPLE_ORG = 'example.org'
+ORPHAN_DOMAIN = 'orphan.tld'
+SERVERLESS_DOMAIN = 'serverless.tld'
+BIGCORP_NAME = 'Big Corporation, Inc.'
+BIGCORP_SHORT = 'BigCorp'
+HORUS_IMAP = 'imap.horus-it.com'
+HORUS_NAME = 'HORUS-IT Ralph Seichter'
+HORUS_SHORT = 'HORUS-IT'
+HORUS_SMTP = 'smtp.horus-it.com'
+SYS4_MAILSERVER = 'mail.sys4.de'
+SYS4_NAME = 'sys4 AG'
+SYS4_SHORT = 'sys4'
+
+imap1_name = unique()
+imap2_name = unique()
+smtp1_name = unique()
+smtp2_name = unique()
 
 db = SQLAlchemy()
 
@@ -71,56 +92,74 @@ class Domain(db.Model):
         return domain
 
 
-def populate_db(session):  # pragma: no cover
+def populate_db():
     """Populate the database with example data."""
-    _populate_from_config(session)
-    _populate_from_samples(session)
+    _populate_from_config()
+    _populate_from_samples()
 
 
-def _populate_from_config(session):  # pragma: no cover
+def _populate_from_config():  # pragma: no cover
     """Populate based on config file sections (seed.xyz)."""
     servers = {}
     for seed in config.seed_servers():
         server = Server.from_seed(seed)
-        session.add(server)
+        db.session.add(server)
         servers[server.id] = server
     for seed in config.seed_providers():
         provider = Provider.from_seed(seed)
-        session.add(provider)
+        db.session.add(provider)
     for seed in config.seed_domains():
         domain = Domain.from_seed(seed, servers)
-        session.add(domain)
+        db.session.add(domain)
 
 
-def _populate_from_samples(session):  # pragma: no cover
+def _populate_from_samples():
     """Populate with some fixed samples."""
-    base = 1000
-    p1 = Provider(id=base + 1, name='Example Provider #1', short_name='Provider1')
-    p2 = Provider(id=base + 2, name='Example Provider #2', short_name='Provider2')
-    horus = Provider(id=base + 3, name='HORUS-IT Ralph Seichter', short_name='HORUS-IT')
-    sys4 = Provider(id=base + 4, name='sys4 AG', short_name='sys4')
-    session.add_all([p1, p2, horus, sys4])
+    i = 1000
+    bigcorp = Provider(id=i, name=BIGCORP_NAME, short_name=BIGCORP_SHORT)
+    i += 1
+    horus = Provider(id=i, name=HORUS_NAME, short_name=HORUS_SHORT)
+    i += 1
+    sys4 = Provider(id=i, name=HORUS_NAME, short_name=HORUS_SHORT)
+    db.session.add_all([bigcorp, horus, sys4])
 
-    base = 1100
-    d1 = Domain(id=base + 1, name='example.com', provider=p2)
-    d2 = Domain(id=base + 2, name='example.net', provider=p2)
-    d3 = Domain(id=base + 3, name='example.org', provider=p1)
-    d4 = Domain(id=base + 4, name='4titu.de', provider=horus)
-    d5 = Domain(id=base + 5, name='horus-it.de', provider=horus)
-    d6 = Domain(id=base + 6, name='horus-it.com', provider=horus)
-    d7 = Domain(id=base + 7, name='sys4.de', provider=sys4)
-    session.add_all([d1, d2, d3, d4, d5, d6, d7])
-    horus_domains = [d4, d5, d6]
-    sys4_domains = [d7]
+    i = 2000
+    d1 = Domain(id=i, name=EXAMPLE_COM, provider=bigcorp)
+    i += 1
+    d2 = Domain(id=i, name=EXAMPLE_NET, provider=bigcorp)
+    i += 1
+    d3 = Domain(id=i, name=EXAMPLE_ORG, provider=bigcorp)
+    i += 1
+    d1_horus = Domain(id=i, name='horus-it.de', provider=horus)
+    i += 1
+    d2_horus = Domain(id=i, name='horus-it.com', provider=horus)
+    i += 1
+    d1_sys4 = Domain(id=i, name='sys4.de', provider=sys4)
+    i += 1
+    orphan_domain = Domain(id=i, name=ORPHAN_DOMAIN, provider_id=(-1 * i))
+    i += 1
+    serverless_domain = Domain(id=i, name=SERVERLESS_DOMAIN, provider=bigcorp)
+    horus_domains = [d1_horus, d2_horus]
+    sys4_domains = [d1_sys4]
+    db.session.add_all([d1, d2, d3])
+    db.session.add_all(horus_domains)
+    db.session.add_all(sys4_domains)
+    db.session.add_all([orphan_domain, serverless_domain])
 
-    base = 1200
-    s1 = Server(id=base + 1, type='smtp', port=587, name='smtp1.provider.com', domains=[d1, d2])
-    s2 = Server(id=base + 2, type='smtp', port=587, name='smtp2.provider.com', domains=[d3])
-    s3 = Server(id=base + 3, type='imap', port=143, name='imap-a.provider.com', domains=[d2, d3])
-    s4 = Server(id=base + 4, type='imap', port=143, name='imap-b.provider.com', domains=[d1])
-    s5 = Server(id=base + 5, type='imap', port=993, socket_type='SSL', name='imap.horus-it.com',
-                domains=horus_domains)
-    s6 = Server(id=base + 6, type='smtp', port=587, name='smtp.horus-it.com', domains=horus_domains)
-    s7 = Server(id=base + 7, type='imap', port=143, name='mail.sys4.de', domains=sys4_domains)
-    s8 = Server(id=base + 8, type='smtp', port=587, name='mail.sys4.de', domains=sys4_domains)
-    session.add_all([s1, s2, s3, s4, s5, s6, s7, s8])
+    i = 3000
+    s1 = Server(id=i, type='smtp', port=587, name=smtp1_name, domains=[d1, d2])
+    i += 1
+    s2 = Server(id=i, type='smtp', port=587, name=smtp2_name, domains=[d3])
+    i += 1
+    s3 = Server(id=i, type='imap', port=143, name=imap1_name, domains=[d1])
+    i += 1
+    s4 = Server(id=i, type='imap', port=143, name=imap2_name, domains=[d2, d3])
+    i += 1
+    s5 = Server(id=i, type='imap', port=993, socket_type='SSL', name=HORUS_IMAP, domains=horus_domains)
+    i += 1
+    s6 = Server(id=i, type='smtp', port=587, name=HORUS_SMTP, domains=horus_domains)
+    i += 1
+    s7 = Server(id=i, type='imap', port=143, name=SYS4_MAILSERVER, domains=sys4_domains)
+    i += 1
+    s8 = Server(id=i, type='smtp', port=587, name=SYS4_MAILSERVER, domains=sys4_domains)
+    db.session.add_all([s1, s2, s3, s4, s5, s6, s7, s8])

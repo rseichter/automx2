@@ -4,7 +4,7 @@ import unittest
 from automx2 import InvalidEMailAddressError
 from automx2.util import from_environ
 from automx2.util import parse_email_address
-from tests.base import unique
+from automx2.util import unique
 
 
 class UtilTests(unittest.TestCase):
