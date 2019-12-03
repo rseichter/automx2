@@ -1,23 +1,17 @@
 #!/usr/bin/env bash
 # vim:tabstop=4:noexpandtab
 #
-# Utility script to package automx2 for distribution
-# and to handle PyPI uploads. You need Python modules
-# 'wheel' and 'twine' to use this script.
+# Script to package automx2 for distribution and to handle PyPI uploads.
+# You need Python modules 'wheel' and 'twine' to use this script.
 
 set -e
 
 function usage() {
-	echo "Usage: $(basename $0) {clean|dist|upload}" >&2
+	local bn
+	bn="$(basename $0)"
+	echo "Usage: ${bn} {clean | dist}" >&2
+	echo "       ${bn} upload [repository]" >&2
 	exit 1
-}
-
-function do_clean() {
-	for d in build dist; do
-		if [ -d $d ]; then
-			rm -r $d
-		fi
-	done
 }
 
 function do_dist() {
@@ -25,21 +19,29 @@ function do_dist() {
 }
 
 function do_upload() {
+	if [ $# -gt 0 ]; then
+		repo="$1"
+	fi
 	local opt=(
 		'-sign'
 		'-i'
 		'D3DCBBA4EFA680A1C5C85708593AAE2E98E2219D'
 		'-r'
-		'testpypi'
+		"${repo:-testpypi}"
 	)
-	twine upload "${opt[@]}" dist/*
+	echo twine upload "${opt[@]}" dist/*
 }
 
-test "$#" -gt 0 || usage
-case "$1" in
-	clean|dist|upload)
+[ $# -gt 0 ] || usage
+arg="$1"
+shift
+case "$arg" in
+	clean)
+		rm -r build/* dist/*
+		;;
+	dist | upload)
 		source venv/bin/activate
-		do_$1
+		do_$arg "$@"
 		;;
 	*)
 		usage
