@@ -27,6 +27,6 @@ jobs:
           flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
       - name: Run unit tests
         run: |
-          python -m unittest discover tests/
+          python -m unittest discover -v tests/
         env:
           AUTOMX2_CONF: 'tests/unittest.conf'
