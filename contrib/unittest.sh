@@ -36,19 +36,19 @@ function run_tests() {
 	PYTHONPATH=".:${PYTHONPATH}" $cmd -m unittest discover tests/ "$@"
 }
 
-cmd='python'
 if [ $# -gt 0 ]; then
 	arg="$1"
 	shift
 	case "$arg" in
-		coverage):
+		coverage)
 			run_tests 'coverage run --source automx2 --rcfile=tests/coverage.rc'
 			;;
-		report):
+		report)
 			run_coverage html
 			;;
 		*)
 			usage
+			;;
 	esac
 else
 	run_tests python
