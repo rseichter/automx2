@@ -1,6 +1,7 @@
 *.egg-info/
 .coverage*
 .idea/
+.xml
 build/
 dist/
 htmlcov/
