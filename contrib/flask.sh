@@ -15,6 +15,7 @@ source venv/bin/activate
 
 # User configurable section -- START
 #export AUTOMX2_CONF='/path/to/your/automx2.conf'
+export AUTOMX2_CONF='local/test.conf'
 export FLASK_ENV='development'
 #export FLASK_ENV='production'
 # User configurable section -- END
