@@ -2,6 +2,7 @@
 Flask server application.
 """
 from flask import Flask
+from flask_migrate import Migrate
 
 from automx2.config import config
 from automx2.model import db
@@ -23,3 +24,4 @@ app.add_url_rule(MOZILLA_CONFIG_ROUTE, view_func=autoconfig.MailConfig.as_view('
 app.add_url_rule(MSOFT_CONFIG_ROUTE, view_func=autodiscover.MailConfig.as_view('msoft'), methods=['POST'])
 
 db.init_app(app)
+migrate = Migrate(app, db)

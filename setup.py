@@ -28,8 +28,8 @@ setuptools.setup(
     ],
     install_requires=[
         'Flask>=1.1.1',
+        'Flask-Migrate>=2.5.2',
         'Flask-SQLAlchemy>=2.4.1',
-        'SQLAlchemy>=1.3.11',
     ],
     python_requires='>=3.7',
 )
