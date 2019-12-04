@@ -1,0 +1,11 @@
+[flake8]
+count = True
+exclude =
+    .git,
+    __pycache__,
+    build,
+    dist,
+    migrations,
+    tests,
+    venv
+statistics = True
