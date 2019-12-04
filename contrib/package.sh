@@ -29,7 +29,7 @@ function do_upload() {
 		'-r'
 		"${repo:-testpypi}"
 	)
-	echo twine upload "${opt[@]}" dist/*
+	twine upload "${opt[@]}" dist/*
 }
 
 [ $# -gt 0 ] || usage
