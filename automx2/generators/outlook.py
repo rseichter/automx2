@@ -53,8 +53,8 @@ type_map = {
 
 class OutlookGenerator(ConfigGenerator):
     @staticmethod
-    def on_off(o: object):
-        if o:
+    def on_off(condition: bool) -> str:
+        if condition:
             return 'on'
         return 'off'
 
