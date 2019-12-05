@@ -11,7 +11,7 @@ from automx2.generators import ConfigGenerator
 from automx2.model import Domain
 from automx2.model import Server
 
-NS_AUTODISCOVER = 'http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006'
+NS_AUTODISCOVER = 'http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006'
 NS_RESPONSE = 'http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a'
 
 type_map = {
@@ -20,7 +20,7 @@ type_map = {
 }
 
 """
-<Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006">
+<Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006">
     <Response xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a">
         <Account>
             <AccountType>email</AccountType>
