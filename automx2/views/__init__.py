@@ -18,7 +18,7 @@ EMAIL_MOZILLA = 'emailaddress'
 EMAIL_OUTLOOK = 'EMailAddress'
 
 CONTENT_TYPE = 'Content-Type'
-CONTENT_TYPE_XML = 'text/xml'
+CONTENT_TYPE_XML = 'application/xml'
 
 
 class BaseView(views.MethodView):
