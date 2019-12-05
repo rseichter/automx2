@@ -12,7 +12,7 @@ from automx2.views.database import InitDatabase
 from automx2.views.site import SiteRoot
 
 MOZILLA_CONFIG_ROUTE = '/mail/config-v1.1.xml'
-MSOFT_CONFIG_ROUTE = '/autodiscover/autodiscover.xml '
+MSOFT_CONFIG_ROUTE = '/autodiscover/autodiscover.xml'
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = config.db_uri()
