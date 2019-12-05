@@ -122,7 +122,7 @@ def _populate_from_samples():
     i += 1
     horus = Provider(id=i, name=HORUS_NAME, short_name=HORUS_SHORT)
     i += 1
-    sys4 = Provider(id=i, name=HORUS_NAME, short_name=HORUS_SHORT)
+    sys4 = Provider(id=i, name=SYS4_NAME, short_name=SYS4_SHORT)
     db.session.add_all([bigcorp, horus, sys4])
 
     i = 2000
