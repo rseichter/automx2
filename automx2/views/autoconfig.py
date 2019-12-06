@@ -8,6 +8,6 @@ from automx2.views import BaseView
 
 
 class MailConfig(BaseView):
-    def config_response(self, domain_name: str) -> Response:
-        data = MozillaGenerator().client_config(domain_name)
-        return self.xml_response(data)
+    def config_response(self, local_part, domain_part: str) -> Response:
+        data = MozillaGenerator().client_config(local_part, domain_part)
+        return data

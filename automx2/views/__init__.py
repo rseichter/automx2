@@ -50,10 +50,10 @@ class BaseView(views.MethodView):
 
     def config_from_address(self, address: str) -> Response:
         local_part, domain_part = parse_email_address(address)
-        data = self.config_response(domain_part)
+        data = self.config_response(local_part, domain_part)
         return self.xml_response(data)
 
-    def config_response(self, domain_name: str) -> Response:
+    def config_response(self, local_part, domain_part: str) -> Response:
         raise NotImplementedError
 
     @staticmethod
