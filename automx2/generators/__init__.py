@@ -4,10 +4,10 @@ Configuration generators.
 from automx2 import IDENTIFIER
 
 
+def branded_id(id_: str) -> str:
+    return f'{IDENTIFIER}-{id_}'
+
+
 class ConfigGenerator:
     def client_config(self, user_name, domain_name: str) -> str:
         raise NotImplementedError
-
-    @staticmethod
-    def branded_id(provider) -> str:
-        return f'{IDENTIFIER}-{provider.id}'

@@ -53,7 +53,7 @@ class BaseView(views.MethodView):
         data = self.config_response(local_part, domain_part)
         return self.xml_response(data)
 
-    def config_response(self, local_part, domain_part: str) -> Response:
+    def config_response(self, local_part, domain_part: str) -> str:
         raise NotImplementedError
 
     @staticmethod

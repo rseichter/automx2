@@ -7,11 +7,10 @@ from xml.etree.ElementTree import tostring
 
 from automx2 import log
 from automx2.generators import ConfigGenerator
+from automx2.generators import branded_id
 from automx2.model import Domain
 from automx2.model import Provider
 from automx2.util import unique
-
-PAYLOAD_TYPE = 'com.apple.mail.managed'
 
 """
 <?xml version="1.0" encoding="UTF-8"?>
@@ -96,10 +95,13 @@ PAYLOAD_TYPE = 'com.apple.mail.managed'
 """
 
 
-def str_key(parent: Element, key: str, value: str = ''):
+def bool_key(parent: Element, key: str, value: bool):
     SubElement(parent, 'key').text = key
     if value:
-        SubElement(parent, 'string').text = value
+        v = 'true'
+    else:
+        v = 'false'
+    SubElement(parent, v)
 
 
 def int_key(parent: Element, key: str, value: int):
@@ -107,35 +109,101 @@ def int_key(parent: Element, key: str, value: int):
     SubElement(parent, 'integer').text = str(value)
 
 
+def str_key(parent: Element, key: str, value: str = ''):
+    SubElement(parent, 'key').text = key
+    if value:
+        SubElement(parent, 'string').text = value
+
+
+def subtree(parent: Element, key: str, value):
+    if isinstance(value, bool):
+        bool_key(parent, key, value)
+    elif isinstance(value, dict):
+        p = SubElement(parent, 'dict')
+        for k, v in value.items():
+            subtree(p, k, v)
+    elif isinstance(value, int):
+        int_key(parent, key, value)
+    elif isinstance(value, list):
+        str_key(parent, key)
+        p = SubElement(parent, 'array')
+        for v in value:
+            subtree(p, 'dunno', v)
+    else:
+        str_key(parent, key, value)
+
+
+def _payload_dicts(address: str):
+    uuid = unique()
+    inner = {
+        'EmailAccountDescription': address,
+        'EmailAccountName': 'John Doe',
+        'EmailAccountType': 'EmailTypeIMAP',
+        'EmailAddress': address,
+        'IncomingMailServerAuthentication': 'EmailAuthPassword',
+        'IncomingMailServerHostName': 'imap.horus-it.com',
+        'IncomingMailServerPortNumber': 0,
+        'IncomingMailServerUseSSL': True,
+        'IncomingMailServerUsername': 'jd',
+        'IncomingPassword': 'SECR3T',
+        'OutgoingMailServerAuthentication': 'EmailAuthPassword',
+        'OutgoingMailServerHostName': 'smtp.horus-it.com',
+        'OutgoingMailServerPortNumber': 0,
+        'OutgoingMailServerUseSSL': True,
+        'OutgoingMailServerUsername': 'jd',
+        'OutgoingPasswordSameAsIncomingPassword': True,
+        'PayloadDescription': 'Email account configuration',
+        'PayloadDisplayName': 'willexplo.de',
+        'PayloadIdentifier': f'com.apple.mail.managed.{uuid}',
+        'PayloadType': 'com.apple.mail.managed',
+        'PayloadUUID': uuid,
+        'PayloadVersion': 1,
+        'SMIMEEnablePerMessageSwitch': False,
+        'SMIMEEnabled': False,
+        'SMIMEEncryptionEnabled': False,
+        'SMIMESigningEnabled': False,
+        'allowMailDrop': False,
+        'disableMailRecentsSyncing': False,
+    }
+    uuid = unique()
+    outer = {
+        'PayloadContent': [inner],
+        'PayloadDisplayName': 'UNDEFINED',
+        'PayloadIdentifier': branded_id(uuid),
+        'PayloadRemovalDisallowed': False,
+        'PayloadType': 'Configuration',
+        'PayloadUUID': uuid,
+        'PayloadVersion': 1,
+    }
+    return inner, outer
+
+
 class AppleGenerator(ConfigGenerator):
     def client_config(self, local_part, domain_name: str) -> str:
-        root = Element('plist', attrib={'version': '1.0'})
-        e = SubElement(root, 'dict')
-        str_key(e, 'PayloadContent')
-        e = SubElement(e, 'array')
-        inner = SubElement(e, 'dict')
+        inner, outer = _payload_dicts(f'{local_part}@{domain_name}')
         domain: Domain = Domain.query.filter_by(name=domain_name).first()
         if domain:
-            address = f'{local_part}@{domain_name}'
-            uuid = unique()
             provider: Provider = domain.provider
-            str_key(inner, 'EmailAccountDescription', address)
             for server in domain.servers:
                 if server.type == 'imap':
-                    str_key(inner, 'EmailAccountType', 'EmailTypeIMAP')
-                    str_key(inner, 'EmailAddress', address)
-                    str_key(inner, 'IncomingMailServerHostName', server.name)
-                    int_key(inner, 'IncomingMailServerPortNumber', server.port)
+                    inner['IncomingMailServerHostName'] = server.name
+                    inner['IncomingMailServerPortNumber'] = server.port
                 elif server.type == 'smtp':
-                    str_key(inner, 'OutgoingMailServerHostName', server.name)
-                    int_key(inner, 'OutgoingMailServerPortNumber', server.port)
-            str_key(inner, 'PayloadDescription', f'Email hosted by {provider.name}')
-            str_key(inner, 'PayloadDisplayName', f'{domain_name} mail')
-            str_key(inner, 'PayloadIdentifier', f'{self.branded_id(provider)}.{uuid}')
-            str_key(inner, 'PayloadType', PAYLOAD_TYPE)
-            int_key(inner, 'PayloadVersion', 1)
-            str_key(inner, 'PayloadUUID', uuid)
+                    inner['OutgoingMailServerHostName'] = server.name
+                    inner['OutgoingMailServerPortNumber'] = server.port
+            inner['PayloadDescription'] = f'Hosted by {provider.name}'
+            inner['PayloadDisplayName'] = f'{domain_name} mobile email'
         else:
             log.error(f'No provider for domain "{domain_name}"')
-        data = tostring(root, 'utf-8')
+        plist = Element('plist', attrib={'version': '1.0'})
+        subtree(plist, '', outer)
+        data = tostring(plist, 'utf-8')
         return data
+
+
+if __name__ == '__main__':
+    _inner, _outer = _payload_dicts('foo@bar.org')
+    root = Element('plist', attrib={'version': '1.0'})
+    subtree(root, '', _outer)
+    s = tostring(root).decode('utf-8')
+    print(s)

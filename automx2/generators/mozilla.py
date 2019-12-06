@@ -6,9 +6,9 @@ from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import SubElement
 from xml.etree.ElementTree import tostring
 
-from automx2 import IDENTIFIER
 from automx2 import log
 from automx2.generators import ConfigGenerator
+from automx2.generators import branded_id
 from automx2.model import Domain
 from automx2.model import Provider
 from automx2.model import Server
@@ -36,7 +36,7 @@ class MozillaGenerator(ConfigGenerator):
         domain: Domain = Domain.query.filter_by(name=domain_name).first()
         if domain:
             provider: Provider = domain.provider
-            provider_element = SubElement(root, 'emailProvider', attrib={'id': self.branded_id(provider)})
+            provider_element = SubElement(root, 'emailProvider', attrib={'id': branded_id(provider)})
             SubElement(provider_element, 'identity')  # Deliberately left empty
             for provider_domain in provider.domains:
                 SubElement(provider_element, 'domain').text = provider_domain.name
