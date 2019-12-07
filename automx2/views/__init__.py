@@ -28,12 +28,14 @@ class BaseView(views.MethodView):
     def get(self):
         """Mozilla-style GET request is expected to contain ?emailaddress=user@example.com"""
         address = request.args.get(EMAIL_MOZILLA, '')
+        realname = request.args.get('name', 'Not Specified')
+        password = request.args.get('pw', 'Not Specified')
         if not address:
             message = f'Missing request argument "{EMAIL_MOZILLA}"'
             log.error(message)
             return message, 400
         try:
-            return self.config_from_address(address)
+            return self.config_from_address(address, realname, password)
         except AutomxException as e:
             log.exception(e)
             abort(400)
@@ -58,12 +60,12 @@ class BaseView(views.MethodView):
             log.exception(e)
             abort(400)
 
-    def config_from_address(self, address: str) -> Response:
+    def config_from_address(self, address: str, realname: str = '', password: str = '') -> Response:
         local_part, domain_part = parse_email_address(address)
-        data = self.config_response(local_part, domain_part)
+        data = self.config_response(local_part, domain_part, realname, password)
         return self.response_with_type(data)
 
-    def config_response(self, local_part, domain_part: str) -> str:
+    def config_response(self, local_part, domain_part: str, realname: str, password: str) -> str:
         raise NotImplementedError
 
     @staticmethod

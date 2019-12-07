@@ -69,7 +69,7 @@ class OutlookGenerator(ConfigGenerator):
         SubElement(element, 'AuthRequired').text = self.on_off(True)
         return element
 
-    def client_config(self, user_name, domain_name: str) -> str:
+    def client_config(self, user_name, domain_name: str, realname: str, password: str) -> str:
         domain: Domain = Domain.query.filter_by(name=domain_name).first()
         autodiscover = Element('Autodiscover', attrib={'xmlns': NS_AUTODISCOVER})
         response = SubElement(autodiscover, 'Response', attrib={'xmlns': NS_RESPONSE})

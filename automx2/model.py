@@ -4,6 +4,7 @@ Model classes, based on Flask-SQLAlchemy.
 from flask_sqlalchemy import SQLAlchemy
 
 from automx2 import PLACEHOLDER_ADDRESS
+from automx2 import PLACEHOLDER_LOCALPART
 from automx2 import log
 from automx2.config import config
 from automx2.util import unique
@@ -170,9 +171,10 @@ def _populate_from_samples():
     i += 1
     s4 = Server(id=i, type='imap', port=143, name=sample_server_names['imap2'], domains=[d2, d3])
     i += 1
-    s5 = Server(id=i, type='imap', port=993, socket_type='SSL', name=HORUS_IMAP, domains=horus_domains)
+    s5 = Server(id=i, type='imap', port=993, socket_type='SSL', name=HORUS_IMAP, user_name=PLACEHOLDER_LOCALPART,
+                domains=horus_domains)
     i += 1
-    s6 = Server(id=i, type='smtp', port=587, name=HORUS_SMTP, domains=horus_domains)
+    s6 = Server(id=i, type='smtp', port=587, name=HORUS_SMTP, user_name=PLACEHOLDER_LOCALPART, domains=horus_domains)
     i += 1
     s7 = Server(id=i, type='imap', port=143, name=SYS4_MAILSERVER, domains=sys4_domains)
     i += 1

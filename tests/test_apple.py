@@ -4,7 +4,10 @@ from xml.dom import minidom
 from xml.dom.minidom import Element
 
 from automx2 import PLACEHOLDER_ADDRESS
+# noinspection PyProtectedMember
 from automx2.generators.apple import _sanitise
+# noinspection PyProtectedMember
+from automx2.generators.apple import _use_ssl
 from automx2.model import EGGS_DOMAIN
 from automx2.model import EXAMPLE_COM
 from automx2.model import EXAMPLE_NET
@@ -142,6 +145,10 @@ class AppleRoutes(TestCase):
         with self.app:
             with self.assertRaises(TypeError):
                 _sanitise({'a': None}, 'l', 'd')
+
+    def test_use_ssl(self):
+        with self.app:
+            self.assertFalse(_use_ssl('nah'))
 
 
 if __name__ == '__main__':

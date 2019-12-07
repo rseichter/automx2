@@ -36,10 +36,9 @@ def _int_element(parent: Element, key: str, value: int):
     SubElement(parent, 'integer').text = str(value)
 
 
-def _str_element(parent: Element, key: str, value: str = ''):
+def _str_element(parent: Element, key: str, value: str):
     SubElement(parent, 'key').text = key
-    if value:
-        SubElement(parent, 'string').text = value
+    SubElement(parent, 'string').text = value
 
 
 def _subtree(parent: Element, key: str, value):
@@ -52,7 +51,7 @@ def _subtree(parent: Element, key: str, value):
     elif isinstance(value, int):
         _int_element(parent, key, value)
     elif isinstance(value, list):
-        _str_element(parent, key)
+        SubElement(parent, 'key').text = key
         p = SubElement(parent, 'array')
         for v in value:
             _subtree(p, 'dunno', v)
@@ -64,23 +63,23 @@ def _payload(local, domain):
     address = f'{local}@{domain}'
     uuid = unique()
     inner = {
-        'EmailAccountDescription': '',
-        'EmailAccountName': address,
+        'EmailAccountDescription': address,
+        'EmailAccountName': None,
         'EmailAccountType': 'EmailTypeIMAP',
         'EmailAddress': address,
         'IncomingMailServerAuthentication': 'EmailAuthPassword',
         'IncomingMailServerHostName': None,
         'IncomingMailServerPortNumber': -1,
-        'IncomingMailServerUseSSL': True,
-        'IncomingMailServerUsername': local,
-        'IncomingPassword': '',
+        'IncomingMailServerUseSSL': None,
+        'IncomingMailServerUsername': None,
+        'IncomingPassword': None,
         'OutgoingMailServerAuthentication': 'EmailAuthPassword',
         'OutgoingMailServerHostName': None,
         'OutgoingMailServerPortNumber': -1,
-        'OutgoingMailServerUseSSL': True,
-        'OutgoingMailServerUsername': local,
+        'OutgoingMailServerUseSSL': None,
+        'OutgoingMailServerUsername': None,
         'OutgoingPasswordSameAsIncomingPassword': True,
-        'PayloadDescription': 'Email account configuration',
+        'PayloadDescription': f'Email account configuration for {address}',
         'PayloadDisplayName': domain,
         'PayloadIdentifier': f'com.apple.mail.managed.{uuid}',
         'PayloadType': 'com.apple.mail.managed',
@@ -96,7 +95,7 @@ def _payload(local, domain):
     uuid = unique()
     outer = {
         'PayloadContent': [inner],
-        'PayloadDisplayName': f'{domain} email account',
+        'PayloadDisplayName': f'Mail account {domain}',
         'PayloadIdentifier': branded_id(uuid),
         'PayloadRemovalDisallowed': False,
         'PayloadType': 'Configuration',
@@ -110,14 +109,24 @@ def _sanitise(data: dict, local: str, domain: str):
     for key, value in data.items():
         if value is None:
             raise TypeError(f'Missing value for payload key "{key}"')
-        if isinstance(value, dict):
+        if isinstance(value, list):
+            for v in value:
+                _sanitise(v, local, domain)
+        elif isinstance(value, dict):
             _sanitise(value, local, domain)
         elif isinstance(value, str):
-            data[key] = expand_placeholders(value, local, domain)
+            new = expand_placeholders(value, local, domain)
+            data[key] = new
+
+
+def _use_ssl(authentication: str) -> bool:
+    if 'SSL' == authentication or 'STARTTLS' == authentication:
+        return True
+    return False
 
 
 class AppleGenerator(ConfigGenerator):
-    def client_config(self, local_part, domain_part: str) -> str:
+    def client_config(self, local_part, domain_part: str, realname: str, password: str) -> str:
         domain: Domain = Domain.query.filter_by(name=domain_part).first()
         if not domain:
             raise DomainNotFound(f'Domain "{domain_part}" not found')
@@ -134,7 +143,9 @@ class AppleGenerator(ConfigGenerator):
             inner[f'{direction}MailServerHostName'] = server.name
             inner[f'{direction}MailServerPortNumber'] = server.port
             inner[f'{direction}MailServerUsername'] = server.user_name
-        inner['PayloadDescription'] = f'Hosted by {provider.name}'
+            inner[f'{direction}MailServerUseSSL'] = _use_ssl(server.socket_type)
+        inner['EmailAccountName'] = realname
+        inner['IncomingPassword'] = password
         _sanitise(outer, local_part, domain_part)
         plist = Element('plist', attrib={'version': '1.0'})
         _subtree(plist, '', outer)

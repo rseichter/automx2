@@ -32,12 +32,12 @@ class MozillaGenerator(ConfigGenerator):
         SubElement(element, 'authentication').text = server.authentication
         return element
 
-    def client_config(self, user_name, domain_name: str) -> str:
+    def client_config(self, user_name, domain_name: str, realname: str, password: str) -> str:
         root = Element('clientConfig', attrib={'version': '1.1'})
         domain: Domain = Domain.query.filter_by(name=domain_name).first()
         if domain:
             provider: Provider = domain.provider
-            provider_element = SubElement(root, 'emailProvider', attrib={'id': branded_id(provider)})
+            provider_element = SubElement(root, 'emailProvider', attrib={'id': branded_id(provider.id)})
             SubElement(provider_element, 'identity')  # Deliberately left empty
             for provider_domain in provider.domains:
                 SubElement(provider_element, 'domain').text = provider_domain.name
