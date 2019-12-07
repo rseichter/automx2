@@ -39,6 +39,11 @@ class NoServersForDomain(AutomxException):
     pass
 
 
+class InvalidServerType(AutomxException):
+    """Database contains an invalid server type."""
+    pass
+
+
 log = logging.getLogger(__name__)
 _handler = logging.StreamHandler()
 _handler.setFormatter(logging.Formatter())

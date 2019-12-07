@@ -8,17 +8,19 @@ from automx2 import log
 from automx2.config import config
 from automx2.util import unique
 
+BIGCORP_NAME = 'Big Corporation, Inc.'
+BIGCORP_SHORT = 'BigCorp'
 EXAMPLE_COM = 'example.com'
 EXAMPLE_NET = 'example.net'
 EXAMPLE_ORG = 'example.org'
-ORPHAN_DOMAIN = 'orphan.tld'
-SERVERLESS_DOMAIN = 'serverless.tld'
-BIGCORP_NAME = 'Big Corporation, Inc.'
-BIGCORP_SHORT = 'BigCorp'
 HORUS_IMAP = 'imap.horus-it.com'
 HORUS_NAME = 'HORUS-IT Ralph Seichter'
 HORUS_SHORT = 'HORUS-IT'
 HORUS_SMTP = 'smtp.horus-it.com'
+ORPHAN_DOMAIN = 'orphan.tld'
+OTHER_NAME = 'Some Other Provider'
+OTHER_SHORT = 'SOP'
+SERVERLESS_DOMAIN = 'serverless.tld'
 SYS4_MAILSERVER = 'mail.sys4.de'
 SYS4_NAME = 'sys4 AG'
 SYS4_SHORT = 'sys4'
@@ -123,6 +125,8 @@ def _populate_from_samples():
     i += 1
     horus = Provider(id=i, name=HORUS_NAME, short_name=HORUS_SHORT)
     i += 1
+    other = Provider(id=i, name=OTHER_NAME, short_name=OTHER_SHORT)
+    i += 1
     sys4 = Provider(id=i, name=SYS4_NAME, short_name=SYS4_SHORT)
     db.session.add_all([bigcorp, horus, sys4])
 
@@ -139,15 +143,15 @@ def _populate_from_samples():
     i += 1
     d1_sys4 = Domain(id=i, name='sys4.de', provider=sys4)
     i += 1
-    orphan_domain = Domain(id=i, name=ORPHAN_DOMAIN, provider_id=(-1 * i))
+    providerless_domain = Domain(id=i, name=ORPHAN_DOMAIN, provider_id=(-1 * i))
     i += 1
-    serverless_domain = Domain(id=i, name=SERVERLESS_DOMAIN, provider=bigcorp)
+    serverless_domain = Domain(id=i, name=SERVERLESS_DOMAIN, provider=other)
     horus_domains = [d1_horus, d2_horus]
     sys4_domains = [d1_sys4]
     db.session.add_all([d1, d2, d3])
     db.session.add_all(horus_domains)
     db.session.add_all(sys4_domains)
-    db.session.add_all([orphan_domain, serverless_domain])
+    db.session.add_all([providerless_domain, serverless_domain])
 
     i = 3000
     s1 = Server(id=i, type='smtp', port=587, name=sample_server_names['smtp1'], domains=[d1, d2])

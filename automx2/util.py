@@ -6,6 +6,9 @@ import re
 from uuid import uuid4
 
 from automx2 import InvalidEMailAddressError
+from automx2 import PLACEHOLDER_ADDRESS
+from automx2 import PLACEHOLDER_DOMAIN
+from automx2 import PLACEHOLDER_LOCALPART
 
 email_address_re = re.compile(r'^([^@]+)@([^@]+)$', re.IGNORECASE)
 
@@ -26,3 +29,14 @@ def parse_email_address(address: str):
 
 def unique() -> str:
     return uuid4().hex
+
+
+def expand_placeholders(string: str, local_part: str, domain_part: str) -> str:
+    placeholder_map = {
+        PLACEHOLDER_ADDRESS: f'{local_part}@{domain_part}',
+        PLACEHOLDER_DOMAIN: domain_part,
+        PLACEHOLDER_LOCALPART: local_part,
+    }
+    for k, v in placeholder_map.items():
+        string = string.replace(k, v)
+    return string

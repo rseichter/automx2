@@ -6,7 +6,7 @@ from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import SubElement
 from xml.etree.ElementTree import tostring
 
-from automx2 import log
+from automx2 import InvalidServerType
 from automx2.generators import ConfigGenerator
 from automx2.model import Domain
 from automx2.model import Server
@@ -14,7 +14,7 @@ from automx2.model import Server
 NS_AUTODISCOVER = 'http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006'
 NS_RESPONSE = 'http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a'
 
-type_map = {
+TYPE_MAP = {
     'imap': 'IMAP',
     'smtp': 'SMTP',
 }
@@ -60,7 +60,7 @@ class OutlookGenerator(ConfigGenerator):
 
     def protocol_element(self, parent: Element, server: Server) -> Element:
         element = SubElement(parent, 'Protocol')
-        SubElement(element, 'Type').text = type_map[server.type]
+        SubElement(element, 'Type').text = TYPE_MAP[server.type]
         SubElement(element, 'Server').text = server.name
         SubElement(element, 'Port').text = str(server.port)
         SubElement(element, 'LoginName').text = server.user_name
@@ -78,9 +78,8 @@ class OutlookGenerator(ConfigGenerator):
             SubElement(account, 'Action').text = 'settings'
             if domain:
                 for server in domain.servers:
-                    if server.type in type_map:
-                        self.protocol_element(account, server)
-                    else:
-                        log.error(f'Unexpected server type "{server.type}"')
+                    if server.type not in TYPE_MAP:
+                        raise InvalidServerType(f'Invalid server type "{server.type}"')
+                    self.protocol_element(account, server)
         data = tostring(autodiscover, 'utf-8')
         return data

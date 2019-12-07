@@ -6,6 +6,7 @@ from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import SubElement
 from xml.etree.ElementTree import tostring
 
+from automx2 import InvalidServerType
 from automx2 import log
 from automx2.generators import ConfigGenerator
 from automx2.generators import branded_id
@@ -13,7 +14,7 @@ from automx2.model import Domain
 from automx2.model import Provider
 from automx2.model import Server
 
-type_direction_map = {
+TYPE_DIRECTION_MAP = {
     'imap': 'incoming',
     'smtp': 'outgoing',
 }
@@ -22,7 +23,7 @@ type_direction_map = {
 class MozillaGenerator(ConfigGenerator):
     @staticmethod
     def server_element(parent: Element, server: Server) -> Element:
-        direction = type_direction_map[server.type]
+        direction = TYPE_DIRECTION_MAP[server.type]
         element = SubElement(parent, f'{direction}Server', attrib={'type': server.type})
         SubElement(element, 'hostname').text = server.name
         SubElement(element, 'port').text = str(server.port)
@@ -43,10 +44,9 @@ class MozillaGenerator(ConfigGenerator):
             SubElement(provider_element, 'displayName').text = provider.name
             SubElement(provider_element, 'displayShortName').text = provider.short_name
             for server in domain.servers:
-                if server.type in type_direction_map:
-                    self.server_element(provider_element, server)
-                else:
-                    log.error(f'Unexpected server type "{server.type}"')
+                if server.type not in TYPE_DIRECTION_MAP:
+                    raise InvalidServerType(f'Invalid server type "{server.type}"')
+                self.server_element(provider_element, server)
         else:
             log.error(f'No provider for domain "{domain_name}"')
         data = tostring(root, 'utf-8')
