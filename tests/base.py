@@ -9,6 +9,7 @@ from automx2.generators.outlook import NS_AUTODISCOVER
 from automx2.generators.outlook import NS_RESPONSE
 from automx2.model import db
 from automx2.model import populate_db
+from automx2.server import APPLE_CONFIG_ROUTE
 from automx2.server import MOZILLA_CONFIG_ROUTE
 from automx2.server import MSOFT_CONFIG_ROUTE
 from automx2.server import app
@@ -48,6 +49,9 @@ class TestCase(unittest.TestCase):
     def post(self, *args, **kwargs) -> Response:
         kwargs['follow_redirects'] = True
         return self.app.post(*args, **kwargs)
+
+    def get_apple_config(self, address: str) -> Response:
+        return self.get(f'{APPLE_CONFIG_ROUTE}?{EMAIL_MOZILLA}={address}')
 
     def get_mozilla_config(self, address: str) -> Response:
         return self.get(f'{MOZILLA_CONFIG_ROUTE}?{EMAIL_MOZILLA}={address}')

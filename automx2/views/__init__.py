@@ -24,7 +24,7 @@ CONTENT_TYPE_XML = 'application/xml'
 class BaseView(views.MethodView):
     # noinspection PyMethodMayBeStatic
     def get(self):
-        """Mozilla-style GET request is expected to contain ?address=user@example.com"""
+        """Mozilla-style GET request is expected to contain ?emailaddress=user@example.com"""
         address = request.args.get(EMAIL_MOZILLA, '')
         if not address:
             message = f'Missing request argument "{EMAIL_MOZILLA}"'

@@ -12,6 +12,11 @@ from automx2.model import Domain
 from automx2.model import Provider
 from automx2.util import unique
 
+type_direction_map = {
+    'imap': 'Incoming',
+    'smtp': 'Outgoing',
+}
+
 """
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
@@ -180,30 +185,27 @@ def _payload_dicts(address: str):
 
 class AppleGenerator(ConfigGenerator):
     def client_config(self, local_part, domain_name: str) -> str:
-        inner, outer = _payload_dicts(f'{local_part}@{domain_name}')
+        plist = Element('plist', attrib={'version': '1.0'})
         domain: Domain = Domain.query.filter_by(name=domain_name).first()
         if domain:
+            inner, outer = _payload_dicts(f'{local_part}@{domain_name}')
             provider: Provider = domain.provider
-            for server in domain.servers:
-                if server.type == 'imap':
-                    inner['IncomingMailServerHostName'] = server.name
-                    inner['IncomingMailServerPortNumber'] = server.port
-                elif server.type == 'smtp':
-                    inner['OutgoingMailServerHostName'] = server.name
-                    inner['OutgoingMailServerPortNumber'] = server.port
-            inner['PayloadDescription'] = f'Hosted by {provider.name}'
-            inner['PayloadDisplayName'] = f'{domain_name} mobile email'
+            if provider:
+                for server in domain.servers:
+                    if server.type in type_direction_map:
+                        direction = type_direction_map[server.type]
+                        inner[f'{direction}MailServerHostName'] = server.name
+                        inner[f'{direction}MailServerPortNumber'] = server.port
+                    else:
+                        log.error(f'Unexpected server type "{server.type}"')
+                if domain.servers:
+                    inner['PayloadDescription'] = f'Hosted by {provider.name}'
+                    inner['PayloadDisplayName'] = domain_name
+                    outer['PayloadDisplayName'] = f'{domain_name} mobile email'
+                    subtree(plist, '', outer)
+            else:
+                log.error(f'No provider for domain "{domain_name}"')
         else:
-            log.error(f'No provider for domain "{domain_name}"')
-        plist = Element('plist', attrib={'version': '1.0'})
-        subtree(plist, '', outer)
+            log.error(f'Domain "{domain_name}" not found')
         data = tostring(plist, 'utf-8')
         return data
-
-
-if __name__ == '__main__':
-    _inner, _outer = _payload_dicts('foo@bar.org')
-    root = Element('plist', attrib={'version': '1.0'})
-    subtree(root, '', _outer)
-    s = tostring(root).decode('utf-8')
-    print(s)
