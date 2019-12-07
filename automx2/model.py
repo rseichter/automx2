@@ -3,6 +3,7 @@ Model classes, based on Flask-SQLAlchemy.
 """
 from flask_sqlalchemy import SQLAlchemy
 
+from automx2 import PLACEHOLDER_ADDRESS
 from automx2 import log
 from automx2.config import config
 from automx2.util import unique
@@ -57,7 +58,7 @@ class Server(db.Model):
     type = db.Column(db.String, nullable=False)
     name = db.Column(db.String, nullable=False)
     socket_type = db.Column(db.String, nullable=False, default='STARTTLS')
-    user_name = db.Column(db.String, nullable=False, default='%EMAILADDRESS%')
+    user_name = db.Column(db.String, nullable=False, default=PLACEHOLDER_ADDRESS)
     authentication = db.Column(db.String, nullable=False, default='plain')
     domains = db.relationship('Domain', secondary=server_domain_map, lazy='subquery',
                               backref=db.backref('servers', lazy='select'))

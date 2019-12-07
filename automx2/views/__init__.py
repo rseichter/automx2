@@ -5,10 +5,12 @@ from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import fromstring
 
 from flask import Response
+from flask import abort
 from flask import make_response
 from flask import request
 from flask import views
 
+from automx2 import AutomxException
 from automx2 import log
 from automx2.generators.outlook import NS_AUTODISCOVER
 from automx2.util import parse_email_address
@@ -30,7 +32,11 @@ class BaseView(views.MethodView):
             message = f'Missing request argument "{EMAIL_MOZILLA}"'
             log.error(message)
             return message, 400
-        return self.config_from_address(address)
+        try:
+            return self.config_from_address(address)
+        except AutomxException as e:
+            log.exception(e)
+            abort(400)
 
     # noinspection PyMethodMayBeStatic
     def post(self):

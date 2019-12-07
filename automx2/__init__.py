@@ -9,9 +9,33 @@ import logging
 IDENTIFIER = 'automx2'
 VERSION = '0.0.1.dev12'
 
+PLACEHOLDER_ADDRESS = r'%EMAILADDRESS%'
+PLACEHOLDER_DOMAIN = r'%EMAILDOMAIN%'
+PLACEHOLDER_LOCALPART = r'%EMAILLOCALPART%'
 
-class InvalidEMailAddressError(Exception):
+
+class AutomxException(Exception):
+    """Exception base class for this application."""
+    pass
+
+
+class InvalidEMailAddressError(AutomxException):
     """Email address is invalid/unparseable."""
+    pass
+
+
+class DomainNotFound(AutomxException):
+    """Database did not contain the given domain."""
+    pass
+
+
+class NoProviderForDomain(AutomxException):
+    """Database did not contain a provider for the given address."""
+    pass
+
+
+class NoServersForDomain(AutomxException):
+    """Database did not contain any servers for the given address."""
     pass
 
 

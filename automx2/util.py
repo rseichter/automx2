@@ -21,7 +21,7 @@ def parse_email_address(address: str):
         match = email_address_re.search(address)
         if match:
             return match[1], match[2]
-    raise InvalidEMailAddressError
+    raise InvalidEMailAddressError('Invalid email address')
 
 
 def unique() -> str:

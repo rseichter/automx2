@@ -58,13 +58,7 @@ class AppleRoutes(TestCase):
     def test_apple_no_domain_match(self):
         with self.app:
             r = self.get_apple_config('a@b.c')
-            self.assertEqual(200, r.status_code)
-            self.assertEqual(CONTENT_TYPE_APPLE, r.mimetype)
-            md = minidom.parseString(body(r))
-            plist = md.getElementsByTagName('plist')
-            self.assertIsNotNone(plist)
-            e: Element = plist[0]
-            self.assertEqual('1.0', e.getAttribute('version'))
+            self.assertEqual(400, r.status_code)
 
     def test_apple_domain_match(self):
         with self.app:
@@ -89,15 +83,12 @@ class AppleRoutes(TestCase):
     def test_broken_provider_id(self):
         with self.app:
             r = self.get_apple_config(f'a@{ORPHAN_DOMAIN}')
-            b = minidom.parseString(body(r))
-            self.assertEqual([], b.getElementsByTagName('PayloadUUID'))
+            self.assertEqual(400, r.status_code)
 
     def test_domain_without_servers(self):
         with self.app:
             r = self.get_apple_config(f'a@{SERVERLESS_DOMAIN}')
-            b = minidom.parseString(body(r))
-            self.assertEqual([], self.imap_server_names(b))
-            self.assertEqual([], self.smtp_server_names(b))
+            self.assertEqual(400, r.status_code)
 
     def test_horus_imap(self):
         with self.app:
