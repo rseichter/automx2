@@ -52,7 +52,11 @@ class BaseView(views.MethodView):
             message = f'Missing request argument "{EMAIL_OUTLOOK}"'
             log.error(message)
             return message, 400
-        return self.config_from_address(element.text)
+        try:
+            return self.config_from_address(element.text)
+        except AutomxException as e:
+            log.exception(e)
+            abort(400)
 
     def config_from_address(self, address: str) -> Response:
         local_part, domain_part = parse_email_address(address)

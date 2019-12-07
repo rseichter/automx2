@@ -3,7 +3,9 @@ from typing import List
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import fromstring
 
+from automx2 import InvalidServerType
 from automx2.model import BIGCORP_NAME
+from automx2.model import EGGS_DOMAIN
 from automx2.model import EXAMPLE_COM
 from automx2.model import EXAMPLE_NET
 from automx2.model import EXAMPLE_ORG
@@ -75,6 +77,11 @@ class MozillaRoutes(TestCase):
             b = fromstring(body(r))
             self.assertEqual([], self.imap_server_elements(b))
             self.assertEqual([], self.smtp_server_elements(b))
+
+    def test_invalid_server(self):
+        with self.app:
+            r = self.get_mozilla_config(f'a@{EGGS_DOMAIN}')
+            self.assertEqual(400, r.status_code)
 
     def test_horus_imap(self):
         with self.app:

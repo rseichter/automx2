@@ -5,6 +5,7 @@ from xml.etree.ElementTree import ParseError
 from xml.etree.ElementTree import fromstring
 
 from automx2.generators.outlook import NS_RESPONSE
+from automx2.model import EGGS_DOMAIN
 from automx2.model import EXAMPLE_COM
 from automx2.model import EXAMPLE_NET
 from automx2.model import EXAMPLE_ORG
@@ -57,12 +58,7 @@ class MsRoutes(TestCase):
     def test_ms_no_domain_match(self):
         with self.app:
             r = self.get_msoft_config('a@b.c')
-            self.assertEqual(200, r.status_code)
-            self.assertEqual(CONTENT_TYPE_XML, r.mimetype)
-            e: Element = fromstring(body(r))
-            e = self.response_element(e)
-            self.assertIsInstance(e, Element)
-            self.assertEqual([], list(e))
+            self.assertEqual(400, r.status_code)
 
     def test_ms_valid_domain(self):
         with self.app:
@@ -91,6 +87,11 @@ class MsRoutes(TestCase):
             b = fromstring(body(r))
             self.assertEqual([], self.imap_server_elements(b))
             self.assertEqual([], self.smtp_server_elements(b))
+
+    def test_invalid_server(self):
+        with self.app:
+            r = self.get_msoft_config(f'a@{EGGS_DOMAIN}')
+            self.assertEqual(400, r.status_code)
 
     def test_horus_imap(self):
         with self.app:

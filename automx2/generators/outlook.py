@@ -6,6 +6,7 @@ from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import SubElement
 from xml.etree.ElementTree import tostring
 
+from automx2 import DomainNotFound
 from automx2 import InvalidServerType
 from automx2.generators import ConfigGenerator
 from automx2.model import Domain
@@ -72,14 +73,14 @@ class OutlookGenerator(ConfigGenerator):
         domain: Domain = Domain.query.filter_by(name=domain_name).first()
         autodiscover = Element('Autodiscover', attrib={'xmlns': NS_AUTODISCOVER})
         response = SubElement(autodiscover, 'Response', attrib={'xmlns': NS_RESPONSE})
-        if domain is not None:
-            account = SubElement(response, 'Account')
-            SubElement(account, 'AccountType').text = 'email'
-            SubElement(account, 'Action').text = 'settings'
-            if domain:
-                for server in domain.servers:
-                    if server.type not in TYPE_MAP:
-                        raise InvalidServerType(f'Invalid server type "{server.type}"')
-                    self.protocol_element(account, server)
+        if not domain:
+            raise DomainNotFound(f'Domain "{domain_name}" not found')
+        account = SubElement(response, 'Account')
+        SubElement(account, 'AccountType').text = 'email'
+        SubElement(account, 'Action').text = 'settings'
+        for server in domain.servers:
+            if server.type not in TYPE_MAP:
+                raise InvalidServerType(f'Invalid server type "{server.type}"')
+            self.protocol_element(account, server)
         data = tostring(autodiscover, 'utf-8')
         return data

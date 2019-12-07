@@ -3,6 +3,7 @@ from typing import List
 from xml.dom import minidom
 from xml.dom.minidom import Element
 
+from automx2.model import EGGS_DOMAIN
 from automx2.model import EXAMPLE_COM
 from automx2.model import EXAMPLE_NET
 from automx2.model import EXAMPLE_ORG
@@ -88,6 +89,11 @@ class AppleRoutes(TestCase):
     def test_domain_without_servers(self):
         with self.app:
             r = self.get_apple_config(f'a@{SERVERLESS_DOMAIN}')
+            self.assertEqual(400, r.status_code)
+
+    def test_invalid_server(self):
+        with self.app:
+            r = self.get_apple_config(f'a@{EGGS_DOMAIN}')
             self.assertEqual(400, r.status_code)
 
     def test_horus_imap(self):
