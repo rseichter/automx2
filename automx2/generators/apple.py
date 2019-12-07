@@ -60,9 +60,7 @@ def _subtree(parent: Element, key: str, value):
         _str_element(parent, key, value)
 
 
-def _payload(local_part, domain_part):
-    local = expand_placeholders(local_part, local_part, domain_part)
-    domain = expand_placeholders(domain_part, local_part, domain_part)
+def _payload(local, domain):
     address = f'{local}@{domain}'
     uuid = unique()
     inner = {
@@ -108,6 +106,16 @@ def _payload(local_part, domain_part):
     return inner, outer
 
 
+def _sanitise(data: dict, local: str, domain: str):
+    for key, value in data.items():
+        if value is None:
+            raise TypeError(f'Missing value for payload key "{key}"')
+        if isinstance(value, dict):
+            _sanitise(value, local, domain)
+        elif isinstance(value, str):
+            data[key] = expand_placeholders(value, local, domain)
+
+
 class AppleGenerator(ConfigGenerator):
     def client_config(self, local_part, domain_part: str) -> str:
         domain: Domain = Domain.query.filter_by(name=domain_part).first()
@@ -125,7 +133,9 @@ class AppleGenerator(ConfigGenerator):
             direction = TYPE_DIRECTION_MAP[server.type]
             inner[f'{direction}MailServerHostName'] = server.name
             inner[f'{direction}MailServerPortNumber'] = server.port
+            inner[f'{direction}MailServerUsername'] = server.user_name
         inner['PayloadDescription'] = f'Hosted by {provider.name}'
+        _sanitise(outer, local_part, domain_part)
         plist = Element('plist', attrib={'version': '1.0'})
         _subtree(plist, '', outer)
         data = tostring(plist, 'utf-8')

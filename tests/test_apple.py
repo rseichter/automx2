@@ -3,6 +3,8 @@ from typing import List
 from xml.dom import minidom
 from xml.dom.minidom import Element
 
+from automx2 import PLACEHOLDER_ADDRESS
+from automx2.generators.apple import _sanitise
 from automx2.model import EGGS_DOMAIN
 from automx2.model import EXAMPLE_COM
 from automx2.model import EXAMPLE_NET
@@ -122,6 +124,24 @@ class AppleRoutes(TestCase):
             self.assertEqual(1, len(smtp))
             self.assertEqual(SYS4_MAILSERVER, imap[0])
             self.assertEqual(SYS4_MAILSERVER, smtp[0])
+
+    def test_sanitise_dict(self):
+        with self.app:
+            d1 = {'b': PLACEHOLDER_ADDRESS}
+            d2 = {'a': d1}
+            _sanitise(d2, 'x', 'y')
+            self.assertEqual('x@y', d1['b'])
+
+    def test_sanitise_valid(self):
+        with self.app:
+            d = {'a': PLACEHOLDER_ADDRESS}
+            _sanitise(d, 'l', 'd')
+            self.assertEqual('l@d', d['a'])
+
+    def test_sanitise_missing(self):
+        with self.app:
+            with self.assertRaises(TypeError):
+                _sanitise({'a': None}, 'l', 'd')
 
 
 if __name__ == '__main__':

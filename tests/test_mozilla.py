@@ -3,7 +3,6 @@ from typing import List
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import fromstring
 
-from automx2 import InvalidServerType
 from automx2.model import BIGCORP_NAME
 from automx2.model import EGGS_DOMAIN
 from automx2.model import EXAMPLE_COM

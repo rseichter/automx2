@@ -2,6 +2,10 @@ import os
 import unittest
 
 from automx2 import InvalidEMailAddressError
+from automx2 import PLACEHOLDER_ADDRESS
+from automx2 import PLACEHOLDER_DOMAIN
+from automx2 import PLACEHOLDER_LOCALPART
+from automx2.util import expand_placeholders
 from automx2.util import from_environ
 from automx2.util import parse_email_address
 from automx2.util import unique
@@ -41,6 +45,13 @@ class UtilTests(unittest.TestCase):
         with self.assertRaises(InvalidEMailAddressError):
             # noinspection PyTypeChecker
             parse_email_address(None)
+
+    def test_expand(self):
+        local = 'a'
+        domain = 'b.c'
+        self.assertEqual('1a@b.c2', expand_placeholders(f'1{PLACEHOLDER_ADDRESS}2', local, domain))
+        self.assertEqual('3a4', expand_placeholders(f'3{PLACEHOLDER_LOCALPART}4', local, domain))
+        self.assertEqual('5b.c6', expand_placeholders(f'5{PLACEHOLDER_DOMAIN}6', local, domain))
 
 
 if __name__ == '__main__':
