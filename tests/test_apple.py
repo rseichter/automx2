@@ -13,7 +13,7 @@ from automx2.model import SERVERLESS_DOMAIN
 from automx2.model import SYS4_MAILSERVER
 from automx2.model import sample_server_names
 from automx2.server import APPLE_CONFIG_ROUTE
-from automx2.views import CONTENT_TYPE_XML
+from automx2.views.mobileconfig import CONTENT_TYPE_APPLE
 from tests.base import TestCase
 from tests.base import body
 
@@ -59,7 +59,7 @@ class AppleRoutes(TestCase):
         with self.app:
             r = self.get_apple_config('a@b.c')
             self.assertEqual(200, r.status_code)
-            self.assertEqual(CONTENT_TYPE_XML, r.mimetype)
+            self.assertEqual(CONTENT_TYPE_APPLE, r.mimetype)
             md = minidom.parseString(body(r))
             plist = md.getElementsByTagName('plist')
             self.assertIsNotNone(plist)
@@ -70,7 +70,7 @@ class AppleRoutes(TestCase):
         with self.app:
             r = self.get_apple_config(f'a@{EXAMPLE_COM}')
             self.assertEqual(200, r.status_code)
-            self.assertEqual(CONTENT_TYPE_XML, r.mimetype)
+            self.assertEqual(CONTENT_TYPE_APPLE, r.mimetype)
             md = minidom.parseString(body(r))
             self.assert_kv(md, 'OutgoingMailServerHostName', sample_server_names['smtp1'])
 

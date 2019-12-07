@@ -51,19 +51,22 @@ class BaseView(views.MethodView):
     def config_from_address(self, address: str) -> Response:
         local_part, domain_part = parse_email_address(address)
         data = self.config_response(local_part, domain_part)
-        return self.xml_response(data)
+        return self.response_with_type(data)
 
     def config_response(self, local_part, domain_part: str) -> str:
         raise NotImplementedError
+
+    @staticmethod
+    def response_type() -> str:
+        return CONTENT_TYPE_XML
+
+    def response_with_type(self, data: object) -> Response:
+        response: Response = make_response(data)
+        response.headers[CONTENT_TYPE] = self.response_type()
+        return response
 
     @staticmethod
     def is_xml_request() -> bool:
         if CONTENT_TYPE in request.headers:
             return request.headers[CONTENT_TYPE] == CONTENT_TYPE_XML
         return False
-
-    @staticmethod
-    def xml_response(data: object) -> Response:
-        response: Response = make_response(data)
-        response.headers[CONTENT_TYPE] = CONTENT_TYPE_XML
-        return response
