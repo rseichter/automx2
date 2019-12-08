@@ -72,7 +72,6 @@ def _payload(local, domain):
         'IncomingMailServerPortNumber': -1,
         'IncomingMailServerUseSSL': None,
         'IncomingMailServerUsername': None,
-        'IncomingPassword': None,
         'OutgoingMailServerAuthentication': 'EmailAuthPassword',
         'OutgoingMailServerHostName': None,
         'OutgoingMailServerPortNumber': -1,
@@ -145,7 +144,6 @@ class AppleGenerator(ConfigGenerator):
             inner[f'{direction}MailServerUsername'] = server.user_name
             inner[f'{direction}MailServerUseSSL'] = _use_ssl(server.socket_type)
         inner['EmailAccountName'] = realname
-        inner['IncomingPassword'] = password
         _sanitise(outer, local_part, domain_part)
         plist = Element('plist', attrib={'version': '1.0'})
         _subtree(plist, '', outer)
