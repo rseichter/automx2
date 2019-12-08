@@ -22,9 +22,9 @@ app.config['SQLALCHEMY_ECHO'] = config.db_echo()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.add_url_rule('/', view_func=SiteRoot.as_view('root'), methods=['GET'])
 app.add_url_rule('/initdb/', view_func=InitDatabase.as_view('initdb'), methods=['GET'])
-app.add_url_rule(APPLE_CONFIG_ROUTE, view_func=mobileconfig.AppleMailConfig.as_view('apple'), methods=['GET'])
-app.add_url_rule(MOZILLA_CONFIG_ROUTE, view_func=autoconfig.MozillaMailConfig.as_view('mozilla'), methods=['GET'])
-app.add_url_rule(MSOFT_CONFIG_ROUTE, view_func=autodiscover.OutlookMailConfig.as_view('msoft'), methods=['POST'])
+app.add_url_rule(APPLE_CONFIG_ROUTE, view_func=mobileconfig.AppleView.as_view('apple'), methods=['GET'])
+app.add_url_rule(MOZILLA_CONFIG_ROUTE, view_func=autoconfig.MozillaView.as_view('mozilla'), methods=['GET'])
+app.add_url_rule(MSOFT_CONFIG_ROUTE, view_func=autodiscover.OutlookView.as_view('msoft'), methods=['POST'])
 
 db.init_app(app)
 migrate = Migrate(app, db)

@@ -14,7 +14,7 @@ from automx2.views import MailConfig
 CONTENT_TYPE_APPLE = 'application/x-apple-aspen-config'
 
 
-class AppleMailConfig(MailConfig, MethodView):
+class AppleView(MailConfig, MethodView):
     @staticmethod
     def response_type() -> str:
         return CONTENT_TYPE_APPLE
@@ -23,13 +23,12 @@ class AppleMailConfig(MailConfig, MethodView):
         """GET request is expected to contain ?emailaddress=user@example.com"""
         address = request.args.get(EMAIL_MOZILLA, '')
         realname = request.args.get('name', 'Not Specified')
-        password = request.args.get('pw', '')
         if not address:
             message = f'Missing request argument "{EMAIL_MOZILLA}"'
             log.error(message)
             return message, 400
         try:
-            return self.config_from_address(address, realname, password)
+            return self.config_from_address(address, realname)
         except AutomxException as e:
             log.exception(e)
             abort(400)

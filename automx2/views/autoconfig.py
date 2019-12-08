@@ -12,7 +12,7 @@ from automx2.views import EMAIL_MOZILLA
 from automx2.views import MailConfig
 
 
-class MozillaMailConfig(MailConfig, MethodView):
+class MozillaView(MailConfig, MethodView):
     def get(self):
         """GET request is expected to contain ?emailaddress=user@example.com"""
         address = request.args.get(EMAIL_MOZILLA, '')

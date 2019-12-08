@@ -17,7 +17,7 @@ from automx2.views import EMAIL_OUTLOOK
 from automx2.views import MailConfig
 
 
-class OutlookMailConfig(MailConfig, MethodView):
+class OutlookView(MailConfig, MethodView):
     def post(self):
         """Outlook-style POST request is expected to contain XML."""
         if not self.is_xml_request():
