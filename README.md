@@ -3,7 +3,7 @@
 Successor to **automx**, designed to be easier to configure and use.
 Written by Ralph Seichter for [sys4 AG](https://sys4.de/).
 
-_This software is considered to be in Alpha state, so make sure to use protection._
+_This software is considered to be in Beta state, so make sure to use protection._
 
 ## Installing
 

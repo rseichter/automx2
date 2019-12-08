@@ -15,13 +15,17 @@ setuptools.setup(
     long_description=readme,
     long_description_content_type='text/markdown',
     url='https://automx.org/',
+    project_urls={
+        'Source': 'https://gitlab.com/automx/automx2',
+        'Tracker': 'https://gitlab.com/automx/automx2/issues',
+    },
     packages=setuptools.find_packages(),
     data_files=[
         ('scripts', ['contrib/flask.sh']),
         ('scripts', ['contrib/setupvenv.sh']),
     ],
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',
