@@ -6,6 +6,7 @@ from xml.etree.ElementTree import SubElement
 from xml.etree.ElementTree import tostring
 
 from automx2 import DomainNotFound
+from automx2 import InvalidAuthenticationType
 from automx2 import InvalidServerType
 from automx2 import NoProviderForDomain
 from automx2 import NoServersForDomain
@@ -13,9 +14,15 @@ from automx2.generators import ConfigGenerator
 from automx2.generators import branded_id
 from automx2.model import Domain
 from automx2.model import Provider
+from automx2.model import Server
 from automx2.util import expand_placeholders
 from automx2.util import unique
 
+AUTH_MAP = {
+    'none': 'EmailAuthNone',
+    'NTLM': 'EmailAuthNTLM',
+    'plain': 'EmailAuthPassword',
+}
 TYPE_DIRECTION_MAP = {
     'imap': 'Incoming',
     'smtp': 'Outgoing',
@@ -118,10 +125,17 @@ def _sanitise(data: dict, local: str, domain: str):
             data[key] = new
 
 
-def _use_ssl(authentication: str) -> bool:
-    if 'SSL' == authentication or 'STARTTLS' == authentication:
+def _map_socket_type(server: Server) -> bool:
+    """Map socket type to True (use SSL) or False (do not use SSL)."""
+    if 'SSL' == server.socket_type or 'STARTTLS' == server.socket_type:
         return True
     return False
+
+
+def _map_authentication(server: Server) -> str:
+    if server.authentication in AUTH_MAP:
+        return AUTH_MAP[server.authentication]
+    raise InvalidAuthenticationType(f'Invalid authentication type "{server.authentication}"')
 
 
 class AppleGenerator(ConfigGenerator):
@@ -142,7 +156,8 @@ class AppleGenerator(ConfigGenerator):
             inner[f'{direction}MailServerHostName'] = server.name
             inner[f'{direction}MailServerPortNumber'] = server.port
             inner[f'{direction}MailServerUsername'] = server.user_name
-            inner[f'{direction}MailServerUseSSL'] = _use_ssl(server.socket_type)
+            inner[f'{direction}MailServerAuthentication'] = _map_authentication(server)
+            inner[f'{direction}MailServerUseSSL'] = _map_socket_type(server)
         inner['EmailAccountName'] = realname
         _sanitise(outer, local_part, domain_part)
         plist = Element('plist', attrib={'version': '1.0'})

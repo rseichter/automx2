@@ -44,6 +44,11 @@ class InvalidServerType(AutomxException):
     pass
 
 
+class InvalidAuthenticationType(AutomxException):
+    """Database contains an invalid authentication type."""
+    pass
+
+
 log = logging.getLogger(__name__)
 _handler = logging.StreamHandler()
 _handler.setFormatter(logging.Formatter())

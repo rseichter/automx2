@@ -3,11 +3,8 @@ from typing import List
 from xml.dom import minidom
 from xml.dom.minidom import Element
 
+from automx2 import InvalidAuthenticationType
 from automx2 import PLACEHOLDER_ADDRESS
-# noinspection PyProtectedMember
-from automx2.generators.apple import _sanitise
-# noinspection PyProtectedMember
-from automx2.generators.apple import _use_ssl
 from automx2.model import EGGS_DOMAIN
 from automx2.model import EXAMPLE_COM
 from automx2.model import EXAMPLE_NET
@@ -17,6 +14,7 @@ from automx2.model import HORUS_SMTP
 from automx2.model import ORPHAN_DOMAIN
 from automx2.model import SERVERLESS_DOMAIN
 from automx2.model import SYS4_MAILSERVER
+from automx2.model import Server
 from automx2.model import sample_server_names
 from automx2.server import APPLE_CONFIG_ROUTE
 from automx2.views.mobileconfig import CONTENT_TYPE_APPLE
@@ -129,6 +127,7 @@ class AppleRoutes(TestCase):
             self.assertEqual(SYS4_MAILSERVER, smtp[0])
 
     def test_sanitise_dict(self):
+        from automx2.generators.apple import _sanitise
         with self.app:
             d1 = {'b': PLACEHOLDER_ADDRESS}
             d2 = {'a': d1}
@@ -136,19 +135,45 @@ class AppleRoutes(TestCase):
             self.assertEqual('x@y', d1['b'])
 
     def test_sanitise_valid(self):
+        from automx2.generators.apple import _sanitise
         with self.app:
             d = {'a': PLACEHOLDER_ADDRESS}
             _sanitise(d, 'l', 'd')
             self.assertEqual('l@d', d['a'])
 
     def test_sanitise_missing(self):
+        from automx2.generators.apple import _sanitise
         with self.app:
             with self.assertRaises(TypeError):
                 _sanitise({'a': None}, 'l', 'd')
 
-    def test_use_ssl(self):
+    def test_map_bad_auth(self):
+        from automx2.generators.apple import _map_authentication
         with self.app:
-            self.assertFalse(_use_ssl('nah'))
+            s = Server(authentication='BAD')
+            with self.assertRaises(InvalidAuthenticationType):
+                _map_authentication(s)
+
+    def test_map_valid_auth(self):
+        from automx2.generators.apple import _map_authentication, AUTH_MAP
+        with self.app:
+            for k, v in AUTH_MAP.items():
+                s = Server(authentication=k)
+                self.assertEqual(AUTH_MAP[k], _map_authentication(s))
+
+    def test_map_bad_socktype(self):
+        from automx2.generators.apple import _map_socket_type
+        with self.app:
+            s = Server(socket_type='BAD')
+            self.assertFalse(_map_socket_type(s))
+
+    def test_map_valid_socktype(self):
+        from automx2.generators.apple import _map_socket_type
+        with self.app:
+            s1 = Server(socket_type='SSL')
+            s2 = Server(socket_type='STARTTLS')
+            self.assertTrue(_map_socket_type(s1))
+            self.assertTrue(_map_socket_type(s2))
 
 
 if __name__ == '__main__':
