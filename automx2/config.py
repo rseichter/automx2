@@ -13,6 +13,7 @@ from automx2.util import from_environ
 CONF_DB_ECHO = 'db_echo'
 CONF_DB_URI = 'db_uri'
 CONF_LOGLEVEL = 'loglevel'
+CONF_PROXY_COUNT = 'proxy_count'
 
 # Default values will be overridden by user-defined values.
 _DEFAULT_CONF = {
@@ -20,6 +21,7 @@ _DEFAULT_CONF = {
         CONF_DB_ECHO: 'no',
         CONF_DB_URI: 'sqlite:///:memory:',
         CONF_LOGLEVEL: 'WARNING',
+        CONF_PROXY_COUNT: 0,
     }
 }
 
@@ -55,6 +57,11 @@ class Config:
         log.debug(f'Config.get_bool: {option} = {value}')
         return value
 
+    def get_int(self, option: str, fallback=None, section: str = IDENTIFIER) -> int:
+        value = self._parser.getint(section, option, fallback=fallback)
+        log.debug(f'Config.get_int: {option} = {value}')
+        return value
+
     def db_echo(self) -> bool:
         return self.get_bool(CONF_DB_ECHO)
 
@@ -63,6 +70,9 @@ class Config:
 
     def loglevel(self) -> str:
         return self.get(CONF_LOGLEVEL)
+
+    def proxy_count(self) -> int:
+        return self.get_int(CONF_PROXY_COUNT)
 
     def seed_filter_sections(self, prefix: str) -> List[dict]:
         sections = []
