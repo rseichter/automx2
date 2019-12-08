@@ -7,7 +7,7 @@ Written by Ralph Seichter for sys4 AG.
 import logging
 
 IDENTIFIER = 'automx2'
-VERSION = '0.0.1.dev13'
+VERSION = '2019.0.dev1'
 
 PLACEHOLDER_ADDRESS = r'%EMAILADDRESS%'
 PLACEHOLDER_DOMAIN = r'%EMAILDOMAIN%'
