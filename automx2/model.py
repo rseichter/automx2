@@ -26,6 +26,7 @@ from automx2 import log
 from automx2.config import config
 from automx2.util import unique
 
+AUTOMX_DOMAIN = 'automx.org'
 EGGS_NAME = 'Ham & Eggs'
 EGGS_SHORT = 'H+E'
 EGGS_DOMAIN = 'ham-n-eggs.tld'
@@ -161,6 +162,8 @@ def _populate_from_samples():
     i += 1
     d3 = Domain(id=i, name=EXAMPLE_ORG, provider=bigcorp)
     i += 1
+    d_automx = Domain(id=i, name=AUTOMX_DOMAIN, provider=sys4)
+    i += 1
     d1_horus = Domain(id=i, name='horus-it.de', provider=horus)
     i += 1
     d2_horus = Domain(id=i, name='horus-it.com', provider=horus)
@@ -174,7 +177,7 @@ def _populate_from_samples():
     serverless_domain = Domain(id=i, name=SERVERLESS_DOMAIN, provider=other)
     horus_domains = [d1_horus, d2_horus]
     sys4_domains = [d1_sys4]
-    db.session.add_all([d1, d2, d3])
+    db.session.add_all([d1, d2, d3, d_automx])
     db.session.add_all(horus_domains)
     db.session.add_all(sys4_domains)
     db.session.add_all([eggs_domain, providerless_domain, serverless_domain])
@@ -198,4 +201,8 @@ def _populate_from_samples():
     s8 = Server(id=i, type='smtp', port=587, name=SYS4_MAILSERVER, domains=sys4_domains)
     i += 1
     s9 = Server(id=i, type='INVALID', port=123, name=f'{unique()}.{EGGS_DOMAIN}', domains=[eggs_domain])
-    db.session.add_all([s1, s2, s3, s4, s5, s6, s7, s8, s9])
+    i += 1
+    s10 = Server(id=i, type='imap', port=993, socket_type='SSL', name=f'imap.{AUTOMX_DOMAIN}', domains=[d_automx])
+    i += 1
+    s11 = Server(id=i, type='smtp', port=587, name=f'smtp.{AUTOMX_DOMAIN}', domains=[d_automx])
+    db.session.add_all([s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11])
