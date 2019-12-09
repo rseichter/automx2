@@ -1,11 +1,13 @@
 # automx2
 
-Successor to **automx**, designed to be easier to configure and use.
-Written by Ralph Seichter for [sys4 AG](https://sys4.de/).
+Successor to _automx_, designed to be easier to configure and use.
+Written by [Ralph Seichter](https://gitlab.com/rseichter) for [sys4 AG](https://sys4.de/).
+The [project home](https://gitlab.com/automx/automx2) resides on GitLab and is
+[mirrored](https://github.com/rseichter/automx2) to GitHub.
 
 _This software is considered to be in Beta state, so make sure to use protection._
 
-## Installing from scratch
+# Installing from scratch
 
 **Do not execute the manual installation procedure as root!** The application does not require super user
 privileges. It is recommended that you create a user account specifically for automx2, but other unprivileged users
@@ -13,7 +15,7 @@ will do as well.
 
 1. Check the output of `python3 --version` on your machine to verify that the command executes Python 3.7 or higher.
 If you see version 3.6 or lower, you'll need to either change the active Python version for the shell session or edit
-`setupvenv.sh` after downloading the script in step #3).
+`setupvenv.sh` after downloading the script in step #3.
 
 2. Prepare installation directory.
 ```shell
@@ -33,13 +35,13 @@ chmod u+x setupvenv.sh
 ```
 
 5. Activate virtual environment and install the latest automx2 release from PyPI. Make sure to pick the correct
-activation for your shell (see venv/bin directory). This example uses BASH.
+activation for your shell from the `venv/bin` directory. This is an example for BASH.
 ```shell
 . venv/bin/activate
 pip install automx2
 ```
 
-## Updating
+# Updating
 
 An existing installation can be updated like this:
 ```shell
@@ -47,7 +49,7 @@ An existing installation can be updated like this:
 pip install -U automx2
 ```
 
-## Configuring
+# Configuring
 
 When run by user `alice`, automx2 attempts to load configuration data from the following files, in the specified order,
 stopping at the first match:
@@ -64,14 +66,14 @@ The file format is an [INI variant](https://docs.python.org/3.7/library/configpa
 An example configuration file is available [here](contrib/automx2-sample.conf). A minimal configuration file for
 production use only needs to contain one `db_uri` entry in the defaults section, pointing to a non-transient database.
 
-## Database support
+# Database support
 
 This application uses the excellent SQLAlchemy toolkit which supports various SQL
 [dialects](https://docs.sqlalchemy.org/dialects/). While you probably already have SQLite support available on your
 local machine, you may need to install additional Python packages for PostgreSQL, MySQL, etc. Detailed instructions
 to support a particular database dialect are out of scope for this document, but there are numerous guides available.
 
-## Launching
+# Launching
 
 Once configured, you can launch the configured application from a shell on UNIX-like systems:
 
@@ -82,7 +84,7 @@ contrib/flask.sh run
 
 See [flask.sh](contrib/flask.sh) for a descriptions of additional parameter you can use, like hostname and port.
 
-## Web server integration
+# Web server integration
 
 In a production environment, it is recommended that you run automx2 behind a web server like Apache or NGINX, with
 your web server acting as a reverse proxy, potentially also providing HTTPS support. If you do use a proxy, add
