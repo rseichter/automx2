@@ -50,7 +50,7 @@ An existing installation can be updated like this:
 pip install -U automx2
 ```
 
-# Configuring
+# Configuration file
 
 When run by user `alice`, automx2 attempts to load configuration data from the following files, in the specified order,
 stopping at the first match:
@@ -68,12 +68,24 @@ An example configuration file is available
 [here](https://gitlab.com/automx/automx2/blob/master/contrib/automx2-sample.conf). A minimal configuration file only
 needs to contain one `db_uri` entry in the defaults section, pointing to a non-transient database.
 
-# Database support
+# Configuring the database
 
 This application uses the excellent SQLAlchemy toolkit which supports various SQL
 [dialects](https://docs.sqlalchemy.org/dialects/). While you probably already have SQLite support available on your
 local machine, you may need to install additional Python packages for PostgreSQL, MySQL, etc. Detailed instructions
 to support a particular database dialect are out of scope for this document, but there are numerous guides available.
+
+In this early stage of development, the user is required to manually add database entries, but I am planning to change
+this in future versions. The database schema and some example data are available
+[here](https://gitlab.com/automx/automx2/blob/master/contrib/sqlite-sample.sql).
+
+I have also included a [convenience script](https://gitlab.com/automx/automx2/blob/master/contrib/sqlite-generate.sh).
+Change the script's user-configurable section to reflect your domain and server names, then run the script to generate
+the necessary SQL statements. You can pipe the output into `sqlite3`:
+
+```shell
+contrib/sqlite-generate.sh | sqlite3 /path/to/your/db.sqlite
+```
 
 # Launching
 
