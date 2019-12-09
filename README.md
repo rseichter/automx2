@@ -21,7 +21,7 @@ mkdir -p /path/to/automx2
 cd /path/to/automx2
 ```
 
-3. Download bootstrap script.
+3. Download virtual environment [setup script](contrib/setupvenv.sh).
 ```shell
 wget -O setupvenv.sh 'https://gitlab.com/automx/automx2/raw/master/contrib/setupvenv.sh?inline=false'
 chmod u+x setupvenv.sh
