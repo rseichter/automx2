@@ -1,4 +1,4 @@
-# automx2
+# automx2: Email client configuration made easy
 
 Successor to _automx_, designed to be easier to configure and use.
 Written by [Ralph Seichter](https://gitlab.com/rseichter) for [sys4 AG](https://sys4.de/).
@@ -23,7 +23,7 @@ mkdir -p /path/to/automx2
 cd /path/to/automx2
 ```
 
-3.  Download virtual environment [setup script](https://gitlab.com/automx/automx2/contrib/setupvenv.sh).
+3.  Download virtual environment [setup script](https://gitlab.com/automx/automx2/blob/master/contrib/setupvenv.sh).
 ```shell
 wget -O setupvenv.sh 'https://gitlab.com/automx/automx2/raw/master/contrib/setupvenv.sh?inline=false'
 chmod u+x setupvenv.sh
@@ -64,9 +64,9 @@ While automx2 can be launched without a configuration file, the internal default
 particular because an in-memory sqlite database will be used, meaning all data is lost once the application terminates.
 
 The file format is an [INI variant](https://docs.python.org/3.7/library/configparser.html#supported-ini-file-structure).
-An example configuration file is available [here](https://gitlab.com/automx/automx2/contrib/automx2-sample.conf).
-A minimal configuration file for production use only needs to contain one `db_uri` entry in the defaults section,
-pointing to a non-transient database.
+An example configuration file is available
+[here](https://gitlab.com/automx/automx2/blob/master/contrib/automx2-sample.conf). A minimal configuration file only
+needs to contain one `db_uri` entry in the defaults section, pointing to a non-transient database.
 
 # Database support
 
@@ -84,8 +84,8 @@ cd /path/to/automx2
 contrib/flask.sh run
 ```
 
-See [flask.sh](https://gitlab.com/automx/automx2/contrib/flask.sh) for a descriptions of additional parameter you
-can use, like hostname and port.
+See [flask.sh](https://gitlab.com/automx/automx2/blob/master/contrib/flask.sh) for a descriptions of additional
+parameter you can use, like hostname and port.
 
 # Web server integration
 
@@ -95,4 +95,4 @@ your web server acting as a reverse proxy, potentially also providing HTTPS supp
 without this setting, only your proxy's IP address will be reported as a request source.
 
 1.  Apache: TODO
-2.  NGINX: [Example configuration snippet](https://gitlab.com/automx/automx2/contrib/nginx-sample.conf)
+2.  NGINX: [Example configuration](https://gitlab.com/automx/automx2/blob/master/contrib/nginx-sample.conf)
