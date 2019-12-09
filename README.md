@@ -5,9 +5,47 @@ Written by Ralph Seichter for [sys4 AG](https://sys4.de/).
 
 _This software is considered to be in Beta state, so make sure to use protection._
 
-## Installing
+## Installing from scratch
 
-TODO
+**Do not execute the manual installation procedure as root!** The application does not require super user
+privileges. It is recommended that you create a user account specifically for automx2, but other unprivileged users
+will do as well.
+
+1. Check the output of `python3 --version` on your machine to verify that the command executes Python 3.7 or higher.
+If you see version 3.6 or lower, you'll need to either change the active Python version for the shell session or edit
+`setupvenv.sh` after downloading the script in step #3).
+
+2. Prepare installation directory.
+```shell
+mkdir -p /path/to/automx2
+cd /path/to/automx2
+```
+
+2. Download bootstrap script.
+```shell
+wget -O setupvenv.sh 'https://gitlab.com/automx/automx2/raw/master/contrib/setupvenv.sh?inline=false'
+chmod u+x setupvenv.sh
+```
+
+2. Execute setup script. It creates a Python virtual environment `venv` in the current directory.
+```shell
+./setupvenv.sh
+```
+
+2. Activate virtual environment and install the latest automx2 release from PyPI. Make sure to pick the correct
+activation for your shell (see venv/bin directory). This example uses BASH.
+```shell
+. venv/bin/activate
+pip install automx2
+```
+
+## Updating
+
+An existing installation can be updated like this:
+```shell
+. venv/bin/activate
+pip install -U automx2
+```
 
 ## Configuring
 
