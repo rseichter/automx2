@@ -21,18 +21,18 @@ mkdir -p /path/to/automx2
 cd /path/to/automx2
 ```
 
-2. Download bootstrap script.
+3. Download bootstrap script.
 ```shell
 wget -O setupvenv.sh 'https://gitlab.com/automx/automx2/raw/master/contrib/setupvenv.sh?inline=false'
 chmod u+x setupvenv.sh
 ```
 
-2. Execute setup script. It creates a Python virtual environment `venv` in the current directory.
+4. Execute setup script. It creates a Python virtual environment `venv` in the current directory.
 ```shell
 ./setupvenv.sh
 ```
 
-2. Activate virtual environment and install the latest automx2 release from PyPI. Make sure to pick the correct
+5. Activate virtual environment and install the latest automx2 release from PyPI. Make sure to pick the correct
 activation for your shell (see venv/bin directory). This example uses BASH.
 ```shell
 . venv/bin/activate
