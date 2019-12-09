@@ -23,6 +23,7 @@ from flask.views import MethodView
 from sqlalchemy.exc import OperationalError
 
 from automx2 import log
+from automx2.model import AUTOMX_DOMAIN
 from automx2.model import Provider
 from automx2.views import EMAIL_MOZILLA
 
@@ -38,6 +39,6 @@ class SiteRoot(MethodView):
             log.error(e)
             url = url_for('initdb')
             return f'Operational error. Did you remember to <a href="{url}">initialise</a> the database?'
-        address = 'abc@example.com'
+        address = f'abc@{AUTOMX_DOMAIN}'
         url = f'{url_for("mozilla")}?{EMAIL_MOZILLA}={address}'
-        return f'Show Thunderbird <a href="{url}">XML configuration</a> for {address}.'
+        return f'Show Thunderbird-style <a href="{url}">XML configuration</a> for {address}.'
