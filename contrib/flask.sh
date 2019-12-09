@@ -11,11 +11,10 @@
 # Launches application for http://foo.example.com:1234/
 
 set -e
-source venv/bin/activate
+. venv/bin/activate
 
 # User configurable section -- START
 #export AUTOMX2_CONF='/path/to/your/automx2.conf'
-export AUTOMX2_CONF='local/test.conf'
 export FLASK_ENV='development'
 #export FLASK_ENV='production'
 # User configurable section -- END
