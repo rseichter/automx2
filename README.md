@@ -34,7 +34,8 @@ chmod u+x setupvenv.sh
 ./setupvenv.sh
 ```
 
-5. Activate virtual environment and install the latest automx2 release from PyPI. Make sure to pick the correct
+5. Activate virtual environment and install the latest automx2 release from
+[PyPI](https://pypi.org/project/automx2/). Make sure to pick the correct
 activation for your shell from the `venv/bin` directory. This is an example for BASH.
 ```shell
 . venv/bin/activate
