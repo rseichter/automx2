@@ -1,6 +1,22 @@
 """
-Configuration generator for Outlook et al.
-See https://support.microsoft.com/en-us/help/3211279/outlook-2016-implementation-of-autodiscover
+Copyright © 2019 Ralph Seichter
+
+Graciously sponsored by sys4 AG <https://sys4.de/>
+
+This file is part of automx2.
+
+automx2 is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+automx2 is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import SubElement
@@ -20,39 +36,13 @@ TYPE_MAP = {
     'smtp': 'SMTP',
 }
 
-"""
-<Autodiscover xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006">
-    <Response xmlns="http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a">
-        <Account>
-            <AccountType>email</AccountType>
-            <Action>settings</Action>
-            <Protocol>
-                <Type>IMAP</Type>
-                <Server>mailbox.mein-edv-blog.de</Server>
-                <Port>993</Port>
-                <LoginName><? echo $kennung ?></LoginName>
-                <DomainRequired>off</DomainRequired>
-                <SPA>off</SPA>
-                <SSL>on</SSL>
-                <AuthRequired>on</AuthRequired>
-            </Protocol>
-            <Protocol>
-                <Type>SMTP</Type>
-                <Server>relay.mein-edv-blog.de</Server>
-                <Port>465</Port>
-                <LoginName><? echo $kennung ?></LoginName>
-                <DomainRequired>off</DomainRequired>
-                <SPA>off</SPA>
-                <SSL>on</SSL>
-                <AuthRequired>on</AuthRequired>
-            </Protocol>
-        </Account>
-    </Response>
-</Autodiscover>
-"""
-
 
 class OutlookGenerator(ConfigGenerator):
+    """Configuration generator for Outlook et al.
+
+    See https://support.microsoft.com/en-us/help/3211279/outlook-2016-implementation-of-autodiscover
+    """
+
     @staticmethod
     def on_off(condition: bool) -> str:
         if condition:
