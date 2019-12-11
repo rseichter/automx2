@@ -20,7 +20,6 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
 from configparser import ConfigParser
 from pathlib import Path
-from typing import List
 
 from automx2 import IDENTIFIER
 from automx2 import log
@@ -92,43 +91,6 @@ class Config:
 
     def proxy_count(self) -> int:
         return self.get_int(CONF_PROXY_COUNT)
-
-    def seed_filter_sections(self, prefix: str) -> List[dict]:
-        sections = []
-        section: str
-        for section in self._parser.sections():
-            if section.startswith(prefix):
-                sections.append({
-                    'section_name': section,
-                    'id': section[len(prefix):],
-                })
-        return sections
-
-    def seed_domains(self) -> List[dict]:
-        sections = self.seed_filter_sections('seed.domain.')
-        d: dict
-        for d in sections:
-            d['name'] = self.get('name', section=d['section_name'])
-            d['provider'] = self.get('provider', section=d['section_name'])
-            d['servers'] = self.get('servers', section=d['section_name'])
-        return sections
-
-    def seed_providers(self) -> List[dict]:
-        sections = self.seed_filter_sections('seed.provider.')
-        d: dict
-        for d in sections:
-            d['name'] = self.get('name', section=d['section_name'])
-            d['short_name'] = self.get('short_name', section=d['section_name'])
-        return sections
-
-    def seed_servers(self) -> List[dict]:
-        sections = self.seed_filter_sections('seed.server.')
-        d: dict
-        for d in sections:
-            d['name'] = self.get('name', section=d['section_name'])
-            d['port'] = self.get('port', section=d['section_name'])
-            d['type'] = self.get('type', section=d['section_name'])
-        return sections
 
 
 config = Config()

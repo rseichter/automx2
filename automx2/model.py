@@ -22,8 +22,6 @@ from flask_sqlalchemy import SQLAlchemy
 
 from automx2 import PLACEHOLDER_ADDRESS
 from automx2 import PLACEHOLDER_LOCALPART
-from automx2 import log
-from automx2.config import config
 from automx2.util import unique
 
 AUTOMX_DOMAIN = 'automx.org'
@@ -70,11 +68,6 @@ class Provider(db.Model):
     def __repr__(self) -> str:
         return f'<Provider id={self.id} name={self.short_name}>'
 
-    @classmethod
-    def from_seed(cls, seed: dict):
-        provider = cls(id=seed['id'], name=seed['name'], short_name=seed['short_name'])
-        return provider
-
 
 class Server(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
@@ -90,11 +83,6 @@ class Server(db.Model):
     def __repr__(self) -> str:
         return f'<Server id={self.id} type={self.type} name={self.name}>'
 
-    @classmethod
-    def from_seed(cls, seed: dict):
-        provider = cls(id=seed['id'], name=seed['name'], port=seed['port'], type=seed['type'])
-        return provider
-
 
 class Domain(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
@@ -104,45 +92,10 @@ class Domain(db.Model):
     def __repr__(self) -> str:
         return f'<Domain id={self.id} name={self.name}>'
 
-    @classmethod
-    def from_seed(cls, seed: dict, servers_dict: dict):
-        domain = cls(id=seed['id'], provider_id=seed['provider'], name=seed['name'])
-        if 'servers' in seed:
-            servers = []
-            for key in seed['servers'].split():
-                if key in servers_dict:
-                    servers.append(servers_dict[key])
-                else:
-                    log.error(f"Unknown server '{key}' in config section {seed['section_name']}")
-            if servers:
-                domain.servers = servers
-        return domain
-
-
-def populate_db():
-    """Populate the database with example data."""
-    _populate_from_config()
-    _populate_from_samples()
-
-
-def _populate_from_config():  # pragma: no cover
-    """Populate based on config file sections (seed.xyz)."""
-    servers = {}
-    for seed in config.seed_servers():
-        server = Server.from_seed(seed)
-        db.session.add(server)
-        servers[server.id] = server
-    for seed in config.seed_providers():
-        provider = Provider.from_seed(seed)
-        db.session.add(provider)
-    for seed in config.seed_domains():
-        domain = Domain.from_seed(seed, servers)
-        db.session.add(domain)
-
 
 # noinspection DuplicatedCode
-def _populate_from_samples():
-    """Populate with some fixed samples."""
+def populate_db():
+    """Populate the database some fixed samples."""
     i = 1000
     bigcorp = Provider(id=i, name=BIGCORP_NAME, short_name=BIGCORP_SHORT)
     i += 1
