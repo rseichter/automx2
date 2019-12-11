@@ -1,0 +1,55 @@
+= automx2: Email client configuration made easy
+
+automx2 makes configuring a mail account easy. It unites standards for
+automated mailbox configuration standards from Apple
+(https://support.apple.com/de-de/guide/profile-manager/pmdbd71ebc9/mac[mobileconfig]),
+Microsoft
+(https://docs.microsoft.com/de-de/exchange/architecture/client-access/autodiscover?view=exchserver-2019[autodiscover])
+and Mozilla
+(https://developer.mozilla.org/de/docs/Mozilla/Thunderbird/Autokonfiguration[autoconfig])
+in one tool.
+
+[NOTE]
+====
+automx2 is successor to automx. It has been designed to be easier to setup,
+easier to configure and easier use.
+====
+
+
+== How does automx2 work?
+
+automx2 is a webservice. It sits behind a web server and waits for
+configuration requests. When a mail client requests configuration it contacts
+the web server. The web server then acts as a proxy and forwards all requests
+to the web service aka automx2.
+
+[ditaa,howitworks.png,png]
+....
++------------+     +------------+     +------------+
+|            |     |            |     |            |
+| mailclient |<--->| webserver  |<--->| webservice |
+|            |     |            |     |            |
++------------+     +------------+     +------------+
+....
+
+include::MAILBOXCONFIGURATION.asciidoc[]
+
+include::INSTALLATION.asciidoc[]
+
+
+include::CONFIGURATION.asciidoc[]
+
+
+== About automx2
+
+The project resides as https://gitlab.com/automx/automx2[automx/automx2] on
+GitLab. Please use the projects https://gitlab.com/automx/automx2/issues[issue
+tracker] if you find bugs. To discuss usage and other topics join us on the
+https://mail.sys4.de/cgi-bin/mailman/listinfo/automx-users[automx-users]
+mailing list.
+
+automx2 was written by https://gitlab.com/rseichter[Ralph Seichter] for
+https://sys4.de[sys4 AG]. It has 100% test coverage and is mirrored to
+https://github.com/rseichter/automx2[rseichter/automx2] on GitHub.
+
+

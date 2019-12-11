@@ -1,0 +1,51 @@
+== How does Automated Mailbox Configuration work?
+
+There are three different standards today – <<autoconfig>>, <<autodiscover>>
+and <<mobileconfig>> – that specify how a mail account client can be configured
+automatically.
+
+All standards have in common that the mail client seeking configuration sends a
+request, which includes at least the users mail address, to a configuration
+service. The service uses the mail address to lookup appropriate data and
+returns it to the client. All standards differ in how the request must be
+formed and what they will return as response.
+
+
+[[autoconfig]]
+=== autoconfig
+
+A mail client that follows Mozilla's standard for mail account
+autoconfiguration searches the following list of URIs in order specified:
+
+----
+https://autoconfig.thunderbird.net/v1.1/$DOMAINPART        # <1>
+https://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=$MAILADDRESS    # <2>
+https://$DOMAINPART/.well-known/autoconfig/mail/config-v1.1.xml
+http://autoconfig.thunderbird.net/v1.1/$DOMAINPART
+http://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=$MAILADDRESS
+http://$DOMAINPART/.well-known/autoconfig/mail/config-v1.1.xml
+----
+
+<1> The `$DOMAINPART` variable represents the users mail addresses domainpart.
+<2> The `$MAILADDRESS` variable represents the users mail address.
+
+
+[[autodiscover]]
+=== autodiscover
+
+A mail client that follows Microsofts's standard for mail account
+autoconfiguration searches the following list of URIs in order specified:
+
+----
+https://$DOMAINPART/autodiscover/autodiscover.xml       # <1>
+https://autodiscover.$DOMAINPART/autodiscover/autodiscover.xml
+http://autodiscover.$DOMAINPART/autodiscover/autodiscover.xml
+dig SRV _autodiscover._tcp.$DOMAINPART
+----
+
+<1> The `$DOMAINPART` variable represents the users mail addresses domainpart.
+
+
+[[mobileconfig]]
+=== mobileconfig
+

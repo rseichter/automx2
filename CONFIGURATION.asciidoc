@@ -1,0 +1,5 @@
+== Configuring automx2
+
+automx2 uses an INI-style configuration syntax. Read
+
+
