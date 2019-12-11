@@ -7,10 +7,8 @@
 # Run all unittests without collecting coverage data.
 #
 # (2) unittest.sh coverage
-# Run all unittests and collect coverage data.
-#
-# (3) unittest.sh report
-# Generate coverage report based on data collected with (2).
+# Run all unittests and collect coverage data. This will also
+# generate a HTML-based coverage report.
 
 set -e
 
@@ -22,12 +20,8 @@ if [ ! -f ${AUTOMX2_CONF} ]; then
 fi
 
 function usage() {
-	echo "Usage: $(basename $0) [coverage|report]" >&2
+	echo "Usage: $(basename $0) [coverage]" >&2
 	exit 1
-}
-
-function run_coverage() {
-	coverage "$@" --rcfile=tests/coverage.rc
 }
 
 function run_tests() {
@@ -36,20 +30,17 @@ function run_tests() {
 	PYTHONPATH=".:${PYTHONPATH}" $cmd -m unittest discover tests/ "$@"
 }
 
+function run_coverage() {
+	run_tests 'coverage run --source automx2'
+	coverage html --rcfile=tests/coverage.rc
+}
+
 if [ $# -gt 0 ]; then
-	arg="$1"
-	shift
-	case "$arg" in
-		coverage)
-			run_tests 'coverage run --source automx2 --rcfile=tests/coverage.rc'
-			;;
-		report)
-			run_coverage html
-			;;
-		*)
-			usage
-			;;
-	esac
+	if [ "$1" = "coverage" ]; then
+		run_coverage
+	else
+		usage
+	fi
 else
 	run_tests python
 fi
