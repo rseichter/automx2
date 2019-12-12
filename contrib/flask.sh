@@ -15,8 +15,7 @@ set -e
 
 # User configurable section -- START
 #export AUTOMX2_CONF='/path/to/your/automx2.conf'
-export FLASK_ENV='development'
-#export FLASK_ENV='production'
+export FLASK_ENV='production'
 # User configurable section -- END
 
 export FLASK_APP='automx2.server:app'
