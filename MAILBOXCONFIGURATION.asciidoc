@@ -1,22 +1,50 @@
 == How does Automated Mailbox Configuration work?
 
-There are three different standards today – <<autoconfig>>, <<autodiscover>>
-and <<mobileconfig>> – that specify how a mail account client can be configured
-automatically.
+Modern mail clients can look for configuration data when a user begins to
+create a new account. They will either send the users mail address to a service
+and ask the service to reply with configuration that suits the users profile or
+they will query the DNS system for advice.
 
-All standards have in common that the mail client seeking configuration sends a
-request, which includes at least the users mail address, to a configuration
-service. The service uses the mail address to lookup appropriate data and
-returns it to the client. All standards differ in how the request must be
-formed and what they will return as response.
+Using a specialized mail account configuration service allows for individualized
+setups. It also allows to enforce a specific policy, which for example
+configures the mail client to use a specific authentication mechanism. Quering
+the DNS for mail service locations allows for generic instructions, but it
+doesn't give as much control over settings as a specialized service like automx2
+will do.
 
+As it stands to today there are four methods that help configuring a mail
+account. Three of them – <<autoconfig>>, <<autodiscover>> and <<mobileconfig>> –
+have been developed by vendors to cover their products specific needs. The
+fourth is an RFC standard specifying the aformentioned more general <<srv>>
+method.
+
+The vendor specific methods have in common that the mail client seeking
+configuration needs to send a request, which includes at least the users mail
+address, to a configuration service. The service will use the mail address to
+lookup configuration data and will return that data as response to the client.
+Format – XML response or file – and complexity differ depending on the method.
+
+[NOTE]
+====
+automx2 implements everything to configure a mailbox account. It does not
+implement functionality to e.g. also configure calendar or address book
+settings.
+====
+
+The following subsections will explain more detailed how the four methods work.
 
 [[autoconfig]]
 === autoconfig
 
-A mail client that follows Mozilla's standard for mail account
-autoconfiguration searches the following list of URIs in order specified:
+Autoconfig is a proprietary method developed by the Mozilla foundation. It
+was designed to configure a mail account within Thunderbird.
 
+When a user begins to create a new mail account she is asked to enter her
+realname and mail address, e.g. +alice@example.com+. Thunderbird will then
+extract the domainpart (here: +example.com+) from the mail address and build a
+list of URIs to search for a configuration web service in the following order:
+
+[source,terminal]
 ----
 https://autoconfig.thunderbird.net/v1.1/$DOMAINPART        # <1>
 https://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=$MAILADDRESS    # <2>
@@ -29,23 +57,73 @@ http://$DOMAINPART/.well-known/autoconfig/mail/config-v1.1.xml
 <1> The `$DOMAINPART` variable represents the users mail addresses domainpart.
 <2> The `$MAILADDRESS` variable represents the users mail address.
 
+A configuration service such as automx2 listening on one of the listed URIs will
+receive the request, process it and respond with a set of configuration
+instructions.
+
+Thunderbird will use the instructions to automatically fill in the required
+fields in the account. The only remaining task for the user is to confirm the
+settings. After that she can immediately start use her new mail account.
+
 
 [[autodiscover]]
 === autodiscover
 
-A mail client that follows Microsofts's standard for mail account
-autoconfiguration searches the following list of URIs in order specified:
+Autodiscover is a proprietary method developed by the Microsoft. It was designed
+to configure a mail account within Outlook and has expanded to also configure
+Office 365.
 
+When a user begins to create a new mail account she is asked to enter her
+realname and mail address, e.g. +alice@example.com+. Outlook will then
+extract the domainpart (here: +example.com+) from the mail address and build a
+list of URIs to search for a configuration web service in a specific order. If
+it can't find a web service, it will search the DNS for a redirect:
+
+[source,terminal]
 ----
 https://$DOMAINPART/autodiscover/autodiscover.xml       # <1>
 https://autodiscover.$DOMAINPART/autodiscover/autodiscover.xml
 http://autodiscover.$DOMAINPART/autodiscover/autodiscover.xml
-dig SRV _autodiscover._tcp.$DOMAINPART
+dns: autodiscover.$DOMAINPART
+dns: _autodiscover._tcp.$DOMAINPART
 ----
 
 <1> The `$DOMAINPART` variable represents the users mail addresses domainpart.
+
+All `HTTP(S)` queries send a `GET` request and submit `XML` which contains
+information about the account that should be configured. The `DNS` queries
+search for a `CNAME` RR first, which is supposed to redirect the mail client to
+a ressource outside of the mailbox owners domain, e.g. +alice@example.com+ would
+be redirected to `service.example-provider.com` for configuration instructions.
+If the first `DNS` query fails the client may be redirected to a configuration
+service using a `SRV` RR like this:
+
+[source,bind]
+----
+_autodiscover._tcp.example.com.  0   443 service.example-provider.com.
+----
+
+The `SRV` RR used in the example above would send Alice's client to
+`service.example-provider.com` and tell it to send the query to the
+configuration service on port `443`.
 
 
 [[mobileconfig]]
 === mobileconfig
 
+TODO
+
+[[srv]]
+=== DNS SRV Records
+
+[source,bind]
+----
+_imap._tcp.example.com          SRV  10  20  143  mail.example.com.
+_imaps._tcp.example.com         SRV  0   1   993  .
+_pop3._tcp.example.com          SRV  0   1   110  .
+_pop3s._tcp.example.com         SRV  0   1   995  .
+_smtp._tcp.example.com.         SRV  0   1   25   .
+_submission._tcp.example.com.   SRV  10  20  587  mail.example.com.
+----
+
+// vim: ft=asciidoc:

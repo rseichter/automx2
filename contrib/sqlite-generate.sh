@@ -10,7 +10,7 @@ set -e
 PROVIDER_NAME='Me, myself and I'
 PROVIDER_SHORTNAME='Me'
 PROVIDER_ID=123
-DOMAIN='foobar.org'
+DOMAIN='example.com'
 IMAP_SERVER="imap.${DOMAIN}"
 SMTP_SERVER="smtp.${DOMAIN}"
 # User configurable section -- END

@@ -1,5 +1,183 @@
 == Configuring automx2
 
-automx2 uses an INI-style configuration syntax. Read
+automx2 uses a file to read runtime instructions from and a database to lookup
+mail account configuration data.
+
+=== Runtime configuration
+
+The configuration file defines automx2' runtime behaviour and it specifies the
+backend automx2 should read mailbox account configuration data from.
+
+[NOTE]
+.Running without runtime config
+====
+If you launch automx2 without a configuration file, it will use internal
+defaults. These are suitable for testing only. Launched without a config it
+will use an in-memory sqlite database and all data will be lost once the
+application terminates.
+====
+
+When started automx2 looks for runtime configuration instructions at these
+locations:
+
+[[configurationlocations]]
+[source,txt]
+----
+. AUTOMX2_CONF               // <1>
+. ~/.automx2.conf            // <2>
+. /etc/automx2/automx2.conf
+. /etc/automx2.conf
+----
+
+<1> If this environment variable exists, it will be used. The value must point
+    to a location where automx2 can read configuration from.
+<2> If automx2 finds `.automx2.conf` in the `$HOME` of the user that runs
+    automx2, it will be used.
+
+To specify parameters and options automx2 uses an
+link:https://docs.python.org/3.7/library/configparser.html#supported-ini-file-structure[INI]-style
+configuration syntax. The
+link:https://gitlab.com/automx/automx2/raw/master/contrib/automx2-sample.conf[example
+configuration] that ships with automx2 looks like this:
+
+[source,ini]
+----
+[automx2]
+# A typical production setup would use loglevel = WARNING
+loglevel = DEBUG
+# Echo SQL commands into log? Used for debugging.
+db_echo = yes
+# In-memory SQLite database
+db_uri = sqlite:///:memory:
+
+# SQLite database in a UNIX-like file system
+#db_uri = sqlite:////var/lib/automx2/db.sqlite
+
+# MySQL database on a remote server. This example does not use an encrypted
+# connection and is therefore *not* recommended for production use.
+#db_uri = mysql://username:password@server.example.com/db
+
+# Number of proxy servers between automx2 and the client (default: 0).
+# If your logs only show 127.0.0.1 or ::1 as the source IP for incoming
+# connections, proxy_count probably needs to be changed.
+#proxy_count = 1
+----
+
+Place the content of the example configuration into one of the configuration
+locations automx2 looks for and adapt it to your needs. Then configure the
+database backend with data that suits your setup.
+
+
+=== Database configuration
+
+automx2 uses the SQLAlchemy toolkit to access databases. This allows to let
+automx2 use a great variety of databases aka
+link:https://docs.sqlalchemy.org/en/13/dialects/[dialects].
+
+
+[NOTE]
+====
+While you probably already have SQLite support available on your local machine,
+you may need to install additional Python packages for PostgreSQL, MySQL, etc.
+Detailed instructions to support a particular database dialect are out of scope
+for this document, but there are numerous guides available.
+====
+
+This section demonstrates what you need to do to in order to use a sqllite
+database as backend for automx2.
+
+
+[NOTE]
+.Editing account configuration data
+====
+At the moment you will need to add database entries manually. We plan to change
+this in an upcomming version.
+====
+
+You may use a helper script to populate your database with account
+configuration data. Change the script's user-configurable section to reflect
+your domain and server names, then run the script to generate the necessary SQL
+statements:
+
+[source,bash]
+----
+#!/usr/bin/env bash
+# vim:tabstop=4:noexpandtab
+#
+# Generates SQL statements to add a provider, servers, and domain.
+# Adapt the configurable section below to your needs.
+
+set -e
+
+# User configurable section -- START
+PROVIDER_NAME='Me, myself and I'
+PROVIDER_SHORTNAME='Me'
+PROVIDER_ID=123
+DOMAIN='example.com'
+IMAP_SERVER="imap.${DOMAIN}"
+SMTP_SERVER="smtp.${DOMAIN}"
+# User configurable section -- END
+
+s1id=$((PROVIDER_ID+1))
+s2id=$((PROVIDER_ID+2))
+domid=$((PROVIDER_ID+3))
+
+cat <<EOT
+INSERT INTO provider VALUES(${PROVIDER_ID}, '${PROVIDER_NAME}', '${PROVIDER_SHORTNAME}');
+INSERT INTO server VALUES(${s1id}, 993, 'imap', '${IMAP_SERVER}', 'SSL', '%EMAILLOCALPART%', 'plain');
+INSERT INTO server VALUES(${s2id}, 587, 'smtp', '${SMTP_SERVER}', 'STARTTLS', '%EMAILLOCALPART%', 'plain');
+INSERT INTO domain VALUES(${domid}, ${PROVIDER_ID}, '${DOMAIN}');
+INSERT INTO server_domain VALUES(${s1id}, ${domid});
+INSERT INTO server_domain VALUES(${s2id}, ${domid});
+EOT
+----
+
+You can download the script from
+link:https://gitlab.com/automx/automx2/blob/master/contrib/sqlite-generate.sh[contrib/sqlite-generate.sh],
+adapt the "User configurable section" and pipe the scripts output into your
+`sqlite3` database like this:
+
+[source,terminal]
+----
+contrib/sqlite-generate.sh | sqlite3 /var/lib/automx2/db.sqlite
+----
+
+Once you have populated the database automx2 is ready to run.
+
+
+=== Running automx2
+
+Change as the user that should run automx into the virtual environment
+directory and start the `contrib/flask.sh` script:
+
+[source,terminal]
+----
+cd /srv/web/automx2
+contrib/flask.sh run
+----
+
+This will start the flask service listening on `localhost` and port `5000`.
+Alternatively use the command line variables `--host` and `--port` to override
+the defaults like this:
+
+[source,terminal]
+----
+flask.sh run --host=127.0.0.2 --port=1234
+----
+
+Now that automx2 is up and running, you need to configure the web server proxy
+that will receive requests from the outside and forwards them to automx2.
+
+
+=== Configuring a web server
+
+In a production environment, it is recommended that you run automx2 behind a
+web server like Apache or NGINX, with your web server acting as a reverse
+proxy, potentially also providing HTTPS support.
+
+
+If you do use a proxy, add proxy_count = 1 (adjust to number of proxies in call
+chain) to your configuration file. While automx2 will work without this
+setting, only your proxy's IP address will be reported as a request source.
 
 
