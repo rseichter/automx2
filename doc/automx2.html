@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.10">
 <meta name="keywords" content="autoconfig, autodiscover, mobileconfig, automx, automx2">
-<meta name="author" content="Patrick Ben Koetter">
+<meta name="author" content="Patrick Ben Koetter, Ralph Seichter">
 <meta name="copyright" content="(C) sys4 AG">
 <title>automx2: Email client configuration made easy</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
@@ -446,7 +446,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div class="details">
 <span id="author" class="author">Patrick Ben Koetter</span><br>
 <span id="email" class="email"><a href="mailto:p@sys4.de">p@sys4.de</a></span><br>
-<span id="revnumber">version 1.0.0,</span>
+<span id="author2" class="author">Ralph Seichter</span><br>
+<span id="email2" class="email"><a href="mailto:s@sys4.de">s@sys4.de</a></span><br>
+<span id="revnumber">version 2019.0,</span>
 <span id="revdate">13.12.2019</span>
 </div>
 <div id="toc" class="toc">
@@ -828,7 +830,8 @@ locations:</p>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>If this environment variable exists, it will be used. The value must point
-to a location where automx2 can read configuration from.</td>
+to a location where automx2 can read configuration from. It will proceed if
+it can&#8217;t find the file at the moment.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -1000,6 +1003,23 @@ EOT</span></code></pre>
 adapt the "User configurable section" and pipe the scripts output into the
 <code>sqlite3</code> command like this:</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="title">Placeholders</div>
+<div class="paragraph">
+<p>See Mozilla&#8217;s
+<a href="https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat#Placeholders">Thunderbird:Autoconfiguration:ConfigFileFormat</a>
+for a documentation of available placeholders like <code>%EMAILLOCALPART%</code>.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="terminal"><span class="go">contrib/sqlite-generate.sh | sqlite3 /var/lib/automx2/db.sqlite</span></code></pre>
@@ -1029,7 +1049,7 @@ software you have installed. We therefore recommend that you use the parameters
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="go">flask.sh run --host=192.2.0.1 --port=1234</span></code></pre>
+<pre class="rouge highlight"><code data-lang="terminal"><span class="go">flask.sh run --host=192.0.2.1 --port=1234</span></code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -1044,7 +1064,8 @@ software you have installed. We therefore recommend that you use the parameters
 <p>The flask.sh script will deliberately keep automx2 running in the foreground,
 and log data will be displayed in the terminal. If you press Ctrl-C or close the
 shell session, the application will terminate. To run automx2 in the background,
-you can use a window manager like <a href="https://www.gnu.org/software/screen/">GNU Screen</a></p>
+you can use a window manager like <a href="https://www.gnu.org/software/screen/">GNU
+Screen</a></p>
 </div>
 </td>
 </tr>
@@ -1094,8 +1115,8 @@ configuration file or uncomment the parameter if it is already there:</p>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>Set the number to reflect the number of proxies chained in front of automx2,
-i.e. the number of "proxy hops" a client&#8217;s request must pass before it reaches
-automx2.</td>
+i.e. the number of "proxy hops" a client&#8217;s request must pass before it
+reaches automx2.</td>
 </tr>
 </table>
 </div>
@@ -1193,8 +1214,8 @@ mailing list.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 1.0.0<br>
-Last updated 2019-12-13 01:35:08 +0100
+Version 2019.0<br>
+Last updated 2019-12-13 14:17:55 +0100
 </div>
 </div>
 <style>

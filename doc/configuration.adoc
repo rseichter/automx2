@@ -31,7 +31,8 @@ AUTOMX2_CONF  // <1>
 ----
 
 <1> If this environment variable exists, it will be used. The value must point
-    to a location where automx2 can read configuration from.
+    to a location where automx2 can read configuration from. It will proceed if
+    it can't find the file at the moment.
 <2> If automx2 finds `.automx2.conf` in the `$HOME` of the user that runs
     automx2, it will be used.
 
@@ -117,6 +118,14 @@ link:https://gitlab.com/automx/automx2/blob/master/contrib/sqlite-generate.sh[co
 adapt the "User configurable section" and pipe the scripts output into the
 `sqlite3` command like this:
 
+[NOTE]
+.Placeholders
+====
+See Mozilla's
+link:https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat#Placeholders[Thunderbird:Autoconfiguration:ConfigFileFormat]
+for a documentation of available placeholders like `%EMAILLOCALPART%`.
+====
+
 [source,terminal]
 ----
 contrib/sqlite-generate.sh | sqlite3 /var/lib/automx2/db.sqlite
@@ -144,7 +153,7 @@ software you have installed. We therefore recommend that you use the parameters
 
 [source,terminal]
 ----
-flask.sh run --host=192.2.0.1 --port=1234
+flask.sh run --host=192.0.2.1 --port=1234
 ----
 
 [NOTE]
@@ -153,7 +162,8 @@ flask.sh run --host=192.2.0.1 --port=1234
 The flask.sh script will deliberately keep automx2 running in the foreground,
 and log data will be displayed in the terminal. If you press Ctrl-C or close the
 shell session, the application will terminate. To run automx2 in the background,
-you can use a window manager like link:https://www.gnu.org/software/screen/[GNU Screen]
+you can use a window manager like link:https://www.gnu.org/software/screen/[GNU
+Screen]
 ====
 
 Now that automx2 is up and running, you need to configure the web server proxy
@@ -193,8 +203,8 @@ proxy_count = 1  # <1>
 ----
 
 <1> Set the number to reflect the number of proxies chained in front of automx2,
-i.e. the number of "proxy hops" a client's request must pass before it reaches
-automx2.
+    i.e. the number of "proxy hops" a client's request must pass before it
+    reaches automx2.
 
 
 ==== NGINX
