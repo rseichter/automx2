@@ -153,7 +153,7 @@ flask.sh run --host=127.0.0.1 --port=4243
 The flask.sh script will deliberately keep automx2 running in the foreground,
 and log data will be displayed in the terminal. If you press Ctrl-C or close the
 shell session, the application will terminate. To run automx2 in the background,
-you can use a window manager like link:https://www.gnu.org/software/screen/)[GNU Screen]
+you can use a window manager like link:https://www.gnu.org/software/screen/[GNU Screen]
 ====
 
 Now that automx2 is up and running, you need to configure the web server proxy
