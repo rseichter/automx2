@@ -6,7 +6,7 @@ mail account configuration data.
 
 === Runtime configuration
 
-The configuration file defines automx2' runtime behaviour and it specifies the
+The configuration file defines automx2 runtime behaviour and it specifies the
 backend automx2 should read mailbox account configuration data from.
 
 [NOTE]
@@ -14,7 +14,7 @@ backend automx2 should read mailbox account configuration data from.
 ====
 If you launch automx2 without a configuration file, it will use internal
 defaults. These are suitable for testing only. Launched without a config it
-will use an in-memory sqlite database and all data will be lost once the
+will use an in-memory SQLite database and all data will be lost once the
 application terminates.
 ====
 
@@ -63,24 +63,26 @@ with the internal test data:
 curl http://127.0.0.1:4243/initdb/  # <1>
 ----
 
-<1> This example assumes you are running automx on localhost listening on port
-    `4243`.
+<1> This example assumes you are running automx2 on localhost listening on port
+    `4243`, which is the suggested default port.
 
 Once you have populated the database with sample data you can test if automx2
 works. Use curl to send an account configuration request for
-+user@example.test+:
++user@example.com+:
 
 [source,terminal]
 ----
-curl 'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=user@example.test'
+curl 'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=user@example.com'
 ----
 
+Make sure to use quotes as shown, or your shell might attempt some pattern matching
+(FISH definitely does).
 
 === Database configuration
 
-automx2 uses the SQLAlchemy toolkit to access databases. This allows to let
-automx2 use a great variety of databases aka
-link:https://docs.sqlalchemy.org/en/13/dialects/[dialects].
+automx2 uses the SQLAlchemy toolkit to access databases. This allows a variety
+of databases, aka link:https://docs.sqlalchemy.org/en/13/dialects/[dialects],
+to be used, simply by defining the appropriate connection URL.
 
 [NOTE]
 ====
@@ -90,7 +92,7 @@ Detailed instructions to support a particular database dialect are out of scope
 for this document, but there are numerous guides available.
 ====
 
-This section demonstrates what you need to do to in order to use a sqllite
+This section demonstrates what you need to do to in order to use a SQLite
 database as backend for automx2.
 
 [NOTE]
@@ -112,8 +114,8 @@ include::../contrib/sqlite-generate.sh[]
 
 You can download the script from
 link:https://gitlab.com/automx/automx2/blob/master/contrib/sqlite-generate.sh[contrib/sqlite-generate.sh],
-adapt the "User configurable section" and pipe the scripts output into your
-`sqlite3` database like this:
+adapt the "User configurable section" and pipe the scripts output into the
+`sqlite3` command like this:
 
 [source,terminal]
 ----
@@ -126,7 +128,7 @@ Once you have populated the database automx2 is ready to run.
 [[runningautomx2]]
 === Running automx2
 
-Change as the user that should run automx into the virtual environment
+Change as the user that should run automx2 into the virtual environment
 directory and start the `contrib/flask.sh` script:
 
 [source,terminal]
@@ -135,14 +137,24 @@ cd /srv/web/automx2
 contrib/flask.sh run
 ----
 
-This will start the flask service listening on `localhost` and port `5000`.
-Alternatively use the command line variables `--host` and `--port` to override
-the defaults like this:
+This will start the flask service listening on IP address `127.0.0.1` and port
+`5000`. These are the standard values for Flask and might collide with other
+software you have installed. We therefore recommend that you use the parameters
+`--host` and `--port` to override the defaults:
 
 [source,terminal]
 ----
 flask.sh run --host=192.2.0.1 --port=1234
 ----
+
+[NOTE]
+.Handling terminal output
+====
+The flask.sh script will deliberately keep automx2 running in the foreground,
+and log data will be displayed in the terminal. If you press Ctrl-C or close the
+shell session, the application will terminate. To run automx2 in the background,
+you can use a window manager like link:https://www.gnu.org/software/screen/[GNU Screen]
+====
 
 Now that automx2 is up and running, you need to configure the web server proxy
 that will receive requests from the outside and forwards them to automx2.
@@ -151,14 +163,15 @@ that will receive requests from the outside and forwards them to automx2.
 === Configuring a web server
 
 While it is technically possible to run automx2 without a web server sitting in
-front of it we don't recommend to do that in production. A web server can
-provide features automx2 does not and will never have. Features such as
-transport layer encryption aka `HTTPS` or, for example, the capability to rate
-limiting clients.
+front of it, we don't recommend doing that in a production environment. A web server
+can provide features automx2 was designed not to have. Features such as transport
+layer encryption aka `HTTPS` or, for example, the capability to rate-limit clients
+are handled very well by full-fledged web servers working as reverse proxies. It
+would be a waste to re-implement all this in a web service.
 
-This section will explain how to configure a web server so that it sits as
-proxy in front of automx2. But before you create the proxy you need to tell
-automx2 it sits behind one. Add the `proxy_count` parameter to your automx2
+This section will explain how to configure a web server as a reverse proxy in
+front of automx2. Before you set up the proxy you need to tell automx2 it
+operates behind one. Add the `proxy_count` parameter to your automx2
 configuration file or uncomment the parameter if it is already there:
 
 [source,ini]
@@ -179,17 +192,20 @@ db_uri = sqlite:////var/lib/automx2/db.sqlite
 proxy_count = 1  # <1>
 ----
 
-<1> Set the number to reflect the chain of proxies in front of automx2.
+<1> Set the number to reflect the number of proxies chained in front of automx2,
+i.e. the number of "proxy hops" a client's request must pass before it reaches
+automx2.
 
 
-==== nginx
+==== NGINX
 
-The following example establishes a `HTTP` server, which will listen on port
+The following example defines a `HTTP` server, which will listen on port
 `80` for requests to either `autoconfig.example.com` or
-`autodiscover.example.com`. All requests will be forwarded (proxy) to automx2,
+`autodiscover.example.com`. All requests will be forwarded (proxied) to automx2,
 which listens on `127.0.0.1` on port `4243` in this example. Requests to
 `/initdb` are restricted to clients from `127.0.0.1` only. The
-`proxy_set_header` options are useful for logging and debugging.
+`proxy_set_header` directives will cause NGINX to pass relevant data about
+incoming requests' origins.
 
 [source,nginx]
 ----

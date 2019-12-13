@@ -1,8 +1,7 @@
 == automx2 Installation
 
-automx2 was written in Python. It requires Python 3.7 or higher and a
-virtualenv environment to run the automx2 web service. Check the python3
-version like this:
+automx2 requires Python 3.7 or higher, ideally in the form of a virtual Python
+environment, to run. Check the python3 version like this:
 
 [source,terminal]
 ----
@@ -17,12 +16,14 @@ after downloading the script.
 [IMPORTANT]
 .Don't run as root
 ====
-The application does not require super user privileges. It is recommended that
-you create a user account specifically for automx2, but other unprivileged
-users will do as well.
+If you use a port number greater than 1024 (we suggest 4243), the application does
+not require super user privileges when running. It also does not need to be
+installed as root. It is recommended that you create a user account specifically
+for automx2, but other unprivileged users will do as well.
 ====
 
-Prepare the virtual environment for the automx2 web service:
+Prepare the virtual environment for the automx2 web service, adjusting the
+installation path to your taste (automx2 itself does not care).
 
 [source,terminal]
 ----
@@ -38,8 +39,8 @@ wget -O setupvenv.sh 'https://gitlab.com/automx/automx2/raw/master/contrib/setup
 chmod u+x setupvenv.sh
 ----
 
-Execute the setup script. It will create a Python virtual environment `venv` in
-the current directory:
+Execute the setup script. It will create a Python virtual environment called
+`venv` in the current directory:
 
 [source,terminal]
 ----
@@ -59,8 +60,8 @@ pip install automx2
 [NOTE]
 .Updating automx2
 ====
-Change to the directory where automx2 has been installed to. Load the virtual
-environment settings and use the `-U` option to update automx2 like this:
+Change to the directory where automx2 has been installed previously. Activate
+the virtual environment as usual and use pip's `-U` option to update automx2:
 
 [source,terminal]
 ----
