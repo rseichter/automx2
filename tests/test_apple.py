@@ -29,11 +29,8 @@ from automx2.model import EGGS_DOMAIN
 from automx2.model import EXAMPLE_COM
 from automx2.model import EXAMPLE_NET
 from automx2.model import EXAMPLE_ORG
-from automx2.model import HORUS_IMAP
-from automx2.model import HORUS_SMTP
 from automx2.model import ORPHAN_DOMAIN
 from automx2.model import SERVERLESS_DOMAIN
-from automx2.model import SYS4_MAILSERVER
 from automx2.model import Server
 from automx2.model import sample_server_names
 from automx2.server import APPLE_CONFIG_ROUTE
@@ -120,33 +117,6 @@ class AppleRoutes(TestCase):
         with self.app:
             r = self.get_apple_config(f'a@{EGGS_DOMAIN}')
             self.assertEqual(400, r.status_code)
-
-    def test_horus_imap(self):
-        with self.app:
-            r = self.get_apple_config(f'a@horus-it.com')
-            b = minidom.parseString(body(r))
-            imap = self.imap_server_names(b)
-            self.assertEqual(1, len(imap))
-            self.assertEqual(HORUS_IMAP, imap[0])
-
-    def test_horus_smtp(self):
-        with self.app:
-            r = self.get_apple_config(f'a@horus-it.de')
-            b = minidom.parseString(body(r))
-            smtp = self.smtp_server_names(b)
-            self.assertEqual(1, len(smtp))
-            self.assertEqual(HORUS_SMTP, smtp[0])
-
-    def test_sys4_servers(self):
-        with self.app:
-            r = self.get_apple_config(f'a@sys4.de')
-            b = minidom.parseString(body(r))
-            imap = self.imap_server_names(b)
-            self.assertEqual(1, len(imap))
-            smtp = self.smtp_server_names(b)
-            self.assertEqual(1, len(smtp))
-            self.assertEqual(SYS4_MAILSERVER, imap[0])
-            self.assertEqual(SYS4_MAILSERVER, smtp[0])
 
     def test_sanitise_dict(self):
         from automx2.generators.apple import _sanitise

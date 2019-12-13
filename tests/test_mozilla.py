@@ -28,11 +28,8 @@ from automx2.model import EGGS_DOMAIN
 from automx2.model import EXAMPLE_COM
 from automx2.model import EXAMPLE_NET
 from automx2.model import EXAMPLE_ORG
-from automx2.model import HORUS_IMAP
-from automx2.model import HORUS_SMTP
 from automx2.model import ORPHAN_DOMAIN
 from automx2.model import SERVERLESS_DOMAIN
-from automx2.model import SYS4_MAILSERVER
 from automx2.model import sample_server_names
 from automx2.server import MOZILLA_CONFIG_ROUTE
 from automx2.views import CONTENT_TYPE_XML
@@ -103,33 +100,6 @@ class MozillaRoutes(TestCase):
         with self.app:
             r = self.get_mozilla_config(f'a@{EGGS_DOMAIN}')
             self.assertEqual(400, r.status_code)
-
-    def test_horus_imap(self):
-        with self.app:
-            r = self.get_mozilla_config(f'a@horus-it.com')
-            b = fromstring(body(r))
-            imap = self.imap_server_elements(b)
-            self.assertEqual(1, len(imap))
-            self.assertEqual(HORUS_IMAP, imap[0].text)
-
-    def test_horus_smtp(self):
-        with self.app:
-            r = self.get_mozilla_config(f'a@horus-it.de')
-            b = fromstring(body(r))
-            smtp = self.smtp_server_elements(b)
-            self.assertEqual(1, len(smtp))
-            self.assertEqual(HORUS_SMTP, smtp[0].text)
-
-    def test_sys4_servers(self):
-        with self.app:
-            r = self.get_mozilla_config(f'a@sys4.de')
-            b = fromstring(body(r))
-            imap = self.imap_server_elements(b)
-            self.assertEqual(1, len(imap))
-            smtp = self.smtp_server_elements(b)
-            self.assertEqual(1, len(smtp))
-            self.assertEqual(SYS4_MAILSERVER, imap[0].text)
-            self.assertEqual(SYS4_MAILSERVER, smtp[0].text)
 
 
 if __name__ == '__main__':
