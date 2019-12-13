@@ -63,7 +63,7 @@ with the internal test data:
 curl http://127.0.0.1:4243/initdb/  # <1>
 ----
 
-<1> This example assumes you are running automx on localhost listening on port
+<1> This example assumes you are running automx2 on localhost listening on port
     `4243`, which is the suggested default port.
 
 Once you have populated the database with sample data you can test if automx2
@@ -128,7 +128,7 @@ Once you have populated the database automx2 is ready to run.
 [[runningautomx2]]
 === Running automx2
 
-Change as the user that should run automx into the virtual environment
+Change as the user that should run automx2 into the virtual environment
 directory and start the `contrib/flask.sh` script:
 
 [source,terminal]
