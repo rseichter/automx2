@@ -470,7 +470,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#runningautomx2">4.4. Running automx2</a></li>
 <li><a href="#_configuring_a_web_server">4.5. Configuring a web server</a>
 <ul class="sectlevel3">
-<li><a href="#_nginx">4.5.1. nginx</a></li>
+<li><a href="#_nginx">4.5.1. NGINX</a></li>
 <li><a href="#_apache">4.5.2. Apache</a></li>
 </ul>
 </li>
@@ -495,7 +495,7 @@ ahead to <a href="#automx2installation">automx2 Installation</a> and <a href="#a
 <h2 id="howitworks"><a class="anchor" href="#howitworks"></a>1. How does automx2 work?</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>automx2 is a webservice. It sits behind a web server and waits for
+<p>automx2 is a webservice. It sits behind a web server, e.g. NGINX, and waits for
 configuration requests. When a mail client requests configuration it contacts
 the web server. The web server then acts as a proxy and forwards all requests
 to the web service aka automx2.</p>
@@ -512,8 +512,8 @@ to the web service aka automx2.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Modern mail clients can look for configuration data when a user begins to
-create a new account. They will either send the users mail address to a service
-and ask the service to reply with configuration that suits the users profile or
+create a new account. They will either send the user&#8217;s mail address to a service
+and ask the service to reply with configuration that suits the user&#8217;s profile or
 they will query the DNS system for advice.</p>
 </div>
 <div class="paragraph">
@@ -525,15 +525,15 @@ it doesn&#8217;t give as much control over settings as a specialized service lik
 automx2 will do.</p>
 </div>
 <div class="paragraph">
-<p>As it stands to today there are four methods that help configuring a mail
+<p>As of today, there are four methods that help configuring a mail
 account. Three of them – <a href="#autoconfig">autoconfig</a>, <a href="#autodiscover">autodiscover</a> and <a href="#mobileconfig">mobileconfig</a>
-– have been developed by vendors to cover their products specific needs. The
+– have been developed by vendors to cover their products' specific needs. The
 fourth is an RFC standard specifying the aformentioned more general <a href="#srv">DNS SRV Records</a>
 method.</p>
 </div>
 <div class="paragraph">
 <p>The vendor specific methods have in common that the mail client seeking
-configuration needs to send a request, which includes at least the users mail
+configuration needs to send a request, which includes at least the user&#8217;s mail
 address, to a configuration service. The service will use the mail address to
 lookup configuration data and will return that data as response to the client.
 Format – XML response or file – and complexity differ depending on the method.</p>
@@ -561,7 +561,9 @@ settings.</p>
 <h3 id="autoconfig"><a class="anchor" href="#autoconfig"></a>2.1. autoconfig</h3>
 <div class="paragraph">
 <p>Autoconfig is a proprietary method developed by the Mozilla foundation. It
-was designed to configure a mail account within Thunderbird.</p>
+was designed to configure a mail account within Thunderbird, and other email
+suites like Evolution and KMail
+<a href="https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat">have adopted</a> the mechanism.</p>
 </div>
 <div class="paragraph">
 <p>When a user begins to create a new mail account she is asked to enter her
@@ -599,13 +601,13 @@ instructions.</p>
 <div class="paragraph">
 <p>Thunderbird will use the instructions to automatically fill in the required
 fields in the account. The only remaining task for the user is to confirm the
-settings. After that she can immediately start use her new mail account.</p>
+settings. After that she can immediately start to use her new mail account.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="autodiscover"><a class="anchor" href="#autodiscover"></a>2.2. autodiscover</h3>
 <div class="paragraph">
-<p>Autodiscover is a proprietary method developed by the Microsoft. It was designed
+<p>Autodiscover is a proprietary method developed by Microsoft. It was designed
 to configure a mail account within Outlook and has expanded to also configure
 Office 365.</p>
 </div>
@@ -634,10 +636,10 @@ it can&#8217;t find a web service, it will search the DNS for a redirect:</p>
 </table>
 </div>
 <div class="paragraph">
-<p>All <code>HTTP(S)</code> queries send a <code>GET</code> request and submit <code>XML</code> which contains
+<p>All <code>HTTP(S)</code> queries send a <code>POST</code> request and submit <code>XML</code> which contains
 information about the account that should be configured. The <code>DNS</code> queries
 search for a <code>CNAME</code> RR first, which is supposed to redirect the mail client to
-a ressource outside of the mailbox owners domain, e.g. alice@example.com would
+a resource outside of the mailbox owners domain, e.g. alice@example.com would
 be redirected to <code>service.example-provider.com</code> for configuration instructions.
 If the first <code>DNS</code> query fails the client may be redirected to a configuration
 service using a <code>SRV</code> RR like this:</p>
@@ -656,7 +658,8 @@ configuration service on port <code>443</code>.</p>
 <div class="sect2">
 <h3 id="mobileconfig"><a class="anchor" href="#mobileconfig"></a>2.3. mobileconfig</h3>
 <div class="paragraph">
-<p>TODO</p>
+<p>TODO - Requests and responses use proprietory content types and the PLIST
+data format.</p>
 </div>
 </div>
 <div class="sect2">
@@ -678,9 +681,8 @@ _submission._tcp.example.com.   SRV  10  20  587  mail.example.com.</code></pre>
 <h2 id="automx2installation"><a class="anchor" href="#automx2installation"></a>3. automx2 Installation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>automx2 was written in Python. It requires Python 3.7 or higher and a
-virtualenv environment to run the automx2 web service. Check the python3
-version like this:</p>
+<p>automx2 requires Python 3.7 or higher, ideally in the form of a virtual Python
+environment, to run. Check the python3 version like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -702,16 +704,18 @@ after downloading the script.</p>
 <td class="content">
 <div class="title">Don&#8217;t run as root</div>
 <div class="paragraph">
-<p>The application does not require super user privileges. It is recommended that
-you create a user account specifically for automx2, but other unprivileged
-users will do as well.</p>
+<p>If you use a port number greater than 1024 (we suggest 4243), the application does
+not require super user privileges when running. It also does not need to be
+installed as root. It is recommended that you create a user account specifically
+for automx2, but other unprivileged users will do as well.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Prepare the virtual environment for the automx2 web service:</p>
+<p>Prepare the virtual environment for the automx2 web service, adjusting the
+installation path to your taste (automx2 itself does not care).</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -729,8 +733,8 @@ chmod u+x setupvenv.sh</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Execute the setup script. It will create a Python virtual environment <code>venv</code> in
-the current directory:</p>
+<p>Execute the setup script. It will create a Python virtual environment called
+<code>venv</code> in the current directory:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -757,8 +761,8 @@ pip install automx2</span></code></pre>
 <td class="content">
 <div class="title">Updating automx2</div>
 <div class="paragraph">
-<p>Change to the directory where automx2 has been installed to. Load the virtual
-environment settings and use the <code>-U</code> option to update automx2 like this:</p>
+<p>Change to the directory where automx2 has been installed previously. Activate
+the virtual environment as usual and use pip&#8217;s <code>-U</code> option to update automx2:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -786,7 +790,7 @@ mail account configuration data.</p>
 <div class="sect2">
 <h3 id="_runtime_configuration"><a class="anchor" href="#_runtime_configuration"></a>4.1. Runtime configuration</h3>
 <div class="paragraph">
-<p>The configuration file defines automx2' runtime behaviour and it specifies the
+<p>The configuration file defines automx2 runtime behaviour and it specifies the
 backend automx2 should read mailbox account configuration data from.</p>
 </div>
 <div class="admonitionblock note">
@@ -800,7 +804,7 @@ backend automx2 should read mailbox account configuration data from.</p>
 <div class="paragraph">
 <p>If you launch automx2 without a configuration file, it will use internal
 defaults. These are suitable for testing only. Launched without a config it
-will use an in-memory sqlite database and all data will be lost once the
+will use an in-memory SQLite database and all data will be lost once the
 application terminates.</p>
 </div>
 </td>
@@ -887,28 +891,32 @@ with the internal test data:</p>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>This example assumes you are running automx on localhost listening on port
-<code>4243</code>.</td>
+<td>This example assumes you are running automx2 on localhost listening on port
+<code>4243</code>, which is the suggested default port.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
 <p>Once you have populated the database with sample data you can test if automx2
 works. Use curl to send an account configuration request for
-user@example.test:</p>
+user@example.com:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="go">curl 'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=user@example.test'</span></code></pre>
+<pre class="rouge highlight"><code data-lang="terminal"><span class="go">curl 'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=user@example.com'</span></code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>Make sure to use quotes as shown, or your shell might attempt some pattern matching
+(FISH definitely does).</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_database_configuration"><a class="anchor" href="#_database_configuration"></a>4.3. Database configuration</h3>
 <div class="paragraph">
-<p>automx2 uses the SQLAlchemy toolkit to access databases. This allows to let
-automx2 use a great variety of databases aka
-<a href="https://docs.sqlalchemy.org/en/13/dialects/">dialects</a>.</p>
+<p>automx2 uses the SQLAlchemy toolkit to access databases. This allows a variety
+of databases, aka <a href="https://docs.sqlalchemy.org/en/13/dialects/">dialects</a>,
+to be used, simply by defining the appropriate connection URL.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -928,7 +936,7 @@ for this document, but there are numerous guides available.</p>
 </table>
 </div>
 <div class="paragraph">
-<p>This section demonstrates what you need to do to in order to use a sqllite
+<p>This section demonstrates what you need to do to in order to use a SQLite
 database as backend for automx2.</p>
 </div>
 <div class="admonitionblock note">
@@ -989,8 +997,8 @@ EOT</span></code></pre>
 <div class="paragraph">
 <p>You can download the script from
 <a href="https://gitlab.com/automx/automx2/blob/master/contrib/sqlite-generate.sh">contrib/sqlite-generate.sh</a>,
-adapt the "User configurable section" and pipe the scripts output into your
-<code>sqlite3</code> database like this:</p>
+adapt the "User configurable section" and pipe the scripts output into the
+<code>sqlite3</code> command like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1004,7 +1012,7 @@ adapt the "User configurable section" and pipe the scripts output into your
 <div class="sect2">
 <h3 id="runningautomx2"><a class="anchor" href="#runningautomx2"></a>4.4. Running automx2</h3>
 <div class="paragraph">
-<p>Change as the user that should run automx into the virtual environment
+<p>Change as the user that should run automx2 into the virtual environment
 directory and start the <code>contrib/flask.sh</code> script:</p>
 </div>
 <div class="listingblock">
@@ -1014,14 +1022,33 @@ contrib/flask.sh run</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>This will start the flask service listening on <code>localhost</code> and port <code>5000</code>.
-Alternatively use the command line variables <code>--host</code> and <code>--port</code> to override
-the defaults like this:</p>
+<p>This will start the flask service listening on IP address <code>127.0.0.1</code> and port
+<code>5000</code>. These are the standard values for Flask and might collide with other
+software you have installed. We therefore recommend that you use the parameters
+<code>--host</code> and <code>--port</code> to override the defaults:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="terminal"><span class="go">flask.sh run --host=192.2.0.1 --port=1234</span></code></pre>
 </div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<div class="title">Handling terminal output</div>
+<div class="paragraph">
+<p>The flask.sh script will deliberately keep automx2 running in the foreground,
+and log data will be displayed in the terminal. If you press Ctrl-C or close the
+shell session, the application will terminate. To run automx2 in the background,
+you can use a window manager like <a href="https://www.gnu.org/software/screen/">GNU Screen</a></p>
+</div>
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Now that automx2 is up and running, you need to configure the web server proxy
@@ -1032,15 +1059,16 @@ that will receive requests from the outside and forwards them to automx2.</p>
 <h3 id="_configuring_a_web_server"><a class="anchor" href="#_configuring_a_web_server"></a>4.5. Configuring a web server</h3>
 <div class="paragraph">
 <p>While it is technically possible to run automx2 without a web server sitting in
-front of it we don&#8217;t recommend to do that in production. A web server can
-provide features automx2 does not and will never have. Features such as
-transport layer encryption aka <code>HTTPS</code> or, for example, the capability to rate
-limiting clients.</p>
+front of it, we don&#8217;t recommend doing that in a production environment. A web server
+can provide features automx2 was designed not to have. Features such as transport
+layer encryption aka <code>HTTPS</code> or, for example, the capability to rate-limit clients
+are handled very well by full-fledged web servers working as reverse proxies. It
+would be a waste to re-implement all this in a web service.</p>
 </div>
 <div class="paragraph">
-<p>This section will explain how to configure a web server so that it sits as
-proxy in front of automx2. But before you create the proxy you need to tell
-automx2 it sits behind one. Add the <code>proxy_count</code> parameter to your automx2
+<p>This section will explain how to configure a web server as a reverse proxy in
+front of automx2. Before you set up the proxy you need to tell automx2 it
+operates behind one. Add the <code>proxy_count</code> parameter to your automx2
 configuration file or uncomment the parameter if it is already there:</p>
 </div>
 <div class="listingblock">
@@ -1065,45 +1093,48 @@ configuration file or uncomment the parameter if it is already there:</p>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Set the number to reflect the chain of proxies in front of automx2.</td>
+<td>Set the number to reflect the number of proxies chained in front of automx2,
+i.e. the number of "proxy hops" a client&#8217;s request must pass before it reaches
+automx2.</td>
 </tr>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_nginx"><a class="anchor" href="#_nginx"></a>4.5.1. nginx</h4>
+<h4 id="_nginx"><a class="anchor" href="#_nginx"></a>4.5.1. NGINX</h4>
 <div class="paragraph">
-<p>The following example establishes a <code>HTTP</code> server, which will listen on port
+<p>The following example defines a <code>HTTP</code> server, which will listen on port
 <code>80</code> for requests to either <code>autoconfig.example.com</code> or
-<code>autodiscover.example.com</code>. All requests will be forwarded (proxy) to automx2,
+<code>autodiscover.example.com</code>. All requests will be forwarded (proxied) to automx2,
 which listens on <code>127.0.0.1</code> on port <code>4243</code> in this example. Requests to
 <code>/initdb</code> are restricted to clients from <code>127.0.0.1</code> only. The
-<code>proxy_set_header</code> options are useful for logging and debugging.</p>
+<code>proxy_set_header</code> directives will cause NGINX to pass relevant data about
+incoming requests' origins.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="nginx"><span class="c1"># NGINX example configuration snippet to forward incoming requests to automx2.
-# vim:ts=4:ft=nginx:noet
+# vim:ts=4:et:ft=nginx
 </span>
 <span class="k">http</span> <span class="p">{</span>
-	<span class="kn">server</span> <span class="p">{</span>
-		<span class="kn">listen</span> <span class="s">*:80</span><span class="p">;</span>
-		<span class="kn">listen</span> <span class="s">[::]:80</span><span class="p">;</span>
-		<span class="kn">server_name</span> <span class="s">autoconfig.example.com</span> <span class="s">autodiscover.example.com</span><span class="p">;</span>
-		<span class="kn">location</span> <span class="n">/initdb</span> <span class="p">{</span>
-			<span class="c1"># Database may only be initialised from localhost
-</span>			<span class="kn">allow</span> <span class="mi">127</span><span class="s">.0.0.1</span><span class="p">;</span>
-			<span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
-		<span class="p">}</span>
-		<span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
-			<span class="c1"># Forward all traffic to local automx2 service
-</span>			<span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:4243/</span><span class="p">;</span>
-			<span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
-			<span class="c1"># Set config parameter proxy_count=1 to have automx2 process these headers
-</span>			<span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Proto</span> <span class="s">http</span><span class="p">;</span>
-			<span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
-			<span class="kn">proxy_set_header</span> <span class="s">X-Real-IP</span> <span class="nv">$remote_addr</span><span class="p">;</span>
-		<span class="p">}</span>
-	<span class="p">}</span>
+    <span class="kn">server</span> <span class="p">{</span>
+        <span class="kn">listen</span> <span class="s">*:80</span><span class="p">;</span>
+        <span class="kn">listen</span> <span class="s">[::]:80</span><span class="p">;</span>
+        <span class="kn">server_name</span> <span class="s">autoconfig.example.com</span> <span class="s">autodiscover.example.com</span><span class="p">;</span>
+        <span class="kn">location</span> <span class="n">/initdb</span> <span class="p">{</span>
+            <span class="c1"># Database may only be initialised from localhost
+</span>            <span class="kn">allow</span> <span class="mi">127</span><span class="s">.0.0.1</span><span class="p">;</span>
+            <span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
+            <span class="c1"># Forward all traffic to local automx2 service
+</span>            <span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:4243/</span><span class="p">;</span>
+            <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
+            <span class="c1"># Set config parameter proxy_count=1 to have automx2 process these headers
+</span>            <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Proto</span> <span class="s">http</span><span class="p">;</span>
+            <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+            <span class="kn">proxy_set_header</span> <span class="s">X-Real-IP</span> <span class="nv">$remote_addr</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
 <span class="p">}</span></code></pre>
 </div>
 </div>
@@ -1111,7 +1142,32 @@ which listens on <code>127.0.0.1</code> on port <code>4243</code> in this exampl
 <div class="sect3">
 <h4 id="_apache"><a class="anchor" href="#_apache"></a>4.5.2. Apache</h4>
 <div class="paragraph">
-<p>TODO</p>
+<p>The following example defines a <code>HTTP</code> server, which will listen on port
+<code>80</code> for requests to either <code>autoconfig.example.com</code> or
+<code>autodiscover.example.com</code>. All requests will be forwarded (proxied) to
+automx2, which listens on <code>127.0.0.1</code> on port <code>4243</code> in this example. Requests
+to <code>/initdb</code> are restricted to clients from <code>127.0.0.1</code> only. The
+<code>ProxyPreserveHost</code> directives will cause apache to pass relevant data about
+incoming requests' origins.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="apache"><span class="c"># apache2.4 example configuration snippet to forward incoming requests to automx2.</span>
+<span class="c"># vim:ts=4:et:ft=apache</span>
+
+<span class="p">&lt;</span><span class="nl">VirtualHost</span><span class="sr"> *:80</span><span class="p">&gt;
+</span>    <span class="nc">ServerName</span> autoconfig.automx.org
+    <span class="nc">ServerAlias</span> autodiscover.automx.org
+    <span class="nc">ProxyPreserveHost</span> On
+    <span class="nc">ProxyPass</span> "/"  "http://127.0.0.1:4243/"
+    <span class="nc">ProxyPassReverse</span> "/"  "http://127.0.0.1:4243/"
+    <span class="p">&lt;</span><span class="nl">Location</span><span class="sr"> /initdb</span><span class="p">&gt;
+</span>        <span class="nc">Order</span> Deny,Allow
+        <span class="nc">Deny</span> <span class="ss">from</span> all
+        <span class="nc">Allow</span> <span class="ss">from</span> 127.0.0.1
+    <span class="p">&lt;/</span><span class="nl">Location</span><span class="p">&gt;
+&lt;/</span><span class="nl">VirtualHost</span><span class="p">&gt;</span></code></pre>
+</div>
 </div>
 </div>
 </div>

@@ -215,6 +215,18 @@ include::../contrib/nginx-sample.conf[]
 
 ==== Apache
 
-TODO
+The following example defines a `HTTP` server, which will listen on port
+`80` for requests to either `autoconfig.example.com` or
+`autodiscover.example.com`. All requests will be forwarded (proxied) to
+automx2, which listens on `127.0.0.1` on port `4243` in this example. Requests
+to `/initdb` are restricted to clients from `127.0.0.1` only. The
+`ProxyPreserveHost` directives will cause apache to pass relevant data about
+incoming requests' origins.
+
+[source,apache]
+----
+include::../contrib/apache-sample.conf[]
+----
+
 
 // vim: set ft=asciidoc:
