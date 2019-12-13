@@ -35,7 +35,7 @@ automx2.
 
 All documentation is stored in the link:doc[] subdirectory. You can read it
 file by file using a text reader or all files as one if you point your browser
-to link:doc/automx2.html[].
+to +automx2.html+.
 
 
 == About automx2
