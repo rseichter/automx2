@@ -24,7 +24,7 @@ Microsoft
 and Mozilla
 (https://developer.mozilla.org/de/docs/Mozilla/Thunderbird/Autokonfiguration[autoconfig])
 in one tool. automx2 is successor to automx. It has been designed to be easier
-to setup, easier to configure and easier use.
+to setup, easier to configure and easier to use.
 
 
 == Documentation
