@@ -1020,7 +1020,7 @@ the defaults like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="go">flask.sh run --host=127.0.0.2 --port=1234</span></code></pre>
+<pre class="rouge highlight"><code data-lang="terminal"><span class="go">flask.sh run --host=192.2.0.1 --port=1234</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1096,7 +1096,7 @@ which listens on <code>127.0.0.1</code> on port <code>4243</code> in this exampl
 		<span class="p">}</span>
 		<span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
 			<span class="c1"># Forward all traffic to local automx2 service
-</span>			<span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:4243</span><span class="p">;</span>
+</span>			<span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:4243/</span><span class="p">;</span>
 			<span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
 			<span class="c1"># Set config parameter proxy_count=1 to have automx2 process these headers
 </span>			<span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Proto</span> <span class="s">http</span><span class="p">;</span>
@@ -1138,7 +1138,7 @@ mailing list.</p>
 <div id="footer">
 <div id="footer-text">
 Version 1.0.0<br>
-Last updated 2019-12-13 01:17:08 +0100
+Last updated 2019-12-13 01:35:08 +0100
 </div>
 </div>
 <style>

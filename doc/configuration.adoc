@@ -141,7 +141,7 @@ the defaults like this:
 
 [source,terminal]
 ----
-flask.sh run --host=127.0.0.2 --port=1234
+flask.sh run --host=192.2.0.1 --port=1234
 ----
 
 Now that automx2 is up and running, you need to configure the web server proxy
