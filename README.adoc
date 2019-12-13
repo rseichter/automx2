@@ -3,7 +3,7 @@
 :author: Patrick Ben Koetter
 :email: p@sys4.de
 :subject: automx2: Email client configuration made easy
-:revnumber: 1.0.0
+:revnumber: 2019.0
 :revdate: 13.12.2019
 :copyright: (C) sys4 AG
 :publisher: sys4 AG
