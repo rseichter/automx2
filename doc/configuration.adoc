@@ -3,6 +3,7 @@
 automx2 uses a file to read runtime instructions from and a database to lookup
 mail account configuration data.
 
+
 === Runtime configuration
 
 The configuration file defines automx2' runtime behaviour and it specifies the
@@ -23,10 +24,10 @@ locations:
 [[configurationlocations]]
 [source,txt]
 ----
-. AUTOMX2_CONF               // <1>
-. ~/.automx2.conf            // <2>
-. /etc/automx2/automx2.conf
-. /etc/automx2.conf
+AUTOMX2_CONF  // <1>
+~/.automx2.conf  // <2>
+/etc/automx2/automx2.conf
+/etc/automx2.conf
 ----
 
 <1> If this environment variable exists, it will be used. The value must point
@@ -42,25 +43,7 @@ configuration] that ships with automx2 looks like this:
 
 [source,ini]
 ----
-[automx2]
-# A typical production setup would use loglevel = WARNING
-loglevel = DEBUG
-# Echo SQL commands into log? Used for debugging.
-db_echo = yes
-# In-memory SQLite database
-db_uri = sqlite:///:memory:
-
-# SQLite database in a UNIX-like file system
-#db_uri = sqlite:////var/lib/automx2/db.sqlite
-
-# MySQL database on a remote server. This example does not use an encrypted
-# connection and is therefore *not* recommended for production use.
-#db_uri = mysql://username:password@server.example.com/db
-
-# Number of proxy servers between automx2 and the client (default: 0).
-# If your logs only show 127.0.0.1 or ::1 as the source IP for incoming
-# connections, proxy_count probably needs to be changed.
-#proxy_count = 1
+include::../contrib/automx2-sample.conf[]
 ----
 
 Place the content of the example configuration into one of the configuration
@@ -68,12 +51,36 @@ locations automx2 looks for and adapt it to your needs. Then configure the
 database backend with data that suits your setup.
 
 
+=== Testing standalone automx2
+
+If you want to verify a vanilla install of automx2 works you can populate it
+with the (internal) test data. Start it as described in section
+<<runningautomx2>> and send the following request to populate your database
+with the internal test data:
+
+[source,terminal]
+----
+curl http://127.0.0.1:4243/initdb/  # <1>
+----
+
+<1> This example assumes you are running automx on localhost listening on port
+    `4243`.
+
+Once you have populated the database with sample data you can test if automx2
+works. Use curl to send an account configuration request for
++user@example.test+:
+
+[source,terminal]
+----
+curl 'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=user@example.test'
+----
+
+
 === Database configuration
 
 automx2 uses the SQLAlchemy toolkit to access databases. This allows to let
 automx2 use a great variety of databases aka
 link:https://docs.sqlalchemy.org/en/13/dialects/[dialects].
-
 
 [NOTE]
 ====
@@ -86,12 +93,11 @@ for this document, but there are numerous guides available.
 This section demonstrates what you need to do to in order to use a sqllite
 database as backend for automx2.
 
-
 [NOTE]
 .Editing account configuration data
 ====
 At the moment you will need to add database entries manually. We plan to change
-this in an upcomming version.
+this in an upcoming version.
 ====
 
 You may use a helper script to populate your database with account
@@ -101,35 +107,7 @@ statements:
 
 [source,bash]
 ----
-#!/usr/bin/env bash
-# vim:tabstop=4:noexpandtab
-#
-# Generates SQL statements to add a provider, servers, and domain.
-# Adapt the configurable section below to your needs.
-
-set -e
-
-# User configurable section -- START
-PROVIDER_NAME='Me, myself and I'
-PROVIDER_SHORTNAME='Me'
-PROVIDER_ID=123
-DOMAIN='example.com'
-IMAP_SERVER="imap.${DOMAIN}"
-SMTP_SERVER="smtp.${DOMAIN}"
-# User configurable section -- END
-
-s1id=$((PROVIDER_ID+1))
-s2id=$((PROVIDER_ID+2))
-domid=$((PROVIDER_ID+3))
-
-cat <<EOT
-INSERT INTO provider VALUES(${PROVIDER_ID}, '${PROVIDER_NAME}', '${PROVIDER_SHORTNAME}');
-INSERT INTO server VALUES(${s1id}, 993, 'imap', '${IMAP_SERVER}', 'SSL', '%EMAILLOCALPART%', 'plain');
-INSERT INTO server VALUES(${s2id}, 587, 'smtp', '${SMTP_SERVER}', 'STARTTLS', '%EMAILLOCALPART%', 'plain');
-INSERT INTO domain VALUES(${domid}, ${PROVIDER_ID}, '${DOMAIN}');
-INSERT INTO server_domain VALUES(${s1id}, ${domid});
-INSERT INTO server_domain VALUES(${s2id}, ${domid});
-EOT
+include::../contrib/sqlite-generate.sh[]
 ----
 
 You can download the script from
@@ -145,6 +123,7 @@ contrib/sqlite-generate.sh | sqlite3 /var/lib/automx2/db.sqlite
 Once you have populated the database automx2 is ready to run.
 
 
+[[runningautomx2]]
 === Running automx2
 
 Change as the user that should run automx into the virtual environment
@@ -171,13 +150,55 @@ that will receive requests from the outside and forwards them to automx2.
 
 === Configuring a web server
 
-In a production environment, it is recommended that you run automx2 behind a
-web server like Apache or NGINX, with your web server acting as a reverse
-proxy, potentially also providing HTTPS support.
+While it is technically possible to run automx2 without a web server sitting in
+front of it we don't recommend to do that in production. A web server can
+provide features automx2 does not and will never have. Features such as
+transport layer encryption aka `HTTPS` or, for example, the capability to rate
+limiting clients.
+
+This section will explain how to configure a web server so that it sits as
+proxy in front of automx2. But before you create the proxy you need to tell
+automx2 it sits behind one. Add the `proxy_count` parameter to your automx2
+configuration file or uncomment the parameter if it is already there:
+
+[source,ini]
+----
+[automx2]
+# A typical production setup would use loglevel = WARNING
+loglevel = WARNING
+
+# Echo SQL commands into log? Used for debugging.
+db_echo = no
+
+# SQLite database in a UNIX-like file system
+db_uri = sqlite:////var/lib/automx2/db.sqlite
+
+# Number of proxy servers between automx2 and the client (default: 0).
+# If your logs only show 127.0.0.1 or ::1 as the source IP for incoming
+# connections, proxy_count probably needs to be changed.
+proxy_count = 1  # <1>
+----
+
+<1> Set the number to reflect the chain of proxies in front of automx2.
 
 
-If you do use a proxy, add proxy_count = 1 (adjust to number of proxies in call
-chain) to your configuration file. While automx2 will work without this
-setting, only your proxy's IP address will be reported as a request source.
+==== nginx
+
+The following example establishes a `HTTP` server, which will listen on port
+`80` for requests to either `autoconfig.example.com` or
+`autodiscover.example.com`. All requests will be forwarded (proxy) to automx2,
+which listens on `127.0.0.1` on port `4243` in this example. Requests to
+`/initdb` are restricted to clients from `127.0.0.1` only. The
+`proxy_set_header` options are useful for logging and debugging.
+
+[source,nginx]
+----
+include::../contrib/nginx-sample.conf[]
+----
 
 
+==== Apache
+
+TODO
+
+// vim: set ft=asciidoc:

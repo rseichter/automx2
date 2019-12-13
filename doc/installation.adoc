@@ -38,16 +38,17 @@ wget -O setupvenv.sh 'https://gitlab.com/automx/automx2/raw/master/contrib/setup
 chmod u+x setupvenv.sh
 ----
 
-Execute setup script. It will create a Python virtual environment `venv` in the current directory:
+Execute the setup script. It will create a Python virtual environment `venv` in
+the current directory:
 
 [source,terminal]
 ----
 ./setupvenv.sh
 ----
 
-Activate virtual environment and install the latest automx2 release from PyPI.
-Make sure to pick the correct activation for your shell from the `venv/bin`
-directory. This is an example for BASH:
+Activate the virtual environment and install the latest automx2 release from
+PyPI. Make sure to pick the correct activation for your shell from the
+`venv/bin` directory. This is an example for BASH:
 
 [source,terminal]
 ----
@@ -71,3 +72,4 @@ pip install -U automx2
 
 The next section explains how to configure automx2.
 
+// vim: set ft=asciidoc:

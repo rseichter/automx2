@@ -5,16 +5,16 @@ create a new account. They will either send the users mail address to a service
 and ask the service to reply with configuration that suits the users profile or
 they will query the DNS system for advice.
 
-Using a specialized mail account configuration service allows for individualized
-setups. It also allows to enforce a specific policy, which for example
-configures the mail client to use a specific authentication mechanism. Quering
-the DNS for mail service locations allows for generic instructions, but it
-doesn't give as much control over settings as a specialized service like automx2
-will do.
+Using a specialized mail account configuration service allows for
+individualized setups. It also allows to enforce a specific policy, which for
+example configures the mail client to use a specific authentication mechanism.
+Quering the DNS for mail service locations allows for generic instructions, but
+it doesn't give as much control over settings as a specialized service like
+automx2 will do.
 
 As it stands to today there are four methods that help configuring a mail
-account. Three of them – <<autoconfig>>, <<autodiscover>> and <<mobileconfig>> –
-have been developed by vendors to cover their products specific needs. The
+account. Three of them – <<autoconfig>>, <<autodiscover>> and <<mobileconfig>>
+– have been developed by vendors to cover their products specific needs. The
 fourth is an RFC standard specifying the aformentioned more general <<srv>>
 method.
 
@@ -46,8 +46,8 @@ list of URIs to search for a configuration web service in the following order:
 
 [source,terminal]
 ----
-https://autoconfig.thunderbird.net/v1.1/$DOMAINPART        # <1>
-https://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=$MAILADDRESS    # <2>
+https://autoconfig.thunderbird.net/v1.1/$DOMAINPART # <1>
+https://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=$MAILADDRESS # <2>
 https://$DOMAINPART/.well-known/autoconfig/mail/config-v1.1.xml
 http://autoconfig.thunderbird.net/v1.1/$DOMAINPART
 http://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=$MAILADDRESS
@@ -81,7 +81,7 @@ it can't find a web service, it will search the DNS for a redirect:
 
 [source,terminal]
 ----
-https://$DOMAINPART/autodiscover/autodiscover.xml       # <1>
+https://$DOMAINPART/autodiscover/autodiscover.xml  # <1>
 https://autodiscover.$DOMAINPART/autodiscover/autodiscover.xml
 http://autodiscover.$DOMAINPART/autodiscover/autodiscover.xml
 dns: autodiscover.$DOMAINPART
@@ -112,6 +112,7 @@ configuration service on port `443`.
 === mobileconfig
 
 TODO
+
 
 [[srv]]
 === DNS SRV Records
