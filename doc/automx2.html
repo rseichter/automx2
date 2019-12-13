@@ -814,8 +814,8 @@ application terminates.</p>
 </table>
 </div>
 <div class="paragraph">
-<p>When started automx2 looks for runtime configuration instructions at these
-locations:</p>
+<p>During startup automx2 looks for runtime configuration instructions in
+the following locations:</p>
 </div>
 <div id="configurationlocations" class="listingblock">
 <div class="content">
@@ -830,8 +830,8 @@ locations:</p>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>If this environment variable exists, it will be used. The value must point
-to a location where automx2 can read configuration from. It will proceed if
-it can&#8217;t find the file at the moment.</td>
+to a location where automx2 can read configuration from. If the specified
+file does not exist, the search will continue.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -911,7 +911,7 @@ user@example.com:</p>
 </div>
 <div class="paragraph">
 <p>Make sure to use quotes as shown, or your shell might attempt some pattern matching
-(FISH definitely does).</p>
+(<a href="https://fishshell.com">FISH</a> definitely does).</p>
 </div>
 </div>
 <div class="sect2">
@@ -1000,8 +1000,13 @@ EOT</span></code></pre>
 <div class="paragraph">
 <p>You can download the script from
 <a href="https://gitlab.com/automx/automx2/blob/master/contrib/sqlite-generate.sh">contrib/sqlite-generate.sh</a>,
-adapt the "User configurable section" and pipe the scripts output into the
-<code>sqlite3</code> command like this:</p>
+adapt the marked user-configurable section, and pipe the script&#8217;s output
+directly into the <code>sqlite3</code> command:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="terminal"><span class="go">contrib/sqlite-generate.sh | sqlite3 /var/lib/automx2/db.sqlite</span></code></pre>
+</div>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -1012,18 +1017,13 @@ adapt the "User configurable section" and pipe the scripts output into the
 <td class="content">
 <div class="title">Placeholders</div>
 <div class="paragraph">
-<p>See Mozilla&#8217;s
-<a href="https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat#Placeholders">Thunderbird:Autoconfiguration:ConfigFileFormat</a>
-for a documentation of available placeholders like <code>%EMAILLOCALPART%</code>.</p>
+<p>Mozilla&#8217;s wiki contains a document describing the available
+<a href="https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat#Placeholders">placeholders</a>
+like <code>%EMAILLOCALPART%</code>.</p>
 </div>
 </td>
 </tr>
 </table>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="go">contrib/sqlite-generate.sh | sqlite3 /var/lib/automx2/db.sqlite</span></code></pre>
-</div>
 </div>
 <div class="paragraph">
 <p>Once you have populated the database automx2 is ready to run.</p>
@@ -1032,7 +1032,7 @@ for a documentation of available placeholders like <code>%EMAILLOCALPART%</code>
 <div class="sect2">
 <h3 id="runningautomx2"><a class="anchor" href="#runningautomx2"></a>4.4. Running automx2</h3>
 <div class="paragraph">
-<p>Change as the user that should run automx2 into the virtual environment
+<p>While logged in as an unprivileged user, change into the installation
 directory and start the <code>contrib/flask.sh</code> script:</p>
 </div>
 <div class="listingblock">
@@ -1045,11 +1045,14 @@ contrib/flask.sh run</span></code></pre>
 <p>This will start the flask service listening on IP address <code>127.0.0.1</code> and port
 <code>5000</code>. These are the standard values for Flask and might collide with other
 software you have installed. We therefore recommend that you use the parameters
-<code>--host</code> and <code>--port</code> to override the defaults:</p>
+<code>--host</code> and <code>--port</code> to override the defaults.</p>
+</div>
+<div class="paragraph">
+<p>The typical launch command is this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="go">flask.sh run --host=192.0.2.1 --port=1234</span></code></pre>
+<pre class="rouge highlight"><code data-lang="terminal"><span class="go">flask.sh run --host=127.0.0.1 --port=4243</span></code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -1215,7 +1218,7 @@ mailing list.</p>
 <div id="footer">
 <div id="footer-text">
 Version 2019.0<br>
-Last updated 2019-12-13 14:17:55 +0100
+Last updated 2019-12-13 14:25:24 +0100
 </div>
 </div>
 <style>

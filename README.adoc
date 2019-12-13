@@ -33,7 +33,7 @@ automx2 comes with documentation that explains how automated mail account
 configuration works, how automx2 works and how you install and configure
 automx2.
 
-All documentation is stored in the link:doc/automx2.adoc[] subdirectory. You
+All link:doc/automx2.adoc[documentation] is stored in the `doc` subdirectory. You
 can read it file by file using a text reader or all files as one if you point
 your browser to +automx2.html+.
 
