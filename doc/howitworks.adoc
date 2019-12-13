@@ -1,6 +1,6 @@
 == How does automx2 work?
 
-automx2 is a webservice. It sits behind a web server and waits for
+automx2 is a webservice. It sits behind a web server, e.g. NGINX, and waits for
 configuration requests. When a mail client requests configuration it contacts
 the web server. The web server then acts as a proxy and forwards all requests
 to the web service aka automx2.
