@@ -1,0 +1,204 @@
+== Configuring automx2
+
+automx2 uses a file to read runtime instructions from and a database to lookup
+mail account configuration data.
+
+
+=== Runtime configuration
+
+The configuration file defines automx2' runtime behaviour and it specifies the
+backend automx2 should read mailbox account configuration data from.
+
+[NOTE]
+.Running without runtime config
+====
+If you launch automx2 without a configuration file, it will use internal
+defaults. These are suitable for testing only. Launched without a config it
+will use an in-memory sqlite database and all data will be lost once the
+application terminates.
+====
+
+When started automx2 looks for runtime configuration instructions at these
+locations:
+
+[[configurationlocations]]
+[source,txt]
+----
+AUTOMX2_CONF  // <1>
+~/.automx2.conf  // <2>
+/etc/automx2/automx2.conf
+/etc/automx2.conf
+----
+
+<1> If this environment variable exists, it will be used. The value must point
+    to a location where automx2 can read configuration from.
+<2> If automx2 finds `.automx2.conf` in the `$HOME` of the user that runs
+    automx2, it will be used.
+
+To specify parameters and options automx2 uses an
+link:https://docs.python.org/3.7/library/configparser.html#supported-ini-file-structure[INI]-style
+configuration syntax. The
+link:https://gitlab.com/automx/automx2/raw/master/contrib/automx2-sample.conf[example
+configuration] that ships with automx2 looks like this:
+
+[source,ini]
+----
+include::../contrib/automx2-sample.conf[]
+----
+
+Place the content of the example configuration into one of the configuration
+locations automx2 looks for and adapt it to your needs. Then configure the
+database backend with data that suits your setup.
+
+
+=== Testing standalone automx2
+
+If you want to verify a vanilla install of automx2 works you can populate it
+with the (internal) test data. Start it as described in section
+<<runningautomx2>> and send the following request to populate your database
+with the internal test data:
+
+[source,terminal]
+----
+curl http://127.0.0.1:4243/initdb/  # <1>
+----
+
+<1> This example assumes you are running automx on localhost listening on port
+    `4243`.
+
+Once you have populated the database with sample data you can test if automx2
+works. Use curl to send an account configuration request for
++user@example.test+:
+
+[source,terminal]
+----
+curl 'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=user@example.test'
+----
+
+
+=== Database configuration
+
+automx2 uses the SQLAlchemy toolkit to access databases. This allows to let
+automx2 use a great variety of databases aka
+link:https://docs.sqlalchemy.org/en/13/dialects/[dialects].
+
+[NOTE]
+====
+While you probably already have SQLite support available on your local machine,
+you may need to install additional Python packages for PostgreSQL, MySQL, etc.
+Detailed instructions to support a particular database dialect are out of scope
+for this document, but there are numerous guides available.
+====
+
+This section demonstrates what you need to do to in order to use a sqllite
+database as backend for automx2.
+
+[NOTE]
+.Editing account configuration data
+====
+At the moment you will need to add database entries manually. We plan to change
+this in an upcoming version.
+====
+
+You may use a helper script to populate your database with account
+configuration data. Change the script's user-configurable section to reflect
+your domain and server names, then run the script to generate the necessary SQL
+statements:
+
+[source,bash]
+----
+include::../contrib/sqlite-generate.sh[]
+----
+
+You can download the script from
+link:https://gitlab.com/automx/automx2/blob/master/contrib/sqlite-generate.sh[contrib/sqlite-generate.sh],
+adapt the "User configurable section" and pipe the scripts output into your
+`sqlite3` database like this:
+
+[source,terminal]
+----
+contrib/sqlite-generate.sh | sqlite3 /var/lib/automx2/db.sqlite
+----
+
+Once you have populated the database automx2 is ready to run.
+
+
+[[runningautomx2]]
+=== Running automx2
+
+Change as the user that should run automx into the virtual environment
+directory and start the `contrib/flask.sh` script:
+
+[source,terminal]
+----
+cd /srv/web/automx2
+contrib/flask.sh run
+----
+
+This will start the flask service listening on `localhost` and port `5000`.
+Alternatively use the command line variables `--host` and `--port` to override
+the defaults like this:
+
+[source,terminal]
+----
+flask.sh run --host=127.0.0.2 --port=1234
+----
+
+Now that automx2 is up and running, you need to configure the web server proxy
+that will receive requests from the outside and forwards them to automx2.
+
+
+=== Configuring a web server
+
+While it is technically possible to run automx2 without a web server sitting in
+front of it we don't recommend to do that in production. A web server can
+provide features automx2 does not and will never have. Features such as
+transport layer encryption aka `HTTPS` or, for example, the capability to rate
+limiting clients.
+
+This section will explain how to configure a web server so that it sits as
+proxy in front of automx2. But before you create the proxy you need to tell
+automx2 it sits behind one. Add the `proxy_count` parameter to your automx2
+configuration file or uncomment the parameter if it is already there:
+
+[source,ini]
+----
+[automx2]
+# A typical production setup would use loglevel = WARNING
+loglevel = WARNING
+
+# Echo SQL commands into log? Used for debugging.
+db_echo = no
+
+# SQLite database in a UNIX-like file system
+db_uri = sqlite:////var/lib/automx2/db.sqlite
+
+# Number of proxy servers between automx2 and the client (default: 0).
+# If your logs only show 127.0.0.1 or ::1 as the source IP for incoming
+# connections, proxy_count probably needs to be changed.
+proxy_count = 1  # <1>
+----
+
+<1> Set the number to reflect the chain of proxies in front of automx2.
+
+
+==== nginx
+
+The following example establishes a `HTTP` server, which will listen on port
+`80` for requests to either `autoconfig.example.com` or
+`autodiscover.example.com`. All requests will be forwarded (proxy) to automx2,
+which listens on `127.0.0.1` on port `4243` in this example. Requests to
+`/initdb` are restricted to clients from `127.0.0.1` only. The
+`proxy_set_header` options are useful for logging and debugging.
+
+[source,nginx]
+----
+include::../contrib/nginx-sample.conf[]
+----
+
+
+==== Apache
+
+TODO
+
+// vim: set ft=asciidoc:

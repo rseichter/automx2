@@ -1,0 +1,58 @@
+= automx2: Email client configuration made easy
+:keywords: autoconfig, autodiscover, mobileconfig, automx, automx2
+:author: Patrick Ben Koetter
+:email: p@sys4.de
+:subject: automx2: Email client configuration made easy
+:revnumber: 1.0.0
+:revdate: 13.12.2019
+:copyright: (C) sys4 AG
+:publisher: sys4 AG
+:lang: en
+:hyphens: en
+:encoding: UTF-8
+:pdf-version: 1.7
+:toc:
+:toclevels: 3
+:sectnums:
+:sectanchors:
+:pagenums:
+:icons: font
+:title-page:
+:media: print
+:source-highlighter: rouge
+:rouge-style: base16.solarized.light
+:asciidoctor-diagram:
+
+This document explains how automx2 works, how <<automatedmailboxconfiguration,
+Automated Mailbox Configuration>> works and what it takes to install and
+configure automx2. If you are already familiar with automated mailbox
+configuration methods you may want skip the following sections and jump right
+ahead to <<automx2installation>> and <<automx2setup>>.
+
+
+[[howitworks]]
+include::howitworks.adoc[]
+
+[[automatedmailboxconfiguration]]
+include::mailaccountconfig.adoc[]
+
+[[automx2installation]]
+include::installation.adoc[]
+
+[[automx2setup]]
+include::configuration.adoc[]
+
+
+== About automx2
+
+The project resides as https://gitlab.com/automx/automx2[automx/automx2] on
+GitLab. Please use the projects https://gitlab.com/automx/automx2/issues[issue
+tracker] if you find bugs. To discuss usage and other topics join us on the
+https://mail.sys4.de/cgi-bin/mailman/listinfo/automx-users[automx-users]
+mailing list.
+
+automx2 was written by https://gitlab.com/rseichter[Ralph Seichter] for
+https://sys4.de[sys4 AG]. It has 100% test coverage and is mirrored to
+https://github.com/rseichter/automx2[rseichter/automx2] on GitHub.
+
+// vim: set ft=asciidoc:
