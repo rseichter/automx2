@@ -169,9 +169,9 @@ layer encryption aka `HTTPS` or, for example, the capability to rate-limit clien
 are handled very well by full-fledged web servers working as reverse proxies. It
 would be a waste to re-implement all this in a web service.
 
-This section will explain how to configure a web server as a reverse
-proxy in front of automx2. But before you set up the proxy you need to tell
-automx2 it operates behind one. Add the `proxy_count` parameter to your automx2
+This section will explain how to configure a web server as a reverse proxy in
+front of automx2. Before you set up the proxy you need to tell automx2 it
+operates behind one. Add the `proxy_count` parameter to your automx2
 configuration file or uncomment the parameter if it is already there:
 
 [source,ini]
