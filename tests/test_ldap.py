@@ -20,10 +20,11 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
 import unittest
 
+from automx2.generators.apple import AppleGenerator
 from automx2.generators.mozilla import MozillaGenerator
 from automx2.ldap import LdapAccess
 from automx2.ldap import LookupResult
-from automx2.ldap import STATUS_BIND_FAILED
+from automx2.ldap import STATUS_ERROR
 from automx2.ldap import STATUS_NO_MATCH
 from automx2.ldap import STATUS_SUCCESS
 from automx2.model import Ldapserver
@@ -39,7 +40,10 @@ from tests.base import app
 
 class LdapTests(TestCase):
     """Tests for LDAP access methods."""
-    EXISTS = 'a@example.com'
+    EXISTS_LOCAL = 'a'
+    EXISTS_DOMAIN = 'example.com'
+    EXISTS_EMAIL = f'{EXISTS_LOCAL}@{EXISTS_DOMAIN}'
+    EXISTS_CN = 'John Doe'
     EXISTS_UID = 'jd'
     UNIQUE = unique()
     ATTRIBUTES = {'attributes': {'x': [UNIQUE]}}
@@ -61,25 +65,31 @@ class LdapTests(TestCase):
     @unittest.skip  # Avoid triggering fail2ban
     def test_bind_failed(self):
         self.ldap = LdapAccess(hostname=LDAP_HOSTNAME, user=LDAP_BIND_USER, password=self.UNIQUE)
-        x: LookupResult = self.ldap.lookup(LDAP_SEARCH_BASE, self.search_filter(self.EXISTS))
-        self.assertEqual(STATUS_BIND_FAILED, x.status)
+        x: LookupResult = self.ldap.lookup(LDAP_SEARCH_BASE, self.search_filter(self.EXISTS_EMAIL))
+        self.assertEqual(STATUS_ERROR, x.status)
 
     def test_does_not_exist(self):
         x: LookupResult = self.ldap.lookup(LDAP_SEARCH_BASE, self.search_filter(self.UNIQUE))
         self.assertEqual(STATUS_NO_MATCH, x.status)
 
     def test_exists(self):
-        x: LookupResult = self.ldap.lookup(LDAP_SEARCH_BASE, self.search_filter(self.EXISTS))
+        x: LookupResult = self.ldap.lookup(LDAP_SEARCH_BASE, self.search_filter(self.EXISTS_EMAIL), attr_cn='cn')
         self.assertEqual(STATUS_SUCCESS, x.status)
+        self.assertEqual(self.EXISTS_CN, x.cn)
         self.assertEqual(self.EXISTS_UID, x.uid)
+
+    def test_apple_generator_ldap(self):
+        with app.app_context():
+            gen = AppleGenerator()
+            gen.client_config(self.EXISTS_LOCAL, self.EXISTS_DOMAIN, '', '')
 
     def test_mozilla_generator_ldap(self):
         with app.app_context():
             server = Ldapserver.query.filter_by(id=LDAP_PORT).one()
-            mg = MozillaGenerator()
-            x = mg._ldap_lookup(self.EXISTS, server)
+            gen = MozillaGenerator()
+            x = gen._ldap_lookup(self.EXISTS_EMAIL, server)
             self.assertEqual(STATUS_SUCCESS, x.status)
-            y = mg._ldap_lookup(self.UNIQUE, server)
+            y = gen._ldap_lookup(self.UNIQUE, server)
             self.assertEqual(STATUS_NO_MATCH, y.status)
 
 

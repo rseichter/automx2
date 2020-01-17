@@ -20,14 +20,13 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
 from collections import namedtuple
 
-from ldap3 import ALL_ATTRIBUTES
 from ldap3 import Connection
 from ldap3 import Server
 
 from automx2 import log
 
 STATUS_SUCCESS = 0
-STATUS_BIND_FAILED = 1
+STATUS_ERROR = 1
 STATUS_NO_MATCH = 2
 
 LookupResult = namedtuple('LookupResult', 'status cn uid')
@@ -41,13 +40,16 @@ class LdapAccess:
     def lookup(self, search_base: str, search_filter: str, attr_uid='uid', attr_cn=None) -> LookupResult:
         if not self._connection.bind():  # pragma: no cover (bind errors are not expected during unittests)
             log.error(f'LDAP bind failed: {self._connection.result}')
-            return LookupResult(STATUS_BIND_FAILED, None, None)
-        self._connection.search(search_base, search_filter, attributes=ALL_ATTRIBUTES, size_limit=1)
+            return LookupResult(STATUS_ERROR, None, None)
+        attributes = [attr_uid]
+        if attr_cn:
+            attributes.append(attr_cn)
+        self._connection.search(search_base, search_filter, attributes=attributes, size_limit=1)
         if self._connection.response:
-            entry = self._connection.response[0]
-            log.debug(f'LDAP match {entry["dn"]}')
-            cn = self.get_attribute(entry, attr_cn)
-            uid = self.get_attribute(entry, attr_uid)
+            ldap_entry = self._connection.response[0]
+            log.debug(f'LDAP match {ldap_entry["dn"]}')
+            cn = self.get_attribute(ldap_entry, attr_cn)
+            uid = self.get_attribute(ldap_entry, attr_uid)
             result = LookupResult(STATUS_SUCCESS, cn, uid)
         else:
             log.warning(f'No LDAP match for filter {search_filter}')
@@ -57,11 +59,11 @@ class LdapAccess:
         return result
 
     @staticmethod
-    def get_attribute(entry: dict, attribute_name: str):
-        attributes = entry['attributes']
-        if attribute_name and attribute_name in attributes:
-            value = attributes[attribute_name]
+    def get_attribute(ldap_entry: dict, attribute: str):
+        attributes = ldap_entry['attributes']
+        if attribute and attribute in attributes:
+            value = attributes[attribute]
             return value[0]
-        elif attribute_name:
-            log.warning(f"Attribute '{attribute_name}' not found")
+        elif attribute:
+            log.warning(f"Attribute '{attribute}' not found")
         return None

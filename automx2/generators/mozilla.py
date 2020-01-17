@@ -23,13 +23,11 @@ from xml.etree.ElementTree import SubElement
 from xml.etree.ElementTree import tostring
 
 from automx2 import InvalidServerType
-from automx2 import LdapLookupError
 from automx2 import log
 from automx2.generators import ConfigGenerator
 from automx2.generators import branded_id
 from automx2.ldap import LookupResult
 from automx2.ldap import STATUS_NO_MATCH
-from automx2.ldap import STATUS_SUCCESS
 from automx2.model import Domain
 from automx2.model import Provider
 from automx2.model import Server
@@ -62,10 +60,8 @@ class MozillaGenerator(ConfigGenerator):
             if domain.ldapserver:
                 email_address = f'{user_name}@{domain_name}'
                 lookup_result: LookupResult = self._ldap_lookup(email_address, domain.ldapserver)
-                if lookup_result.status == STATUS_NO_MATCH:
+                if lookup_result.status == STATUS_NO_MATCH:  # pragma: no cover
                     return ''
-                elif lookup_result.status != STATUS_SUCCESS:
-                    raise LdapLookupError(f'LDAP lookup for <{email_address}> returned status {lookup_result.status}')
             else:
                 lookup_result = None
             provider: Provider = domain.provider

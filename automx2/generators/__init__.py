@@ -19,8 +19,10 @@ You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
 from automx2 import IDENTIFIER
+from automx2 import LdapLookupError
 from automx2.ldap import LdapAccess
 from automx2.ldap import LookupResult
+from automx2.ldap import STATUS_ERROR
 from automx2.model import Ldapserver
 
 
@@ -36,5 +38,8 @@ class ConfigGenerator:
     def _ldap_lookup(email_address: str, server: Ldapserver) -> LookupResult:
         ldap = LdapAccess(server.name, port=server.port, use_ssl=server.use_ssl,
                           user=server.bind_user, password=server.bind_password)
-        _filter = server.search_filter.format(email_address)
-        return ldap.lookup(server.search_base, _filter)
+        r = ldap.lookup(server.search_base, server.search_filter.format(email_address),
+                        attr_cn=server.attr_cn, attr_uid=server.attr_uid)
+        if r.status == STATUS_ERROR:  # pragma: no cover
+            raise LdapLookupError('LDAP bind failed')
+        return r

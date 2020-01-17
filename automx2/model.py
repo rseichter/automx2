@@ -116,7 +116,7 @@ def populate_db():
     db.session.add_all([bigcorp, eggs, other])
 
     ldaps = Ldapserver(id=2000, name=from_environ('LDAP_HOSTNAME', sample_server_names['ldap']),
-                       port=636, use_ssl=True, attr_uid='uid',
+                       port=636, use_ssl=True, attr_uid='uid', attr_cn='cn',
                        bind_password=from_environ('LDAP_BIND_PASSWORD'),
                        bind_user=from_environ('LDAP_BIND_USER'),
                        search_base=from_environ('LDAP_SEARCH_BASE', 'dc=example,dc=com'),

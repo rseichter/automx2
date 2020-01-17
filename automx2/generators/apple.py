@@ -29,6 +29,8 @@ from automx2 import NoProviderForDomain
 from automx2 import NoServersForDomain
 from automx2.generators import ConfigGenerator
 from automx2.generators import branded_id
+from automx2.ldap import LookupResult
+from automx2.ldap import STATUS_NO_MATCH
 from automx2.model import Domain
 from automx2.model import Provider
 from automx2.model import Server
@@ -165,6 +167,13 @@ class AppleGenerator(ConfigGenerator):
             raise NoProviderForDomain(f'No provider for domain "{domain_part}"')
         if not domain.servers:
             raise NoServersForDomain(f'No servers for domain "{domain_part}"')
+        if domain.ldapserver:
+            email_address = f'{local_part}@{domain_part}'
+            lookup_result: LookupResult = self._ldap_lookup(email_address, domain.ldapserver)
+            if lookup_result.status == STATUS_NO_MATCH:  # pragma: no cover
+                return ''
+        else:
+            lookup_result = None
         inner, outer = _payload(local_part, domain_part)
         for server in domain.servers:
             if server.type not in TYPE_DIRECTION_MAP:
@@ -175,6 +184,8 @@ class AppleGenerator(ConfigGenerator):
             inner[f'{direction}MailServerUsername'] = server.user_name
             inner[f'{direction}MailServerAuthentication'] = _map_authentication(server)
             inner[f'{direction}MailServerUseSSL'] = _map_socket_type(server)
+        if lookup_result and lookup_result.cn:
+            realname = lookup_result.cn
         inner['EmailAccountName'] = realname
         _sanitise(outer, local_part, domain_part)
         plist = Element('plist', attrib={'version': '1.0'})
