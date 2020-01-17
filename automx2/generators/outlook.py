@@ -57,7 +57,7 @@ class OutlookGenerator(ConfigGenerator):
         SubElement(element, 'Type').text = TYPE_MAP[server.type]
         SubElement(element, 'Server').text = server.name
         SubElement(element, 'Port').text = str(server.port)
-        SubElement(element, 'LoginName').text = self.pick_value(server.user_name, override_uid)
+        SubElement(element, 'LoginName').text = self.pick_one(server.user_name, override_uid)
         SubElement(element, 'SSL').text = self.on_off('SSL' == server.authentication)
         SubElement(element, 'AuthRequired').text = self.on_off(True)
 

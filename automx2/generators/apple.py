@@ -182,7 +182,7 @@ class AppleGenerator(ConfigGenerator):
             direction = TYPE_DIRECTION_MAP[server.type]
             inner[f'{direction}MailServerHostName'] = server.name
             inner[f'{direction}MailServerPortNumber'] = server.port
-            inner[f'{direction}MailServerUsername'] = self.pick_value(server.user_name, lookup_result.uid)
+            inner[f'{direction}MailServerUsername'] = self.pick_one(server.user_name, lookup_result.uid)
             inner[f'{direction}MailServerAuthentication'] = _map_authentication(server)
             inner[f'{direction}MailServerUseSSL'] = _map_socket_type(server)
         inner['EmailAccountName'] = lookup_result.cn

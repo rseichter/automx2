@@ -36,6 +36,8 @@ class ConfigGenerator:
 
     @staticmethod
     def _ldap_lookup(email_address: str, server: Ldapserver) -> LookupResult:
+        if not (server and server.name):
+            raise LdapLookupError('No LDAP server specified')
         ldap = LdapAccess(server.name, port=server.port, use_ssl=server.use_ssl,
                           user=server.bind_user, password=server.bind_password)
         r = ldap.lookup(server.search_base, server.search_filter.format(email_address),
@@ -45,7 +47,7 @@ class ConfigGenerator:
         return r
 
     @staticmethod
-    def pick_value(low_prio, high_prio):
-        if high_prio:
-            return high_prio
-        return low_prio
+    def pick_one(low_prio_value, high_prio_value):
+        if high_prio_value:
+            return high_prio_value
+        return low_prio_value

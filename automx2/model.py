@@ -39,7 +39,7 @@ SERVERLESS_DOMAIN = 'serverless.tld'
 
 LDAP_BIND_PASSWORD = from_environ('LDAP_BIND_PASSWORD')
 LDAP_BIND_USER = from_environ('LDAP_BIND_USER')
-LDAP_HOSTNAME = from_environ('LDAP_HOSTNAME', 'wedjat.horus-it.com')
+LDAP_HOSTNAME = from_environ('LDAP_HOSTNAME')
 LDAP_PORT = from_environ('LDAP_PORT', 636)
 LDAP_SEARCH_BASE = from_environ('LDAP_SEARCH_BASE', 'dc=example,dc=com')
 
@@ -120,13 +120,16 @@ def populate_db():
     other = Provider(id=i, name=OTHER_NAME, short_name=OTHER_SHORT)
     db.session.add_all([bigcorp, eggs, other])
 
-    ldaps = Ldapserver(id=2000, name=LDAP_HOSTNAME, port=LDAP_PORT, use_ssl=True, attr_uid='uid', attr_cn='cn',
-                       bind_password=LDAP_BIND_PASSWORD, bind_user=LDAP_BIND_USER, search_base=LDAP_SEARCH_BASE,
-                       search_filter='(mail={0})')
-    db.session.add_all([ldaps])
+    if LDAP_HOSTNAME:
+        ls = Ldapserver(id=2000, name=LDAP_HOSTNAME, port=LDAP_PORT, use_ssl=True, attr_uid='uid', attr_cn='cn',
+                        bind_password=LDAP_BIND_PASSWORD, bind_user=LDAP_BIND_USER, search_base=LDAP_SEARCH_BASE,
+                        search_filter='(mail={0})')
+        db.session.add_all([ls])
+    else:
+        ls = None
 
     i = 3000
-    ex_com = Domain(id=i, name=EXAMPLE_COM, provider=bigcorp, ldapserver=ldaps)
+    ex_com = Domain(id=i, name=EXAMPLE_COM, provider=bigcorp, ldapserver=ls)
     i += 1
     ex_net = Domain(id=i, name=EXAMPLE_NET, provider=bigcorp)
     i += 1

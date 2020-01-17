@@ -46,7 +46,7 @@ class MozillaGenerator(ConfigGenerator):
         SubElement(element, 'hostname').text = server.name
         SubElement(element, 'port').text = str(server.port)
         SubElement(element, 'socketType').text = server.socket_type
-        SubElement(element, 'username').text = self.pick_value(server.user_name, override_uid)
+        SubElement(element, 'username').text = self.pick_one(server.user_name, override_uid)
         SubElement(element, 'authentication').text = server.authentication
 
     def client_config(self, user_name, domain_name: str, realname: str, password: str) -> str:
