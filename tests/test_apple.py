@@ -1,5 +1,5 @@
 """
-Copyright © 2019 Ralph Seichter
+Copyright © 2019-2020 Ralph Seichter
 
 Graciously sponsored by sys4 AG <https://sys4.de/>
 

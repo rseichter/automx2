@@ -1,5 +1,5 @@
 """
-Copyright © 2019 Ralph Seichter
+Copyright © 2019-2020 Ralph Seichter
 
 Graciously sponsored by sys4 AG <https://sys4.de/>
 
@@ -45,7 +45,7 @@ setuptools.setup(
         ('scripts', ['contrib/setupvenv.sh']),
     ],
     classifiers=[
-        'Development Status :: 4 - Beta',
+        'Development Status :: 5 - Production/Stable',
         'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 3',

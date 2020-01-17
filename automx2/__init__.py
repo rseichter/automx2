@@ -1,5 +1,5 @@
 """
-Copyright © 2019 Ralph Seichter
+Copyright © 2019-2020 Ralph Seichter
 
 Graciously sponsored by sys4 AG <https://sys4.de/>
 
@@ -21,7 +21,7 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 import logging
 
 IDENTIFIER = 'automx2'  # Do not change this!
-VERSION = '2019.0.1'
+VERSION = '2020.0'
 
 PLACEHOLDER_ADDRESS = r'%EMAILADDRESS%'
 PLACEHOLDER_DOMAIN = r'%EMAILDOMAIN%'
