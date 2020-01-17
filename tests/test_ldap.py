@@ -39,8 +39,10 @@ from tests.base import app
 
 class LdapTests(TestCase):
     """Tests for LDAP access methods."""
-    UNIQUE = unique()
     EXISTS = 'a@example.com'
+    EXISTS_UID = 'jd'
+    UNIQUE = unique()
+    ATTRIBUTES = {'attributes': {'x': [UNIQUE]}}
 
     @staticmethod
     def search_filter(email_address):
@@ -49,6 +51,12 @@ class LdapTests(TestCase):
     def setUp(self) -> None:
         super().setUp()
         self.ldap = LdapAccess(hostname=LDAP_HOSTNAME, user=LDAP_BIND_USER, password=LDAP_BIND_PASSWORD, use_ssl=True)
+
+    def test_attribute_exists(self):
+        self.assertEqual(self.UNIQUE, self.ldap.get_attribute(self.ATTRIBUTES, 'x'))
+
+    def test_attribute_missing(self):
+        self.assertIsNone(self.ldap.get_attribute(self.ATTRIBUTES, 'y'))
 
     @unittest.skip  # Avoid triggering fail2ban
     def test_bind_failed(self):
@@ -63,6 +71,7 @@ class LdapTests(TestCase):
     def test_exists(self):
         x: LookupResult = self.ldap.lookup(LDAP_SEARCH_BASE, self.search_filter(self.EXISTS))
         self.assertEqual(STATUS_SUCCESS, x.status)
+        self.assertEqual(self.EXISTS_UID, x.uid)
 
     def test_mozilla_generator(self):
         with app.app_context():

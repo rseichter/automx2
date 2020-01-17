@@ -39,7 +39,7 @@ class LdapAccess:
         self._connection = Connection(self._server, lazy=False, user=user, password=password)
 
     def lookup(self, search_base: str, search_filter: str) -> LookupResult:
-        if not self._connection.bind():
+        if not self._connection.bind():  # pragma: no cover (bind errors are not expected during unittests)
             log.error(f'LDAP bind failed: {self._connection.result}')
             return LookupResult(STATUS_BIND_FAILED, None, None)
         self._connection.search(search_base, search_filter, attributes=ALL_ATTRIBUTES, size_limit=1)

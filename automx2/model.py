@@ -123,7 +123,6 @@ def populate_db():
 
     i = 3000
     ex_com = Domain(id=i, name=EXAMPLE_COM, provider=bigcorp, ldapserver=ldaps)
-    # ex_com = Domain(id=i, name=EXAMPLE_COM, provider=bigcorp)
     i += 1
     ex_net = Domain(id=i, name=EXAMPLE_NET, provider=bigcorp)
     i += 1
