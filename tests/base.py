@@ -38,9 +38,9 @@ from automx2.views import EMAIL_OUTLOOK
 
 LDAP_BIND_PASSWORD = from_environ('LDAP_BIND_PASSWORD')
 LDAP_BIND_USER = from_environ('LDAP_BIND_USER')
-LDAP_HOSTNAME = from_environ('LDAP_HOSTNAME')
+LDAP_HOSTNAME = from_environ('LDAP_HOSTNAME', 'ldap.example.com')
 LDAP_PORT = from_environ('LDAP_PORT', 636)
-LDAP_SEARCH_BASE = from_environ('LDAP_SEARCH_BASE', 'ou=People,dc=horus-it,dc=com')
+LDAP_SEARCH_BASE = from_environ('LDAP_SEARCH_BASE', 'dc=example,dc=com')
 
 
 def body(response: Response) -> str:
