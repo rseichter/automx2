@@ -11,19 +11,19 @@ INSERT INTO provider VALUES(1001,'Ham & Eggs','H+E');
 INSERT INTO provider VALUES(1002,'Some Other Provider','SOP');
 CREATE TABLE server (
 	id INTEGER NOT NULL, 
+	name VARCHAR NOT NULL, 
 	port INTEGER NOT NULL, 
 	type VARCHAR NOT NULL, 
-	name VARCHAR NOT NULL, 
 	socket_type VARCHAR NOT NULL, 
 	user_name VARCHAR NOT NULL, 
 	authentication VARCHAR NOT NULL, 
 	PRIMARY KEY (id)
 );
-INSERT INTO server VALUES(4000,587,'smtp','primary-smtp.3eafb80a87534a06b5d7c33ae6d86171.com','STARTTLS','%EMAILADDRESS%','plain');
-INSERT INTO server VALUES(4001,587,'smtp','secondary-smtp.de759f926a7f42758b70d5ba7d4caabe.com','STARTTLS','%EMAILADDRESS%','plain');
-INSERT INTO server VALUES(4002,143,'imap','imap1.0b23758ef27941d996d44d74a3542f75.com','STARTTLS','%EMAILADDRESS%','plain');
-INSERT INTO server VALUES(4003,143,'imap','imap2.63dcd91a5e07468a8592473663d24ebd.com','STARTTLS','%EMAILADDRESS%','plain');
-INSERT INTO server VALUES(4004,123,'INVALID','43a78ce21f144c3daf119223c018ce18.ham-n-eggs.tld','STARTTLS','%EMAILADDRESS%','plain');
+INSERT INTO server VALUES(4000,'primary-smtp.fb994de7a5474925bb88e8efbabfe645.com',587,'smtp','STARTTLS','%EMAILADDRESS%','plain');
+INSERT INTO server VALUES(4001,'secondary-smtp.4ed56b729c1144ab9a9b69f200f1df00.com',587,'smtp','STARTTLS','%EMAILADDRESS%','plain');
+INSERT INTO server VALUES(4002,'imap1.61fcba7ba3a24141930d5e859960ed60.com',143,'imap','STARTTLS','%EMAILADDRESS%','plain');
+INSERT INTO server VALUES(4003,'imap2.4c94160e7d5d4f8690f1f6b8080f9250.com',143,'imap','STARTTLS','%EMAILADDRESS%','plain');
+INSERT INTO server VALUES(4004,'f4c7e165569b4dcf8925777b2abdf1e1.ham-n-eggs.tld',123,'INVALID','STARTTLS','%EMAILADDRESS%','plain');
 CREATE TABLE ldapserver (
 	id INTEGER NOT NULL, 
 	name VARCHAR NOT NULL, 
@@ -38,23 +38,23 @@ CREATE TABLE ldapserver (
 	PRIMARY KEY (id), 
 	CHECK (use_ssl IN (0, 1))
 );
-INSERT INTO ldapserver VALUES(2000,'ldap.example.com',636,1,'ou=People,dc=example,dc=com','(mail={0})','uid','cn','SECRET','cn=automx2,dc=example,dc=com');
+INSERT INTO ldapserver VALUES(2000,'ldap.example.com',636,1,'ou=People,dc=example,dc=com','(mail={0})','uid','cn','secret','cn=automx2,ou=Tech,dc=example,dc=com');
 CREATE TABLE domain (
 	id INTEGER NOT NULL, 
+	name VARCHAR NOT NULL, 
 	provider_id INTEGER NOT NULL, 
 	ldapserver_id INTEGER, 
-	name VARCHAR NOT NULL, 
 	PRIMARY KEY (id), 
+	UNIQUE (name), 
 	FOREIGN KEY(provider_id) REFERENCES provider (id), 
-	FOREIGN KEY(ldapserver_id) REFERENCES ldapserver (id), 
-	UNIQUE (name)
+	FOREIGN KEY(ldapserver_id) REFERENCES ldapserver (id)
 );
-INSERT INTO domain VALUES(3000,1000,2000,'example.com');
-INSERT INTO domain VALUES(3001,1000,NULL,'example.net');
-INSERT INTO domain VALUES(3002,1000,NULL,'example.org');
-INSERT INTO domain VALUES(3003,1001,NULL,'ham-n-eggs.tld');
-INSERT INTO domain VALUES(3004,-3004,NULL,'orphan.tld');
-INSERT INTO domain VALUES(3005,1002,NULL,'serverless.tld');
+INSERT INTO domain VALUES(3000,'example.com',1000,NULL);
+INSERT INTO domain VALUES(3001,'example.net',1000,NULL);
+INSERT INTO domain VALUES(3002,'example.org',1000,NULL);
+INSERT INTO domain VALUES(3003,'ham-n-eggs.tld',1001,2000);
+INSERT INTO domain VALUES(3004,'orphan.tld',-3004,NULL);
+INSERT INTO domain VALUES(3005,'serverless.tld',1002,NULL);
 CREATE TABLE server_domain (
 	server_id INTEGER NOT NULL, 
 	domain_id INTEGER NOT NULL, 
@@ -62,11 +62,16 @@ CREATE TABLE server_domain (
 	FOREIGN KEY(server_id) REFERENCES server (id), 
 	FOREIGN KEY(domain_id) REFERENCES domain (id)
 );
-INSERT INTO server_domain VALUES(4004,3003);
 INSERT INTO server_domain VALUES(4000,3000);
-INSERT INTO server_domain VALUES(4002,3000);
 INSERT INTO server_domain VALUES(4000,3001);
 INSERT INTO server_domain VALUES(4003,3001);
-INSERT INTO server_domain VALUES(4001,3002);
 INSERT INTO server_domain VALUES(4003,3002);
+INSERT INTO server_domain VALUES(4001,3002);
+INSERT INTO server_domain VALUES(4004,3003);
+INSERT INTO server_domain VALUES(4002,3000);
+CREATE TABLE alembic_version (
+        version_num VARCHAR(32) NOT NULL, 
+        CONSTRAINT alembic_version_pkc PRIMARY KEY (version_num)
+);
+INSERT INTO alembic_version VALUES('f62e64b43d2f');
 COMMIT;

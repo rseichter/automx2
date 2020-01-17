@@ -1,16 +1,16 @@
 """
 DB schema for automx2 version 2020.0
 
-Revision : a71719365ffe
+Revision : f62e64b43d2f
 Revises  : 
-Created  : 2020-01-17 22:08:06.610723
+Created  : 2020-01-17 22:30:05.748651
 """
 from alembic import op
 import sqlalchemy as sa
 
 
 # Revision identifiers, used by Alembic.
-revision = 'a71719365ffe'
+revision = 'f62e64b43d2f'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -39,9 +39,9 @@ def upgrade():
     )
     op.create_table('server',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('name', sa.String(), nullable=False),
     sa.Column('port', sa.Integer(), nullable=False),
     sa.Column('type', sa.String(), nullable=False),
-    sa.Column('name', sa.String(), nullable=False),
     sa.Column('socket_type', sa.String(), nullable=False),
     sa.Column('user_name', sa.String(), nullable=False),
     sa.Column('authentication', sa.String(), nullable=False),
@@ -49,9 +49,9 @@ def upgrade():
     )
     op.create_table('domain',
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
+    sa.Column('name', sa.String(), nullable=False),
     sa.Column('provider_id', sa.Integer(), nullable=False),
     sa.Column('ldapserver_id', sa.Integer(), nullable=True),
-    sa.Column('name', sa.String(), nullable=False),
     sa.ForeignKeyConstraint(['ldapserver_id'], ['ldapserver.id'], ),
     sa.ForeignKeyConstraint(['provider_id'], ['provider.id'], ),
     sa.PrimaryKeyConstraint('id'),

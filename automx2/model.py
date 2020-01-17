@@ -69,9 +69,9 @@ class Provider(db.Model):
 
 class Server(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    name = db.Column(db.String, nullable=False)
     port = db.Column(db.Integer, nullable=False)
     type = db.Column(db.String, nullable=False)
-    name = db.Column(db.String, nullable=False)
     socket_type = db.Column(db.String, nullable=False, default='STARTTLS')
     user_name = db.Column(db.String, nullable=False, default=PLACEHOLDER_ADDRESS)
     authentication = db.Column(db.String, nullable=False, default='plain')
@@ -101,9 +101,9 @@ class Ldapserver(db.Model):
 
 class Domain(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    name = db.Column(db.String, nullable=False, unique=True)
     provider_id = db.Column(db.Integer, db.ForeignKey('provider.id'), nullable=False)
     ldapserver_id = db.Column(db.Integer, db.ForeignKey('ldapserver.id'), nullable=True)
-    name = db.Column(db.String, nullable=False, unique=True)
 
     def __repr__(self) -> str:
         return f'<Domain id={self.id} name={self.name}>'

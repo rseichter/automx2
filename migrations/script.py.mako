@@ -1,5 +1,5 @@
 """
-${message}
+DB schema for automx2 version ${message}
 
 Revision : ${up_revision}
 Revises  : ${down_revision | comma,n}
