@@ -19,6 +19,9 @@ You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
 from automx2 import IDENTIFIER
+from automx2.ldap import LdapAccess
+from automx2.ldap import LookupResult
+from automx2.model import Ldapserver
 
 
 def branded_id(id_: str) -> str:
@@ -28,3 +31,10 @@ def branded_id(id_: str) -> str:
 class ConfigGenerator:
     def client_config(self, user_name, domain_name: str, realname: str, password: str) -> str:
         raise NotImplementedError
+
+    @staticmethod
+    def _ldap_lookup(email_address: str, server: Ldapserver) -> LookupResult:
+        ldap = LdapAccess(server.name, port=server.port, use_ssl=server.use_ssl,
+                          user=server.bind_user, password=server.bind_password)
+        _filter = server.search_filter.format(email_address)
+        return ldap.lookup(server.search_base, _filter)

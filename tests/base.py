@@ -24,15 +24,23 @@ from flask import Response
 
 from automx2.generators.outlook import NS_AUTODISCOVER
 from automx2.generators.outlook import NS_RESPONSE
+from automx2.model import Ldapserver
 from automx2.model import db
 from automx2.model import populate_db
 from automx2.server import APPLE_CONFIG_ROUTE
 from automx2.server import MOZILLA_CONFIG_ROUTE
 from automx2.server import MSOFT_CONFIG_ROUTE
 from automx2.server import app
+from automx2.util import from_environ
 from automx2.views import CONTENT_TYPE_XML
 from automx2.views import EMAIL_MOZILLA
 from automx2.views import EMAIL_OUTLOOK
+
+LDAP_BIND_PASSWORD = from_environ('LDAP_BIND_PASSWORD')
+LDAP_BIND_USER = from_environ('LDAP_BIND_USER')
+LDAP_HOSTNAME = from_environ('LDAP_HOSTNAME')
+LDAP_PORT = from_environ('LDAP_PORT', 636)
+LDAP_SEARCH_BASE = from_environ('LDAP_SEARCH_BASE', 'ou=People,dc=horus-it,dc=com')
 
 
 def body(response: Response) -> str:
@@ -53,6 +61,9 @@ class TestCase(unittest.TestCase):
             if self.create_db:
                 db.create_all()
                 populate_db()
+                ls = Ldapserver(id=LDAP_PORT, name=LDAP_HOSTNAME, port=LDAP_PORT, use_ssl=True,
+                                search_base=LDAP_SEARCH_BASE, search_filter='(mail={0})')
+                db.session.add(ls)
                 db.session.commit()
 
     def tearDown(self) -> None:

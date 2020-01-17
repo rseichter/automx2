@@ -21,6 +21,7 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 from flask_sqlalchemy import SQLAlchemy
 
 from automx2 import PLACEHOLDER_ADDRESS
+from automx2.util import from_environ
 from automx2.util import unique
 
 BIGCORP_NAME = 'Big Corporation, Inc.'
@@ -41,6 +42,8 @@ sample_server_names = {
     'imap2': f'imap2.{unique()}.com',
     'smtp1': f'primary-smtp.{unique()}.com',
     'smtp2': f'secondary-smtp.{unique()}.com',
+    'ldap': 'wedjat.horus-it.com',
+    # 'ldap': f'ldap.{unique()}.com',
 }
 
 db = SQLAlchemy()
@@ -75,9 +78,25 @@ class Server(db.Model):
         return f'<Server id={self.id} type={self.type} name={self.name}>'
 
 
+class Ldapserver(db.Model):
+    id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    name = db.Column(db.String, nullable=False)
+    port = db.Column(db.Integer, nullable=False)
+    use_ssl = db.Column(db.Boolean, nullable=False)
+    search_base = db.Column(db.String, nullable=False)
+    search_filter = db.Column(db.String, nullable=False)
+    bind_password = db.Column(db.String, nullable=True)
+    bind_user = db.Column(db.String, nullable=True)
+    domains = db.relationship('Domain', lazy='select', backref=db.backref('ldapserver', lazy='joined'))
+
+    def __repr__(self) -> str:
+        return f'<Ldapserver id={self.id} name={self.name}>'
+
+
 class Domain(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
     provider_id = db.Column(db.Integer, db.ForeignKey('provider.id'), nullable=False)
+    ldapserver_id = db.Column(db.Integer, db.ForeignKey('ldapserver.id'), nullable=True)
     name = db.Column(db.String, nullable=False, unique=True)
 
     def __repr__(self) -> str:
@@ -95,8 +114,16 @@ def populate_db():
     other = Provider(id=i, name=OTHER_NAME, short_name=OTHER_SHORT)
     db.session.add_all([bigcorp, eggs, other])
 
-    i = 2000
-    ex_com = Domain(id=i, name=EXAMPLE_COM, provider=bigcorp)
+    ldaps = Ldapserver(id=2000, name=sample_server_names['ldap'], port=636, use_ssl=True,
+                       bind_password=from_environ('LDAP_BIND_PASSWORD'),
+                       bind_user=from_environ('LDAP_BIND_USER'),
+                       search_base=from_environ('LDAP_SEARCH_BASE', 'dc=example,dc=com'),
+                       search_filter=from_environ('LDAP_SEARCH_FILTER', '(mail={0})'))
+    db.session.add_all([ldaps])
+
+    i = 3000
+    ex_com = Domain(id=i, name=EXAMPLE_COM, provider=bigcorp, ldapserver=ldaps)
+    # ex_com = Domain(id=i, name=EXAMPLE_COM, provider=bigcorp)
     i += 1
     ex_net = Domain(id=i, name=EXAMPLE_NET, provider=bigcorp)
     i += 1
@@ -109,7 +136,7 @@ def populate_db():
     serverless = Domain(id=i, name=SERVERLESS_DOMAIN, provider=other)
     db.session.add_all([ex_com, ex_net, ex_org, eggs, orphan, serverless])
 
-    i = 3000
+    i = 4000
     s1 = Server(id=i, type='smtp', port=587, name=sample_server_names['smtp1'], domains=[ex_com, ex_net])
     i += 1
     s2 = Server(id=i, type='smtp', port=587, name=sample_server_names['smtp2'], domains=[ex_org])

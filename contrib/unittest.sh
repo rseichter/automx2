@@ -13,6 +13,10 @@
 set -e
 
 source venv/bin/activate
+if [ -f local/secrets ]; then
+	source local/secrets
+fi
+
 export AUTOMX2_CONF='tests/unittest.conf'
 if [ ! -f ${AUTOMX2_CONF} ]; then
 	echo "Missing config file ${AUTOMX2_CONF}" >&2

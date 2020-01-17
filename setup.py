@@ -54,6 +54,7 @@ setuptools.setup(
         'Flask>=1.1.1',
         'Flask-Migrate>=2.5.2',
         'Flask-SQLAlchemy>=2.4.1',
+        'ldap3>=2.6',
     ],
     python_requires='>=3.7',
 )
