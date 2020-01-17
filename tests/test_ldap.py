@@ -29,6 +29,7 @@ from automx2.ldap import STATUS_ERROR
 from automx2.ldap import STATUS_NO_MATCH
 from automx2.ldap import STATUS_SUCCESS
 from automx2.model import Ldapserver
+from automx2.util import from_environ
 from automx2.util import unique
 from tests.base import LDAP_BIND_PASSWORD
 from tests.base import LDAP_BIND_USER
@@ -39,6 +40,7 @@ from tests.base import TestCase
 from tests.base import app
 
 
+@unittest.skipUnless(from_environ('RUN_LDAP_TESTS', '0') == '1', 'Skipping LDAP tests')
 class LdapTests(TestCase):
     """Tests for LDAP access methods."""
     EXISTS_LOCAL = 'a'
