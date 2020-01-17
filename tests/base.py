@@ -24,6 +24,11 @@ from flask import Response
 
 from automx2.generators.outlook import NS_AUTODISCOVER
 from automx2.generators.outlook import NS_RESPONSE
+from automx2.model import LDAP_BIND_PASSWORD
+from automx2.model import LDAP_BIND_USER
+from automx2.model import LDAP_HOSTNAME
+from automx2.model import LDAP_PORT
+from automx2.model import LDAP_SEARCH_BASE
 from automx2.model import Ldapserver
 from automx2.model import db
 from automx2.model import populate_db
@@ -36,11 +41,6 @@ from automx2.views import CONTENT_TYPE_XML
 from automx2.views import EMAIL_MOZILLA
 from automx2.views import EMAIL_OUTLOOK
 
-LDAP_BIND_PASSWORD = from_environ('LDAP_BIND_PASSWORD')
-LDAP_BIND_USER = from_environ('LDAP_BIND_USER')
-LDAP_HOSTNAME = from_environ('LDAP_HOSTNAME', 'wedjat.horus-it.com')
-LDAP_PORT = from_environ('LDAP_PORT', 636)
-LDAP_SEARCH_BASE = from_environ('LDAP_SEARCH_BASE', 'dc=example,dc=com')
 RUN_LDAP_TESTS = from_environ('RUN_LDAP_TESTS') == '1'
 
 
