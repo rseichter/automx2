@@ -31,6 +31,7 @@ from automx2.generators import ConfigGenerator
 from automx2.generators import branded_id
 from automx2.ldap import LookupResult
 from automx2.ldap import STATUS_NO_MATCH
+from automx2.ldap import STATUS_SUCCESS
 from automx2.model import Domain
 from automx2.model import Provider
 from automx2.model import Server
@@ -173,7 +174,7 @@ class AppleGenerator(ConfigGenerator):
             if lookup_result.status == STATUS_NO_MATCH:  # pragma: no cover
                 return ''
         else:
-            lookup_result = None
+            lookup_result = LookupResult(STATUS_SUCCESS, realname, None)
         inner, outer = _payload(local_part, domain_part)
         for server in domain.servers:
             if server.type not in TYPE_DIRECTION_MAP:
@@ -181,12 +182,10 @@ class AppleGenerator(ConfigGenerator):
             direction = TYPE_DIRECTION_MAP[server.type]
             inner[f'{direction}MailServerHostName'] = server.name
             inner[f'{direction}MailServerPortNumber'] = server.port
-            inner[f'{direction}MailServerUsername'] = server.user_name
+            inner[f'{direction}MailServerUsername'] = self.pick_value(server.user_name, lookup_result.uid)
             inner[f'{direction}MailServerAuthentication'] = _map_authentication(server)
             inner[f'{direction}MailServerUseSSL'] = _map_socket_type(server)
-        if lookup_result and lookup_result.cn:
-            realname = lookup_result.cn
-        inner['EmailAccountName'] = realname
+        inner['EmailAccountName'] = lookup_result.cn
         _sanitise(outer, local_part, domain_part)
         plist = Element('plist', attrib={'version': '1.0'})
         _subtree(plist, '', outer)

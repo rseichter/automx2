@@ -22,6 +22,7 @@ import unittest
 
 from automx2.generators.apple import AppleGenerator
 from automx2.generators.mozilla import MozillaGenerator
+from automx2.generators.outlook import OutlookGenerator
 from automx2.ldap import LdapAccess
 from automx2.ldap import LookupResult
 from automx2.ldap import STATUS_ERROR
@@ -81,6 +82,11 @@ class LdapTests(TestCase):
     def test_apple_generator_ldap(self):
         with app.app_context():
             gen = AppleGenerator()
+            gen.client_config(self.EXISTS_LOCAL, self.EXISTS_DOMAIN, '', '')
+
+    def test_outlook_generator_ldap(self):
+        with app.app_context():
+            gen = OutlookGenerator()
             gen.client_config(self.EXISTS_LOCAL, self.EXISTS_DOMAIN, '', '')
 
     def test_mozilla_generator_ldap(self):

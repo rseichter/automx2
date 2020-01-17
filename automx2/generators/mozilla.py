@@ -28,6 +28,7 @@ from automx2.generators import ConfigGenerator
 from automx2.generators import branded_id
 from automx2.ldap import LookupResult
 from automx2.ldap import STATUS_NO_MATCH
+from automx2.ldap import STATUS_SUCCESS
 from automx2.model import Domain
 from automx2.model import Provider
 from automx2.model import Server
@@ -39,19 +40,14 @@ TYPE_DIRECTION_MAP = {
 
 
 class MozillaGenerator(ConfigGenerator):
-    @staticmethod
-    def server_element(parent: Element, server: Server, lookup_result: LookupResult = None) -> Element:
+    def server_element(self, parent: Element, server: Server, override_uid: str = None) -> None:
         direction = TYPE_DIRECTION_MAP[server.type]
         element = SubElement(parent, f'{direction}Server', attrib={'type': server.type})
         SubElement(element, 'hostname').text = server.name
         SubElement(element, 'port').text = str(server.port)
         SubElement(element, 'socketType').text = server.socket_type
-        if lookup_result:
-            SubElement(element, 'username').text = lookup_result.uid
-        else:
-            SubElement(element, 'username').text = server.user_name
+        SubElement(element, 'username').text = self.pick_value(server.user_name, override_uid)
         SubElement(element, 'authentication').text = server.authentication
-        return element
 
     def client_config(self, user_name, domain_name: str, realname: str, password: str) -> str:
         root = Element('clientConfig', attrib={'version': '1.1'})
@@ -63,7 +59,7 @@ class MozillaGenerator(ConfigGenerator):
                 if lookup_result.status == STATUS_NO_MATCH:  # pragma: no cover
                     return ''
             else:
-                lookup_result = None
+                lookup_result = LookupResult(STATUS_SUCCESS, realname, None)
             provider: Provider = domain.provider
             provider_element = SubElement(root, 'emailProvider', attrib={'id': branded_id(provider.id)})
             SubElement(provider_element, 'identity')  # Deliberately left empty
@@ -74,7 +70,7 @@ class MozillaGenerator(ConfigGenerator):
             for server in domain.servers:
                 if server.type not in TYPE_DIRECTION_MAP:
                     raise InvalidServerType(f'Invalid server type "{server.type}"')
-                self.server_element(provider_element, server, lookup_result)
+                self.server_element(provider_element, server, lookup_result.uid)
         else:
             log.error(f'No provider for domain "{domain_name}"')
         data = tostring(root, 'utf-8')

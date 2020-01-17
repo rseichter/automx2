@@ -43,3 +43,9 @@ class ConfigGenerator:
         if r.status == STATUS_ERROR:  # pragma: no cover
             raise LdapLookupError('LDAP bind failed')
         return r
+
+    @staticmethod
+    def pick_value(low_prio, high_prio):
+        if high_prio:
+            return high_prio
+        return low_prio

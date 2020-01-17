@@ -25,6 +25,9 @@ from xml.etree.ElementTree import tostring
 from automx2 import DomainNotFound
 from automx2 import InvalidServerType
 from automx2.generators import ConfigGenerator
+from automx2.ldap import LookupResult
+from automx2.ldap import STATUS_NO_MATCH
+from automx2.ldap import STATUS_SUCCESS
 from automx2.model import Domain
 from automx2.model import Server
 
@@ -49,15 +52,19 @@ class OutlookGenerator(ConfigGenerator):
             return 'on'
         return 'off'
 
-    def protocol_element(self, parent: Element, server: Server) -> Element:
+    def protocol_element(self, parent: Element, server: Server, override_uid: str = None) -> None:
         element = SubElement(parent, 'Protocol')
         SubElement(element, 'Type').text = TYPE_MAP[server.type]
         SubElement(element, 'Server').text = server.name
         SubElement(element, 'Port').text = str(server.port)
-        SubElement(element, 'LoginName').text = server.user_name
+        SubElement(element, 'LoginName').text = self.pick_value(server.user_name, override_uid)
         SubElement(element, 'SSL').text = self.on_off('SSL' == server.authentication)
         SubElement(element, 'AuthRequired').text = self.on_off(True)
-        return element
+
+    @staticmethod
+    def user_element(parent: Element, display_name: str) -> None:
+        element = SubElement(parent, 'User')
+        SubElement(element, 'DisplayName').text = display_name
 
     def client_config(self, user_name, domain_name: str, realname: str, password: str) -> str:
         domain: Domain = Domain.query.filter_by(name=domain_name).first()
@@ -65,12 +72,21 @@ class OutlookGenerator(ConfigGenerator):
         response = SubElement(autodiscover, 'Response', attrib={'xmlns': NS_RESPONSE})
         if not domain:
             raise DomainNotFound(f'Domain "{domain_name}" not found')
+        if domain.ldapserver:
+            email_address = f'{user_name}@{domain_name}'
+            lookup_result: LookupResult = self._ldap_lookup(email_address, domain.ldapserver)
+            if lookup_result.status == STATUS_NO_MATCH:  # pragma: no cover
+                return ''
+        else:
+            lookup_result = LookupResult(STATUS_SUCCESS, realname, None)
+        if lookup_result.cn:
+            self.user_element(response, lookup_result.cn)
         account = SubElement(response, 'Account')
         SubElement(account, 'AccountType').text = 'email'
         SubElement(account, 'Action').text = 'settings'
         for server in domain.servers:
             if server.type not in TYPE_MAP:
                 raise InvalidServerType(f'Invalid server type "{server.type}"')
-            self.protocol_element(account, server)
+            self.protocol_element(account, server, lookup_result.uid)
         data = tostring(autodiscover, 'utf-8')
         return data
