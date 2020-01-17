@@ -3,5 +3,4 @@ exclude_lines =
 	def __repr__
 	log\.(debug|error|fatal|info|warn)
 	pragma: no cover
-	raise LdapLookupError
 	raise NotImplementedError

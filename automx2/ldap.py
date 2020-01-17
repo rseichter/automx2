@@ -38,19 +38,19 @@ class LdapAccess:
         self._server = Server(hostname, port=port, use_ssl=use_ssl)
         self._connection = Connection(self._server, lazy=False, user=user, password=password)
 
-    def lookup(self, search_base: str, search_filter: str) -> LookupResult:
+    def lookup(self, search_base: str, search_filter: str, attr_uid='uid', attr_cn=None) -> LookupResult:
         if not self._connection.bind():  # pragma: no cover (bind errors are not expected during unittests)
             log.error(f'LDAP bind failed: {self._connection.result}')
             return LookupResult(STATUS_BIND_FAILED, None, None)
         self._connection.search(search_base, search_filter, attributes=ALL_ATTRIBUTES, size_limit=1)
         if self._connection.response:
-            cn = uid = None
-            for entry in self._connection.response:
-                log.debug(f'Found {entry["dn"]}')
-                cn = self.get_attribute(entry, 'cn')
-                uid = self.get_attribute(entry, 'uid')
+            entry = self._connection.response[0]
+            log.debug(f'LDAP match {entry["dn"]}')
+            cn = self.get_attribute(entry, attr_cn)
+            uid = self.get_attribute(entry, attr_uid)
             result = LookupResult(STATUS_SUCCESS, cn, uid)
         else:
+            log.warning(f'No LDAP match for filter {search_filter}')
             result = LookupResult(STATUS_NO_MATCH, None, None)
         self._connection.unbind()
         log.debug(result)

@@ -73,11 +73,14 @@ class LdapTests(TestCase):
         self.assertEqual(STATUS_SUCCESS, x.status)
         self.assertEqual(self.EXISTS_UID, x.uid)
 
-    def test_mozilla_generator(self):
+    def test_mozilla_generator_ldap(self):
         with app.app_context():
-            ls = Ldapserver.query.filter_by(id=LDAP_PORT).one()
-            gen = MozillaGenerator()
-            gen._ldap_lookup(self.EXISTS, ls)
+            server = Ldapserver.query.filter_by(id=LDAP_PORT).one()
+            mg = MozillaGenerator()
+            x = mg._ldap_lookup(self.EXISTS, server)
+            self.assertEqual(STATUS_SUCCESS, x.status)
+            y = mg._ldap_lookup(self.UNIQUE, server)
+            self.assertEqual(STATUS_NO_MATCH, y.status)
 
 
 if __name__ == '__main__':

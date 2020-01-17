@@ -42,8 +42,7 @@ sample_server_names = {
     'imap2': f'imap2.{unique()}.com',
     'smtp1': f'primary-smtp.{unique()}.com',
     'smtp2': f'secondary-smtp.{unique()}.com',
-    'ldap': 'wedjat.horus-it.com',
-    # 'ldap': f'ldap.{unique()}.com',
+    'ldap': f'ldap.{unique()}.com',
 }
 
 db = SQLAlchemy()
@@ -85,6 +84,8 @@ class Ldapserver(db.Model):
     use_ssl = db.Column(db.Boolean, nullable=False)
     search_base = db.Column(db.String, nullable=False)
     search_filter = db.Column(db.String, nullable=False)
+    attr_uid = db.Column(db.String, nullable=False)
+    attr_cn = db.Column(db.String, nullable=True)
     bind_password = db.Column(db.String, nullable=True)
     bind_user = db.Column(db.String, nullable=True)
     domains = db.relationship('Domain', lazy='select', backref=db.backref('ldapserver', lazy='joined'))
@@ -114,7 +115,8 @@ def populate_db():
     other = Provider(id=i, name=OTHER_NAME, short_name=OTHER_SHORT)
     db.session.add_all([bigcorp, eggs, other])
 
-    ldaps = Ldapserver(id=2000, name=sample_server_names['ldap'], port=636, use_ssl=True,
+    ldaps = Ldapserver(id=2000, name=from_environ('LDAP_HOSTNAME', sample_server_names['ldap']),
+                       port=636, use_ssl=True, attr_uid='uid',
                        bind_password=from_environ('LDAP_BIND_PASSWORD'),
                        bind_user=from_environ('LDAP_BIND_USER'),
                        search_base=from_environ('LDAP_SEARCH_BASE', 'dc=example,dc=com'),

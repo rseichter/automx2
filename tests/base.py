@@ -61,7 +61,8 @@ class TestCase(unittest.TestCase):
             if self.create_db:
                 db.create_all()
                 populate_db()
-                ls = Ldapserver(id=LDAP_PORT, name=LDAP_HOSTNAME, port=LDAP_PORT, use_ssl=True,
+                ls = Ldapserver(id=LDAP_PORT, name=LDAP_HOSTNAME, port=LDAP_PORT, use_ssl=True, attr_uid='uid',
+                                bind_user=LDAP_BIND_USER, bind_password=LDAP_BIND_PASSWORD,
                                 search_base=LDAP_SEARCH_BASE, search_filter='(mail={0})')
                 db.session.add(ls)
                 db.session.commit()
