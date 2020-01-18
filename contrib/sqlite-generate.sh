@@ -20,10 +20,12 @@ s2id=$((PROVIDER_ID+2))
 domid=$((PROVIDER_ID+3))
 
 cat <<EOT
-INSERT INTO provider VALUES(${PROVIDER_ID}, '${PROVIDER_NAME}', '${PROVIDER_SHORTNAME}');
-INSERT INTO server VALUES(${s1id}, 993, 'imap', '${IMAP_SERVER}', 'SSL', '%EMAILLOCALPART%', 'plain');
-INSERT INTO server VALUES(${s2id}, 587, 'smtp', '${SMTP_SERVER}', 'STARTTLS', '%EMAILLOCALPART%', 'plain');
-INSERT INTO domain VALUES(${domid}, ${PROVIDER_ID}, '${DOMAIN}');
-INSERT INTO server_domain VALUES(${s1id}, ${domid});
-INSERT INTO server_domain VALUES(${s2id}, ${domid});
+INSERT INTO provider(id, name, short_name) VALUES(${PROVIDER_ID}, '${PROVIDER_NAME}', '${PROVIDER_SHORTNAME}');
+INSERT INTO server (id, port, type, name, socket_type, user_name, authentication)
+	VALUES(${s1id}, 993, 'imap', '${IMAP_SERVER}', 'SSL', '%EMAILLOCALPART%', 'plain');
+INSERT INTO server (id, port, type, name, socket_type, user_name, authentication)
+	VALUES(${s2id}, 587, 'smtp', '${SMTP_SERVER}', 'STARTTLS', '%EMAILLOCALPART%', 'plain');
+INSERT INTO domain (id, name, provider_id) VALUES(${domid}, '${DOMAIN}', ${PROVIDER_ID});
+INSERT INTO server_domain (server_id, domain_id) VALUES(${s1id}, ${domid});
+INSERT INTO server_domain (server_id, domain_id) VALUES(${s2id}, ${domid});
 EOT
