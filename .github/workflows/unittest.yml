@@ -30,3 +30,4 @@ jobs:
           python -m unittest discover -v tests/
         env:
           AUTOMX2_CONF: 'tests/unittest.conf'
+          RUN_LDAP_TESTS: 0
