@@ -24,6 +24,7 @@ from xml.etree.ElementTree import SubElement
 from automx2 import DomainNotFound
 from automx2 import InvalidServerType
 from automx2.generators import ConfigGenerator
+from automx2.generators import xml_to_string
 from automx2.ldap import LookupResult
 from automx2.ldap import STATUS_SUCCESS
 from automx2.model import Domain
@@ -64,17 +65,16 @@ class OutlookGenerator(ConfigGenerator):
         element = SubElement(parent, 'User')
         SubElement(element, 'DisplayName').text = display_name
 
-    def client_config(self, user_name, domain_name: str, realname: str, password: str) -> str:
-        domain: Domain = Domain.query.filter_by(name=domain_name).first()
+    def client_config(self, local_part, domain_part: str, display_name: str) -> str:
+        domain: Domain = Domain.query.filter_by(name=domain_part).first()
         root_element = Element('Autodiscover', attrib={'xmlns': NS_AUTODISCOVER})
         response = SubElement(root_element, 'Response', attrib={'xmlns': NS_RESPONSE})
         if not domain:
-            raise DomainNotFound(f'Domain "{domain_name}" not found')
+            raise DomainNotFound(f'Domain "{domain_part}" not found')
         if domain.ldapserver:
-            email_address = f'{user_name}@{domain_name}'
-            lookup_result: LookupResult = self._ldap_lookup(email_address, domain.ldapserver)
+            lookup_result: LookupResult = self.ldap_lookup(f'{local_part}@{domain_part}', domain.ldapserver)
         else:
-            lookup_result = LookupResult(STATUS_SUCCESS, realname, None)
+            lookup_result = LookupResult(STATUS_SUCCESS, display_name, None)
         if lookup_result.cn:
             self.user_element(response, lookup_result.cn)
         account = SubElement(response, 'Account')
@@ -84,4 +84,4 @@ class OutlookGenerator(ConfigGenerator):
             if server.type not in TYPE_MAP:
                 raise InvalidServerType(f'Invalid server type "{server.type}"')
             self.protocol_element(account, server, lookup_result.uid)
-        return self.xml_to_string(root_element)
+        return xml_to_string(root_element)

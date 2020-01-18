@@ -35,12 +35,16 @@ def branded_id(id_: str) -> str:
     return f'{IDENTIFIER}-{id_}'
 
 
+def xml_to_string(root_element: Element) -> str:
+    return tostring(root_element, 'utf-8')
+
+
 class ConfigGenerator:
-    def client_config(self, user_name, domain_name: str, realname: str, password: str) -> str:
+    def client_config(self, local_part: str, domain_part: str, display_name: str) -> str:
         raise NotImplementedError
 
     @staticmethod
-    def _ldap_lookup(email_address: str, server: Ldapserver) -> LookupResult:
+    def ldap_lookup(email_address: str, server: Ldapserver) -> LookupResult:
         if not (server and server.name):
             raise LdapLookupError('No LDAP server specified')
         ldap = LdapAccess(server.name, port=server.port, use_ssl=server.use_ssl,
@@ -58,7 +62,3 @@ class ConfigGenerator:
         if high_prio_value:
             return high_prio_value
         return low_prio_value
-
-    @staticmethod
-    def xml_to_string(root_element: Element) -> str:
-        return tostring(root_element, 'utf-8')

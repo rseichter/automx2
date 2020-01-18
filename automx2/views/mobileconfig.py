@@ -56,5 +56,5 @@ class AppleView(MailConfig, MethodView):
             abort(400)
 
     def config_response(self, local_part, domain_part: str, realname: str, password: str) -> str:
-        data = AppleGenerator().client_config(local_part, domain_part, realname, password)
+        data = AppleGenerator().client_config(local_part, domain_part, realname)
         return data

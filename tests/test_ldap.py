@@ -86,18 +86,18 @@ class LdapTests(TestCase):
     def test_apple_generator_ldap(self):
         with app.app_context():
             gen = AppleGenerator()
-            gen.client_config(self.EXISTS_LOCAL, self.EXISTS_DOMAIN, '', '')
+            gen.client_config(self.EXISTS_LOCAL, self.EXISTS_DOMAIN, '')
 
     def test_outlook_generator_ldap(self):
         with app.app_context():
             gen = OutlookGenerator()
-            gen.client_config(self.EXISTS_LOCAL, self.EXISTS_DOMAIN, '', '')
+            gen.client_config(self.EXISTS_LOCAL, self.EXISTS_DOMAIN, '')
 
     def test_mozilla_generator_ldap_exists(self):
         with app.app_context():
             server = Ldapserver.query.filter_by(id=LDAP_PORT).one()
             gen = MozillaGenerator()
-            x = gen._ldap_lookup(self.EXISTS_EMAIL, server)
+            x = gen.ldap_lookup(self.EXISTS_EMAIL, server)
             self.assertEqual(STATUS_SUCCESS, x.status)
 
     def test_mozilla_generator_ldap_no_match(self):
@@ -105,12 +105,12 @@ class LdapTests(TestCase):
             server = Ldapserver.query.filter_by(id=LDAP_PORT).one()
             gen = MozillaGenerator()
             with self.assertRaises(LdapNoMatch):
-                gen._ldap_lookup(self.UNIQUE, server)
+                gen.ldap_lookup(self.UNIQUE, server)
 
     def test_mozilla_generator_ldap_missing_server(self):
         with self.assertRaises(LdapLookupError):
             gen = MozillaGenerator()
-            gen._ldap_lookup(self.UNIQUE, None)
+            gen.ldap_lookup(self.UNIQUE, None)
 
 
 if __name__ == '__main__':

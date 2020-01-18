@@ -26,6 +26,7 @@ from automx2 import InvalidServerType
 from automx2 import NoProviderForDomain
 from automx2.generators import ConfigGenerator
 from automx2.generators import branded_id
+from automx2.generators import xml_to_string
 from automx2.ldap import LookupResult
 from automx2.ldap import STATUS_SUCCESS
 from automx2.model import Domain
@@ -48,19 +49,18 @@ class MozillaGenerator(ConfigGenerator):
         SubElement(element, 'username').text = self.pick_one(server.user_name, override_uid)
         SubElement(element, 'authentication').text = server.authentication
 
-    def client_config(self, user_name, domain_name: str, realname: str, password: str) -> str:
+    def client_config(self, local_part, domain_part: str, display_name: str) -> str:
         root_element = Element('clientConfig', attrib={'version': '1.1'})
-        domain: Domain = Domain.query.filter_by(name=domain_name).first()
+        domain: Domain = Domain.query.filter_by(name=domain_part).first()
         if not domain:
-            raise DomainNotFound(f'Domain "{domain_name}" not found')
+            raise DomainNotFound(f'Domain "{domain_part}" not found')
         if domain.ldapserver:
-            email_address = f'{user_name}@{domain_name}'
-            lookup_result: LookupResult = self._ldap_lookup(email_address, domain.ldapserver)
+            lookup_result: LookupResult = self.ldap_lookup(f'{local_part}@{domain_part}', domain.ldapserver)
         else:
-            lookup_result = LookupResult(STATUS_SUCCESS, realname, None)
+            lookup_result = LookupResult(STATUS_SUCCESS, display_name, None)
         provider: Provider = domain.provider
         if not provider:
-            raise NoProviderForDomain(f'No provider for domain "{domain_name}"')
+            raise NoProviderForDomain(f'No provider for domain "{domain_part}"')
         provider_element = SubElement(root_element, 'emailProvider', attrib={'id': branded_id(provider.id)})
         SubElement(provider_element, 'identity')  # Deliberately left empty
         for provider_domain in provider.domains:
@@ -71,4 +71,4 @@ class MozillaGenerator(ConfigGenerator):
             if server.type not in TYPE_DIRECTION_MAP:
                 raise InvalidServerType(f'Invalid server type "{server.type}"')
             self.server_element(provider_element, server, lookup_result.uid)
-        return self.xml_to_string(root_element)
+        return xml_to_string(root_element)

@@ -28,6 +28,7 @@ from automx2 import NoProviderForDomain
 from automx2 import NoServersForDomain
 from automx2.generators import ConfigGenerator
 from automx2.generators import branded_id
+from automx2.generators import xml_to_string
 from automx2.ldap import LookupResult
 from automx2.ldap import STATUS_SUCCESS
 from automx2.model import Domain
@@ -157,7 +158,7 @@ def _map_authentication(server: Server) -> str:
 
 
 class AppleGenerator(ConfigGenerator):
-    def client_config(self, local_part, domain_part: str, realname: str, password: str) -> str:
+    def client_config(self, local_part: str, domain_part: str, display_name: str) -> str:
         root_element = Element('plist', attrib={'version': '1.0'})
         domain: Domain = Domain.query.filter_by(name=domain_part).first()
         if not domain:
@@ -168,10 +169,9 @@ class AppleGenerator(ConfigGenerator):
         if not domain.servers:
             raise NoServersForDomain(f'No servers for domain "{domain_part}"')
         if domain.ldapserver:
-            email_address = f'{local_part}@{domain_part}'
-            lookup_result: LookupResult = self._ldap_lookup(email_address, domain.ldapserver)
+            lookup_result: LookupResult = self.ldap_lookup(f'{local_part}@{domain_part}', domain.ldapserver)
         else:
-            lookup_result = LookupResult(STATUS_SUCCESS, realname, None)
+            lookup_result = LookupResult(STATUS_SUCCESS, display_name, None)
         inner, outer = _payload(local_part, domain_part)
         for server in domain.servers:
             if server.type not in TYPE_DIRECTION_MAP:
@@ -185,4 +185,4 @@ class AppleGenerator(ConfigGenerator):
         inner['EmailAccountName'] = lookup_result.cn
         _sanitise(outer, local_part, domain_part)
         _subtree(root_element, '', outer)
-        return self.xml_to_string(root_element)
+        return xml_to_string(root_element)
