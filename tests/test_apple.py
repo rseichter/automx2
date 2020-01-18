@@ -81,7 +81,7 @@ class AppleRoutes(TestCase):
     def test_apple_no_domain_match(self):
         with self.app:
             r = self.get_apple_config('a@b.c')
-            self.assertEqual(400, r.status_code)
+            self.assertEqual(204, r.status_code)
 
     def test_apple_domain_match(self):
         with self.app:

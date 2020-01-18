@@ -20,6 +20,8 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
 import unittest
 
+from automx2 import LdapLookupError
+from automx2 import LdapNoMatch
 from automx2.generators.apple import AppleGenerator
 from automx2.generators.mozilla import MozillaGenerator
 from automx2.generators.outlook import OutlookGenerator
@@ -91,14 +93,24 @@ class LdapTests(TestCase):
             gen = OutlookGenerator()
             gen.client_config(self.EXISTS_LOCAL, self.EXISTS_DOMAIN, '', '')
 
-    def test_mozilla_generator_ldap(self):
+    def test_mozilla_generator_ldap_exists(self):
         with app.app_context():
             server = Ldapserver.query.filter_by(id=LDAP_PORT).one()
             gen = MozillaGenerator()
             x = gen._ldap_lookup(self.EXISTS_EMAIL, server)
             self.assertEqual(STATUS_SUCCESS, x.status)
-            y = gen._ldap_lookup(self.UNIQUE, server)
-            self.assertEqual(STATUS_NO_MATCH, y.status)
+
+    def test_mozilla_generator_ldap_no_match(self):
+        with app.app_context():
+            server = Ldapserver.query.filter_by(id=LDAP_PORT).one()
+            gen = MozillaGenerator()
+            with self.assertRaises(LdapNoMatch):
+                gen._ldap_lookup(self.UNIQUE, server)
+
+    def test_mozilla_generator_ldap_missing_server(self):
+        with self.assertRaises(LdapLookupError):
+            gen = MozillaGenerator()
+            gen._ldap_lookup(self.UNIQUE, None)
 
 
 if __name__ == '__main__':

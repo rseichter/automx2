@@ -20,7 +20,6 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import SubElement
-from xml.etree.ElementTree import tostring
 
 from automx2 import DomainNotFound
 from automx2 import InvalidAuthenticationType
@@ -30,7 +29,6 @@ from automx2 import NoServersForDomain
 from automx2.generators import ConfigGenerator
 from automx2.generators import branded_id
 from automx2.ldap import LookupResult
-from automx2.ldap import STATUS_NO_MATCH
 from automx2.ldap import STATUS_SUCCESS
 from automx2.model import Domain
 from automx2.model import Provider
@@ -160,6 +158,7 @@ def _map_authentication(server: Server) -> str:
 
 class AppleGenerator(ConfigGenerator):
     def client_config(self, local_part, domain_part: str, realname: str, password: str) -> str:
+        root_element = Element('plist', attrib={'version': '1.0'})
         domain: Domain = Domain.query.filter_by(name=domain_part).first()
         if not domain:
             raise DomainNotFound(f'Domain "{domain_part}" not found')
@@ -171,8 +170,6 @@ class AppleGenerator(ConfigGenerator):
         if domain.ldapserver:
             email_address = f'{local_part}@{domain_part}'
             lookup_result: LookupResult = self._ldap_lookup(email_address, domain.ldapserver)
-            if lookup_result.status == STATUS_NO_MATCH:  # pragma: no cover
-                return ''
         else:
             lookup_result = LookupResult(STATUS_SUCCESS, realname, None)
         inner, outer = _payload(local_part, domain_part)
@@ -187,7 +184,5 @@ class AppleGenerator(ConfigGenerator):
             inner[f'{direction}MailServerUseSSL'] = _map_socket_type(server)
         inner['EmailAccountName'] = lookup_result.cn
         _sanitise(outer, local_part, domain_part)
-        plist = Element('plist', attrib={'version': '1.0'})
-        _subtree(plist, '', outer)
-        data = tostring(plist, 'utf-8')
-        return data
+        _subtree(root_element, '', outer)
+        return self.xml_to_string(root_element)

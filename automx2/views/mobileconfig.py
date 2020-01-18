@@ -23,6 +23,7 @@ from flask import request
 from flask.views import MethodView
 
 from automx2 import AutomxException
+from automx2 import NotFoundException
 from automx2 import log
 from automx2.generators.apple import AppleGenerator
 from automx2.views import EMAIL_MOZILLA
@@ -41,13 +42,15 @@ class AppleView(MailConfig, MethodView):
     def get(self):
         """GET request is expected to contain ?emailaddress=user@example.com"""
         address = request.args.get(EMAIL_MOZILLA, '')
-        realname = request.args.get('name', 'Not Specified')
+        realname = request.args.get('name', '')
         if not address:
             message = f'Missing request argument "{EMAIL_MOZILLA}"'
             log.error(message)
             return message, 400
         try:
             return self.config_from_address(address, realname)
+        except NotFoundException:
+            return '', 204
         except AutomxException as e:
             log.exception(e)
             abort(400)

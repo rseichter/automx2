@@ -125,7 +125,7 @@ def populate_db():
                         bind_password=LDAP_BIND_PASSWORD, bind_user=LDAP_BIND_USER, search_base=LDAP_SEARCH_BASE,
                         search_filter='(mail={0})')
         db.session.add_all([ls])
-    else:
+    else:  # pragma: no cover
         ls = None
 
     i = 3000

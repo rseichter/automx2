@@ -18,11 +18,16 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
+from xml.etree.ElementTree import Element
+from xml.etree.ElementTree import tostring
+
 from automx2 import IDENTIFIER
 from automx2 import LdapLookupError
+from automx2 import LdapNoMatch
 from automx2.ldap import LdapAccess
 from automx2.ldap import LookupResult
 from automx2.ldap import STATUS_ERROR
+from automx2.ldap import STATUS_NO_MATCH
 from automx2.model import Ldapserver
 
 
@@ -44,6 +49,8 @@ class ConfigGenerator:
                         attr_cn=server.attr_cn, attr_uid=server.attr_uid)
         if r.status == STATUS_ERROR:  # pragma: no cover
             raise LdapLookupError('LDAP bind failed')
+        elif r.status == STATUS_NO_MATCH:  # pragma: no cover
+            raise LdapNoMatch(f'No LDAP match for <{email_address}>')
         return r
 
     @staticmethod
@@ -51,3 +58,7 @@ class ConfigGenerator:
         if high_prio_value:
             return high_prio_value
         return low_prio_value
+
+    @staticmethod
+    def xml_to_string(root_element: Element) -> str:
+        return tostring(root_element, 'utf-8')

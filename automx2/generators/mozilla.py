@@ -20,14 +20,13 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import SubElement
-from xml.etree.ElementTree import tostring
 
+from automx2 import DomainNotFound
 from automx2 import InvalidServerType
-from automx2 import log
+from automx2 import NoProviderForDomain
 from automx2.generators import ConfigGenerator
 from automx2.generators import branded_id
 from automx2.ldap import LookupResult
-from automx2.ldap import STATUS_NO_MATCH
 from automx2.ldap import STATUS_SUCCESS
 from automx2.model import Domain
 from automx2.model import Provider
@@ -50,28 +49,26 @@ class MozillaGenerator(ConfigGenerator):
         SubElement(element, 'authentication').text = server.authentication
 
     def client_config(self, user_name, domain_name: str, realname: str, password: str) -> str:
-        root = Element('clientConfig', attrib={'version': '1.1'})
+        root_element = Element('clientConfig', attrib={'version': '1.1'})
         domain: Domain = Domain.query.filter_by(name=domain_name).first()
-        if domain:
-            if domain.ldapserver:
-                email_address = f'{user_name}@{domain_name}'
-                lookup_result: LookupResult = self._ldap_lookup(email_address, domain.ldapserver)
-                if lookup_result.status == STATUS_NO_MATCH:  # pragma: no cover
-                    return ''
-            else:
-                lookup_result = LookupResult(STATUS_SUCCESS, realname, None)
-            provider: Provider = domain.provider
-            provider_element = SubElement(root, 'emailProvider', attrib={'id': branded_id(provider.id)})
-            SubElement(provider_element, 'identity')  # Deliberately left empty
-            for provider_domain in provider.domains:
-                SubElement(provider_element, 'domain').text = provider_domain.name
-            SubElement(provider_element, 'displayName').text = provider.name
-            SubElement(provider_element, 'displayShortName').text = provider.short_name
-            for server in domain.servers:
-                if server.type not in TYPE_DIRECTION_MAP:
-                    raise InvalidServerType(f'Invalid server type "{server.type}"')
-                self.server_element(provider_element, server, lookup_result.uid)
+        if not domain:
+            raise DomainNotFound(f'Domain "{domain_name}" not found')
+        if domain.ldapserver:
+            email_address = f'{user_name}@{domain_name}'
+            lookup_result: LookupResult = self._ldap_lookup(email_address, domain.ldapserver)
         else:
-            log.error(f'No provider for domain "{domain_name}"')
-        data = tostring(root, 'utf-8')
-        return data
+            lookup_result = LookupResult(STATUS_SUCCESS, realname, None)
+        provider: Provider = domain.provider
+        if not provider:
+            raise NoProviderForDomain(f'No provider for domain "{domain_name}"')
+        provider_element = SubElement(root_element, 'emailProvider', attrib={'id': branded_id(provider.id)})
+        SubElement(provider_element, 'identity')  # Deliberately left empty
+        for provider_domain in provider.domains:
+            SubElement(provider_element, 'domain').text = provider_domain.name
+        SubElement(provider_element, 'displayName').text = provider.name
+        SubElement(provider_element, 'displayShortName').text = provider.short_name
+        for server in domain.servers:
+            if server.type not in TYPE_DIRECTION_MAP:
+                raise InvalidServerType(f'Invalid server type "{server.type}"')
+            self.server_element(provider_element, server, lookup_result.uid)
+        return self.xml_to_string(root_element)

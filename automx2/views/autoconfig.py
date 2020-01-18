@@ -23,6 +23,7 @@ from flask import request
 from flask.views import MethodView
 
 from automx2 import AutomxException
+from automx2 import NotFoundException
 from automx2 import log
 from automx2.generators.mozilla import MozillaGenerator
 from automx2.views import EMAIL_MOZILLA
@@ -41,6 +42,8 @@ class MozillaView(MailConfig, MethodView):
             return message, 400
         try:
             return self.config_from_address(address)
+        except NotFoundException:
+            return '', 204
         except AutomxException as e:
             log.exception(e)
             abort(400)

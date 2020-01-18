@@ -21,7 +21,7 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 import logging
 
 IDENTIFIER = 'automx2'  # Do not change this!
-VERSION = '2020.0.dev2'
+VERSION = '2020.0.dev3'
 
 PLACEHOLDER_ADDRESS = r'%EMAILADDRESS%'
 PLACEHOLDER_DOMAIN = r'%EMAILDOMAIN%'
@@ -29,7 +29,18 @@ PLACEHOLDER_LOCALPART = r'%EMAILLOCALPART%'
 
 
 class AutomxException(Exception):
-    """Exception base class for this application."""
+    """Exception base class for this application.
+
+    Will result in HTTP code 400 (bad request).
+    """
+    pass
+
+
+class NotFoundException(AutomxException):
+    """Exception base class for lookup failures etc.
+
+    Will result in HTTP code 204 (no content).
+    """
     pass
 
 
@@ -38,7 +49,7 @@ class InvalidEMailAddressError(AutomxException):
     pass
 
 
-class DomainNotFound(AutomxException):
+class DomainNotFound(NotFoundException):
     """Database did not contain the given domain."""
     pass
 
@@ -65,6 +76,11 @@ class InvalidAuthenticationType(AutomxException):
 
 class LdapLookupError(AutomxException):
     """LDAP lookup failed."""
+    pass
+
+
+class LdapNoMatch(NotFoundException):
+    """LDAP lookup returned no match."""
     pass
 
 

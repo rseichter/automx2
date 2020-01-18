@@ -77,7 +77,7 @@ class MsRoutes(TestCase):
     def test_ms_no_domain_match(self):
         with self.app:
             r = self.get_msoft_config('a@b.c')
-            self.assertEqual(400, r.status_code)
+            self.assertEqual(204, r.status_code)
 
     def test_ms_valid_domain(self):
         with self.app:

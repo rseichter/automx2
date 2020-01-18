@@ -26,6 +26,7 @@ from flask import request
 from flask.views import MethodView
 
 from automx2 import AutomxException
+from automx2 import NotFoundException
 from automx2 import log
 from automx2.generators.outlook import NS_AUTODISCOVER
 from automx2.generators.outlook import OutlookGenerator
@@ -52,6 +53,8 @@ class OutlookView(MailConfig, MethodView):
             return message, 400
         try:
             return self.config_from_address(element.text)
+        except NotFoundException:
+            return '', 204
         except AutomxException as e:
             log.exception(e)
             abort(400)

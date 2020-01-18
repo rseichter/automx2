@@ -23,6 +23,8 @@ from typing import List
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import fromstring
 
+from automx2 import DomainNotFound
+from automx2 import NoProviderForDomain
 from automx2.model import BIGCORP_NAME
 from automx2.model import EGGS_DOMAIN
 from automx2.model import EXAMPLE_COM
@@ -56,12 +58,7 @@ class MozillaRoutes(TestCase):
     def test_mozilla_no_domain_match(self):
         with self.app:
             r = self.get_mozilla_config('a@b.c')
-            self.assertEqual(200, r.status_code)
-            self.assertEqual(CONTENT_TYPE_XML, r.mimetype)
-            e: Element = fromstring(body(r))
-            self.assertEqual('clientConfig', e.tag)
-            self.assertEqual('1.1', e.attrib['version'])
-            self.assertEqual([], list(e))
+            self.assertEqual(204, r.status_code)
 
     def test_mozilla_domain_match(self):
         with self.app:
@@ -86,8 +83,8 @@ class MozillaRoutes(TestCase):
 
     def test_broken_provider_id(self):
         with self.app:
-            with self.assertRaises(AttributeError):
-                self.get_mozilla_config(f'a@{ORPHAN_DOMAIN}')
+            r = self.get_mozilla_config(f'a@{ORPHAN_DOMAIN}')
+            self.assertEqual(400, r.status_code)
 
     def test_domain_without_servers(self):
         with self.app:
