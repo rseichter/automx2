@@ -20,7 +20,7 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
 from flask import Flask
 from flask_migrate import Migrate
-from werkzeug.contrib.fixers import ProxyFix
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 from automx2.config import config
 from automx2.model import db
