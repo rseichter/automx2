@@ -111,7 +111,7 @@ class Domain(db.Model):
 
 # noinspection DuplicatedCode
 def populate_db():
-    """Populate the database some fixed samples."""
+    """Populate the database with some fixed samples."""
     i = 1000
     bigcorp = Provider(id=i, name=BIGCORP_NAME, short_name=BIGCORP_SHORT)
     i += 1
