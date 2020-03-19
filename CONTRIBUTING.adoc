@@ -9,5 +9,5 @@ Once things have settled and a process for evaluating and testing contributions 
 
 == Ideas and suggestions
 
-Submitting ideas and suggestions in the form of *GitLab issues* is fine.
+Submitting ideas and suggestions in the form of https://gitlab.com/automx/automx2/-/issues[GitLab issues] is fine.
 Please refer to https://about.gitlab.com/blog/2016/03/03/start-with-an-issue/[this blog article].
