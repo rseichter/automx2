@@ -16,9 +16,9 @@ You can read it file by file using a text reader or all files as one if you poin
 
 ## About automx2
 
-The project resides as [automx/automx2](https://gitlab.com/automx/automx2) on GitLab. Please use the project's [issue
-tracker](https://gitlab.com/automx/automx2/issues) if you find bugs. To discuss usage and other topics join us on the
+The project is hosted on [GitLab](https://gitlab.com/automx/automx2).
+Please use the project's [issue tracker](https://gitlab.com/automx/automx2/issues) if you find bugs.
+If you have questions or want to discuss usage and other topics, join us on the
 [automx-users](https://mail.sys4.de/cgi-bin/mailman/listinfo/automx-users) mailing list.
 
-automx2 was written by [Ralph Seichter](https://gitlab.com/rseichter) for [sys4 AG](https://sys4.de). It has 100% test
-coverage and is mirrored to [rseichter/automx2](https://github.com/rseichter/automx2) on GitHub.
+automx2 was written by [Ralph Seichter](https://gitlab.com/rseichter) for [sys4 AG](https://sys4.de).

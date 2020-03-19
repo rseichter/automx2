@@ -40,12 +40,9 @@ your browser to +automx2.html+.
 
 == About automx2
 
-The project resides as https://gitlab.com/automx/automx2[automx/automx2] on
-GitLab. Please use the project's https://gitlab.com/automx/automx2/issues[issue
-tracker] if you find bugs. To discuss usage and other topics join us on the
-https://mail.sys4.de/cgi-bin/mailman/listinfo/automx-users[automx-users]
-mailing list.
+The project is hosted on https://gitlab.com/automx/automx2[GitLab].
+Please use the project's https://gitlab.com/automx/automx2/issues[issue tracker] if you find bugs.
+If you have questions or want to discuss usage and other topics, join us on the
+https://mail.sys4.de/cgi-bin/mailman/listinfo/automx-users[automx-users] mailing list.
 
-automx2 was written by https://gitlab.com/rseichter[Ralph Seichter] for
-https://sys4.de[sys4 AG]. It has 100% test coverage and is mirrored to
-https://github.com/rseichter/automx2[rseichter/automx2] on GitHub.
+automx2 was written by https://gitlab.com/rseichter[Ralph Seichter] for https://sys4.de[sys4 AG].
