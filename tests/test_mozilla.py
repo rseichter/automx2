@@ -47,6 +47,10 @@ class MozillaRoutes(TestCase):
         return element.findall('emailProvider/incomingServer/[@type="imap"]/hostname')
 
     @staticmethod
+    def pop_server_elements(element: Element) -> List[Element]:
+        return element.findall('emailProvider/incomingServer/[@type="pop3"]/hostname')
+
+    @staticmethod
     def smtp_server_elements(element: Element) -> List[Element]:
         return element.findall('emailProvider/outgoingServer/[@type="smtp"]/hostname')
 
@@ -69,11 +73,11 @@ class MozillaRoutes(TestCase):
             x = e.findall('emailProvider/displayName')
             self.assertEqual(BIGCORP_NAME, x[0].text)
 
-    def test_mozilla_imap(self):
+    def test_mozilla_pop(self):
         with self.app:
             r = self.get_mozilla_config(f'a@{EXAMPLE_ORG}')
-            x = self.imap_server_elements(fromstring(body(r)))
-            self.assertEqual(sample_server_names['imap2'], x[0].text)
+            x = self.pop_server_elements(fromstring(body(r)))
+            self.assertEqual(sample_server_names['pop1'], x[0].text)
 
     def test_mozilla_smtp(self):
         with self.app:

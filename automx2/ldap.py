@@ -35,7 +35,7 @@ LookupResult = namedtuple('LookupResult', 'status cn uid')
 class LdapAccess:
     def __init__(self, hostname, port=636, use_ssl=True, user=None, password=None) -> None:
         self._server = Server(hostname, port=port, use_ssl=use_ssl)
-        self._connection = Connection(self._server, lazy=False, user=user, password=password)
+        self._connection = Connection(self._server, lazy=False, read_only=True, user=user, password=password)
 
     def lookup(self, search_base: str, search_filter: str, attr_uid='uid', attr_cn=None) -> LookupResult:
         if not self._connection.bind():  # pragma: no cover (bind errors are not expected during unittests)

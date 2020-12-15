@@ -91,11 +91,11 @@ class AppleRoutes(TestCase):
             md = minidom.parseString(body(r))
             self.assert_kv(md, 'OutgoingMailServerHostName', sample_server_names['smtp1'])
 
-    def test_apple_imap(self):
+    def test_apple_pop(self):
         with self.app:
             r = self.get_apple_config(f'a@{EXAMPLE_ORG}')
             x = self.imap_server_names(minidom.parseString(body(r)))
-            self.assertEqual(sample_server_names['imap2'], x[0])
+            self.assertEqual(sample_server_names['pop1'], x[0])
 
     def test_apple_smtp(self):
         with self.app:

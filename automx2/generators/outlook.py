@@ -33,8 +33,9 @@ from automx2.model import Server
 NS_AUTODISCOVER = 'http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006'
 NS_RESPONSE = 'http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a'
 
-TYPE_MAP = {
+SERVER_TYPE_MAP = {
     'imap': 'IMAP',
+    'pop': 'POP3',
     'smtp': 'SMTP',
 }
 
@@ -53,7 +54,7 @@ class OutlookGenerator(ConfigGenerator):
 
     def protocol_element(self, parent: Element, server: Server, override_uid: str = None) -> None:
         element = SubElement(parent, 'Protocol')
-        SubElement(element, 'Type').text = TYPE_MAP[server.type]
+        SubElement(element, 'Type').text = SERVER_TYPE_MAP[server.type]
         SubElement(element, 'Server').text = server.name
         SubElement(element, 'Port').text = str(server.port)
         SubElement(element, 'LoginName').text = self.pick_one(server.user_name, override_uid)
@@ -81,7 +82,7 @@ class OutlookGenerator(ConfigGenerator):
         SubElement(account, 'AccountType').text = 'email'
         SubElement(account, 'Action').text = 'settings'
         for server in domain.servers:
-            if server.type not in TYPE_MAP:
+            if server.type not in SERVER_TYPE_MAP:
                 raise InvalidServerType(f'Invalid server type "{server.type}"')
             self.protocol_element(account, server, lookup_result.uid)
         return xml_to_string(root_element)

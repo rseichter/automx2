@@ -42,9 +42,10 @@ AUTH_MAP = {
     'NTLM': 'EmailAuthNTLM',
     'plain': 'EmailAuthPassword',
 }
-TYPE_DIRECTION_MAP = {
-    'imap': 'Incoming',
-    'smtp': 'Outgoing',
+SERVER_TYPE_MAP = {
+    'imap': ['Incoming', 'EmailTypeIMAP'],
+    'pop': ['Incoming', 'EmailTypePOP'],
+    'smtp': ['Outgoing', None],
 }
 
 
@@ -91,7 +92,7 @@ def _payload(local, domain):
     inner = {
         'EmailAccountDescription': address,
         'EmailAccountName': None,
-        'EmailAccountType': 'EmailTypeIMAP',
+        'EmailAccountType': None,
         'EmailAddress': address,
         'IncomingMailServerAuthentication': 'EmailAuthPassword',
         'IncomingMailServerHostName': None,
@@ -174,9 +175,12 @@ class AppleGenerator(ConfigGenerator):
             lookup_result = LookupResult(STATUS_SUCCESS, display_name, None)
         inner, outer = _payload(local_part, domain_part)
         for server in domain.servers:
-            if server.type not in TYPE_DIRECTION_MAP:
+            if server.type not in SERVER_TYPE_MAP:
                 raise InvalidServerType(f'Invalid server type "{server.type}"')
-            direction = TYPE_DIRECTION_MAP[server.type]
+            direction = SERVER_TYPE_MAP[server.type][0]
+            account_type = SERVER_TYPE_MAP[server.type][1]
+            if account_type:
+                inner['EmailAccountType'] = account_type
             inner[f'{direction}MailServerHostName'] = server.name
             inner[f'{direction}MailServerPortNumber'] = server.port
             inner[f'{direction}MailServerUsername'] = self.pick_one(server.user_name, lookup_result.uid)

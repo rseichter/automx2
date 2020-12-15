@@ -33,16 +33,18 @@ from automx2.model import Domain
 from automx2.model import Provider
 from automx2.model import Server
 
-TYPE_DIRECTION_MAP = {
-    'imap': 'incoming',
-    'smtp': 'outgoing',
+SERVER_TYPE_MAP = {
+    'imap': ['incoming', 'imap'],
+    'pop': ['incoming', 'pop3'],
+    'smtp': ['outgoing', 'smtp'],
 }
 
 
 class MozillaGenerator(ConfigGenerator):
     def server_element(self, parent: Element, server: Server, override_uid: str = None) -> None:
-        direction = TYPE_DIRECTION_MAP[server.type]
-        element = SubElement(parent, f'{direction}Server', attrib={'type': server.type})
+        direction = SERVER_TYPE_MAP[server.type][0]
+        type_attrib = SERVER_TYPE_MAP[server.type][1]
+        element = SubElement(parent, f'{direction}Server', attrib={'type': type_attrib})
         SubElement(element, 'hostname').text = server.name
         SubElement(element, 'port').text = str(server.port)
         SubElement(element, 'socketType').text = server.socket_type
@@ -68,7 +70,7 @@ class MozillaGenerator(ConfigGenerator):
         SubElement(provider_element, 'displayName').text = provider.name
         SubElement(provider_element, 'displayShortName').text = provider.short_name
         for server in domain.servers:
-            if server.type not in TYPE_DIRECTION_MAP:
+            if server.type not in SERVER_TYPE_MAP:
                 raise InvalidServerType(f'Invalid server type "{server.type}"')
             self.server_element(provider_element, server, lookup_result.uid)
         return xml_to_string(root_element)

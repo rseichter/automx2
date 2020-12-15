@@ -57,6 +57,9 @@ class MsRoutes(TestCase):
     def imap_server_elements(self, element: Element) -> List[Element]:
         return self.server_elements(element, 'IMAP')
 
+    def pop_server_elements(self, element: Element) -> List[Element]:
+        return self.server_elements(element, 'POP3')
+
     def smtp_server_elements(self, element: Element) -> List[Element]:
         return self.server_elements(element, 'SMTP')
 
@@ -88,11 +91,11 @@ class MsRoutes(TestCase):
             self.assertNotEqual([], self.imap_server_elements(e))
             self.assertNotEqual([], self.smtp_server_elements(e))
 
-    def test_ms_imap(self):
+    def test_ms_pop(self):
         with self.app:
             r = self.get_msoft_config(f'a@{EXAMPLE_ORG}')
-            x = self.imap_server_elements(fromstring(body(r)))
-            self.assertEqual(sample_server_names['imap2'], x[0].text)
+            x = self.pop_server_elements(fromstring(body(r)))
+            self.assertEqual(sample_server_names['pop1'], x[0].text)
 
     def test_ms_smtp(self):
         with self.app:

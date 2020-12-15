@@ -12,7 +12,7 @@
 
 set -e
 
-source venv/bin/activate
+source .venv/bin/activate
 if [ -f local/secrets ]; then
 	source local/secrets
 fi

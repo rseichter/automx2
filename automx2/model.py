@@ -46,6 +46,7 @@ LDAP_SEARCH_BASE = from_environ('LDAP_SEARCH_BASE', 'dc=example,dc=com')
 sample_server_names = {
     'imap1': f'imap1.{unique()}.com',
     'imap2': f'imap2.{unique()}.com',
+    'pop1': f'pop1.{unique()}.com',
     'smtp1': f'primary-smtp.{unique()}.com',
     'smtp2': f'secondary-smtp.{unique()}.com',
 }
@@ -149,7 +150,9 @@ def populate_db():
     i += 1
     s3 = Server(id=i, type='imap', port=143, name=sample_server_names['imap1'], domains=[ex_com])
     i += 1
-    s4 = Server(id=i, type='imap', port=143, name=sample_server_names['imap2'], domains=[ex_net, ex_org])
+    s4 = Server(id=i, type='imap', port=143, name=sample_server_names['imap2'], domains=[ex_net])
     i += 1
-    s5 = Server(id=i, type='INVALID', port=123, name=f'{unique()}.{EGGS_DOMAIN}', domains=[eggs])
-    db.session.add_all([s1, s2, s3, s4, s5])
+    s5 = Server(id=i, type='pop', port=143, name=sample_server_names['pop1'], domains=[ex_org])
+    i += 1
+    s6 = Server(id=i, type='INVALID', port=123, name=f'{unique()}.{EGGS_DOMAIN}', domains=[eggs])
+    db.session.add_all([s1, s2, s3, s4, s5, s6])

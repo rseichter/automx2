@@ -52,7 +52,7 @@ case "$arg" in
 		do_$arg
 		;;
 	dist | upload)
-		source venv/bin/activate
+		source .venv/bin/activate
 		do_$arg "$@"
 		;;
 	*)
