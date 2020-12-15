@@ -1,9 +1,9 @@
 *.egg-info/
+.asciidoctor/
 .coverage*
 .idea/
+.venv/
 .xml
 build/
 dist/
 htmlcov/
-venv/
-.asciidoctor/
