@@ -174,7 +174,7 @@ class AppleGenerator(ConfigGenerator):
         else:
             lookup_result = LookupResult(STATUS_SUCCESS, display_name, None)
         inner, outer = _payload(local_part, domain_part)
-        for server in domain.servers:
+        for server in self.servers_by_prio(domain.servers):
             if server.type not in SERVER_TYPE_MAP:
                 raise InvalidServerType(f'Invalid server type "{server.type}"')
             direction = SERVER_TYPE_MAP[server.type][0]

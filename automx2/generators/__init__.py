@@ -18,6 +18,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
+from typing import List
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import tostring
 
@@ -29,6 +30,7 @@ from automx2.ldap import LookupResult
 from automx2.ldap import STATUS_ERROR
 from automx2.ldap import STATUS_NO_MATCH
 from automx2.model import Ldapserver
+from automx2.model import Server
 
 
 def branded_id(id_: str) -> str:
@@ -62,3 +64,7 @@ class ConfigGenerator:
         if high_prio_value:
             return high_prio_value
         return low_prio_value
+
+    @staticmethod
+    def servers_by_prio(servers: List[Server]) -> List[Server]:
+        return sorted(servers, key=lambda _server: _server.prio)

@@ -69,7 +69,7 @@ class MozillaGenerator(ConfigGenerator):
             SubElement(provider_element, 'domain').text = provider_domain.name
         SubElement(provider_element, 'displayName').text = provider.name
         SubElement(provider_element, 'displayShortName').text = provider.short_name
-        for server in domain.servers:
+        for server in self.servers_by_prio(domain.servers):
             if server.type not in SERVER_TYPE_MAP:
                 raise InvalidServerType(f'Invalid server type "{server.type}"')
             self.server_element(provider_element, server, lookup_result.uid)

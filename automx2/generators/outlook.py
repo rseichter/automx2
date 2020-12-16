@@ -81,7 +81,7 @@ class OutlookGenerator(ConfigGenerator):
         account = SubElement(response, 'Account')
         SubElement(account, 'AccountType').text = 'email'
         SubElement(account, 'Action').text = 'settings'
-        for server in domain.servers:
+        for server in self.servers_by_prio(domain.servers):
             if server.type not in SERVER_TYPE_MAP:
                 raise InvalidServerType(f'Invalid server type "{server.type}"')
             self.protocol_element(account, server, lookup_result.uid)
