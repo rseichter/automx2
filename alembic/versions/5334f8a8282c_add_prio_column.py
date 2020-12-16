@@ -1,9 +1,6 @@
-"""Add "prio" column
-
-Revision ID: 5334f8a8282c
-Revises: 
-Create Date: 2020-12-15 15:04:49.371802
-
+"""
+Add "prio" column to "server" table.
+Created: 2020-12-15 15:04:49.371802
 """
 from alembic import op
 import sqlalchemy as sa
@@ -11,7 +8,7 @@ import sqlalchemy as sa
 
 # revision identifiers, used by Alembic.
 revision = '5334f8a8282c'
-down_revision = None
+down_revision = 'f62e64b43d2f'
 branch_labels = None
 depends_on = None
 

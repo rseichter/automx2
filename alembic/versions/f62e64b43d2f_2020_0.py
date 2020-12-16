@@ -1,9 +1,6 @@
 """
 DB schema for automx2 version 2020.0
-
-Revision : f62e64b43d2f
-Revises  : 
-Created  : 2020-01-17 22:30:05.748651
+Created: 2020-01-17 22:30:05.748651
 """
 from alembic import op
 import sqlalchemy as sa
