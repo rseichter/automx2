@@ -33,7 +33,7 @@ from automx2.model import Ldapserver
 from automx2.model import Server
 
 
-def branded_id(id_: str) -> str:
+def branded_id(id_) -> str:
     return f'{IDENTIFIER}-{id_}'
 
 
