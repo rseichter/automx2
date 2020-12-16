@@ -41,4 +41,4 @@ class SiteRoot(MethodView):
             return f'Operational error. Did you remember to <a href="{url}">initialise</a> the database?'
         address = f'abc@{EXAMPLE_COM}'
         url = f'{url_for("mozilla")}?{EMAIL_MOZILLA}={address}'
-        return f'Show Thunderbird-style <a href="{url}">XML configuration</a> for {address}.'
+        return f'<html><body>Show Thunderbird-style <a href="{url}">XML configuration</a> for {address}.</body></html>'
