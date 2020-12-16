@@ -447,9 +447,9 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <span id="author" class="author">Patrick Ben Koetter</span><br>
 <span id="email" class="email"><a href="mailto:p@sys4.de">p@sys4.de</a></span><br>
 <span id="author2" class="author">Ralph Seichter</span><br>
-<span id="email2" class="email"><a href="mailto:s@sys4.de">s@sys4.de</a></span><br>
-<span id="revnumber">version 2019.0,</span>
-<span id="revdate">13.12.2019</span>
+<span id="email2" class="email"><a href="mailto:ralph.seichter@horus-it.de">ralph.seichter@horus-it.de</a></span><br>
+<span id="revnumber">version 2020.2,</span>
+<span id="revdate">16.12.2020</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
@@ -972,28 +972,77 @@ statements:</p>
 <span class="c"># Generates SQL statements to add a provider, servers, and domain.</span>
 <span class="c"># Adapt the configurable section below to your needs.</span>
 
-<span class="nb">set</span> <span class="nt">-e</span>
+<span class="nb">set</span> <span class="nt">-euo</span> pipefail
 
 <span class="c"># User configurable section -- START</span>
-<span class="nv">PROVIDER_NAME</span><span class="o">=</span><span class="s1">'Me, myself and I'</span>
-<span class="nv">PROVIDER_SHORTNAME</span><span class="o">=</span><span class="s1">'Me'</span>
-<span class="nv">PROVIDER_ID</span><span class="o">=</span>123
-<span class="nv">DOMAIN</span><span class="o">=</span><span class="s1">'example.com'</span>
+<span class="nv">PROVIDER_NAME</span><span class="o">=</span><span class="s1">'Foobar Worldwide'</span>
+<span class="nv">PROVIDER_SHORTNAME</span><span class="o">=</span><span class="s1">'Foobar'</span>
+<span class="nv">PROVIDER_ID</span><span class="o">=</span>100
+
+<span class="nv">DOM</span><span class="o">=</span><span class="s1">'foobar'</span>
+<span class="nv">TLD</span><span class="o">=</span><span class="s1">'tld'</span>
+<span class="nv">DOMAIN</span><span class="o">=</span><span class="s2">"</span><span class="k">${</span><span class="nv">DOM</span><span class="k">}</span><span class="s2">.</span><span class="k">${</span><span class="nv">TLD</span><span class="k">}</span><span class="s2">"</span>
+
 <span class="nv">IMAP_SERVER</span><span class="o">=</span><span class="s2">"imap.</span><span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span><span class="s2">"</span>
+<span class="nv">POP_SERVER</span><span class="o">=</span><span class="s2">"pop.</span><span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span><span class="s2">"</span>
 <span class="nv">SMTP_SERVER</span><span class="o">=</span><span class="s2">"smtp.</span><span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span><span class="s2">"</span>
+<span class="c"># Optional LDAP server</span>
+<span class="nv">LDAP_SERVER</span><span class="o">=</span><span class="s2">""</span>
+<span class="c">#LDAP_SERVER="ldap.${DOMAIN}"</span>
 <span class="c"># User configurable section -- END</span>
 
-<span class="nv">s1id</span><span class="o">=</span><span class="k">$((</span>PROVIDER_ID+1<span class="k">))</span>
-<span class="nv">s2id</span><span class="o">=</span><span class="k">$((</span>PROVIDER_ID+2<span class="k">))</span>
-<span class="nv">domid</span><span class="o">=</span><span class="k">$((</span>PROVIDER_ID+3<span class="k">))</span>
+<span class="nv">dom_id</span><span class="o">=</span><span class="k">$((</span>PROVIDER_ID <span class="o">+</span> <span class="m">10</span><span class="k">))</span>
+<span class="nv">ldap_id</span><span class="o">=</span><span class="k">$((</span>PROVIDER_ID <span class="o">+</span> <span class="m">20</span><span class="k">))</span>
+<span class="nv">s1_id</span><span class="o">=</span><span class="k">$((</span>PROVIDER_ID <span class="o">+</span> <span class="m">21</span><span class="k">))</span>
+<span class="nv">s2_id</span><span class="o">=</span><span class="k">$((</span>PROVIDER_ID <span class="o">+</span> <span class="m">22</span><span class="k">))</span>
+<span class="nv">s3_id</span><span class="o">=</span><span class="k">$((</span>PROVIDER_ID <span class="o">+</span> <span class="m">23</span><span class="k">))</span>
+<span class="nv">s4_id</span><span class="o">=</span><span class="k">$((</span>PROVIDER_ID <span class="o">+</span> <span class="m">24</span><span class="k">))</span>
 
-<span class="nb">cat</span> <span class="o">&lt;&lt;</span><span class="no">EOT</span><span class="sh">
-INSERT INTO provider VALUES(</span><span class="k">${</span><span class="nv">PROVIDER_ID</span><span class="k">}</span><span class="sh">, '</span><span class="k">${</span><span class="nv">PROVIDER_NAME</span><span class="k">}</span><span class="sh">', '</span><span class="k">${</span><span class="nv">PROVIDER_SHORTNAME</span><span class="k">}</span><span class="sh">');
-INSERT INTO server VALUES(</span><span class="k">${</span><span class="nv">s1id</span><span class="k">}</span><span class="sh">, 993, 'imap', '</span><span class="k">${</span><span class="nv">IMAP_SERVER</span><span class="k">}</span><span class="sh">', 'SSL', '%EMAILLOCALPART%', 'plain');
-INSERT INTO server VALUES(</span><span class="k">${</span><span class="nv">s2id</span><span class="k">}</span><span class="sh">, 587, 'smtp', '</span><span class="k">${</span><span class="nv">SMTP_SERVER</span><span class="k">}</span><span class="sh">', 'STARTTLS', '%EMAILLOCALPART%', 'plain');
-INSERT INTO domain VALUES(</span><span class="k">${</span><span class="nv">domid</span><span class="k">}</span><span class="sh">, </span><span class="k">${</span><span class="nv">PROVIDER_ID</span><span class="k">}</span><span class="sh">, '</span><span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span><span class="sh">');
-INSERT INTO server_domain VALUES(</span><span class="k">${</span><span class="nv">s1id</span><span class="k">}</span><span class="sh">, </span><span class="k">${</span><span class="nv">domid</span><span class="k">}</span><span class="sh">);
-INSERT INTO server_domain VALUES(</span><span class="k">${</span><span class="nv">s2id</span><span class="k">}</span><span class="sh">, </span><span class="k">${</span><span class="nv">domid</span><span class="k">}</span><span class="sh">);
+<span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="no">EOT</span><span class="sh">
+BEGIN;
+
+DELETE FROM provider;
+INSERT INTO provider(id, name, short_name) VALUES(</span><span class="k">${</span><span class="nv">PROVIDER_ID</span><span class="k">}</span><span class="sh">, '</span><span class="k">${</span><span class="nv">PROVIDER_NAME</span><span class="k">}</span><span class="sh">', '</span><span class="k">${</span><span class="nv">PROVIDER_SHORTNAME</span><span class="k">}</span><span class="sh">');
+</span><span class="no">
+EOT
+
+</span><span class="k">if</span> <span class="o">[[</span> <span class="nt">-n</span> <span class="s2">"</span><span class="k">${</span><span class="nv">LDAP_SERVER</span><span class="k">}</span><span class="s2">"</span> <span class="o">]]</span><span class="p">;</span> <span class="k">then
+	</span><span class="nv">root</span><span class="o">=</span><span class="s2">"dc=</span><span class="k">${</span><span class="nv">DOM</span><span class="k">}</span><span class="s2">,dc=</span><span class="k">${</span><span class="nv">TLD</span><span class="k">}</span><span class="s2">"</span>
+	<span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="no">EOT</span><span class="sh">
+-- Settings tested with OpenLDAP
+DELETE FROM ldapserver;
+INSERT INTO ldapserver(id, name, port, use_ssl, search_base, search_filter, attr_uid, attr_cn, bind_password, bind_user)
+  VALUES(</span><span class="k">${</span><span class="nv">ldap_id</span><span class="k">}</span><span class="sh">, '</span><span class="k">${</span><span class="nv">LDAP_SERVER</span><span class="k">}</span><span class="sh">', 636, 1, '</span><span class="k">${</span><span class="nv">root</span><span class="k">}</span><span class="sh">', '(mail={0})', 'uid', 'cn', 'SECRET', 'cn=automx2,</span><span class="k">${</span><span class="nv">root</span><span class="k">}</span><span class="sh">');
+</span><span class="no">
+EOT
+</span><span class="k">else
+	</span><span class="nv">ldap_id</span><span class="o">=</span><span class="s1">'NULL'</span>
+<span class="k">fi
+
+</span><span class="nb">cat</span> <span class="o">&lt;&lt;</span> <span class="no">EOT</span><span class="sh">
+DELETE FROM provider;
+INSERT INTO provider(id, name, short_name) VALUES(</span><span class="k">${</span><span class="nv">PROVIDER_ID</span><span class="k">}</span><span class="sh">, '</span><span class="k">${</span><span class="nv">PROVIDER_NAME</span><span class="k">}</span><span class="sh">', '</span><span class="k">${</span><span class="nv">PROVIDER_SHORTNAME</span><span class="k">}</span><span class="sh">');
+
+DELETE FROM server;
+INSERT INTO server(id, prio, port, type, name, socket_type, user_name, authentication)
+  VALUES(</span><span class="k">${</span><span class="nv">s1_id</span><span class="k">}</span><span class="sh">, 5, 993, 'imap', '</span><span class="k">${</span><span class="nv">IMAP_SERVER</span><span class="k">}</span><span class="sh">', 'SSL', '%EMAILADDRESS%', 'plain');
+INSERT INTO server(id, prio, port, type, name, socket_type, user_name, authentication)
+  VALUES(</span><span class="k">${</span><span class="nv">s2_id</span><span class="k">}</span><span class="sh">, 15, 995, 'pop', '</span><span class="k">${</span><span class="nv">POP_SERVER</span><span class="k">}</span><span class="sh">', 'SSL', '%EMAILADDRESS%', 'plain');
+INSERT INTO server(id, prio, port, type, name, socket_type, user_name, authentication)
+  VALUES(</span><span class="k">${</span><span class="nv">s3_id</span><span class="k">}</span><span class="sh">, 10, 110, 'pop', '</span><span class="k">${</span><span class="nv">POP_SERVER</span><span class="k">}</span><span class="sh">', 'STARTTLS', '%EMAILADDRESS%', 'plain');
+INSERT INTO server(id, prio, port, type, name, socket_type, user_name, authentication)
+  VALUES(</span><span class="k">${</span><span class="nv">s4_id</span><span class="k">}</span><span class="sh">, 10, 587, 'smtp', '</span><span class="k">${</span><span class="nv">SMTP_SERVER</span><span class="k">}</span><span class="sh">', 'STARTTLS', '%EMAILADDRESS%', 'plain');
+
+DELETE FROM domain;
+INSERT INTO domain(id, name, provider_id, ldapserver_id) VALUES(</span><span class="k">${</span><span class="nv">dom_id</span><span class="k">}</span><span class="sh">, '</span><span class="k">${</span><span class="nv">DOMAIN</span><span class="k">}</span><span class="sh">', </span><span class="k">${</span><span class="nv">PROVIDER_ID</span><span class="k">}</span><span class="sh">, </span><span class="k">${</span><span class="nv">ldap_id</span><span class="k">}</span><span class="sh">);
+
+DELETE FROM server_domain;
+INSERT INTO server_domain(server_id, domain_id) VALUES(</span><span class="k">${</span><span class="nv">s1_id</span><span class="k">}</span><span class="sh">, </span><span class="k">${</span><span class="nv">dom_id</span><span class="k">}</span><span class="sh">);
+INSERT INTO server_domain(server_id, domain_id) VALUES(</span><span class="k">${</span><span class="nv">s2_id</span><span class="k">}</span><span class="sh">, </span><span class="k">${</span><span class="nv">dom_id</span><span class="k">}</span><span class="sh">);
+INSERT INTO server_domain(server_id, domain_id) VALUES(</span><span class="k">${</span><span class="nv">s3_id</span><span class="k">}</span><span class="sh">, </span><span class="k">${</span><span class="nv">dom_id</span><span class="k">}</span><span class="sh">);
+INSERT INTO server_domain(server_id, domain_id) VALUES(</span><span class="k">${</span><span class="nv">s4_id</span><span class="k">}</span><span class="sh">, </span><span class="k">${</span><span class="nv">dom_id</span><span class="k">}</span><span class="sh">);
+
+COMMIT;
 EOT</span></code></pre>
 </div>
 </div>
@@ -1136,25 +1185,25 @@ incoming requests' origins.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="nginx"><span class="c1"># NGINX example configuration snippet to forward incoming requests to automx2.
-# vim:ts=4:et:ft=nginx
-</span>
+<pre class="rouge highlight"><code data-lang="nginx"><span class="c1"># NGINX example configuration snippet to forward incoming requests to automx2.</span>
+<span class="c1"># vim:ts=4:et:ft=nginx</span>
+
 <span class="k">http</span> <span class="p">{</span>
     <span class="kn">server</span> <span class="p">{</span>
         <span class="kn">listen</span> <span class="s">*:80</span><span class="p">;</span>
         <span class="kn">listen</span> <span class="s">[::]:80</span><span class="p">;</span>
         <span class="kn">server_name</span> <span class="s">autoconfig.example.com</span> <span class="s">autodiscover.example.com</span><span class="p">;</span>
         <span class="kn">location</span> <span class="n">/initdb</span> <span class="p">{</span>
-            <span class="c1"># Database may only be initialised from localhost
-</span>            <span class="kn">allow</span> <span class="mi">127</span><span class="s">.0.0.1</span><span class="p">;</span>
+            <span class="c1"># Database may only be initialised from localhost</span>
+            <span class="kn">allow</span> <span class="mi">127</span><span class="s">.0.0.1</span><span class="p">;</span>
             <span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
         <span class="p">}</span>
         <span class="kn">location</span> <span class="n">/</span> <span class="p">{</span>
-            <span class="c1"># Forward all traffic to local automx2 service
-</span>            <span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:4243/</span><span class="p">;</span>
+            <span class="c1"># Forward all traffic to local automx2 service</span>
+            <span class="kn">proxy_pass</span> <span class="s">http://127.0.0.1:4243/</span><span class="p">;</span>
             <span class="kn">proxy_set_header</span> <span class="s">Host</span> <span class="nv">$host</span><span class="p">;</span>
-            <span class="c1"># Set config parameter proxy_count=1 to have automx2 process these headers
-</span>            <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Proto</span> <span class="s">http</span><span class="p">;</span>
+            <span class="c1"># Set config parameter proxy_count=1 to have automx2 process these headers</span>
+            <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-Proto</span> <span class="s">http</span><span class="p">;</span>
             <span class="kn">proxy_set_header</span> <span class="s">X-Forwarded-For</span> <span class="nv">$proxy_add_x_forwarded_for</span><span class="p">;</span>
             <span class="kn">proxy_set_header</span> <span class="s">X-Real-IP</span> <span class="nv">$remote_addr</span><span class="p">;</span>
         <span class="p">}</span>
@@ -1182,12 +1231,12 @@ incoming requests' origins.</p>
 <span class="p">&lt;</span><span class="nl">VirtualHost</span><span class="sr"> *:80</span><span class="p">&gt;
 </span>    <span class="nc">ServerName</span> autoconfig.automx.org
     <span class="nc">ServerAlias</span> autodiscover.automx.org
-    <span class="nc">ProxyPreserveHost</span> On
+    <span class="nc">ProxyPreserveHost</span> <span class="ss">On</span>
     <span class="nc">ProxyPass</span> "/"  "http://127.0.0.1:4243/"
     <span class="nc">ProxyPassReverse</span> "/"  "http://127.0.0.1:4243/"
     <span class="p">&lt;</span><span class="nl">Location</span><span class="sr"> /initdb</span><span class="p">&gt;
 </span>        <span class="nc">Order</span> Deny,Allow
-        <span class="nc">Deny</span> <span class="ss">from</span> all
+        <span class="nc">Deny</span> <span class="ss">from</span> <span class="ss">all</span>
         <span class="nc">Allow</span> <span class="ss">from</span> 127.0.0.1
     <span class="p">&lt;/</span><span class="nl">Location</span><span class="p">&gt;
 &lt;/</span><span class="nl">VirtualHost</span><span class="p">&gt;</span></code></pre>
@@ -1209,7 +1258,7 @@ mailing list.</p>
 </div>
 <div class="paragraph">
 <p>automx2 was written by <a href="https://gitlab.com/rseichter">Ralph Seichter</a> for
-<a href="https://sys4.de">sys4 AG</a>. It has 100% test coverage and is mirrored to
+<a href="https://sys4.de">sys4 AG</a>. The repository is mirrored to
 <a href="https://github.com/rseichter/automx2">rseichter/automx2</a> on GitHub.</p>
 </div>
 </div>
@@ -1217,8 +1266,8 @@ mailing list.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2019.0<br>
-Last updated 2019-12-13 14:25:24 +0100
+Version 2020.2<br>
+Last updated 2020-12-16 17:58:26 +0100
 </div>
 </div>
 <style>
