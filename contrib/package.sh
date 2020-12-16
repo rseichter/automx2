@@ -6,7 +6,7 @@
 # Ruby Gems 'asciidoctor' and 'asciidoctor-diagram' to generate HTML
 # documentation.
 
-set -e
+set -euo pipefail
 
 function usage() {
 	local bn

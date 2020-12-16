@@ -4,7 +4,7 @@
 # Generates SQL statements to add a provider, servers, and domain.
 # Adapt the configurable section below to your needs.
 
-set -e
+set -euo pipefail
 
 # User configurable section -- START
 PROVIDER_NAME='Foobar Worldwide'
@@ -19,6 +19,7 @@ IMAP_SERVER="imap.${DOMAIN}"
 POP_SERVER="pop.${DOMAIN}"
 SMTP_SERVER="smtp.${DOMAIN}"
 # Optional LDAP server
+LDAP_SERVER=""
 #LDAP_SERVER="ldap.${DOMAIN}"
 # User configurable section -- END
 
