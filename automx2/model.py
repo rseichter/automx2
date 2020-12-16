@@ -70,6 +70,7 @@ class Provider(db.Model):
 
 class Server(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    prio = db.Column(db.Integer, nullable=False, server_default='100')
     name = db.Column(db.String, nullable=False)
     port = db.Column(db.Integer, nullable=False)
     type = db.Column(db.String, nullable=False)
