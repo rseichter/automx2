@@ -55,14 +55,14 @@ DELETE FROM provider;
 INSERT INTO provider(id, name, short_name) VALUES(${PROVIDER_ID}, '${PROVIDER_NAME}', '${PROVIDER_SHORTNAME}');
 
 DELETE FROM server;
-INSERT INTO server(id, port, type, name, socket_type, user_name, authentication)
-  VALUES(${s1_id}, 993, 'imap', '${IMAP_SERVER}', 'SSL', '%EMAILADDRESS%', 'plain');
-INSERT INTO server(id, port, type, name, socket_type, user_name, authentication)
-  VALUES(${s2_id}, 995, 'pop', '${POP_SERVER}', 'SSL', '%EMAILADDRESS%', 'plain');
-INSERT INTO server(id, port, type, name, socket_type, user_name, authentication)
-  VALUES(${s3_id}, 110, 'pop', '${POP_SERVER}', 'STARTTLS', '%EMAILADDRESS%', 'plain');
-INSERT INTO server(id, port, type, name, socket_type, user_name, authentication)
-  VALUES(${s4_id}, 587, 'smtp', '${SMTP_SERVER}', 'STARTTLS', '%EMAILADDRESS%', 'plain');
+INSERT INTO server(id, prio, port, type, name, socket_type, user_name, authentication)
+  VALUES(${s1_id}, 5, 993, 'imap', '${IMAP_SERVER}', 'SSL', '%EMAILADDRESS%', 'plain');
+INSERT INTO server(id, prio, port, type, name, socket_type, user_name, authentication)
+  VALUES(${s2_id}, 15, 995, 'pop', '${POP_SERVER}', 'SSL', '%EMAILADDRESS%', 'plain');
+INSERT INTO server(id, prio, port, type, name, socket_type, user_name, authentication)
+  VALUES(${s3_id}, 10, 110, 'pop', '${POP_SERVER}', 'STARTTLS', '%EMAILADDRESS%', 'plain');
+INSERT INTO server(id, prio, port, type, name, socket_type, user_name, authentication)
+  VALUES(${s4_id}, 10, 587, 'smtp', '${SMTP_SERVER}', 'STARTTLS', '%EMAILADDRESS%', 'plain');
 
 DELETE FROM domain;
 INSERT INTO domain(id, name, provider_id, ldapserver_id) VALUES(${dom_id}, '${DOMAIN}', ${PROVIDER_ID}, ${ldap_id});
