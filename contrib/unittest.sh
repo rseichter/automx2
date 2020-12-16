@@ -10,7 +10,7 @@
 # Run all unittests and collect coverage data. This will also
 # generate a HTML-based coverage report.
 
-set -e
+set -euo pipefail
 
 source .venv/bin/activate
 if [ -f local/secrets ]; then
@@ -31,7 +31,7 @@ function usage() {
 function run_tests() {
 	local cmd="$1"
 	shift
-	PYTHONPATH=".:${PYTHONPATH}" $cmd -m unittest discover tests/ "$@"
+	PYTHONPATH=. $cmd -m unittest discover tests/ "$@"
 }
 
 function run_coverage() {
