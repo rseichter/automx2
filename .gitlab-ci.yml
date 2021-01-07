@@ -12,8 +12,8 @@ test:
     - source venv/bin/activate
     - pip install -U pip
     - pip install -r requirements.txt -r requirements-ci.txt
-    - flake8 . --select=E9,F63,F7,F82 --show-source
-    - flake8 . --exit-zero --max-complexity=10 --max-line-length=127
+    - flake8 --select=E9,F63,F7,F82 --show-source automx2
+    - flake8 --exit-zero --max-complexity=10 --max-line-length=127 automx2
     - export AUTOMX2_CONF='tests/unittest.conf'
     - export PYTHONPATH=.
     - export RUN_LDAP_TESTS=0
