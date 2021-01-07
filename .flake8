@@ -2,10 +2,10 @@
 count = True
 exclude =
     .git,
+    .venv,
     __pycache__,
+    alembic,
     build,
     dist,
-    migrations,
-    tests,
-    venv
+    tests
 statistics = True
