@@ -29,6 +29,7 @@ from automx2.ldap import LookupResult
 from automx2.ldap import STATUS_SUCCESS
 from automx2.model import Domain
 from automx2.model import Server
+from automx2.util import expand_placeholders
 
 NS_AUTODISCOVER = 'http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006'
 NS_RESPONSE = 'http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a'
@@ -52,12 +53,12 @@ class OutlookGenerator(ConfigGenerator):
             return 'on'
         return 'off'
 
-    def protocol_element(self, parent: Element, server: Server, override_uid: str = None) -> None:
+    def protocol_element(self, parent: Element, server: Server, login_name: str) -> None:
         element = SubElement(parent, 'Protocol')
         SubElement(element, 'Type').text = SERVER_TYPE_MAP[server.type]
         SubElement(element, 'Server').text = server.name
         SubElement(element, 'Port').text = str(server.port)
-        SubElement(element, 'LoginName').text = self.pick_one(server.user_name, override_uid)
+        SubElement(element, 'LoginName').text = login_name
         SubElement(element, 'SSL').text = self.on_off('SSL' == server.authentication)
         SubElement(element, 'AuthRequired').text = self.on_off(True)
 
@@ -84,5 +85,8 @@ class OutlookGenerator(ConfigGenerator):
         for server in self.servers_by_prio(domain.servers):
             if server.type not in SERVER_TYPE_MAP:
                 raise InvalidServerType(f'Invalid server type "{server.type}"')
-            self.protocol_element(account, server, lookup_result.uid)
+            login_name = expand_placeholders(
+                self.pick_one(server.user_name, lookup_result.uid), local_part, domain_part
+            )
+            self.protocol_element(account, server, login_name)
         return xml_to_string(root_element)
