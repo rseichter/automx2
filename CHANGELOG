@@ -5,3 +5,5 @@
 2020.1 (2020-03-08): Support "werkzeug" release 1.0.0.
 
 2020.2 (2020-12-16): Introduce support for POP3 servers.
+
+2021.0 (2021-01-07): Improve handling of login name placeholders in Outlook generator.
