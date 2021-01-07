@@ -1,7 +1,7 @@
 """
-Copyright © 2019-2020 Ralph Seichter
+Copyright © 2019-2021 Ralph Seichter
 
-Graciously sponsored by sys4 AG <https://sys4.de/>
+Sponsored by sys4 AG <https://sys4.de/>
 
 This file is part of automx2.
 

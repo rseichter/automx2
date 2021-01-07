@@ -1,7 +1,7 @@
 """
-Copyright © 2019-2020 Ralph Seichter
+Copyright © 2019-2021 Ralph Seichter
 
-Graciously sponsored by sys4 AG <https://sys4.de/>
+Sponsored by sys4 AG <https://sys4.de/>
 
 This file is part of automx2.
 
@@ -21,7 +21,7 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 import logging
 
 IDENTIFIER = 'automx2'  # Do not change this!
-VERSION = '2020.2'
+VERSION = '2021.0.dev1'
 
 PLACEHOLDER_ADDRESS = r'%EMAILADDRESS%'
 PLACEHOLDER_DOMAIN = r'%EMAILDOMAIN%'
