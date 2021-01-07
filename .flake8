@@ -8,4 +8,5 @@ exclude =
     build,
     dist,
     tests
+max-line-length = 127
 statistics = True
