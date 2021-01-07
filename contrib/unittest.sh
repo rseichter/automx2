@@ -35,11 +35,11 @@ function run_tests() {
 }
 
 function run_coverage() {
-	local rcfile="--rcfile=tests/coverage.rc"
-	local prec="--precision=1"
-	run_tests "coverage run ${rcfile} --source=automx2"
-	coverage report ${rcfile} ${prec}
-	coverage html ${rcfile} ${prec}
+	local rcf="--rcfile=tests/coverage.rc"
+	local opt="${rcf} --precision=1 --skip-empty"
+	run_tests "coverage run ${rcf} --source=automx2"
+	coverage report ${opt}
+	coverage html ${opt}
 }
 
 if [ $# -gt 0 ]; then
