@@ -6,4 +6,4 @@
 
 2020.2 (2020-12-16): Introduce support for POP3 servers.
 
-2021.0 (2021-01-07): Improve handling of login name placeholders in Outlook generator.
+2021.0 (2021-01-09): Improve handling of login name placeholders in Outlook generator.
