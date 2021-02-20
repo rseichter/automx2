@@ -63,7 +63,13 @@ class LdapAccess:
         attributes = ldap_entry['attributes']
         if attribute and attribute in attributes:
             value = attributes[attribute]
-            return value[0]
+            if isinstance(value, str):
+                log.debug(f'Returning string "{value}"')
+                return value
+            elif isinstance(value, list):
+                log.debug(f'Returning list element "{value[0]}"')
+                return value[0]
+            log.error(f'Unexpected lookup result type: {type(value).__name__}')
         elif attribute:
             log.warning(f"Attribute '{attribute}' not found")
         return None
