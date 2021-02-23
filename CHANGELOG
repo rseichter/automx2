@@ -8,4 +8,4 @@
 
 2021.0 (2021-01-09): Improve handling of login name placeholders in Outlook generator.
 
-2021.1.dev1 (2021-02-20): Fix LDAP attribute processing for Active Directory.
+2021.1 (2021-02-23): Fix LDAP attribute processing when using Active Directory backends.
