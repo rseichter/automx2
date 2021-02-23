@@ -1,9 +1,9 @@
 = automx2: Email client configuration made easy
-Patrick Ben Koetter <p@sys4.de>; Ralph Seichter <ralph.seichter@horus-it.de>
+Ralph Seichter <automx2@seichter.de>; Patrick Ben Koetter <p@sys4.de>
 :keywords: autoconfig, autodiscover, mobileconfig, automx, automx2
 :subject: automx2: Email client configuration made easy
-:revnumber: 2021.0
-:revdate: 2021-01-09
+:revnumber: 2021.1
+:revdate: 2021-02-23
 :copyright: © 2019-2021 Ralph Seichter & sys4 AG
 :publisher: Ralph Seichter & sys4 AG
 :lang: en
@@ -51,7 +51,6 @@ https://mail.sys4.de/cgi-bin/mailman/listinfo/automx-users[automx-users]
 mailing list.
 
 automx2 was written by https://gitlab.com/rseichter[Ralph Seichter] for
-https://sys4.de[sys4 AG]. The repository is mirrored to
-https://github.com/rseichter/automx2[rseichter/automx2] on GitHub.
+https://sys4.de[sys4 AG].
 
 // vim: set ft=asciidoc:

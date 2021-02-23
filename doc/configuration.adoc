@@ -76,8 +76,8 @@ works. Use curl to send an account configuration request for
 curl 'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=user@example.com'
 ----
 
-Make sure to use quotes as shown, or your shell might attempt some pattern matching
-(link:https://fishshell.com[FISH] definitely does).
+As shown in the example, make sure to use quotes as necessary to prevent your shell
+from matching/replacing patterns.
 
 === Database configuration
 
