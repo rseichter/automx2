@@ -11,7 +11,7 @@ to the web service aka automx2.
 |            |         |            |        |            |
 |            |  HTTPS  |            |  4243  |            |
 | mailclient |<------->| webserver  |<------>| webservice |
-|            |         |  (nginx)   |        |  (automx2) |
+|            |         |            |        |  (automx2) |
 |            |         |            |        |            |
 +------------+         +------------+        +------------+
 ....

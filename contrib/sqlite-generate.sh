@@ -7,12 +7,12 @@
 set -euo pipefail
 
 # User configurable section -- START
-PROVIDER_NAME='Foobar Worldwide'
-PROVIDER_SHORTNAME='Foobar'
+PROVIDER_NAME='Example Inc.'
+PROVIDER_SHORTNAME='Example'
 PROVIDER_ID=100
 
-DOM='foobar'
-TLD='tld'
+DOM='example'
+TLD='com'
 DOMAIN="${DOM}.${TLD}"
 
 IMAP_SERVER="imap.${DOMAIN}"
@@ -52,9 +52,6 @@ else
 fi
 
 cat << EOT
-DELETE FROM provider;
-INSERT INTO provider(id, name, short_name) VALUES(${PROVIDER_ID}, '${PROVIDER_NAME}', '${PROVIDER_SHORTNAME}');
-
 DELETE FROM server;
 INSERT INTO server(id, prio, port, type, name, socket_type, user_name, authentication)
   VALUES(${s1_id}, 5, 993, 'imap', '${IMAP_SERVER}', 'SSL', '%EMAILADDRESS%', 'plain');

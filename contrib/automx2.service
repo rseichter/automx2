@@ -1,0 +1,17 @@
+[Unit]
+Description="automx2 - mail account configuration service"
+After=network.target
+
+[Service]
+User=automx
+Group=automx
+WorkingDirectory=/srv/www/automx2
+Environment=FLASK_APP=automx2.server:app
+Environment=FLASK_CONFIG=production
+Environment=FLASK_RUN_HOST=127.0.0.1
+Environment=FLASK_RUN_PORT=4243
+ExecStart=/srv/www/automx2/bin/python /srv/www/automx2/bin/flask run
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
