@@ -530,7 +530,7 @@ pre.rouge .ss {
 <span id="author2" class="author">Patrick Ben Koetter</span><br>
 <span id="email2" class="email"><a href="mailto:p@sys4.de">p@sys4.de</a></span><br>
 <span id="revnumber">version 2021.1,</span>
-<span id="revdate">2021-02-23</span>
+<span id="revdate">2021-03-04</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
@@ -551,11 +551,10 @@ pre.rouge .ss {
 <li><a href="#_testing_standalone_automx2">4.2. Testing standalone automx2</a></li>
 <li><a href="#_database_configuration">4.3. Database configuration</a>
 <ul class="sectlevel3">
-<li><a href="#_sqlite">4.3.1. SQLite</a></li>
-<li><a href="#_mysql">4.3.2. MySQL</a></li>
-<li><a href="#_postgresql">4.3.3. PostgreSQL</a></li>
-<li><a href="#_oracle">4.3.4. Oracle</a></li>
-<li><a href="#_microsoft_sql_server">4.3.5. Microsoft SQL Server</a></li>
+<li><a href="#_database_support">4.3.1. Database support</a></li>
+<li><a href="#_sqlite">4.3.2. SQLite</a></li>
+<li><a href="#_mysql">4.3.3. MySQL</a></li>
+<li><a href="#_postgresql">4.3.4. PostgreSQL</a></li>
 </ul>
 </li>
 <li><a href="#runningautomx2">4.4. Running automx2</a>
@@ -909,7 +908,7 @@ application terminates.</p>
 </table>
 </div>
 <div class="paragraph">
-<p>During startup automx2 looks for runtime configuration instructions in
+<p>During startup automx2 searches for runtime configuration instructions in
 the following locations:</p>
 </div>
 <div id="configurationlocations" class="listingblock">
@@ -968,20 +967,19 @@ configuration</a> that ships with automx2 looks like this:</p>
 <div class="paragraph">
 <p>Place the content of the example configuration into one of the configuration
 locations automx2 looks for and adapt it to your needs. Then configure the
-database backend with data that suits your setup.</p>
+database backend with data that suits your setup, as described below.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="_testing_standalone_automx2"><a class="anchor" href="#_testing_standalone_automx2"></a>4.2. Testing standalone automx2</h3>
 <div class="paragraph">
-<p>If you want to verify a vanilla install of automx2 works you can populate it
-with the (internal) test data. Start it as described in section
-<a href="#runningautomx2">Running automx2</a> and send the following request to populate your database
-with the internal test data:</p>
+<p>If you want to verify a vanilla installation of automx2 works, you can populate it
+with internal test data. Start automx2 as described in section <a href="#runningautomx2">Running automx2</a>
+and send the following request to populate your database:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="go">curl http://127.0.0.1:4243/initdb/</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/initdb/'</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -994,7 +992,7 @@ works. Use curl to send an account configuration request for user@example.com:</
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="go">curl 'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=user@example.com'</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=user@example.com'</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1006,7 +1004,7 @@ from matching/replacing patterns.</p>
 <h3 id="_database_configuration"><a class="anchor" href="#_database_configuration"></a>4.3. Database configuration</h3>
 <div class="paragraph">
 <p>automx2 uses the SQLAlchemy toolkit to access databases. This allows a variety
-of databases, aka <a href="https://docs.sqlalchemy.org/en/13/dialects/">dialects</a>,
+of databases, a.k.a. <a href="https://docs.sqlalchemy.org/en/latest/dialects/">dialects</a>,
 to be used, simply by defining the appropriate connection URL.</p>
 </div>
 <div class="admonitionblock note">
@@ -1016,26 +1014,18 @@ to be used, simply by defining the appropriate connection URL.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<div class="title">Browser/API based configuration</div>
+<div class="title">API based configuration</div>
 <div class="paragraph">
-<p>At the moment you will have to add database entries manually. We want to add
-the capability to do that via a webservice in an upcoming version, but we
-haven&#8217;t planned when we would add this yet. Please feel free to contact
-us if you want to sponsor this feature. Sponsoring will certainly help to
-make this feature become a priority.</p>
+<p>I consider adding an API for configuration changes in an upcoming version
+but have not decided when that might happen. Feel free to contact me if you
+are interested in sponsoring this feature.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="title">Database support</div>
+<div class="sect3">
+<h4 id="_database_support"><a class="anchor" href="#_database_support"></a>4.3.1. Database support</h4>
 <div class="paragraph">
 <p>While you probably already have SQLite support available on your local machine,
 you may need to install additional Python packages for PostgreSQL, MySQL, etc.
@@ -1043,94 +1033,49 @@ Detailed instructions to support a particular database dialect are out of scope
 for this document. Please search the Internet for detailed instructions on supporting
 a particular dialect. The SQLAlchemy documentation provides a useful starting point.</p>
 </div>
-</td>
-</tr>
-</table>
+<div class="paragraph">
+<p>While the <code>contrib</code> directory contains example database schemas which you can use
+as a reference, I recommend using the built-in method to create the necessary DB
+structure from scratch by accessing the <code>/initdb/</code> service endpoint. This will
+also populate the database with some example data.</p>
+</div>
+<div class="paragraph">
+<p>If you upgrade from an early automx2 release and wish to migrate your existing
+database, you can use the built-in Alembic support. However, this requires
+cloning the Git repository, modifying <code>alembic.ini</code> and invoking the migration
+from the command line. It is usually easier to export your existing data,
+create a fresh DB and import the data.</p>
+</div>
 </div>
 <div class="sect3">
-<h4 id="_sqlite"><a class="anchor" href="#_sqlite"></a>4.3.1. SQLite</h4>
+<h4 id="_sqlite"><a class="anchor" href="#_sqlite"></a>4.3.2. SQLite</h4>
 <div class="paragraph">
 <p>This section demonstrates what you need to do to in order to use SQLite version
 3 or higher as a backend database for automx2.</p>
 </div>
+<div class="paragraph">
+<p>Step 1: Set the database URI in your automx2 configuration. Please note that
+specifying an absolute path for the database requires a total of four slashes
+after the schema identifier:</p>
+</div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>sqlite3 <span class="nt">--version</span>
-3.34.1 2021-01-20 14:10:07 10e20c0b43500cfb9bbc0eaa061c57514f715d87238f4d835880cd846b9ebd1f</code></pre>
+<pre class="rouge highlight"><code data-lang="ini"><span class="nn">[automx2]</span>
+<span class="py">db_uri</span> <span class="p">=</span> <span class="s">sqlite:////var/lib/automx2/db.sqlite</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Use the <a href="../contrib/sqlite-schema.sql">sqlite-schema.sql</a> from the contrib
-section to create a database, tables and the required fields:</p>
+<p>Step 2: Launch automx2 and access the DB initialisation URL:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="gp">$</span><span class="w"> </span><span class="nb">cat </span>contrib/sqlite-schema.sql | sqlite3 /var/lib/automx2/db.sqlite</code></pre>
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/initdb'</span></code></pre>
 </div>
 </div>
-<details>
-<summary class="title">Click to see the SQLite schema definition</summary>
-<div class="content">
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="sql"><span class="c1">-- SQLite schema definition</span>
-<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">provider</span> <span class="p">(</span>
-	<span class="n">id</span> <span class="nb">INTEGER</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">name</span> <span class="nb">VARCHAR</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">short_name</span> <span class="nb">VARCHAR</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span>
-<span class="p">);</span>
-<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">server</span> <span class="p">(</span>
-	<span class="n">id</span> <span class="nb">INTEGER</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">prio</span> <span class="nb">INTEGER</span> <span class="k">DEFAULT</span> <span class="s1">'10'</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">name</span> <span class="nb">VARCHAR</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">port</span> <span class="nb">INTEGER</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="k">type</span> <span class="nb">VARCHAR</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">socket_type</span> <span class="nb">VARCHAR</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">user_name</span> <span class="nb">VARCHAR</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">authentication</span> <span class="nb">VARCHAR</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span>
-<span class="p">);</span>
-<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">ldapserver</span> <span class="p">(</span>
-	<span class="n">id</span> <span class="nb">INTEGER</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">name</span> <span class="nb">VARCHAR</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">port</span> <span class="nb">INTEGER</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">use_ssl</span> <span class="nb">BOOLEAN</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">search_base</span> <span class="nb">VARCHAR</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">search_filter</span> <span class="nb">VARCHAR</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">attr_uid</span> <span class="nb">VARCHAR</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">attr_cn</span> <span class="nb">VARCHAR</span><span class="p">,</span> 
-	<span class="n">bind_password</span> <span class="nb">VARCHAR</span><span class="p">,</span> 
-	<span class="n">bind_user</span> <span class="nb">VARCHAR</span><span class="p">,</span> 
-	<span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span> 
-	<span class="k">CHECK</span> <span class="p">(</span><span class="n">use_ssl</span> <span class="k">IN</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-<span class="p">);</span>
-<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="k">domain</span> <span class="p">(</span>
-	<span class="n">id</span> <span class="nb">INTEGER</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">name</span> <span class="nb">VARCHAR</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">provider_id</span> <span class="nb">INTEGER</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">ldapserver_id</span> <span class="nb">INTEGER</span><span class="p">,</span> 
-	<span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span> 
-	<span class="k">UNIQUE</span> <span class="p">(</span><span class="n">name</span><span class="p">),</span> 
-	<span class="k">FOREIGN</span> <span class="k">KEY</span><span class="p">(</span><span class="n">provider_id</span><span class="p">)</span> <span class="k">REFERENCES</span> <span class="n">provider</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span> 
-	<span class="k">FOREIGN</span> <span class="k">KEY</span><span class="p">(</span><span class="n">ldapserver_id</span><span class="p">)</span> <span class="k">REFERENCES</span> <span class="n">ldapserver</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span>
-<span class="p">);</span>
-<span class="k">CREATE</span> <span class="k">TABLE</span> <span class="n">server_domain</span> <span class="p">(</span>
-	<span class="n">server_id</span> <span class="nb">INTEGER</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="n">domain_id</span> <span class="nb">INTEGER</span> <span class="k">NOT</span> <span class="k">NULL</span><span class="p">,</span> 
-	<span class="k">PRIMARY</span> <span class="k">KEY</span> <span class="p">(</span><span class="n">server_id</span><span class="p">,</span> <span class="n">domain_id</span><span class="p">),</span> 
-	<span class="k">FOREIGN</span> <span class="k">KEY</span><span class="p">(</span><span class="n">server_id</span><span class="p">)</span> <span class="k">REFERENCES</span> <span class="n">server</span> <span class="p">(</span><span class="n">id</span><span class="p">),</span> 
-	<span class="k">FOREIGN</span> <span class="k">KEY</span><span class="p">(</span><span class="n">domain_id</span><span class="p">)</span> <span class="k">REFERENCES</span> <span class="k">domain</span> <span class="p">(</span><span class="n">id</span><span class="p">)</span>
-<span class="p">);</span></code></pre>
-</div>
-</div>
-</div>
-</details>
 <div class="paragraph">
-<p>Download the <a href="../contrib/sqlite-generate.sh">sqlite-generate.sh</a> helper
-script from the contrib section. Then change the script’s user-configurable
-section to reflect your domain and server names and run the script to generate
-the necessary SQL statements.</p>
+<p>The Git repository contains a <a href="../contrib/sqlite-generate.sh">sqlite-generate.sh</a> helper
+script which demonstrates how the database can be populated programmatically.
+You only need to adapt a few settings according to your needs:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1144,13 +1089,12 @@ the necessary SQL statements.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>The script will output the SQL statements to STDOUT. Verify your configuration
-settings and use the script output to add entries to your sqlite database like
-this:</p>
+<p>The script will print the SQL statements to standard output, which can be
+piped into <code>sqlite3</code> for processing.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="gp">$</span><span class="w"> </span>contrib/sqlite-generate.sh | sqlite3 /var/lib/automx2/db.sqlite</code></pre>
+<pre class="rouge highlight"><code data-lang="bash">contrib/sqlite-generate.sh | sqlite3 /var/lib/automx2/db.sqlite</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1166,9 +1110,9 @@ your <code>automx2.conf</code>.</p>
 <td class="content">
 <div class="title">Placeholders</div>
 <div class="paragraph">
-<p>In case you wonder about the macros in the configuration output: These are
-<a href="https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat#Placeholders">placeholders</a>,
-as documented by Mozilla.</p>
+<p>See Mozilla&#8217;s
+<a href="https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat#Placeholders">placeholder</a>
+documentation for further details.</p>
 </div>
 </td>
 </tr>
@@ -1179,27 +1123,61 @@ as documented by Mozilla.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_mysql"><a class="anchor" href="#_mysql"></a>4.3.2. MySQL</h4>
+<h4 id="_mysql"><a class="anchor" href="#_mysql"></a>4.3.3. MySQL</h4>
 <div class="paragraph">
-<p>To be done…</p>
+<p>Step 1: Create a database.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="mysql">CREATE DATABASE `automx2` COLLATE 'utf8mb4_general_ci';</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Step 2: Set the database URI in your automx2 configuration. The following example
+uses <em>pymysql</em> as a DB driver, which is not included in the automx2 distribution.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="ini"><span class="nn">[automx2]</span>
+<span class="py">db_uri</span> <span class="p">=</span> <span class="s">mysql+pymysql://user:pass@dbhost/automx2?charset=utf8mb4</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Step 3: Launch automx2 and access the DB initialisation URL:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/initdb'</span></code></pre>
+</div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_postgresql"><a class="anchor" href="#_postgresql"></a>4.3.3. PostgreSQL</h4>
+<h4 id="_postgresql"><a class="anchor" href="#_postgresql"></a>4.3.4. PostgreSQL</h4>
 <div class="paragraph">
-<p>To be done…</p>
+<p>Step 1: Create a database.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="postgresql">CREATE DATABASE automx2 LOCALE 'en_US.utf8';</code></pre>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_oracle"><a class="anchor" href="#_oracle"></a>4.3.4. Oracle</h4>
 <div class="paragraph">
-<p>To be done…</p>
+<p>Step 2: Set the database URI in your automx2 configuration. The following example
+uses <em>psycopg2-binary</em> as a DB driver, which is not included in the automx2 distribution.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="ini"><span class="nn">[automx2]</span>
+<span class="py">db_uri</span> <span class="p">=</span> <span class="s">postgresql+psycopg2://user:pass@dbhost/automx2</span></code></pre>
 </div>
 </div>
-<div class="sect3">
-<h4 id="_microsoft_sql_server"><a class="anchor" href="#_microsoft_sql_server"></a>4.3.5. Microsoft SQL Server</h4>
 <div class="paragraph">
-<p>To be done…</p>
+<p>Step 3: Launch automx2 and access the DB initialisation URL:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/initdb'</span></code></pre>
+</div>
 </div>
 </div>
 </div>
@@ -1211,8 +1189,8 @@ via a webserver to the public. You should not run automx2 with superuser
 privileges. Use a dedicated user instead.</p>
 </div>
 <div class="paragraph">
-<p>The following examples assume you have created a user <code>automx</code> and have
-granted appropriate permissions to this user:</p>
+<p>The following examples assume you have created a user and group <code>automx2</code>
+and have granted appropriate rights to this user:</p>
 </div>
 <div class="ulist">
 <ul>
@@ -1237,19 +1215,17 @@ contrib section and place it in <code>/etc/systemd/system/automx2.service</code>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="ini"><span class="nn">[Unit]</span>
-<span class="py">Description</span><span class="p">=</span><span class="s">"automx2 - mail account configuration service"</span>
+<span class="py">Description</span><span class="p">=</span><span class="s">"automx2 - MUA configuration service"</span>
+<span class="py">Documentation</span> <span class="p">=</span> <span class="s">https://gitlab.com/automx/automx2/-/blob/master/doc/automx2.adoc</span>
 <span class="py">After</span><span class="p">=</span><span class="s">network.target</span>
 
 <span class="nn">[Service]</span>
-<span class="py">User</span><span class="p">=</span><span class="s">automx</span>
-<span class="py">Group</span><span class="p">=</span><span class="s">automx</span>
-<span class="py">WorkingDirectory</span><span class="p">=</span><span class="s">/srv/www/automx2</span>
 <span class="py">Environment</span><span class="p">=</span><span class="s">FLASK_APP=automx2.server:app</span>
 <span class="py">Environment</span><span class="p">=</span><span class="s">FLASK_CONFIG=production</span>
-<span class="py">Environment</span><span class="p">=</span><span class="s">FLASK_RUN_HOST=127.0.0.1</span>
-<span class="py">Environment</span><span class="p">=</span><span class="s">FLASK_RUN_PORT=4243</span>
-<span class="py">ExecStart</span><span class="p">=</span><span class="s">/srv/www/automx2/bin/python /srv/www/automx2/bin/flask run</span>
+<span class="py">ExecStart</span><span class="p">=</span><span class="s">/srv/www/automx2/bin/flask run --host=127.0.0.1 --port=4243</span>
 <span class="py">Restart</span><span class="p">=</span><span class="s">always</span>
+<span class="py">User</span><span class="p">=</span><span class="s">automx2</span>
+<span class="py">WorkingDirectory</span><span class="p">=</span><span class="s">/var/lib/automx2</span>
 
 <span class="nn">[Install]</span>
 <span class="py">WantedBy</span><span class="p">=</span><span class="s">multi-user.target</span></code></pre>
@@ -1261,7 +1237,7 @@ list of available services:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="gp">$</span><span class="w"> </span><span class="nb">sudo </span>systemctl daemon-reload</code></pre>
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">sudo </span>systemctl daemon-reload</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1269,10 +1245,10 @@ list of available services:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="gp">$</span><span class="w"> </span><span class="nb">sudo </span>systemctl status automx2
-<span class="go">● automx2.service - "automx2 - mail account configuration service"
-</span><span class="gp">     Loaded: loaded (/etc/systemd/system/automx2.service;</span><span class="w"> </span>disabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
-<span class="go">     Active: inactive (dead)</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">sudo </span>systemctl status automx2
+● automx2.service - <span class="s2">"automx2 - MUA configuration service"</span>
+     Loaded: loaded <span class="o">(</span>/etc/systemd/system/automx2.service<span class="p">;</span> disabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
+     Active: inactive <span class="o">(</span>dead<span class="o">)</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1280,8 +1256,8 @@ list of available services:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="gp">$</span><span class="w"> </span><span class="nb">sudo </span>systemctl <span class="nb">enable </span>automx2 <span class="nt">--now</span>
-<span class="go">Created symlink /etc/systemd/system/multi-user.target.wants/automx2.service → /etc/systemd/system/automx2.service.</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">sudo </span>systemctl <span class="nb">enable </span>automx2 <span class="nt">--now</span>
+Created symlink /etc/systemd/system/multi-user.target.wants/automx2.service → /etc/systemd/system/automx2.service.</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1289,66 +1265,35 @@ list of available services:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="gp">$</span><span class="w"> </span><span class="nb">sudo </span>systemctl status automx2
-<span class="go">● automx2.service - "automx2 - mail account configuration service"
-</span><span class="gp">     Loaded: loaded (/etc/systemd/system/automx2.service;</span><span class="w"> </span>enabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
-<span class="gp">     Active: active (running) since Mon 2021-03-01 12:54:31 CET;</span><span class="w"> </span>19s ago
-<span class="go">   Main PID: 126966 (python)
-      Tasks: 1 (limit: 4620)
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">sudo </span>systemctl status automx2
+● automx2.service - <span class="s2">"automx2 - MUA configuration service"</span>
+     Loaded: loaded <span class="o">(</span>/etc/systemd/system/automx2.service<span class="p">;</span> enabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
+     Active: active <span class="o">(</span>running<span class="o">)</span> since Mon 2021-03-01 12:54:31 CET<span class="p">;</span> 19s ago
+   Main PID: 126966 <span class="o">(</span>python<span class="o">)</span>
+      Tasks: 1 <span class="o">(</span>limit: 4620<span class="o">)</span>
      Memory: 46.1M
      CGroup: /system.slice/automx2.service
-             └─126966 /srv/www/automx2/bin/python /srv/www/automx2/bin/flask run
-
-Mar 01 12:54:32 mail python[126966]:    WARNING: This is a development server. Do not use it in a production deployment.
-Mar 01 12:54:32 mail python[126966]:    Use a production WSGI server instead.
-Mar 01 12:54:32 mail python[126966]:  * Debug mode: off
-Mar 01 12:54:32 mail python[126966]: Running automx2 version 2021.1
-Mar 01 12:54:32 mail python[126966]: Checking /home/automx/.automx2.conf
-Mar 01 12:54:32 mail python[126966]: Checking /etc/automx2/automx2.conf
-Mar 01 12:54:32 mail python[126966]: Checking /etc/automx2.conf
+             └─126966 /srv/www/automx2/bin/flask run <span class="nt">--host</span><span class="o">=</span>127.0.0.1 <span class="nt">--port</span><span class="o">=</span>4243
+<span class="o">[</span>...]
 Mar 01 12:54:32 mail python[126966]: Reading /etc/automx2.conf
-Mar 01 12:54:32 mail python[126966]: Config.get: loglevel = WARNING
-Mar 01 12:54:32 mail python[126966]:  * Running on http://127.0.0.1:4243/ (Press CTRL+C to quit)</span></code></pre>
+Mar 01 12:54:32 mail python[126966]: Config.get: loglevel <span class="o">=</span> WARNING
+Mar 01 12:54:32 mail python[126966]:  <span class="k">*</span> Running on http://127.0.0.1:4243/ <span class="o">(</span>Press CTRL+C to quit<span class="o">)</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>As systemd suggests there&#8217;s a python service running on <code>127.0.0.1</code> on port <code>4243</code>:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="gp">$</span><span class="w"> </span><span class="nb">sudo </span>lsof <span class="nt">-Pni</span> tcp@localhost:4243
-<span class="go">COMMAND    PID   USER   FD   TYPE  DEVICE SIZE/OFF NODE NAME
-python  126966 automx    3u  IPv4 7758442      0t0  TCP 127.0.0.1:4243 (LISTEN)</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You are ready to start testing automx2 locally as described in <a href="#local-testing">Testing automx2 on command line</a>.</p>
+<p>You are now ready to start testing automx2, as described in <a href="#local-testing">Testing automx2 on command line</a>.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="_command_line"><a class="anchor" href="#_command_line"></a>4.4.2. Command line</h4>
 <div class="paragraph">
 <p>While logged in as an unprivileged user, change into the installation
-directory and start the <code>contrib/flask.sh</code> script:</p>
+directory and start the <code>contrib/flask.sh</code> launch script:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="gp">$</span><span class="w"> </span><span class="nb">cd</span> /srv/web/automx2
-<span class="gp">$</span><span class="w"> </span>contrib/flask.sh run</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This will start the flask service listening on IP address <code>127.0.0.1</code> and port
-<code>4243</code>. These are the standard values for Flask and might collide with other
-software you have installed. We therefore recommend that you use the parameters
-<code>--host</code> and <code>--port</code> to override the defaults.</p>
-</div>
-<div class="paragraph">
-<p>The typical launch command is this:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="gp">$</span><span class="w"> </span>contrib/flask.sh run <span class="nt">--host</span><span class="o">=</span>127.0.0.1 <span class="nt">--port</span><span class="o">=</span>4243</code></pre>
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> /srv/web/automx2
+contrib/flask.sh run <span class="nt">--host</span><span class="o">=</span>127.0.0.1 <span class="nt">--port</span><span class="o">=</span>4243</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -1364,7 +1309,7 @@ software you have installed. We therefore recommend that you use the parameters
 and log data will be displayed in the terminal. If you press Ctrl-C or close the
 shell session, the application will terminate. To run automx2 in the background,
 you can use a window manager like <a href="https://www.gnu.org/software/screen/">GNU
-Screen</a></p>
+Screen</a> or tmux.</p>
 </div>
 </td>
 </tr>
@@ -1379,19 +1324,23 @@ that will receive requests from the outside and forwards them to automx2.</p>
 <div class="sect2">
 <h3 id="local-testing"><a class="anchor" href="#local-testing"></a>4.5. Testing automx2 on command line</h3>
 <div class="paragraph">
-<p>Use <code>curl</code> to send a request to your local automx2-instance. The following
-example assumes your service runs on localhost on port <code>4243</code>:</p>
+<p>Use <em>curl</em> to send a request to your local automx2-instance. The following
+example assumes your service runs on localhost on port 4243. The exact
+output depends on your database content, but should look similar.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="gp">$</span><span class="w"> </span>curl <span class="s1">'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=localpart@example.com'</span>
-<span class="gp">&lt;clientConfig version="1.1"&gt;</span>&lt;emailProvider <span class="nb">id</span><span class="o">=</span><span class="s2">"automx2-100"</span><span class="o">&gt;</span>&lt;identity /&gt;&lt;domain&gt;example.com&lt;/domain&gt;&lt;displayName&gt;Example Inc.&lt;/displayName&gt;&lt;displayShortName&gt;Example&lt;/displayShortName&gt;&lt;incomingServer <span class="nb">type</span><span class="o">=</span><span class="s2">"imap"</span><span class="o">&gt;</span>&lt;<span class="nb">hostname</span><span class="o">&gt;</span>mail.example.com&lt;/hostname&gt;&lt;port&gt;993&lt;/port&gt;&lt;socketType&gt;SSL&lt;/socketType&gt;&lt;username&gt;%EMAILADDRESS%&lt;/username&gt;&lt;authentication&gt;plain&lt;/authentication&gt;&lt;/incomingServer&gt;&lt;incomingServer <span class="nb">type</span><span class="o">=</span><span class="s2">"pop3"</span><span class="o">&gt;</span>&lt;<span class="nb">hostname</span><span class="o">&gt;</span>mail.example.com&lt;/hostname&gt;&lt;port&gt;110&lt;/port&gt;&lt;socketType&gt;STARTTLS&lt;/socketType&gt;&lt;username&gt;%EMAILADDRESS%&lt;/username&gt;&lt;authentication&gt;plain&lt;/authentication&gt;&lt;/incomingServer&gt;&lt;outgoingServer <span class="nb">type</span><span class="o">=</span><span class="s2">"smtp"</span><span class="o">&gt;</span>&lt;<span class="nb">hostname</span><span class="o">&gt;</span>mail.example.com&lt;/hostname&gt;&lt;port&gt;587&lt;/port&gt;&lt;socketType&gt;STARTTLS&lt;/socketType&gt;&lt;username&gt;%EMAILADDRESS%&lt;/username&gt;&lt;authentication&gt;plain&lt;/authentication&gt;&lt;/outgoingServer&gt;&lt;incomingServer <span class="nb">type</span><span class="o">=</span><span class="s2">"pop3"</span><span class="o">&gt;</span>&lt;<span class="nb">hostname</span><span class="o">&gt;</span>mail.example.com&lt;/hostname&gt;&lt;port&gt;995&lt;/port&gt;&lt;socketType&gt;SSL&lt;/socketType&gt;&lt;username&gt;%EMAILADDRESS%&lt;/username&gt;&lt;authentication&gt;plain&lt;/authentication&gt;&lt;/incomingServer&gt;&lt;/emailProvider&gt;&lt;/clientConfig&gt;</code></pre>
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=localpart@example.com'</span></code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;clientConfig</span> <span class="na">version=</span><span class="s">"1.1"</span><span class="nt">&gt;&lt;emailProvider</span> <span class="na">id=</span><span class="s">"automx2-100"</span><span class="nt">&gt;&lt;identity</span> <span class="nt">/&gt;&lt;domain&gt;</span>example.com<span class="nt">&lt;/domain&gt;&lt;displayName&gt;</span>Example Inc.<span class="nt">&lt;/displayName&gt;&lt;displayShortName&gt;</span>Example<span class="nt">&lt;/displayShortName&gt;&lt;incomingServer</span> <span class="na">type=</span><span class="s">"imap"</span><span class="nt">&gt;&lt;hostname&gt;</span>mail.example.com<span class="nt">&lt;/hostname&gt;&lt;port&gt;</span>993<span class="nt">&lt;/port&gt;&lt;socketType&gt;</span>SSL<span class="nt">&lt;/socketType&gt;&lt;username&gt;</span>%EMAILADDRESS%<span class="nt">&lt;/username&gt;&lt;authentication&gt;</span>plain<span class="nt">&lt;/authentication&gt;&lt;/incomingServer&gt;&lt;incomingServer</span> <span class="na">type=</span><span class="s">"pop3"</span><span class="nt">&gt;&lt;hostname&gt;</span>mail.example.com<span class="nt">&lt;/hostname&gt;&lt;port&gt;</span>110<span class="nt">&lt;/port&gt;&lt;socketType&gt;</span>STARTTLS<span class="nt">&lt;/socketType&gt;&lt;username&gt;</span>%EMAILADDRESS%<span class="nt">&lt;/username&gt;&lt;authentication&gt;</span>plain<span class="nt">&lt;/authentication&gt;&lt;/incomingServer&gt;&lt;outgoingServer</span> <span class="na">type=</span><span class="s">"smtp"</span><span class="nt">&gt;&lt;hostname&gt;</span>mail.example.com<span class="nt">&lt;/hostname&gt;&lt;port&gt;</span>587<span class="nt">&lt;/port&gt;&lt;socketType&gt;</span>STARTTLS<span class="nt">&lt;/socketType&gt;&lt;username&gt;</span>%EMAILADDRESS%<span class="nt">&lt;/username&gt;&lt;authentication&gt;</span>plain<span class="nt">&lt;/authentication&gt;&lt;/outgoingServer&gt;&lt;incomingServer</span> <span class="na">type=</span><span class="s">"pop3"</span><span class="nt">&gt;&lt;hostname&gt;</span>mail.example.com<span class="nt">&lt;/hostname&gt;&lt;port&gt;</span>995<span class="nt">&lt;/port&gt;&lt;socketType&gt;</span>SSL<span class="nt">&lt;/socketType&gt;&lt;username&gt;</span>%EMAILADDRESS%<span class="nt">&lt;/username&gt;&lt;authentication&gt;</span>plain<span class="nt">&lt;/authentication&gt;&lt;/incomingServer&gt;&lt;/emailProvider&gt;&lt;/clientConfig&gt;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>automx2 will output the configuration instructions as one-liner. Once you have
-verified automx2 outputs configuration you are ready to setup and configure a
-web server to serve automx data to the public.</p>
+<p>Having verified that automx2 returns configuration data, you should make the
+service available using a web server as a proxy.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1400,7 +1349,7 @@ web server to serve automx data to the public.</p>
 <p>While it is technically possible to run automx2 without a web server sitting in
 front of it, we don&#8217;t recommend doing that in a production environment. A web server
 can provide features automx2 was designed not to have. Features such as transport
-layer encryption aka <code>HTTPS</code> or, for example, the capability to rate-limit clients
+layer encryption for HTTPS or, for example, the capability to rate-limit clients
 are handled very well by full-fledged web servers working as reverse proxies. It
 would be a waste to re-implement all this in a web service.</p>
 </div>
@@ -1416,16 +1365,16 @@ configuration file or uncomment the parameter if it is already there:</p>
 <span class="c"># A typical production setup would use loglevel = WARNING
 </span><span class="py">loglevel</span> <span class="p">=</span> <span class="s">WARNING</span>
 
-<span class="c"># Echo SQL commands into log? Used for debugging.
+<span class="c"># Disable SQL command echo.  <i class="conum" data-value="1"></i><b>(1)</b>
 </span><span class="py">db_echo</span> <span class="p">=</span> <span class="s">no</span>
 
 <span class="c"># SQLite database in a UNIX-like file system
-</span><span class="py">db_uri</span> <span class="p">=</span> <span class="s">sqlite:////var/lib/automx2/db.sqlite    </span><i class="conum" data-value="1"></i><b>(1)</b>
+</span><span class="py">db_uri</span> <span class="p">=</span> <span class="s">sqlite:////var/lib/automx2/db.sqlite</span>
 
 <span class="c"># Number of proxy servers between automx2 and the client (default: 0).
 # If your logs only show 127.0.0.1 or ::1 as the source IP for incoming
-# connections, proxy_count probably needs to be changed.
-</span><span class="py">proxy_count</span> <span class="p">=</span> <span class="s">1    </span><i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+# connections, proxy_count probably needs to be changed.  <i class="conum" data-value="2"></i><b>(2)</b>
+</span><span class="py">proxy_count</span> <span class="p">=</span> <span class="s">1</span></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -1446,18 +1395,17 @@ reaches automx2.</td>
 <div class="sect3">
 <h4 id="_nginx"><a class="anchor" href="#_nginx"></a>4.6.1. NGINX</h4>
 <div class="paragraph">
-<p>The following example defines a <code>HTTP</code> server, which will listen on port
-<code>80</code> for requests to either <code>autoconfig.example.com</code> or
-<code>autodiscover.example.com</code>. All requests will be forwarded (proxied) to automx2,
-which listens on <code>127.0.0.1</code> on port <code>4243</code> in this example. Requests to
-<code>/initdb</code> are restricted to clients from <code>127.0.0.1</code> only. The
+<p>The following example defines a HTTP server, which will listen for requests to
+both <em>autoconfig.example.com</em> and <em>autodiscover.example.com</em>. All requests will
+be forwarded to automx2, which listens on 127.0.0.1 on port 4243 in this example.
+Requests to <code>/initdb</code> are restricted to clients from 127.0.0.1 only. The
 <code>proxy_set_header</code> directives will cause NGINX to pass relevant data about
 incoming requests' origins.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="nginx"><span class="c1"># NGINX example configuration snippet to forward incoming requests to automx2.</span>
-<span class="c1"># vim:ts=4:et:ft=nginx</span>
+<span class="c1"># vim:ts=4:sw=4:et:ft=nginx</span>
 
 <span class="k">http</span> <span class="p">{</span>
     <span class="kn">server</span> <span class="p">{</span>
@@ -1465,7 +1413,7 @@ incoming requests' origins.</p>
         <span class="kn">listen</span> <span class="s">[::]:80</span><span class="p">;</span>
         <span class="kn">server_name</span> <span class="s">autoconfig.example.com</span> <span class="s">autodiscover.example.com</span><span class="p">;</span>
         <span class="kn">location</span> <span class="n">/initdb</span> <span class="p">{</span>
-            <span class="c1"># Database may only be initialised from localhost</span>
+            <span class="c1"># Limit access to clients connecting from localhost</span>
             <span class="kn">allow</span> <span class="mi">127</span><span class="s">.0.0.1</span><span class="p">;</span>
             <span class="kn">deny</span> <span class="s">all</span><span class="p">;</span>
         <span class="p">}</span>
@@ -1486,27 +1434,24 @@ incoming requests' origins.</p>
 <div class="sect3">
 <h4 id="_apache"><a class="anchor" href="#_apache"></a>4.6.2. Apache</h4>
 <div class="paragraph">
-<p>The following example defines a <code>HTTP</code> server, which will listen on port
-<code>80</code> for requests to either <code>autoconfig.example.com</code> or
-<code>autodiscover.example.com</code>. All requests will be forwarded (proxied) to
-automx2, which listens on <code>127.0.0.1</code> on port <code>4243</code> in this example. Requests
-to <code>/initdb</code> are restricted to clients from <code>127.0.0.1</code> only. The
+<p>The following example shows an Apache configuration similar to the one above.
 <code>ProxyPreserveHost</code> directives will cause apache to pass relevant data about
 incoming requests' origins.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="apache"><span class="c"># apache2.4 example configuration snippet to forward incoming requests to automx2.</span>
-<span class="c"># vim:ts=4:et:ft=apache</span>
+<pre class="rouge highlight"><code data-lang="apache"><span class="c"># Apache 2.4 example configuration snippet to forward incoming requests to automx2.</span>
+<span class="c"># vim:ts=4:sw=4:et:ft=apache</span>
 
 <span class="p">&lt;</span><span class="nl">VirtualHost</span><span class="sr"> *:80</span><span class="p">&gt;
 </span>    <span class="nc">ServerName</span> autoconfig.automx.org
     <span class="nc">ServerAlias</span> autodiscover.automx.org
     <span class="nc">ProxyPreserveHost</span> <span class="ss">On</span>
-    <span class="nc">ProxyPass</span> "/"  "http://127.0.0.1:4243/"
-    <span class="nc">ProxyPassReverse</span> "/"  "http://127.0.0.1:4243/"
+    <span class="nc">ProxyPass</span> "/" "http://127.0.0.1:4243/"
+    <span class="nc">ProxyPassReverse</span> "/" "http://127.0.0.1:4243/"
     <span class="p">&lt;</span><span class="nl">Location</span><span class="sr"> /initdb</span><span class="p">&gt;
-</span>        <span class="nc">Order</span> Deny,Allow
+</span>        <span class="c"># Limit access to clients connecting from localhost</span>
+        <span class="nc">Order</span> Deny,Allow
         <span class="nc">Deny</span> <span class="ss">from</span> <span class="ss">all</span>
         <span class="nc">Allow</span> <span class="ss">from</span> 127.0.0.1
     <span class="p">&lt;/</span><span class="nl">Location</span><span class="p">&gt;
@@ -1537,7 +1482,7 @@ mailing list.</p>
 <div id="footer">
 <div id="footer-text">
 Version 2021.1<br>
-Last updated 2021-03-02 23:33:08 +0100
+Last updated 2021-03-04 22:19:18 +0100
 </div>
 </div>
 </body>

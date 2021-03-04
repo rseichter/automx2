@@ -3,7 +3,7 @@ Ralph Seichter <automx2@seichter.de>; Patrick Ben Koetter <p@sys4.de>
 :keywords: autoconfig, autodiscover, mobileconfig, automx, automx2
 :subject: automx2: Email client configuration made easy
 :revnumber: 2021.1
-:revdate: 2021-02-23
+:revdate: 2021-03-04
 :copyright: © 2019-2021 Ralph Seichter & sys4 AG
 :publisher: Ralph Seichter & sys4 AG
 :lang: en

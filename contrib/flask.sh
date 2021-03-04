@@ -12,7 +12,7 @@
 # Launches application for http://somehost.example.com/ . This allows
 # automx2 to run without a proxy server.
 
-set -e
+set -euo pipefail
 . venv/bin/activate
 
 # User configurable section -- START
