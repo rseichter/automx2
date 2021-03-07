@@ -55,8 +55,8 @@ function do_upload() {
 function do_setver() {
 	[ $# -gt 0 ] || usage
 	sed -E -i -e "s/^(VERSION = ).+/\1'${1}'/" automx2/__init__.py
-	sed -E -i -e "s/^(:revnumber:).+/\1 ${1}/" doc/automx2.adoc
-	sed -E -i -e "s/^(:revdate:).+/\1 $(date +%F)/" doc/automx2.adoc
+	sed -E -i -e "s/^(:revnumber:).+/\1 ${1}/" docs/automx2.adoc
+	sed -E -i -e "s/^(:revdate:).+/\1 $(date +%F)/" docs/automx2.adoc
 }
 
 [ $# -gt 0 ] || usage

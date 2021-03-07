@@ -14,8 +14,9 @@ GitHub in the [rseichter/automx2](https://github.com/rseichter/automx2) reposito
 
 ## Documentation
 
-Detailed documentation is available [in HTML](https://rseichter.github.io/automx2/), PDF and other formats;
-see [here](https://github.com/rseichter/automx2/blob/master/docs).
+Detailed documentation is available in [HTML](https://rseichter.github.io/automx2/),
+[PDF](https://github.com/rseichter/automx2/blob/master/docs/automx2.pdf) and
+[other formats](https://github.com/rseichter/automx2/blob/master/docs).
 
 ## Contributing
 
