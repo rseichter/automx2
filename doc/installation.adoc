@@ -1,12 +1,13 @@
+// vim:ts=4:sw=4:et:ft=asciidoc
 == automx2 Installation
 
 automx2 requires Python 3.7 or higher, ideally in the form of a virtual Python
 environment, to run. Check the python3 version like this:
 
-[source,terminal]
+[source,bash]
 ----
 $ python3 --version
-Python 3.8.0
+Python 3.9.2
 ----
 
 If you see version 3.6 or lower, you'll need to either change the active Python
@@ -25,7 +26,7 @@ for automx2, but other unprivileged users will do as well.
 Prepare the virtual environment for the automx2 web service, adjusting the
 installation path to your taste (automx2 itself does not care).
 
-[source,terminal]
+[source,bash]
 ----
 mkdir -p /srv/web/automx2
 cd /srv/web/automx2
@@ -33,16 +34,16 @@ cd /srv/web/automx2
 
 Download the script that will download and setup your automx2 service:
 
-[source,terminal]
+[source,bash]
 ----
-wget -O setupvenv.sh 'https://gitlab.com/automx/automx2/raw/master/contrib/setupvenv.sh?inline=false'
+wget -O setupvenv.sh 'https://github.com/rseichter/automx2/raw/master/contrib/setupvenv.sh'
 chmod u+x setupvenv.sh
 ----
 
 Execute the setup script. It will create a Python virtual environment called
 `venv` in the current directory:
 
-[source,terminal]
+[source,bash]
 ----
 ./setupvenv.sh
 ----
@@ -51,7 +52,7 @@ Activate the virtual environment and install the latest automx2 release from
 PyPI. Make sure to pick the correct activation for your shell from the
 `venv/bin` directory. This is an example for BASH:
 
-[source,terminal]
+[source,bash]
 ----
 . venv/bin/activate
 pip install automx2
@@ -63,7 +64,7 @@ pip install automx2
 Change to the directory where automx2 has been installed previously. Activate
 the virtual environment as usual and use pip's `-U` option to update automx2:
 
-[source,terminal]
+[source,bash]
 ----
 cd /srv/web/automx2
 . venv/bin/activate
@@ -72,5 +73,3 @@ pip install -U automx2
 ====
 
 The next section explains how to configure automx2.
-
-// vim: set ft=asciidoc:

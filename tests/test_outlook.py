@@ -24,7 +24,7 @@ from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import ParseError
 from xml.etree.ElementTree import fromstring
 
-from automx2.generators.outlook import NS_RESPONSE
+from automx2.generators.outlook import NS_RESPONSE_PAYLOAD
 from automx2.model import EGGS_DOMAIN
 from automx2.model import EXAMPLE_COM
 from automx2.model import EXAMPLE_NET
@@ -41,13 +41,8 @@ class MsRoutes(TestCase):
     """Tests for Autodiscover routes."""
 
     @staticmethod
-    def response_element(element: Element) -> Element:
-        ns = {'n': NS_RESPONSE}
-        return element.find('n:Response', ns)
-
-    @staticmethod
     def server_elements(element: Element, server_type: str) -> List[Element]:
-        ns = {'n': NS_RESPONSE}
+        ns = {'n': NS_RESPONSE_PAYLOAD}
         r = []
         for p in element.findall('n:Response/n:Account/n:Protocol', ns):
             if p.find('n:Type', ns).text == server_type:

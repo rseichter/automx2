@@ -9,3 +9,5 @@
 2021.0 (2021-01-09): Improve handling of login name placeholders in Outlook generator.
 
 2021.1 (2021-02-23): Fix LDAP attribute processing when using Active Directory backends.
+
+2021.2 (2021-03-07): Change XML root element namespace in Outlook generator.

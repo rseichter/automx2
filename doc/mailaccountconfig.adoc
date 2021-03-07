@@ -1,3 +1,4 @@
+// vim:ts=4:sw=4:et:ft=asciidoc
 == How does Automated Mailbox Configuration work?
 
 Modern mail clients can look for configuration data when a user begins to
@@ -42,22 +43,19 @@ suites like Evolution and KMail
 link:https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat[have adopted] the mechanism.
 
 When a user begins to create a new mail account she is asked to enter her
-realname and mail address, e.g. +alice@example.com+. Thunderbird will then
-extract the domainpart (here: +example.com+) from the mail address and build a
+realname and mail address, e.g. _alice@example.com_. Thunderbird will then
+extract the domainpart (_example.com_) from the mail address and build a
 list of URIs to search for a configuration web service in the following order:
 
-[source,terminal]
+[source,text]
 ----
-https://autoconfig.thunderbird.net/v1.1/$DOMAINPART # <1>
-https://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=$MAILADDRESS # <2>
-https://$DOMAINPART/.well-known/autoconfig/mail/config-v1.1.xml
-http://autoconfig.thunderbird.net/v1.1/$DOMAINPART
-http://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=$MAILADDRESS
-http://$DOMAINPART/.well-known/autoconfig/mail/config-v1.1.xml
+https://autoconfig.thunderbird.net/v1.1/example.com
+https://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=alice@example.com
+https://example.com/.well-known/autoconfig/mail/config-v1.1.xml
+http://autoconfig.thunderbird.net/v1.1/example.com
+http://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=alice@example.com
+http://example.com/.well-known/autoconfig/mail/config-v1.1.xml
 ----
-
-<1> The `$DOMAINPART` variable represents the users mail addresses domainpart.
-<2> The `$MAILADDRESS` variable represents the users mail address.
 
 A configuration service such as automx2 listening on one of the listed URIs will
 receive the request, process it and respond with a set of configuration
@@ -73,31 +71,25 @@ settings. After that she can immediately start to use her new mail account.
 
 Autodiscover is a proprietary method developed by Microsoft. It was designed
 to configure a mail account within Outlook and has expanded to also configure
-Office 365.
+Office 365. Service lookups use the following URLs and, as a fallback option,
+DNS lookups.
 
-When a user begins to create a new mail account she is asked to enter her
-realname and mail address, e.g. +alice@example.com+. Outlook will then
-extract the domainpart (here: +example.com+) from the mail address and build a
-list of URIs to search for a configuration web service in a specific order. If
-it can't find a web service, it will search the DNS for a redirect:
-
-[source,terminal]
+[source,text]
 ----
-https://$DOMAINPART/autodiscover/autodiscover.xml  # <1>
-https://autodiscover.$DOMAINPART/autodiscover/autodiscover.xml
-http://autodiscover.$DOMAINPART/autodiscover/autodiscover.xml
-dns: autodiscover.$DOMAINPART
-dns: _autodiscover._tcp.$DOMAINPART
+https://example.com/autodiscover/autodiscover.xml
+https://autodiscover.example.com/autodiscover/autodiscover.xml
+http://autodiscover.example.com/autodiscover/autodiscover.xml
+
+dns: autodiscover.example.com
+dns: _autodiscover._tcp.example.com
 ----
 
-<1> The `$DOMAINPART` variable represents the users mail addresses domainpart.
-
-All `HTTP(S)` queries send a `POST` request and submit `XML` which contains
-information about the account that should be configured. The `DNS` queries
-search for a `CNAME` RR first, which is supposed to redirect the mail client to
-a resource outside of the mailbox owners domain, e.g. +alice@example.com+ would
+All HTTP(S) queries send a POST request and submit XML which contains
+information about the account that should be configured. The DNS queries
+search for a `CNAME` resource record first, which is supposed to redirect the mail client to
+a resource outside of the mailbox owners domain, e.g. _alice@example.com_ would
 be redirected to `service.example-provider.com` for configuration instructions.
-If the first `DNS` query fails the client may be redirected to a configuration
+If the first DNS query fails the client may be redirected to a configuration
 service using a `SRV` RR like this:
 
 [source,bind]
@@ -113,7 +105,7 @@ configuration service on port `443`.
 [[mobileconfig]]
 === mobileconfig
 
-TODO - Requests and responses use proprietory content types and the PLIST
+TODO - Requests and responses use proprietary content types and the PLIST
 data format.
 
 
@@ -129,5 +121,3 @@ _pop3s._tcp.example.com         SRV  0   1   995  .
 _smtp._tcp.example.com.         SRV  0   1   25   .
 _submission._tcp.example.com.   SRV  10  20  587  mail.example.com.
 ----
-
-// vim: ft=asciidoc:

@@ -1,7 +1,7 @@
 [Unit]
-Description="automx2 - MUA configuration service"
-Documentation = https://gitlab.com/automx/automx2/-/blob/master/doc/automx2.adoc
 After=network.target
+Description="automx2 - MUA configuration service"
+Documentation=https://github.com/rseichter/automx2/blob/master/doc/automx2.adoc
 
 [Service]
 Environment=FLASK_APP=automx2.server:app

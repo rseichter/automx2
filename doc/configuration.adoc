@@ -1,3 +1,4 @@
+// vim:ts=4:sw=4:et:ft=asciidoc
 == Configuring automx2
 
 automx2 uses a file to read runtime instructions from and a database to lookup
@@ -33,13 +34,13 @@ AUTOMX2_CONF     <1>
 <1> If this environment variable exists, it will be used. The value must point
     to a location where automx2 can read configuration from. If the specified
     file does not exist, the search will continue.
-<2> If automx2 finds `.automx2.conf` in the `$HOME` of the user that runs
+<2> If automx2 finds `.automx2.conf` in the home directory of the user that runs
     automx2, it will be used.
 
 To specify parameters and options automx2 uses an
-link:https://docs.python.org/3.7/library/configparser.html#supported-ini-file-structure[INI]-style
-configuration syntax. The
-link:https://gitlab.com/automx/automx2/raw/master/contrib/automx2-sample.conf[example
+link:https://docs.python.org/3.9/library/configparser.html#supported-ini-file-structure[INI
+style] configuration syntax. The
+link:https://github.com/rseichter/automx2/blob/master/contrib/automx2-sample.conf[example
 configuration] that ships with automx2 looks like this:
 
 [source,ini]
@@ -126,7 +127,7 @@ db_uri = sqlite:////var/lib/automx2/db.sqlite
 Step 2: Launch automx2 and access the DB initialisation URL:
 [source,bash]
 ----
-curl 'http://127.0.0.1:4243/initdb'
+curl 'http://127.0.0.1:4243/initdb/'
 ----
 
 The Git repository contains a xref:../contrib/sqlite-generate.sh[sqlite-generate.sh] helper
@@ -177,7 +178,7 @@ db_uri = mysql+pymysql://user:pass@dbhost/automx2?charset=utf8mb4
 Step 3: Launch automx2 and access the DB initialisation URL:
 [source,bash]
 ----
-curl 'http://127.0.0.1:4243/initdb'
+curl 'http://127.0.0.1:4243/initdb/'
 ----
 
 ==== PostgreSQL
@@ -197,7 +198,7 @@ db_uri = postgresql+psycopg2://user:pass@dbhost/automx2
 Step 3: Launch automx2 and access the DB initialisation URL:
 [source,bash]
 ----
-curl 'http://127.0.0.1:4243/initdb'
+curl 'http://127.0.0.1:4243/initdb/'
 ----
 
 
@@ -307,12 +308,41 @@ output depends on your database content, but should look similar.
 
 [source,bash]
 ----
-curl 'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=localpart@example.com'
+curl 'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=user@example.com'
 ----
 
 [source,xml]
 ----
-<clientConfig version="1.1"><emailProvider id="automx2-100"><identity /><domain>example.com</domain><displayName>Example Inc.</displayName><displayShortName>Example</displayShortName><incomingServer type="imap"><hostname>mail.example.com</hostname><port>993</port><socketType>SSL</socketType><username>%EMAILADDRESS%</username><authentication>plain</authentication></incomingServer><incomingServer type="pop3"><hostname>mail.example.com</hostname><port>110</port><socketType>STARTTLS</socketType><username>%EMAILADDRESS%</username><authentication>plain</authentication></incomingServer><outgoingServer type="smtp"><hostname>mail.example.com</hostname><port>587</port><socketType>STARTTLS</socketType><username>%EMAILADDRESS%</username><authentication>plain</authentication></outgoingServer><incomingServer type="pop3"><hostname>mail.example.com</hostname><port>995</port><socketType>SSL</socketType><username>%EMAILADDRESS%</username><authentication>plain</authentication></incomingServer></emailProvider></clientConfig>
+<clientConfig version="1.1">
+    <emailProvider id="automx2-100">
+        <identity/>
+        <domain>example.com</domain>
+        <displayName>Example Inc.</displayName>
+        <displayShortName>Example</displayShortName>
+        <incomingServer type="imap">
+            <hostname>mail.example.com</hostname>
+            <port>993</port>
+            <socketType>SSL</socketType>
+            <username>%EMAILADDRESS%</username>
+            <authentication>plain</authentication>
+        </incomingServer>
+        <incomingServer type="pop3">
+            <hostname>mail.example.com</hostname>
+            <port>110</port>
+            <socketType>STARTTLS</socketType>
+            <username>%EMAILADDRESS%</username>
+            <authentication>plain</authentication>
+        </incomingServer>
+        <outgoingServer type="smtp">
+            <hostname>mail.example.com</hostname>
+            <port>587</port>
+            <socketType>STARTTLS</socketType>
+            <username>%EMAILADDRESS%</username>
+            <authentication>plain</authentication>
+        </outgoingServer>
+        <!-- ... -->
+    </emailProvider>
+</clientConfig>
 ----
 Having verified that automx2 returns configuration data, you should make the
 service available using a web server as a proxy.
@@ -381,6 +411,3 @@ incoming requests' origins.
 ----
 include::../contrib/apache-sample.conf[]
 ----
-
-
-// vim: set ft=asciidoc:

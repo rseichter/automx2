@@ -1,8 +1,6 @@
 """
 Copyright © 2019-2021 Ralph Seichter
 
-Sponsored by sys4 AG <https://sys4.de/>
-
 This file is part of automx2.
 
 automx2 is free software: you can redistribute it and/or modify
@@ -36,8 +34,8 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     url='https://automx.org/',
     project_urls={
-        'Source': 'https://gitlab.com/automx/automx2',
-        'Tracker': 'https://gitlab.com/automx/automx2/issues',
+        'Source': 'https://github.com/rseichter/automx2',
+        'Tracker': 'https://github.com/rseichter/automx2/issues',
     },
     packages=setuptools.find_packages(),
     data_files=[

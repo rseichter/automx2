@@ -529,55 +529,72 @@ pre.rouge .ss {
 <span id="email" class="email"><a href="mailto:automx2@seichter.de">automx2@seichter.de</a></span><br>
 <span id="author2" class="author">Patrick Ben Koetter</span><br>
 <span id="email2" class="email"><a href="mailto:p@sys4.de">p@sys4.de</a></span><br>
-<span id="revnumber">version 2021.1,</span>
-<span id="revdate">2021-03-04</span>
+<span id="revnumber">version 2021.2,</span>
+<span id="revdate">2021-03-07</span>
 </div>
 <div id="toc" class="toc">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#howitworks">1. How does automx2 work?</a></li>
-<li><a href="#automatedmailboxconfiguration">2. How does Automated Mailbox Configuration work?</a>
+<li><a href="#_about_automx2">1. About automx2</a></li>
+<li><a href="#_preface">2. Preface</a></li>
+<li><a href="#howitworks">3. How does automx2 work?</a></li>
+<li><a href="#automatedmailboxconfiguration">4. How does Automated Mailbox Configuration work?</a>
 <ul class="sectlevel2">
-<li><a href="#autoconfig">2.1. autoconfig</a></li>
-<li><a href="#autodiscover">2.2. autodiscover</a></li>
-<li><a href="#mobileconfig">2.3. mobileconfig</a></li>
-<li><a href="#srv">2.4. DNS SRV Records</a></li>
+<li><a href="#autoconfig">4.1. autoconfig</a></li>
+<li><a href="#autodiscover">4.2. autodiscover</a></li>
+<li><a href="#mobileconfig">4.3. mobileconfig</a></li>
+<li><a href="#srv">4.4. DNS SRV Records</a></li>
 </ul>
 </li>
-<li><a href="#automx2installation">3. automx2 Installation</a></li>
-<li><a href="#automx2setup">4. Configuring automx2</a>
+<li><a href="#automx2installation">5. automx2 Installation</a></li>
+<li><a href="#automx2setup">6. Configuring automx2</a>
 <ul class="sectlevel2">
-<li><a href="#_runtime_configuration">4.1. Runtime configuration</a></li>
-<li><a href="#_testing_standalone_automx2">4.2. Testing standalone automx2</a></li>
-<li><a href="#_database_configuration">4.3. Database configuration</a>
+<li><a href="#_runtime_configuration">6.1. Runtime configuration</a></li>
+<li><a href="#_testing_standalone_automx2">6.2. Testing standalone automx2</a></li>
+<li><a href="#_database_configuration">6.3. Database configuration</a>
 <ul class="sectlevel3">
-<li><a href="#_database_support">4.3.1. Database support</a></li>
-<li><a href="#_sqlite">4.3.2. SQLite</a></li>
-<li><a href="#_mysql">4.3.3. MySQL</a></li>
-<li><a href="#_postgresql">4.3.4. PostgreSQL</a></li>
+<li><a href="#_database_support">6.3.1. Database support</a></li>
+<li><a href="#_sqlite">6.3.2. SQLite</a></li>
+<li><a href="#_mysql">6.3.3. MySQL</a></li>
+<li><a href="#_postgresql">6.3.4. PostgreSQL</a></li>
 </ul>
 </li>
-<li><a href="#runningautomx2">4.4. Running automx2</a>
+<li><a href="#runningautomx2">6.4. Running automx2</a>
 <ul class="sectlevel3">
-<li><a href="#_systemd_service">4.4.1. Systemd service</a></li>
-<li><a href="#_command_line">4.4.2. Command line</a></li>
+<li><a href="#_systemd_service">6.4.1. Systemd service</a></li>
+<li><a href="#_command_line">6.4.2. Command line</a></li>
 </ul>
 </li>
-<li><a href="#local-testing">4.5. Testing automx2 on command line</a></li>
-<li><a href="#_configuring_a_web_server">4.6. Configuring a web server</a>
+<li><a href="#local-testing">6.5. Testing automx2 on command line</a></li>
+<li><a href="#_configuring_a_web_server">6.6. Configuring a web server</a>
 <ul class="sectlevel3">
-<li><a href="#_nginx">4.6.1. NGINX</a></li>
-<li><a href="#_apache">4.6.2. Apache</a></li>
+<li><a href="#_nginx">6.6.1. NGINX</a></li>
+<li><a href="#_apache">6.6.2. Apache</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li><a href="#_about_automx2">5. About automx2</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div id="preamble">
+<div class="sect1">
+<h2 id="_about_automx2"><a class="anchor" href="#_about_automx2"></a>1. About automx2</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>automx2 is Copyright © 2019-2021 Ralph Seichter and licensed under the GNU General Public License V3 or later.</p>
+</div>
+<div class="paragraph">
+<p>The project is hosted on <a href="https://github.com/rseichter/automx2">GitHub (rseichter/automx2)</a>.
+Please use the project&#8217;s issue tracker in case you experience any problems.</p>
+</div>
+<div class="paragraph">
+<p>Sponsored by (in alphabetical order) <a href="https://www.mediabeam.com/">mediaBEAM GmbH</a> and <a href="https://sys4.de/">sys4 AG</a>.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_preface"><a class="anchor" href="#_preface"></a>2. Preface</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This document explains how automx2 works, how <a href="#automatedmailboxconfiguration">Automated Mailbox Configuration</a> works and what it takes to install and
@@ -588,13 +605,13 @@ ahead to <a href="#automx2installation">automx2 Installation</a> and <a href="#a
 </div>
 </div>
 <div class="sect1">
-<h2 id="howitworks"><a class="anchor" href="#howitworks"></a>1. How does automx2 work?</h2>
+<h2 id="howitworks"><a class="anchor" href="#howitworks"></a>3. How does automx2 work?</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>automx2 is a webservice. It sits behind a web server, e.g. NGINX, and waits for
 configuration requests. When a mail client requests configuration it contacts
 the web server. The web server then acts as a proxy and forwards all requests
-to the web service aka automx2.</p>
+to the automx2 web service.</p>
 </div>
 <div class="imageblock text-center">
 <div class="content">
@@ -604,7 +621,7 @@ to the web service aka automx2.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="automatedmailboxconfiguration"><a class="anchor" href="#automatedmailboxconfiguration"></a>2. How does Automated Mailbox Configuration work?</h2>
+<h2 id="automatedmailboxconfiguration"><a class="anchor" href="#automatedmailboxconfiguration"></a>4. How does Automated Mailbox Configuration work?</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Modern mail clients can look for configuration data when a user begins to
@@ -654,7 +671,7 @@ settings.</p>
 <p>The following subsections will explain more detailed how the four methods work.</p>
 </div>
 <div class="sect2">
-<h3 id="autoconfig"><a class="anchor" href="#autoconfig"></a>2.1. autoconfig</h3>
+<h3 id="autoconfig"><a class="anchor" href="#autoconfig"></a>4.1. autoconfig</h3>
 <div class="paragraph">
 <p>Autoconfig is a proprietary method developed by the Mozilla foundation. It
 was designed to configure a mail account within Thunderbird, and other email
@@ -663,31 +680,19 @@ suites like Evolution and KMail
 </div>
 <div class="paragraph">
 <p>When a user begins to create a new mail account she is asked to enter her
-realname and mail address, e.g. alice@example.com. Thunderbird will then
-extract the domainpart (here: example.com) from the mail address and build a
+realname and mail address, e.g. <em>alice@example.com</em>. Thunderbird will then
+extract the domainpart (<em>example.com</em>) from the mail address and build a
 list of URIs to search for a configuration web service in the following order:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="gp">https://autoconfig.thunderbird.net/v1.1/$</span>DOMAINPART <i class="conum" data-value="1"></i><b>(1)</b>
-<span class="gp">https://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=$</span>MAILADDRESS <i class="conum" data-value="2"></i><b>(2)</b>
-<span class="gp">https://$</span>DOMAINPART/.well-known/autoconfig/mail/config-v1.1.xml
-<span class="gp">http://autoconfig.thunderbird.net/v1.1/$</span>DOMAINPART
-<span class="gp">http://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=$</span>MAILADDRESS
-<span class="gp">http://$</span>DOMAINPART/.well-known/autoconfig/mail/config-v1.1.xml</code></pre>
+<pre class="rouge highlight"><code data-lang="text">https://autoconfig.thunderbird.net/v1.1/example.com
+https://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=alice@example.com
+https://example.com/.well-known/autoconfig/mail/config-v1.1.xml
+http://autoconfig.thunderbird.net/v1.1/example.com
+http://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=alice@example.com
+http://example.com/.well-known/autoconfig/mail/config-v1.1.xml</code></pre>
 </div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The <code>$DOMAINPART</code> variable represents the users mail addresses domainpart.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The <code>$MAILADDRESS</code> variable represents the users mail address.</td>
-</tr>
-</table>
 </div>
 <div class="paragraph">
 <p>A configuration service such as automx2 listening on one of the listed URIs will
@@ -701,43 +706,30 @@ settings. After that she can immediately start to use her new mail account.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="autodiscover"><a class="anchor" href="#autodiscover"></a>2.2. autodiscover</h3>
+<h3 id="autodiscover"><a class="anchor" href="#autodiscover"></a>4.2. autodiscover</h3>
 <div class="paragraph">
 <p>Autodiscover is a proprietary method developed by Microsoft. It was designed
 to configure a mail account within Outlook and has expanded to also configure
-Office 365.</p>
-</div>
-<div class="paragraph">
-<p>When a user begins to create a new mail account she is asked to enter her
-realname and mail address, e.g. alice@example.com. Outlook will then
-extract the domainpart (here: example.com) from the mail address and build a
-list of URIs to search for a configuration web service in a specific order. If
-it can&#8217;t find a web service, it will search the DNS for a redirect:</p>
+Office 365. Service lookups use the following URLs and, as a fallback option,
+DNS lookups.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="gp">https://$</span>DOMAINPART/autodiscover/autodiscover.xml  <i class="conum" data-value="1"></i><b>(1)</b>
-<span class="gp">https://autodiscover.$</span>DOMAINPART/autodiscover/autodiscover.xml
-<span class="gp">http://autodiscover.$</span>DOMAINPART/autodiscover/autodiscover.xml
-<span class="gp">dns: autodiscover.$</span>DOMAINPART
-<span class="gp">dns: _autodiscover._tcp.$</span>DOMAINPART</code></pre>
+<pre class="rouge highlight"><code data-lang="text">https://example.com/autodiscover/autodiscover.xml
+https://autodiscover.example.com/autodiscover/autodiscover.xml
+http://autodiscover.example.com/autodiscover/autodiscover.xml
+
+dns: autodiscover.example.com
+dns: _autodiscover._tcp.example.com</code></pre>
 </div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The <code>$DOMAINPART</code> variable represents the users mail addresses domainpart.</td>
-</tr>
-</table>
 </div>
 <div class="paragraph">
-<p>All <code>HTTP(S)</code> queries send a <code>POST</code> request and submit <code>XML</code> which contains
-information about the account that should be configured. The <code>DNS</code> queries
-search for a <code>CNAME</code> RR first, which is supposed to redirect the mail client to
-a resource outside of the mailbox owners domain, e.g. alice@example.com would
+<p>All HTTP(S) queries send a POST request and submit XML which contains
+information about the account that should be configured. The DNS queries
+search for a <code>CNAME</code> resource record first, which is supposed to redirect the mail client to
+a resource outside of the mailbox owners domain, e.g. <em>alice@example.com</em> would
 be redirected to <code>service.example-provider.com</code> for configuration instructions.
-If the first <code>DNS</code> query fails the client may be redirected to a configuration
+If the first DNS query fails the client may be redirected to a configuration
 service using a <code>SRV</code> RR like this:</p>
 </div>
 <div class="listingblock">
@@ -752,14 +744,14 @@ configuration service on port <code>443</code>.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="mobileconfig"><a class="anchor" href="#mobileconfig"></a>2.3. mobileconfig</h3>
+<h3 id="mobileconfig"><a class="anchor" href="#mobileconfig"></a>4.3. mobileconfig</h3>
 <div class="paragraph">
-<p>TODO - Requests and responses use proprietory content types and the PLIST
+<p>TODO - Requests and responses use proprietary content types and the PLIST
 data format.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="srv"><a class="anchor" href="#srv"></a>2.4. DNS SRV Records</h3>
+<h3 id="srv"><a class="anchor" href="#srv"></a>4.4. DNS SRV Records</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bind">_imap._tcp.example.com          SRV  10  20  143  mail.example.com.
@@ -774,7 +766,7 @@ _submission._tcp.example.com.   SRV  10  20  587  mail.example.com.</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="automx2installation"><a class="anchor" href="#automx2installation"></a>3. automx2 Installation</h2>
+<h2 id="automx2installation"><a class="anchor" href="#automx2installation"></a>5. automx2 Installation</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>automx2 requires Python 3.7 or higher, ideally in the form of a virtual Python
@@ -782,8 +774,8 @@ environment, to run. Check the python3 version like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="gp">$</span><span class="w"> </span>python3 <span class="nt">--version</span>
-<span class="go">Python 3.8.0</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>python3 <span class="nt">--version</span>
+Python 3.9.2</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -815,8 +807,8 @@ installation path to your taste (automx2 itself does not care).</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="go">mkdir -p /srv/web/automx2
-cd /srv/web/automx2</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">mkdir</span> <span class="nt">-p</span> /srv/web/automx2
+<span class="nb">cd</span> /srv/web/automx2</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -824,8 +816,8 @@ cd /srv/web/automx2</span></code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="go">wget -O setupvenv.sh 'https://gitlab.com/automx/automx2/raw/master/contrib/setupvenv.sh?inline=false'
-chmod u+x setupvenv.sh</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash">wget <span class="nt">-O</span> setupvenv.sh <span class="s1">'https://github.com/rseichter/automx2/raw/master/contrib/setupvenv.sh'</span>
+<span class="nb">chmod </span>u+x setupvenv.sh</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -834,7 +826,7 @@ chmod u+x setupvenv.sh</span></code></pre>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="go">./setupvenv.sh</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash">./setupvenv.sh</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -844,8 +836,8 @@ PyPI. Make sure to pick the correct activation for your shell from the
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="go">. venv/bin/activate
-pip install automx2</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">.</span> venv/bin/activate
+pip <span class="nb">install </span>automx2</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -862,9 +854,9 @@ the virtual environment as usual and use pip&#8217;s <code>-U</code> option to u
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="terminal"><span class="go">cd /srv/web/automx2
-. venv/bin/activate
-pip install -U automx2</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> /srv/web/automx2
+<span class="nb">.</span> venv/bin/activate
+pip <span class="nb">install</span> <span class="nt">-U</span> automx2</code></pre>
 </div>
 </div>
 </td>
@@ -877,14 +869,14 @@ pip install -U automx2</span></code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="automx2setup"><a class="anchor" href="#automx2setup"></a>4. Configuring automx2</h2>
+<h2 id="automx2setup"><a class="anchor" href="#automx2setup"></a>6. Configuring automx2</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>automx2 uses a file to read runtime instructions from and a database to lookup
 mail account configuration data.</p>
 </div>
 <div class="sect2">
-<h3 id="_runtime_configuration"><a class="anchor" href="#_runtime_configuration"></a>4.1. Runtime configuration</h3>
+<h3 id="_runtime_configuration"><a class="anchor" href="#_runtime_configuration"></a>6.1. Runtime configuration</h3>
 <div class="paragraph">
 <p>The configuration file defines automx2 runtime behaviour and it specifies the
 backend automx2 should read mailbox account configuration data from.</p>
@@ -929,16 +921,16 @@ file does not exist, the search will continue.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>If automx2 finds <code>.automx2.conf</code> in the <code>$HOME</code> of the user that runs
+<td>If automx2 finds <code>.automx2.conf</code> in the home directory of the user that runs
 automx2, it will be used.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
 <p>To specify parameters and options automx2 uses an
-<a href="https://docs.python.org/3.7/library/configparser.html#supported-ini-file-structure">INI</a>-style
-configuration syntax. The
-<a href="https://gitlab.com/automx/automx2/raw/master/contrib/automx2-sample.conf">example
+<a href="https://docs.python.org/3.9/library/configparser.html#supported-ini-file-structure">INI
+style</a> configuration syntax. The
+<a href="https://github.com/rseichter/automx2/blob/master/contrib/automx2-sample.conf">example
 configuration</a> that ships with automx2 looks like this:</p>
 </div>
 <div class="listingblock">
@@ -971,7 +963,7 @@ database backend with data that suits your setup, as described below.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_testing_standalone_automx2"><a class="anchor" href="#_testing_standalone_automx2"></a>4.2. Testing standalone automx2</h3>
+<h3 id="_testing_standalone_automx2"><a class="anchor" href="#_testing_standalone_automx2"></a>6.2. Testing standalone automx2</h3>
 <div class="paragraph">
 <p>If you want to verify a vanilla installation of automx2 works, you can populate it
 with internal test data. Start automx2 as described in section <a href="#runningautomx2">Running automx2</a>
@@ -1001,7 +993,7 @@ from matching/replacing patterns.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_database_configuration"><a class="anchor" href="#_database_configuration"></a>4.3. Database configuration</h3>
+<h3 id="_database_configuration"><a class="anchor" href="#_database_configuration"></a>6.3. Database configuration</h3>
 <div class="paragraph">
 <p>automx2 uses the SQLAlchemy toolkit to access databases. This allows a variety
 of databases, a.k.a. <a href="https://docs.sqlalchemy.org/en/latest/dialects/">dialects</a>,
@@ -1025,7 +1017,7 @@ are interested in sponsoring this feature.</p>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_database_support"><a class="anchor" href="#_database_support"></a>4.3.1. Database support</h4>
+<h4 id="_database_support"><a class="anchor" href="#_database_support"></a>6.3.1. Database support</h4>
 <div class="paragraph">
 <p>While you probably already have SQLite support available on your local machine,
 you may need to install additional Python packages for PostgreSQL, MySQL, etc.
@@ -1048,7 +1040,7 @@ create a fresh DB and import the data.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_sqlite"><a class="anchor" href="#_sqlite"></a>4.3.2. SQLite</h4>
+<h4 id="_sqlite"><a class="anchor" href="#_sqlite"></a>6.3.2. SQLite</h4>
 <div class="paragraph">
 <p>This section demonstrates what you need to do to in order to use SQLite version
 3 or higher as a backend database for automx2.</p>
@@ -1069,7 +1061,7 @@ after the schema identifier:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/initdb'</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/initdb/'</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1123,7 +1115,7 @@ documentation for further details.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_mysql"><a class="anchor" href="#_mysql"></a>4.3.3. MySQL</h4>
+<h4 id="_mysql"><a class="anchor" href="#_mysql"></a>6.3.3. MySQL</h4>
 <div class="paragraph">
 <p>Step 1: Create a database.</p>
 </div>
@@ -1147,12 +1139,12 @@ uses <em>pymysql</em> as a DB driver, which is not included in the automx2 distr
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/initdb'</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/initdb/'</span></code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_postgresql"><a class="anchor" href="#_postgresql"></a>4.3.4. PostgreSQL</h4>
+<h4 id="_postgresql"><a class="anchor" href="#_postgresql"></a>6.3.4. PostgreSQL</h4>
 <div class="paragraph">
 <p>Step 1: Create a database.</p>
 </div>
@@ -1176,13 +1168,13 @@ uses <em>psycopg2-binary</em> as a DB driver, which is not included in the autom
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/initdb'</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/initdb/'</span></code></pre>
 </div>
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="runningautomx2"><a class="anchor" href="#runningautomx2"></a>4.4. Running automx2</h3>
+<h3 id="runningautomx2"><a class="anchor" href="#runningautomx2"></a>6.4. Running automx2</h3>
 <div class="paragraph">
 <p>Running automx2 requires to start automx2 as service and serve its output
 via a webserver to the public. You should not run automx2 with superuser
@@ -1206,7 +1198,7 @@ and have granted appropriate rights to this user:</p>
 </ul>
 </div>
 <div class="sect3">
-<h4 id="_systemd_service"><a class="anchor" href="#_systemd_service"></a>4.4.1. Systemd service</h4>
+<h4 id="_systemd_service"><a class="anchor" href="#_systemd_service"></a>6.4.1. Systemd service</h4>
 <div class="paragraph">
 <p>If your system uses systemd you may want to deploy the
 following <a href="../contrib/automx2.service">automx2.service</a> unit file from the
@@ -1215,9 +1207,9 @@ contrib section and place it in <code>/etc/systemd/system/automx2.service</code>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="ini"><span class="nn">[Unit]</span>
-<span class="py">Description</span><span class="p">=</span><span class="s">"automx2 - MUA configuration service"</span>
-<span class="py">Documentation</span> <span class="p">=</span> <span class="s">https://gitlab.com/automx/automx2/-/blob/master/doc/automx2.adoc</span>
 <span class="py">After</span><span class="p">=</span><span class="s">network.target</span>
+<span class="py">Description</span><span class="p">=</span><span class="s">"automx2 - MUA configuration service"</span>
+<span class="py">Documentation</span><span class="p">=</span><span class="s">https://github.com/rseichter/automx2/blob/master/doc/automx2.adoc</span>
 
 <span class="nn">[Service]</span>
 <span class="py">Environment</span><span class="p">=</span><span class="s">FLASK_APP=automx2.server:app</span>
@@ -1285,7 +1277,7 @@ Mar 01 12:54:32 mail python[126966]:  <span class="k">*</span> Running on http:/
 </div>
 </div>
 <div class="sect3">
-<h4 id="_command_line"><a class="anchor" href="#_command_line"></a>4.4.2. Command line</h4>
+<h4 id="_command_line"><a class="anchor" href="#_command_line"></a>6.4.2. Command line</h4>
 <div class="paragraph">
 <p>While logged in as an unprivileged user, change into the installation
 directory and start the <code>contrib/flask.sh</code> launch script:</p>
@@ -1322,7 +1314,7 @@ that will receive requests from the outside and forwards them to automx2.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="local-testing"><a class="anchor" href="#local-testing"></a>4.5. Testing automx2 on command line</h3>
+<h3 id="local-testing"><a class="anchor" href="#local-testing"></a>6.5. Testing automx2 on command line</h3>
 <div class="paragraph">
 <p>Use <em>curl</em> to send a request to your local automx2-instance. The following
 example assumes your service runs on localhost on port 4243. The exact
@@ -1330,12 +1322,41 @@ output depends on your database content, but should look similar.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=localpart@example.com'</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=user@example.com'</span></code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;clientConfig</span> <span class="na">version=</span><span class="s">"1.1"</span><span class="nt">&gt;&lt;emailProvider</span> <span class="na">id=</span><span class="s">"automx2-100"</span><span class="nt">&gt;&lt;identity</span> <span class="nt">/&gt;&lt;domain&gt;</span>example.com<span class="nt">&lt;/domain&gt;&lt;displayName&gt;</span>Example Inc.<span class="nt">&lt;/displayName&gt;&lt;displayShortName&gt;</span>Example<span class="nt">&lt;/displayShortName&gt;&lt;incomingServer</span> <span class="na">type=</span><span class="s">"imap"</span><span class="nt">&gt;&lt;hostname&gt;</span>mail.example.com<span class="nt">&lt;/hostname&gt;&lt;port&gt;</span>993<span class="nt">&lt;/port&gt;&lt;socketType&gt;</span>SSL<span class="nt">&lt;/socketType&gt;&lt;username&gt;</span>%EMAILADDRESS%<span class="nt">&lt;/username&gt;&lt;authentication&gt;</span>plain<span class="nt">&lt;/authentication&gt;&lt;/incomingServer&gt;&lt;incomingServer</span> <span class="na">type=</span><span class="s">"pop3"</span><span class="nt">&gt;&lt;hostname&gt;</span>mail.example.com<span class="nt">&lt;/hostname&gt;&lt;port&gt;</span>110<span class="nt">&lt;/port&gt;&lt;socketType&gt;</span>STARTTLS<span class="nt">&lt;/socketType&gt;&lt;username&gt;</span>%EMAILADDRESS%<span class="nt">&lt;/username&gt;&lt;authentication&gt;</span>plain<span class="nt">&lt;/authentication&gt;&lt;/incomingServer&gt;&lt;outgoingServer</span> <span class="na">type=</span><span class="s">"smtp"</span><span class="nt">&gt;&lt;hostname&gt;</span>mail.example.com<span class="nt">&lt;/hostname&gt;&lt;port&gt;</span>587<span class="nt">&lt;/port&gt;&lt;socketType&gt;</span>STARTTLS<span class="nt">&lt;/socketType&gt;&lt;username&gt;</span>%EMAILADDRESS%<span class="nt">&lt;/username&gt;&lt;authentication&gt;</span>plain<span class="nt">&lt;/authentication&gt;&lt;/outgoingServer&gt;&lt;incomingServer</span> <span class="na">type=</span><span class="s">"pop3"</span><span class="nt">&gt;&lt;hostname&gt;</span>mail.example.com<span class="nt">&lt;/hostname&gt;&lt;port&gt;</span>995<span class="nt">&lt;/port&gt;&lt;socketType&gt;</span>SSL<span class="nt">&lt;/socketType&gt;&lt;username&gt;</span>%EMAILADDRESS%<span class="nt">&lt;/username&gt;&lt;authentication&gt;</span>plain<span class="nt">&lt;/authentication&gt;&lt;/incomingServer&gt;&lt;/emailProvider&gt;&lt;/clientConfig&gt;</span></code></pre>
+<pre class="rouge highlight"><code data-lang="xml"><span class="nt">&lt;clientConfig</span> <span class="na">version=</span><span class="s">"1.1"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;emailProvider</span> <span class="na">id=</span><span class="s">"automx2-100"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;identity/&gt;</span>
+        <span class="nt">&lt;domain&gt;</span>example.com<span class="nt">&lt;/domain&gt;</span>
+        <span class="nt">&lt;displayName&gt;</span>Example Inc.<span class="nt">&lt;/displayName&gt;</span>
+        <span class="nt">&lt;displayShortName&gt;</span>Example<span class="nt">&lt;/displayShortName&gt;</span>
+        <span class="nt">&lt;incomingServer</span> <span class="na">type=</span><span class="s">"imap"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;hostname&gt;</span>mail.example.com<span class="nt">&lt;/hostname&gt;</span>
+            <span class="nt">&lt;port&gt;</span>993<span class="nt">&lt;/port&gt;</span>
+            <span class="nt">&lt;socketType&gt;</span>SSL<span class="nt">&lt;/socketType&gt;</span>
+            <span class="nt">&lt;username&gt;</span>%EMAILADDRESS%<span class="nt">&lt;/username&gt;</span>
+            <span class="nt">&lt;authentication&gt;</span>plain<span class="nt">&lt;/authentication&gt;</span>
+        <span class="nt">&lt;/incomingServer&gt;</span>
+        <span class="nt">&lt;incomingServer</span> <span class="na">type=</span><span class="s">"pop3"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;hostname&gt;</span>mail.example.com<span class="nt">&lt;/hostname&gt;</span>
+            <span class="nt">&lt;port&gt;</span>110<span class="nt">&lt;/port&gt;</span>
+            <span class="nt">&lt;socketType&gt;</span>STARTTLS<span class="nt">&lt;/socketType&gt;</span>
+            <span class="nt">&lt;username&gt;</span>%EMAILADDRESS%<span class="nt">&lt;/username&gt;</span>
+            <span class="nt">&lt;authentication&gt;</span>plain<span class="nt">&lt;/authentication&gt;</span>
+        <span class="nt">&lt;/incomingServer&gt;</span>
+        <span class="nt">&lt;outgoingServer</span> <span class="na">type=</span><span class="s">"smtp"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;hostname&gt;</span>mail.example.com<span class="nt">&lt;/hostname&gt;</span>
+            <span class="nt">&lt;port&gt;</span>587<span class="nt">&lt;/port&gt;</span>
+            <span class="nt">&lt;socketType&gt;</span>STARTTLS<span class="nt">&lt;/socketType&gt;</span>
+            <span class="nt">&lt;username&gt;</span>%EMAILADDRESS%<span class="nt">&lt;/username&gt;</span>
+            <span class="nt">&lt;authentication&gt;</span>plain<span class="nt">&lt;/authentication&gt;</span>
+        <span class="nt">&lt;/outgoingServer&gt;</span>
+        <span class="c">&lt;!-- ... --&gt;</span>
+    <span class="nt">&lt;/emailProvider&gt;</span>
+<span class="nt">&lt;/clientConfig&gt;</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1344,7 +1365,7 @@ service available using a web server as a proxy.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_configuring_a_web_server"><a class="anchor" href="#_configuring_a_web_server"></a>4.6. Configuring a web server</h3>
+<h3 id="_configuring_a_web_server"><a class="anchor" href="#_configuring_a_web_server"></a>6.6. Configuring a web server</h3>
 <div class="paragraph">
 <p>While it is technically possible to run automx2 without a web server sitting in
 front of it, we don&#8217;t recommend doing that in a production environment. A web server
@@ -1393,7 +1414,7 @@ reaches automx2.</td>
 </table>
 </div>
 <div class="sect3">
-<h4 id="_nginx"><a class="anchor" href="#_nginx"></a>4.6.1. NGINX</h4>
+<h4 id="_nginx"><a class="anchor" href="#_nginx"></a>6.6.1. NGINX</h4>
 <div class="paragraph">
 <p>The following example defines a HTTP server, which will listen for requests to
 both <em>autoconfig.example.com</em> and <em>autodiscover.example.com</em>. All requests will
@@ -1432,7 +1453,7 @@ incoming requests' origins.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_apache"><a class="anchor" href="#_apache"></a>4.6.2. Apache</h4>
+<h4 id="_apache"><a class="anchor" href="#_apache"></a>6.6.2. Apache</h4>
 <div class="paragraph">
 <p>The following example shows an Apache configuration similar to the one above.
 <code>ProxyPreserveHost</code> directives will cause apache to pass relevant data about
@@ -1462,27 +1483,11 @@ incoming requests' origins.</p>
 </div>
 </div>
 </div>
-<div class="sect1">
-<h2 id="_about_automx2"><a class="anchor" href="#_about_automx2"></a>5. About automx2</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>The project resides as <a href="https://gitlab.com/automx/automx2">automx/automx2</a> on
-GitLab. Please use the projects <a href="https://gitlab.com/automx/automx2/issues">issue
-tracker</a> if you find bugs. To discuss usage and other topics join us on the
-<a href="https://mail.sys4.de/cgi-bin/mailman/listinfo/automx-users">automx-users</a>
-mailing list.</p>
-</div>
-<div class="paragraph">
-<p>automx2 was written by <a href="https://gitlab.com/rseichter">Ralph Seichter</a> for
-<a href="https://sys4.de">sys4 AG</a>.</p>
-</div>
-</div>
-</div>
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2021.1<br>
-Last updated 2021-03-04 22:24:58 +0100
+Version 2021.2<br>
+Last updated 2021-03-07 03:30:35 +0100
 </div>
 </div>
 </body>

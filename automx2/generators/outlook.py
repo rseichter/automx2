@@ -31,8 +31,9 @@ from automx2.model import Domain
 from automx2.model import Server
 from automx2.util import expand_placeholders
 
-NS_AUTODISCOVER = 'http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006'
-NS_RESPONSE = 'http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a'
+NS_REQUEST = 'http://schemas.microsoft.com/exchange/autodiscover/outlook/requestschema/2006'
+NS_RESPONSE_PAYLOAD = 'http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a'
+NS_RESPONSE_ROOT = 'http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006'
 
 SERVER_TYPE_MAP = {
     'imap': 'IMAP',
@@ -69,8 +70,8 @@ class OutlookGenerator(ConfigGenerator):
 
     def client_config(self, local_part, domain_part: str, display_name: str) -> str:
         domain: Domain = Domain.query.filter_by(name=domain_part).first()
-        root_element = Element('Autodiscover', attrib={'xmlns': NS_AUTODISCOVER})
-        response = SubElement(root_element, 'Response', attrib={'xmlns': NS_RESPONSE})
+        root_element = Element('Autodiscover', attrib={'xmlns': NS_RESPONSE_ROOT})
+        response = SubElement(root_element, 'Response', attrib={'xmlns': NS_RESPONSE_PAYLOAD})
         if not domain:
             raise DomainNotFound(f'Domain "{domain_part}" not found')
         if domain.ldapserver:

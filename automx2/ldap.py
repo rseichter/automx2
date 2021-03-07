@@ -63,7 +63,7 @@ class LdapAccess:
         attributes = ldap_entry['attributes']
         if attribute and attribute in attributes:
             value = attributes[attribute]
-            if isinstance(value, str):
+            if isinstance(value, str):  # pragma: no cover (Will not happen when testing against OpenLDAP)
                 log.debug(f'Returning string "{value}"')
                 return value
             elif isinstance(value, list):

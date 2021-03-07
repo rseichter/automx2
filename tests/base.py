@@ -22,8 +22,8 @@ import unittest
 
 from flask import Response
 
-from automx2.generators.outlook import NS_AUTODISCOVER
-from automx2.generators.outlook import NS_RESPONSE
+from automx2.generators.outlook import NS_REQUEST
+from automx2.generators.outlook import NS_RESPONSE_PAYLOAD
 from automx2.model import LDAP_BIND_PASSWORD
 from automx2.model import LDAP_BIND_USER
 from automx2.model import LDAP_HOSTNAME
@@ -90,8 +90,8 @@ class TestCase(unittest.TestCase):
 
     def get_msoft_config(self, address: str) -> Response:
         data = (
-            f'<Autodiscover xmlns="{NS_AUTODISCOVER}">'
-            f'<AcceptableResponseSchema>{NS_RESPONSE}</AcceptableResponseSchema>'
+            f'<Autodiscover xmlns="{NS_REQUEST}">'
+            f'<AcceptableResponseSchema>{NS_RESPONSE_PAYLOAD}</AcceptableResponseSchema>'
             '<Request>'
             f'<{EMAIL_OUTLOOK}>{address}</{EMAIL_OUTLOOK}>'
             '</Request>'

@@ -1,9 +1,10 @@
+// vim:ts=4:sw=4:et:ft=asciidoc
 = automx2: Email client configuration made easy
 Ralph Seichter <automx2@seichter.de>; Patrick Ben Koetter <p@sys4.de>
 :keywords: autoconfig, autodiscover, mobileconfig, automx, automx2
 :subject: automx2: Email client configuration made easy
-:revnumber: 2021.1
-:revdate: 2021-03-04
+:revnumber: 2021.2
+:revdate: 2021-03-07
 :copyright: © 2019-2021 Ralph Seichter & sys4 AG
 :publisher: Ralph Seichter & sys4 AG
 :lang: en
@@ -21,6 +22,17 @@ Ralph Seichter <automx2@seichter.de>; Patrick Ben Koetter <p@sys4.de>
 :source-highlighter: rouge
 :rouge-style: base16.solarized.light
 :asciidoctor-diagram:
+
+== About automx2
+
+automx2 is Copyright © 2019-2021 Ralph Seichter and licensed under the GNU General Public License V3 or later.
+
+The project is hosted on https://github.com/rseichter/automx2[GitHub (rseichter/automx2)].
+Please use the project's issue tracker in case you experience any problems.
+
+Sponsored by (in alphabetical order) https://www.mediabeam.com/[mediaBEAM GmbH] and https://sys4.de/[sys4 AG].
+
+== Preface
 
 This document explains how automx2 works, how <<automatedmailboxconfiguration,
 Automated Mailbox Configuration>> works and what it takes to install and
@@ -40,17 +52,3 @@ include::installation.adoc[]
 
 [[automx2setup]]
 include::configuration.adoc[]
-
-
-== About automx2
-
-The project resides as https://gitlab.com/automx/automx2[automx/automx2] on
-GitLab. Please use the projects https://gitlab.com/automx/automx2/issues[issue
-tracker] if you find bugs. To discuss usage and other topics join us on the
-https://mail.sys4.de/cgi-bin/mailman/listinfo/automx-users[automx-users]
-mailing list.
-
-automx2 was written by https://gitlab.com/rseichter[Ralph Seichter] for
-https://sys4.de[sys4 AG].
-
-// vim: set ft=asciidoc:

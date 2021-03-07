@@ -13,6 +13,7 @@ function usage() {
 	bn="$(basename $0)"
 	echo "Usage: ${bn} {clean | dist | doc}" >&2
 	echo "       ${bn} upload [repository]" >&2
+	echo "       ${bn} setver {version}" >&2
 	exit 1
 }
 
@@ -26,7 +27,7 @@ function do_dist() {
 
 function do_doc() {
 	pushd doc >/dev/null
-	asciidoctor -r asciidoctor-diagram automx2.adoc
+	asciidoctor -r asciidoctor-diagram -o index.html automx2.adoc
 	popd >/dev/null
 }
 
@@ -44,6 +45,13 @@ function do_upload() {
 	twine upload "${opt[@]}" dist/*
 }
 
+function do_setver() {
+	[ $# -gt 0 ] || usage
+	sed -E -i -e "s/^(VERSION = ).+/\1'${1}'/" automx2/__init__.py
+	sed -E -i -e "s/^(:revnumber:).+/\1 ${1}/" doc/automx2.adoc
+	sed -E -i -e "s/^(:revdate:).+/\1 $(date +%F)/" doc/automx2.adoc
+}
+
 [ $# -gt 0 ] || usage
 arg="$1"
 shift
@@ -53,6 +61,9 @@ case "$arg" in
 		;;
 	dist | upload)
 		source .venv/bin/activate
+		do_$arg "$@"
+		;;
+	setver)
 		do_$arg "$@"
 		;;
 	*)
