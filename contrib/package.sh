@@ -26,10 +26,15 @@ function do_dist() {
 }
 
 function do_doc() {
-	local opts='-r asciidoctor-diagram -v automx2.adoc'
+	local opt=(
+		'-r'
+		'asciidoctor-diagram'
+		'-v'
+		'automx2.adoc'
+	)
 	pushd doc >/dev/null
-	asciidoctor-pdf -a toc=preamble ${opts}
-	asciidoctor -a toc=right -o index.html ${opts}
+	asciidoctor-pdf -a toc=preamble "${opt[@]}"
+	asciidoctor -a toc=right -o ../docs/index.html "${opt[@]}"
 	popd >/dev/null
 }
 
