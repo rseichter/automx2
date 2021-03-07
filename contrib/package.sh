@@ -11,7 +11,7 @@ set -euo pipefail
 function usage() {
 	local bn
 	bn="$(basename $0)"
-	echo "Usage: ${bn} {clean | dist | doc}" >&2
+	echo "Usage: ${bn} {clean | dist | docs}" >&2
 	echo "       ${bn} upload [repository]" >&2
 	echo "       ${bn} setver {version}" >&2
 	exit 1
@@ -25,16 +25,16 @@ function do_dist() {
 	python setup.py sdist bdist_wheel
 }
 
-function do_doc() {
+function do_docs() {
 	local opt=(
 		'-r'
 		'asciidoctor-diagram'
 		'-v'
 		'automx2.adoc'
 	)
-	pushd doc >/dev/null
+	pushd docs >/dev/null
 	asciidoctor-pdf -a toc=preamble "${opt[@]}"
-	asciidoctor -a toc=right -o ../docs/index.html "${opt[@]}"
+	asciidoctor -a toc=right -o index.html "${opt[@]}"
 	popd >/dev/null
 }
 
@@ -63,7 +63,7 @@ function do_setver() {
 arg="$1"
 shift
 case "$arg" in
-	clean | doc)
+	clean | docs)
 		do_$arg
 		;;
 	dist | upload)

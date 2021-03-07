@@ -14,13 +14,13 @@ GitHub in the [rseichter/automx2](https://github.com/rseichter/automx2) reposito
 
 ## Documentation
 
-Detailed documentation is available [in PDF](https://github.com/rseichter/automx2/blob/master/doc/automx2.pdf)
-and other formats; see the [doc folder](https://github.com/rseichter/automx2/blob/master/doc).
+Detailed documentation is available [in HTML](https://rseichter.github.io/automx2/), PDF and other formats;
+see [here](https://github.com/rseichter/automx2/blob/master/docs).
 
 ## Contributing
 
 Submitting ideas, suggestions and bug reports in the form of
-[GitHub issues](https://github.com/rseichter/automx2) is welcome. Please refer to
+[GitHub issues](https://github.com/rseichter/automx2/issues) is welcome. Please refer to
 [this blog article](https://about.gitlab.com/blog/2016/03/03/start-with-an-issue/). To avoid Copyright issues, I do not
 currently accept code contributions. I hope that this will change at some future date. However, it is possible to
 sponsor specific new features. Contact me via email to discuss this in detail.

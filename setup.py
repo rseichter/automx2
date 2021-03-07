@@ -32,7 +32,7 @@ setuptools.setup(
     description='Mail client autoconfiguration service',
     long_description=readme,
     long_description_content_type='text/markdown',
-    url='https://automx.org/',
+    url='https://rseichter.github.io/automx2/',
     project_urls={
         'Source': 'https://github.com/rseichter/automx2',
         'Tracker': 'https://github.com/rseichter/automx2/issues',
