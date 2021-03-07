@@ -1,51 +1,40 @@
 // vim:ts=4:sw=4:et:ft=asciidoc
-== How does Automated Mailbox Configuration work?
+== How does auto config work?
 
-Modern mail clients can look for configuration data when a user begins to
-create a new account. They will either send the user's mail address to a service
-and ask the service to reply with configuration that suits the user's profile or
-they will query the DNS system for advice.
+Modern email clients (Mail User Agents) can look for configuration data when a user begins to create a new account.
+They will either send the user's mail address to a service and ask the service to reply with configuration that suits the user's profile or they will query the DNS system for advice.
 
-Using a specialized mail account configuration service allows for
-individualized setups. It also allows to enforce a specific policy, which for
-example configures the mail client to use a specific authentication mechanism.
-Quering the DNS for mail service locations allows for generic instructions, but
-it doesn't give as much control over settings as a specialized service like
-automx2 will do.
+Using a specialized mail account configuration service allows for individualized setups.
+It also allows to enforce a specific policy, which for example configures the mail client to use a specific authentication mechanism.
+Quering the DNS for mail service locations allows for generic instructions, but it doesn't give as much control over settings as a specialized service like automx2 will do.
 
-As of today, there are four methods that help configuring a mail
-account. Three of them – <<autoconfig>>, <<autodiscover>> and <<mobileconfig>>
-– have been developed by vendors to cover their products' specific needs. The
-fourth is an RFC standard specifying the aformentioned more general <<srv>>
+As of today, there are four methods that help configuring a mail account.
+Three of them – <<autoconfig>>, <<autodiscover>> and <<mobileconfig>>
+– have been developed by vendors to cover their products' specific needs.
+The fourth is an RFC standard specifying the aformentioned more general <<dnsrr>>
 method.
 
-The vendor specific methods have in common that the mail client seeking
-configuration needs to send a request, which includes at least the user's mail
-address, to a configuration service. The service will use the mail address to
-lookup configuration data and will return that data as response to the client.
+The vendor specific methods have in common that the mail client seeking configuration needs to send a request, which includes at least the user's mail address, to a configuration service.
+The service will use the mail address to lookup configuration data and will return that data as response to the client.
 Format – XML response or file – and complexity differ depending on the method.
 
 [NOTE]
 ====
-automx2 implements everything to configure a mailbox account. It does not
-implement functionality to e.g. also configure calendar or address book
-settings.
+automx2 implements everything necessary to configure a mailbox account.
+It does not currently provide functionality to also configure calendar or address book settings.
 ====
 
 The following subsections will explain more detailed how the four methods work.
 
 [[autoconfig]]
-=== autoconfig
+=== Autoconfig
 
-Autoconfig is a proprietary method developed by the Mozilla foundation. It
-was designed to configure a mail account within Thunderbird, and other email
-suites like Evolution and KMail
+Autoconfig is a proprietary method developed by the Mozilla foundation.
+It was designed to configure a mail account within Thunderbird, and other email suites like Evolution and KMail
 link:https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat[have adopted] the mechanism.
 
-When a user begins to create a new mail account she is asked to enter her
-realname and mail address, e.g. _alice@example.com_. Thunderbird will then
-extract the domainpart (_example.com_) from the mail address and build a
-list of URIs to search for a configuration web service in the following order:
+When a user begins to create a new mail account she is asked to enter her realname and mail address, e.g. _alice@example.com_.
+Thunderbird will then extract the domainpart (_example.com_) from the mail address and build a list of URIs to search for a configuration web service in the following order:
 
 [source,text]
 ----
@@ -57,22 +46,17 @@ http://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=alice@example.co
 http://example.com/.well-known/autoconfig/mail/config-v1.1.xml
 ----
 
-A configuration service such as automx2 listening on one of the listed URIs will
-receive the request, process it and respond with a set of configuration
-instructions.
+A configuration service such as automx2 listening on one of the listed URIs will receive the request, process it and respond with a set of configuration instructions.
 
-Thunderbird will use the instructions to automatically fill in the required
-fields in the account. The only remaining task for the user is to confirm the
-settings. After that she can immediately start to use her new mail account.
-
+Thunderbird will use the instructions to automatically fill in the required fields in the account.
+The only remaining task for the user is to confirm the settings.
+After that she can immediately start to use her new mail account.
 
 [[autodiscover]]
-=== autodiscover
+=== Autodiscover
 
-Autodiscover is a proprietary method developed by Microsoft. It was designed
-to configure a mail account within Outlook and has expanded to also configure
-Office 365. Service lookups use the following URLs and, as a fallback option,
-DNS lookups.
+Autodiscover is a proprietary method developed by Microsoft.
+It was designed to configure a mail account within Outlook and has expanded to also configure Office 365. Service lookups use the following URLs and, as a fallback option, DNS lookups.
 
 [source,text]
 ----
@@ -84,13 +68,9 @@ dns: autodiscover.example.com
 dns: _autodiscover._tcp.example.com
 ----
 
-All HTTP(S) queries send a POST request and submit XML which contains
-information about the account that should be configured. The DNS queries
-search for a `CNAME` resource record first, which is supposed to redirect the mail client to
-a resource outside of the mailbox owners domain, e.g. _alice@example.com_ would
-be redirected to `service.example-provider.com` for configuration instructions.
-If the first DNS query fails the client may be redirected to a configuration
-service using a `SRV` RR like this:
+All HTTP(S) queries send a POST request and submit XML which contains information about the account that should be configured.
+The DNS queries search for a `CNAME` resource record first, which is supposed to redirect the mail client to a resource outside of the mailbox owners domain, e.g. _alice@example.com_ would be redirected to `service.example-provider.com` for configuration instructions.
+If the first DNS query fails the client may be redirected to a configuration service using a `SRV` RR like this:
 
 [source,bind]
 ----
@@ -98,19 +78,15 @@ _autodiscover._tcp.example.com.  0   443 service.example-provider.com.
 ----
 
 The `SRV` RR used in the example above would send Alice's client to
-`service.example-provider.com` and tell it to send the query to the
-configuration service on port `443`.
-
+`service.example-provider.com` and tell it to send the query to the configuration service on port `443`.
 
 [[mobileconfig]]
-=== mobileconfig
+=== Mobileconfig
 
-TODO - Requests and responses use proprietary content types and the PLIST
-data format.
+TODO - Requests and responses use proprietary content types and Apple's PLIST data format.
 
-
-[[srv]]
-=== DNS SRV Records
+[[dnsrr]]
+=== DNS SRV resource records
 
 [source,bind]
 ----

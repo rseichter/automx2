@@ -1,0 +1,56 @@
+// vim:ts=4:sw=4:et:ft=asciidoc
+[[webserverconfig]]
+== Configuring a web server
+
+While it is technically possible to run automx2 without a web server in front of it, I do not recommend doing that in a production environment.
+A web server can provide features automx2 was designed not to have.
+Features such as transport layer encryption for HTTPS or, for example, the capability to rate-limit clients are handled very well by full-fledged web servers working as reverse proxies.
+It would be a waste to re-implement all this in a web service.
+
+This section will explain how to configure a web server as a reverse proxy in front of automx2. Before you set up the proxy you need to tell automx2 it operates behind one.
+Add the `proxy_count` parameter to your automx2 configuration file or uncomment the parameter if it is already there:
+
+[source,ini]
+----
+[automx2]
+# A typical production setup would use loglevel = WARNING
+loglevel = WARNING
+
+# Disable SQL command echo.  <1>
+db_echo = no
+
+# SQLite database in a UNIX-like file system
+db_uri = sqlite:////var/lib/automx2/db.sqlite
+
+# Number of proxy servers between automx2 and the client (default: 0).
+# If your logs only show 127.0.0.1 or ::1 as the source IP for incoming
+# connections, proxy_count probably needs to be changed.  <2>
+proxy_count = 1
+----
+
+<1> You should turn off echoing SQL commands to the log once you have verified automx2 works as expected.
+<2> Set the number to reflect the number of proxies chained in front of automx2, i.e. the number of "proxy hops" a client's request must pass before it reaches automx2.
+
+
+=== NGINX
+
+The following example defines a HTTP server, which will listen for requests to both _autoconfig.example.com_ and _autodiscover.example.com_.
+All requests will be forwarded to automx2, which listens on TCP port 4243 in this example.
+Requests to `/initdb` are restricted to clients connecting from the local host.
+The
+`proxy_set_header` directives will cause NGINX to pass relevant data about incoming requests' origins.
+
+[source,nginx]
+----
+include::../contrib/nginx-sample.conf[]
+----
+
+=== Apache
+
+The following example shows an Apache configuration similar to the one above.
+`ProxyPreserveHost` directives will cause apache to pass relevant data about incoming requests' origins.
+
+[source,apache]
+----
+include::../contrib/apache-sample.conf[]
+----

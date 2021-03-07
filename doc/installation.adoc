@@ -1,8 +1,8 @@
 // vim:ts=4:sw=4:et:ft=asciidoc
 == automx2 Installation
 
-automx2 requires Python 3.7 or higher, ideally in the form of a virtual Python
-environment, to run. Check the python3 version like this:
+automx2 requires Python 3.7 or higher, ideally in the form of a virtual Python environment, to run.
+Check the python3 version like this:
 
 [source,bash]
 ----
@@ -10,21 +10,18 @@ $ python3 --version
 Python 3.9.2
 ----
 
-If you see version 3.6 or lower, you'll need to either change the active Python
-version for the shell session or edit link:contrib/setupvenv.sh[setupvenv.sh]
+If you see version 3.6 or lower, you'll need to either change the active Python version for the shell session or edit link:contrib/setupvenv.sh[setupvenv.sh]
 after downloading the script.
 
 [IMPORTANT]
 .Don't run as root
 ====
-If you use a port number greater than 1024 (we suggest 4243), the application does
-not require super user privileges when running. It also does not need to be
-installed as root. It is recommended that you create a user account specifically
-for automx2, but other unprivileged users will do as well.
+If you use a port number greater than 1024 (I suggest port 4243), the application does not require super user privileges when running.
+It also does not need to be installed as root.
+It is recommended that you create a user account specifically for automx2, but other unprivileged users will do as well.
 ====
 
-Prepare the virtual environment for the automx2 web service, adjusting the
-installation path to your taste (automx2 itself does not care).
+Prepare the virtual environment for the automx2 web service, adjusting the installation path to your taste (automx2 itself does not care).
 
 [source,bash]
 ----
@@ -40,7 +37,8 @@ wget -O setupvenv.sh 'https://github.com/rseichter/automx2/raw/master/contrib/se
 chmod u+x setupvenv.sh
 ----
 
-Execute the setup script. It will create a Python virtual environment called
+Execute the setup script.
+It will create a Python virtual environment called
 `venv` in the current directory:
 
 [source,bash]
@@ -48,9 +46,10 @@ Execute the setup script. It will create a Python virtual environment called
 ./setupvenv.sh
 ----
 
-Activate the virtual environment and install the latest automx2 release from
-PyPI. Make sure to pick the correct activation for your shell from the
-`venv/bin` directory. This is an example for BASH:
+Activate the virtual environment and install the latest automx2 release from PyPI.
+Make sure to pick the correct activation for your shell from the
+`venv/bin` directory.
+This is an example for BASH:
 
 [source,bash]
 ----
@@ -61,8 +60,8 @@ pip install automx2
 [NOTE]
 .Updating automx2
 ====
-Change to the directory where automx2 has been installed previously. Activate
-the virtual environment as usual and use pip's `-U` option to update automx2:
+Change to the directory where automx2 has been installed previously.
+Activate the virtual environment as usual and use pip's `-U` option to update automx2:
 
 [source,bash]
 ----
@@ -71,5 +70,3 @@ cd /srv/web/automx2
 pip install -U automx2
 ----
 ====
-
-The next section explains how to configure automx2.

@@ -1,18 +1,16 @@
 // vim:ts=4:sw=4:et:ft=asciidoc
 == How does automx2 work?
 
-automx2 is a webservice. It sits behind a web server, e.g. NGINX, and waits for
-configuration requests. When a mail client requests configuration it contacts
-the web server. The web server then acts as a proxy and forwards all requests
-to the automx2 web service.
+automx2 is a web service.
+It is usually located behind a web server like NGINX and waits for configuration requests.
+When a mail user agent (MUA), a.k.a. mail client, requests configuration it contacts the web server.
+The web server then acts as a proxy and forwards all requests to automx2 and passes answers back to the MUA.
 
 [ditaa,howitworks,svg,align=center]
 ....
-+------------+         +------------+        +------------+
-|            |         |            |        |            |
-|            |  HTTPS  |            |  4243  |            |
-| mailclient |<------->| webserver  |<------>| webservice |
-|            |         |            |        |  (automx2) |
-|            |         |            |        |            |
-+------------+         +------------+        +------------+
++---+         +------------------------+             +-------+
+|   |  HTTPS  |       Web Server       |  Port 4243  |       |
+|MUA|<------->|autodiscover.example.com|<----------->|automx2|
+|   |         | autoconfig.example.com |             |       |
++---+         +------------------------+             +-------+
 ....

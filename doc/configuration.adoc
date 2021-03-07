@@ -1,45 +1,38 @@
 // vim:ts=4:sw=4:et:ft=asciidoc
 == Configuring automx2
 
-automx2 uses a file to read runtime instructions from and a database to lookup
-mail account configuration data.
-
+automx2 uses a file to read runtime instructions from and a database to lookup mail account configuration data.
 
 === Runtime configuration
 
-The configuration file defines automx2 runtime behaviour and it specifies the
-backend automx2 should read mailbox account configuration data from.
+The configuration file defines automx2 runtime behaviour and it specifies the backend automx2 should read mailbox account configuration data from.
 
 [NOTE]
 .Running without runtime config
 ====
-If you launch automx2 without a configuration file, it will use internal
-defaults. These are suitable for testing only. Launched without a config it
-will use an in-memory SQLite database and all data will be lost once the
-application terminates.
+If you launch automx2 without a configuration file, it will use internal defaults.
+These are suitable for testing only.
+Launched without a config it will use an in-memory SQLite database and all data will be lost once the application terminates.
 ====
 
-During startup automx2 searches for runtime configuration instructions in
-the following locations:
+During startup automx2 searches for runtime configuration instructions in the following locations.
+The first match will determine the configuration used.
 
 [[configurationlocations]]
 [source,txt]
 ----
-AUTOMX2_CONF     <1>
-~/.automx2.conf  <2>
-/etc/automx2/automx2.conf
-/etc/automx2.conf
+env  : AUTOMX2_CONF  <1>
+file : ~/.automx2.conf
+file : /etc/automx2/automx2.conf
+file : /etc/automx2.conf
 ----
 
-<1> If this environment variable exists, it will be used. The value must point
-    to a location where automx2 can read configuration from. If the specified
-    file does not exist, the search will continue.
-<2> If automx2 finds `.automx2.conf` in the home directory of the user that runs
-    automx2, it will be used.
+<1> If present, the environment variable AUTOMX2_CONF must point to the absolute path of a configuration file.
 
 To specify parameters and options automx2 uses an
 link:https://docs.python.org/3.9/library/configparser.html#supported-ini-file-structure[INI
-style] configuration syntax. The
+file] syntax.
+The
 link:https://github.com/rseichter/automx2/blob/master/contrib/automx2-sample.conf[example
 configuration] that ships with automx2 looks like this:
 
@@ -48,15 +41,13 @@ configuration] that ships with automx2 looks like this:
 include::../contrib/automx2-sample.conf[]
 ----
 
-Place the content of the example configuration into one of the configuration
-locations automx2 looks for and adapt it to your needs. Then configure the
-database backend with data that suits your setup, as described below.
-
+Place the content of the example configuration into one of the configuration locations automx2 looks for and adapt it to your needs.
+Then configure the database backend with data that suits your setup, as described below.
 
 === Testing standalone automx2
 
-If you want to verify a vanilla installation of automx2 works, you can populate it
-with internal test data. Start automx2 as described in section <<runningautomx2>>
+If you want to verify a vanilla installation of automx2 works, you can populate it with internal test data.
+Start automx2 as described in section <<runningautomx2>>
 and send the following request to populate your database:
 
 [source,bash]
@@ -64,91 +55,79 @@ and send the following request to populate your database:
 curl 'http://127.0.0.1:4243/initdb/'
 ----
 
-This example assumes you are running automx2 on localhost listening on TCP
-port 4243, which is the suggested default port.
+This example assumes you are running automx2 on localhost listening on TCP port 4243, which is the suggested default port.
 
-Once you have populated the database with sample data you can test if automx2
-works. Use curl to send an account configuration request for +user@example.com+:
+Once you have populated the database with sample data you can test if automx2 works.
+Use curl to send an account configuration request for +user@example.com+:
 
 [source,bash]
 ----
 curl 'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=user@example.com'
 ----
 
-As shown in the example, make sure to use quotes as necessary to prevent your shell
-from matching/replacing patterns.
+As shown in the example, make sure to use quotes as necessary to prevent your shell from matching/replacing patterns.
 
 === Database configuration
 
-automx2 uses the SQLAlchemy toolkit to access databases. This allows a variety
-of databases, a.k.a. link:https://docs.sqlalchemy.org/en/latest/dialects/[dialects],
-to be used, simply by defining the appropriate connection URL.
+automx2 uses the SQLAlchemy toolkit to access databases.
+This allows a variety of databases, a.k.a. link:https://docs.sqlalchemy.org/en/latest/dialects/[dialects], to be used, simply by defining the appropriate connection URL.
 
 [NOTE]
 .API based configuration
 ====
-I consider adding an API for configuration changes in an upcoming version
-but have not decided when that might happen. Feel free to contact me if you
-are interested in sponsoring this feature.
+I consider adding an API for configuration changes in an upcoming version but have not decided when that might happen.
+Feel free to contact me if you are interested in a <<Sponsorship,sponsorship>>.
 ====
 
 ==== Database support
-While you probably already have SQLite support available on your local machine,
-you may need to install additional Python packages for PostgreSQL, MySQL, etc.
-Detailed instructions to support a particular database dialect are out of scope
-for this document. Please search the Internet for detailed instructions on supporting
-a particular dialect. The SQLAlchemy documentation provides a useful starting point.
 
-While the `contrib` directory contains example database schemas which you can use
-as a reference, I recommend using the built-in method to create the necessary DB
-structure from scratch by accessing the `/initdb/` service endpoint. This will
-also populate the database with some example data.
+While you probably already have SQLite support available on your local machine, you may need to install additional Python packages for PostgreSQL, MySQL, etc.
+Detailed instructions to support a particular database dialect are out of scope for this document.
+Please search the Internet for detailed instructions on supporting a particular dialect.
+The SQLAlchemy documentation provides a useful starting point.
 
-If you upgrade from an early automx2 release and wish to migrate your existing
-database, you can use the built-in Alembic support. However, this requires
-cloning the Git repository, modifying `alembic.ini` and invoking the migration
-from the command line. It is usually easier to export your existing data,
-create a fresh DB and import the data.
+While the `contrib` directory contains example database schemas which you can use as a reference, I recommend using the built-in method to create the necessary DB structure from scratch by accessing the `/initdb/` service endpoint.
+This will also populate the database with some example data.
 
+If you upgrade from an early automx2 release and wish to migrate your existing database, you can use the built-in Alembic support.
+However, this requires cloning the Git repository, modifying `alembic.ini` and invoking the migration from the command line.
+It is usually easier to export your existing data, create a fresh DB and import the data.
 
 ==== SQLite
 
-This section demonstrates what you need to do to in order to use SQLite version
-3 or higher as a backend database for automx2.
+This section demonstrates what you need to do to in order to use SQLite version 3 or higher as a backend database for automx2.
 
-Step 1: Set the database URI in your automx2 configuration. Please note that
-specifying an absolute path for the database requires a total of four slashes
-after the schema identifier:
+Step 1: Set the database URI in your automx2 configuration.
+Please note that specifying an absolute path for the database requires a total of four slashes after the schema identifier:
+
 [source,ini]
 ----
 [automx2]
 db_uri = sqlite:////var/lib/automx2/db.sqlite
 ----
+
 Step 2: Launch automx2 and access the DB initialisation URL:
+
 [source,bash]
 ----
 curl 'http://127.0.0.1:4243/initdb/'
 ----
 
-The Git repository contains a xref:../contrib/sqlite-generate.sh[sqlite-generate.sh] helper
-script which demonstrates how the database can be populated programmatically.
+The Git repository contains a xref:../contrib/sqlite-generate.sh[sqlite-generate.sh] helper script which demonstrates how the database can be populated programmatically.
 You only need to adapt a few settings according to your needs:
 
 [source,bash]
 ----
-include::../contrib/sqlite-generate.sh[lines=9..15]
+include::../contrib/sqlite-generate.sh[lines=10..15]
 ----
 
-The script will print the SQL statements to standard output, which can be
-piped into `sqlite3` for processing.
+The script will print the SQL statements to standard output, which can be piped into `sqlite3` for processing.
+Make sure to match the automx2.conf `db_uri` setting when specifying the database.
 
 [source,bash]
 ----
 contrib/sqlite-generate.sh | sqlite3 /var/lib/automx2/db.sqlite
 ----
-
-This example assumes you have also set `/var/lib/automx2/db.sqlite` as path in
-your `automx2.conf`.
 
 [NOTE]
 .Placeholders
@@ -160,22 +139,26 @@ documentation for further details.
 
 Once you have populated the database automx2 is ready to run.
 
-
 ==== MySQL
 
 Step 1: Create a database.
+
 [source,mysql]
 ----
 CREATE DATABASE `automx2` COLLATE 'utf8mb4_general_ci';
 ----
-Step 2: Set the database URI in your automx2 configuration. The following example
-uses _pymysql_ as a DB driver, which is not included in the automx2 distribution.
+
+Step 2: Set the database URI in your automx2 configuration.
+The following example uses _pymysql_ as a DB driver, which is not included in the automx2 distribution.
+
 [source,ini]
 ----
 [automx2]
 db_uri = mysql+pymysql://user:pass@dbhost/automx2?charset=utf8mb4
 ----
+
 Step 3: Launch automx2 and access the DB initialisation URL:
+
 [source,bash]
 ----
 curl 'http://127.0.0.1:4243/initdb/'
@@ -184,230 +167,24 @@ curl 'http://127.0.0.1:4243/initdb/'
 ==== PostgreSQL
 
 Step 1: Create a database.
+
 [source,postgresql]
 ----
 CREATE DATABASE automx2 LOCALE 'en_US.utf8';
 ----
-Step 2: Set the database URI in your automx2 configuration. The following example
-uses _psycopg2-binary_ as a DB driver, which is not included in the automx2 distribution.
+
+Step 2: Set the database URI in your automx2 configuration.
+The following example uses _psycopg2-binary_ as a DB driver, which is not included in the automx2 distribution.
+
 [source,ini]
 ----
 [automx2]
 db_uri = postgresql+psycopg2://user:pass@dbhost/automx2
 ----
+
 Step 3: Launch automx2 and access the DB initialisation URL:
+
 [source,bash]
 ----
 curl 'http://127.0.0.1:4243/initdb/'
-----
-
-
-[[runningautomx2]]
-=== Running automx2
-
-Running automx2 requires to start automx2 as service and serve its output
-via a webserver to the public. You should not run automx2 with superuser
-privileges. Use a dedicated user instead.
-
-The following examples assume you have created a user and group `automx2`
-and have granted appropriate rights to this user:
-
-- Read permissions for the `automx2.conf` configuration file.
-- Read and access permissions for the virtual Python environment.
-- Read and access permissions for the SQLite database.
-
-==== Systemd service
-
-If your system uses systemd you may want to deploy the
-following xref:../contrib/automx2.service[automx2.service] unit file from the
-contrib section and place it in `/etc/systemd/system/automx2.service`:
-
-[source,ini]
-----
-include::../contrib/automx2.service[]
-----
-
-Once you have installed the service you need to tell systemd to reload its
-list of available services:
-
-[source,bash]
-----
-sudo systemctl daemon-reload
-----
-
-It should now be able to tell you about a service named automx2:
-
-[source,bash]
-----
-sudo systemctl status automx2
-● automx2.service - "automx2 - MUA configuration service"
-     Loaded: loaded (/etc/systemd/system/automx2.service; disabled; vendor preset: enabled)
-     Active: inactive (dead)
-----
-
-Next enable and start automx2 using the following command:
-
-[source,bash]
-----
-sudo systemctl enable automx2 --now
-Created symlink /etc/systemd/system/multi-user.target.wants/automx2.service → /etc/systemd/system/automx2.service.
-----
-
-You should see automx2 enabled and running:
-
-[source,bash]
-----
-sudo systemctl status automx2
-● automx2.service - "automx2 - MUA configuration service"
-     Loaded: loaded (/etc/systemd/system/automx2.service; enabled; vendor preset: enabled)
-     Active: active (running) since Mon 2021-03-01 12:54:31 CET; 19s ago
-   Main PID: 126966 (python)
-      Tasks: 1 (limit: 4620)
-     Memory: 46.1M
-     CGroup: /system.slice/automx2.service
-             └─126966 /srv/www/automx2/bin/flask run --host=127.0.0.1 --port=4243
-[...]
-Mar 01 12:54:32 mail python[126966]: Reading /etc/automx2.conf
-Mar 01 12:54:32 mail python[126966]: Config.get: loglevel = WARNING
-Mar 01 12:54:32 mail python[126966]:  * Running on http://127.0.0.1:4243/ (Press CTRL+C to quit)
-----
-
-You are now ready to start testing automx2, as described in <<local-testing>>.
-
-
-==== Command line
-
-While logged in as an unprivileged user, change into the installation
-directory and start the `contrib/flask.sh` launch script:
-
-[source,bash]
-----
-cd /srv/web/automx2
-contrib/flask.sh run --host=127.0.0.1 --port=4243
-----
-
-[NOTE]
-.Handling terminal output
-====
-The flask.sh script will deliberately keep automx2 running in the foreground,
-and log data will be displayed in the terminal. If you press Ctrl-C or close the
-shell session, the application will terminate. To run automx2 in the background,
-you can use a window manager like link:https://www.gnu.org/software/screen/[GNU
-Screen] or tmux.
-====
-
-Now that automx2 is up and running, you need to configure the web server proxy
-that will receive requests from the outside and forwards them to automx2.
-
-[[local-testing]]
-=== Testing automx2 on command line
-
-Use _curl_ to send a request to your local automx2-instance. The following
-example assumes your service runs on localhost on port 4243. The exact
-output depends on your database content, but should look similar.
-
-[source,bash]
-----
-curl 'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=user@example.com'
-----
-
-[source,xml]
-----
-<clientConfig version="1.1">
-    <emailProvider id="automx2-100">
-        <identity/>
-        <domain>example.com</domain>
-        <displayName>Example Inc.</displayName>
-        <displayShortName>Example</displayShortName>
-        <incomingServer type="imap">
-            <hostname>mail.example.com</hostname>
-            <port>993</port>
-            <socketType>SSL</socketType>
-            <username>%EMAILADDRESS%</username>
-            <authentication>plain</authentication>
-        </incomingServer>
-        <incomingServer type="pop3">
-            <hostname>mail.example.com</hostname>
-            <port>110</port>
-            <socketType>STARTTLS</socketType>
-            <username>%EMAILADDRESS%</username>
-            <authentication>plain</authentication>
-        </incomingServer>
-        <outgoingServer type="smtp">
-            <hostname>mail.example.com</hostname>
-            <port>587</port>
-            <socketType>STARTTLS</socketType>
-            <username>%EMAILADDRESS%</username>
-            <authentication>plain</authentication>
-        </outgoingServer>
-        <!-- ... -->
-    </emailProvider>
-</clientConfig>
-----
-Having verified that automx2 returns configuration data, you should make the
-service available using a web server as a proxy.
-
-=== Configuring a web server
-
-While it is technically possible to run automx2 without a web server sitting in
-front of it, we don't recommend doing that in a production environment. A web server
-can provide features automx2 was designed not to have. Features such as transport
-layer encryption for HTTPS or, for example, the capability to rate-limit clients
-are handled very well by full-fledged web servers working as reverse proxies. It
-would be a waste to re-implement all this in a web service.
-
-This section will explain how to configure a web server as a reverse proxy in
-front of automx2. Before you set up the proxy you need to tell automx2 it
-operates behind one. Add the `proxy_count` parameter to your automx2
-configuration file or uncomment the parameter if it is already there:
-
-[source,ini]
-----
-[automx2]
-# A typical production setup would use loglevel = WARNING
-loglevel = WARNING
-
-# Disable SQL command echo.  <1>
-db_echo = no
-
-# SQLite database in a UNIX-like file system
-db_uri = sqlite:////var/lib/automx2/db.sqlite
-
-# Number of proxy servers between automx2 and the client (default: 0).
-# If your logs only show 127.0.0.1 or ::1 as the source IP for incoming
-# connections, proxy_count probably needs to be changed.  <2>
-proxy_count = 1
-----
-
-<1> You might want to turn off echoing SQL commands to the log once you have
-    verified automx2 works as expected.
-<2> Set the number to reflect the number of proxies chained in front of automx2,
-    i.e. the number of "proxy hops" a client's request must pass before it
-    reaches automx2.
-
-
-==== NGINX
-
-The following example defines a HTTP server, which will listen for requests to
-both _autoconfig.example.com_ and _autodiscover.example.com_. All requests will
-be forwarded to automx2, which listens on 127.0.0.1 on port 4243 in this example.
-Requests to `/initdb` are restricted to clients from 127.0.0.1 only. The
-`proxy_set_header` directives will cause NGINX to pass relevant data about
-incoming requests' origins.
-
-[source,nginx]
-----
-include::../contrib/nginx-sample.conf[]
-----
-
-
-==== Apache
-
-The following example shows an Apache configuration similar to the one above.
-`ProxyPreserveHost` directives will cause apache to pass relevant data about
-incoming requests' origins.
-
-[source,apache]
-----
-include::../contrib/apache-sample.conf[]
 ----

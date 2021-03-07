@@ -1,12 +1,11 @@
 // vim:ts=4:sw=4:et:ft=asciidoc
 = automx2: Email client configuration made easy
-Ralph Seichter <automx2@seichter.de>; Patrick Ben Koetter <p@sys4.de>
 :keywords: autoconfig, autodiscover, mobileconfig, automx, automx2
 :subject: automx2: Email client configuration made easy
 :revnumber: 2021.2
 :revdate: 2021-03-07
-:copyright: © 2019-2021 Ralph Seichter & sys4 AG
-:publisher: Ralph Seichter & sys4 AG
+:copyright: © 2019-2021 Ralph Seichter
+:publisher: Ralph Seichter
 :lang: en
 :hyphens: en
 :encoding: UTF-8
@@ -23,28 +22,20 @@ Ralph Seichter <automx2@seichter.de>; Patrick Ben Koetter <p@sys4.de>
 :rouge-style: base16.solarized.light
 :asciidoctor-diagram:
 
-== About automx2
+== Copyright
 
-automx2 is Copyright © 2019-2021 Ralph Seichter and licensed under the GNU General Public License V3 or later.
-
-The project is hosted on https://github.com/rseichter/automx2[GitHub (rseichter/automx2)].
-Please use the project's issue tracker in case you experience any problems.
-
-Sponsored by (in alphabetical order) https://www.mediabeam.com/[mediaBEAM GmbH] and https://sys4.de/[sys4 AG].
+automx2 is Copyright © 2019-2021 Ralph Seichter.
+Parts of the initial documentation were written by Patrick Ben Koetter, Copyright © sys4 AG. automx2 is licensed under the GNU General Public License V3 or later.
+The project is hosted on GitHub in the https://github.com/rseichter/automx2[rseichter/automx2] repository.
 
 == Preface
 
-This document explains how automx2 works, how <<automatedmailboxconfiguration,
-Automated Mailbox Configuration>> works and what it takes to install and
-configure automx2. If you are already familiar with automated mailbox
-configuration methods you may want skip the following sections and jump right
-ahead to <<automx2installation>> and <<automx2setup>>.
-
+This document explains how automx2 works, how <<muaautoconf,automated mail client configuration>> works, and what it takes to install and configure automx2. If you are already familiar with automated mailbox configuration methods you may want skip the following sections and jump right ahead to <<automx2installation>> and <<automx2setup>>.
 
 [[howitworks]]
 include::howitworks.adoc[]
 
-[[automatedmailboxconfiguration]]
+[[muaautoconf]]
 include::mailaccountconfig.adoc[]
 
 [[automx2installation]]
@@ -52,3 +43,7 @@ include::installation.adoc[]
 
 [[automx2setup]]
 include::configuration.adoc[]
+
+include::running.adoc[]
+include::webserver.adoc[]
+include::sponsorship.adoc[]

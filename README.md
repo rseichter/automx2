@@ -8,19 +8,19 @@ automx2 is successor to automx. It has been designed to be easier to setup, easi
 
 ## Copyright
 
-automx2 is Copyright © 2019-2021 Ralph Seichter and licensed under the GNU General Public License V3 or later.
-
-The project is hosted on [GitHub (rseichter/automx2)](https://github.com/rseichter/automx2).
-Please use the project's issue tracker in case you experience any problems.
+automx2 is Copyright © 2019-2021 Ralph Seichter. Parts of the initial documentation were written by Patrick Ben Koetter,
+Copyright © sys4 AG. automx2 is licensed under the GNU General Public License V3 or later. The project is hosted on
+GitHub in the [rseichter/automx2](https://github.com/rseichter/automx2) repository.
 
 ## Documentation
 
-automx2 comes with documentation that explains how automated mail account configuration works, how automx2 works and how
-you install and configure automx2.
+Detailed documentation is available [in PDF](https://github.com/rseichter/automx2/blob/master/doc/automx2.pdf)
+and other formats; see the [doc folder](https://github.com/rseichter/automx2/blob/master/doc).
 
-All [documentation](https://github.com/rseichter/automx2/blob/master/doc/automx2.adoc) is stored in the doc subdirectory.
-You can read it file by file using a text reader or all files as one if you point your browser to +automx2.html+.
+## Contributing
 
-## Sponsors
-
-Sponsored by (in alphabetical order) [mediaBEAM GmbH](https://www.mediabeam.com/) and [sys4 AG](https://sys4.de/).
+Submitting ideas, suggestions and bug reports in the form of
+[GitHub issues](https://github.com/rseichter/automx2) is welcome. Please refer to
+[this blog article](https://about.gitlab.com/blog/2016/03/03/start-with-an-issue/). To avoid Copyright issues, I do not
+currently accept code contributions. I hope that this will change at some future date. However, it is possible to
+sponsor specific new features. Contact me via email to discuss this in detail.
