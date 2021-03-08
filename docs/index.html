@@ -444,7 +444,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <h1>automx2: Email client configuration made easy</h1>
 <div class="details">
 <span id="revnumber">version 2021.3.dev1,</span>
-<span id="revdate">2021-03-07</span>
+<span id="revdate">2021-03-08</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -552,20 +552,10 @@ method.</p>
 The service will use the mail address to lookup configuration data and will return that data as response to the client.
 Format – XML response or file – and complexity differ depending on the method.</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
 <div class="paragraph">
-<p>automx2 implements everything necessary to configure a mailbox account.
-It does not currently provide functionality to also configure calendar or address book settings.</p>
-</div>
-</td>
-</tr>
-</table>
+<p>automx2 implements everything necessary to configure email accounts.
+Functionality to configure calendar or address book settings is not included.
+This may change in some future version, but the focus of automx2 is email.</p>
 </div>
 <div class="paragraph">
 <p>The following subsections will explain more detailed how the four methods work.</p>
@@ -581,7 +571,7 @@ It was designed to configure a mail account within Thunderbird, and other email 
 <p>When a user begins to create a new mail account she is asked to enter her realname and mail address, e.g. <em>alice@example.com</em>.
 Thunderbird will then extract the domainpart (<em>example.com</em>) from the mail address and build a list of URIs to search for a configuration web service in the following order:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock small">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="text">https://autoconfig.thunderbird.net/v1.1/example.com
 https://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=alice@example.com
@@ -604,9 +594,11 @@ After that she can immediately start to use her new mail account.</p>
 <h3 id="autodiscover"><a class="anchor" href="#autodiscover"></a>4.2. Autodiscover</h3>
 <div class="paragraph">
 <p>Autodiscover is a proprietary method developed by Microsoft.
-It was designed to configure a mail account within Outlook and has expanded to also configure Office 365. Service lookups use the following URLs and, as a fallback option, DNS lookups.</p>
+The protocol version supported by automx2 was designed to configure a mail account within Outlook 2016 ff.
+Service lookups use the URLs shown below and, as a fallback option, DNS lookups.
+Please note that Microsft uses a different autodiscover mechanism for Office 365, which is not yet supported by automx2 because information about the technical details are not available free of charge.</p>
 </div>
-<div class="listingblock">
+<div class="listingblock small">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="text">https://example.com/autodiscover/autodiscover.xml
 https://autodiscover.example.com/autodiscover/autodiscover.xml
@@ -621,7 +613,7 @@ dns: _autodiscover._tcp.example.com</code></pre>
 The DNS queries search for a <code>CNAME</code> resource record first, which is supposed to redirect the mail client to a resource outside of the mailbox owners domain, e.g. <em>alice@example.com</em> would be redirected to <code>service.example-provider.com</code> for configuration instructions.
 If the first DNS query fails the client may be redirected to a configuration service using a <code>SRV</code> RR like this:</p>
 </div>
-<div class="listingblock">
+<div class="listingblock small">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bind">_autodiscover._tcp.example.com.  0   443 service.example-provider.com.</code></pre>
 </div>
@@ -634,12 +626,14 @@ If the first DNS query fails the client may be redirected to a configuration ser
 <div class="sect2">
 <h3 id="mobileconfig"><a class="anchor" href="#mobileconfig"></a>4.3. Mobileconfig</h3>
 <div class="paragraph">
-<p>TODO - Requests and responses use proprietary content types and Apple&#8217;s PLIST data format.</p>
+<p>Requests and responses use proprietary content types with an underlying <a href="https://en.wikipedia.org/wiki/Property_list">property list</a> format.
+automx2 will return <em>unsigned</em> data, which means that the service must be accessed via HTTPS only.
+Otherwise, your users have no way of knowing if they access the correct service and will be vulnerable to man-in-the-middle attacks.</p>
 </div>
 </div>
 <div class="sect2">
 <h3 id="dnsrr"><a class="anchor" href="#dnsrr"></a>4.4. DNS SRV resource records</h3>
-<div class="listingblock">
+<div class="listingblock small">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bind">_imap._tcp.example.com          SRV  10  20  143  mail.example.com.
 _imaps._tcp.example.com         SRV  0   1   993  .
@@ -700,7 +694,7 @@ It is recommended that you create a user account specifically for automx2, but o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">wget <span class="nt">-O</span> setupvenv.sh <span class="s1">'https://github.com/rseichter/automx2/raw/master/contrib/setupvenv.sh'</span>
+<pre class="rouge highlight"><code data-lang="bash">wget https://github.com/rseichter/automx2/raw/master/contrib/setupvenv.sh
 <span class="nb">chmod </span>u+x setupvenv.sh</code></pre>
 </div>
 </div>
@@ -810,10 +804,10 @@ configuration</a> that ships with automx2 looks like this:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="ini"><span class="nn">[automx2]</span>
-<span class="c"># A typical production setup would use loglevel = WARNING
+<span class="c"># A typical production setup would use loglevel WARNING.
 </span><span class="py">loglevel</span> <span class="p">=</span> <span class="s">DEBUG</span>
 <span class="c"># Echo SQL commands into log? Used for debugging.
-</span><span class="py">db_echo</span> <span class="p">=</span> <span class="s">yes</span>
+</span><span class="py">db_echo</span> <span class="p">=</span> <span class="s">no</span>
 <span class="c"># In-memory SQLite database
 </span><span class="py">db_uri</span> <span class="p">=</span> <span class="s">sqlite:///:memory:</span>
 
@@ -827,7 +821,7 @@ configuration</a> that ships with automx2 looks like this:</p>
 <span class="c"># Number of proxy servers between automx2 and the client (default: 0).
 # If your logs only show 127.0.0.1 or ::1 as the source IP for incoming
 # connections, proxy_count probably needs to be changed.
-</span><span class="err">#</span><span class="py">proxy_count</span> <span class="p">=</span> <span class="s">1</span></code></pre>
+</span><span class="py">proxy_count</span> <span class="p">=</span> <span class="s">1</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -844,7 +838,7 @@ and send the following request to populate your database:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/initdb/'</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash">curl http://127.0.0.1:4243/initdb/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -860,7 +854,8 @@ Use curl to send an account configuration request for user@example.com:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>As shown in the example, make sure to use quotes as necessary to prevent your shell from matching/replacing patterns.</p>
+<p>As shown in the example, make sure to quote the URL as necessary.
+Otherwise, your command shell might perform pattern matching for characters like the question mark <code>?</code> (FISH does).</p>
 </div>
 </div>
 <div class="sect2">
@@ -923,7 +918,7 @@ Please note that specifying an absolute path for the database requires a total o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/initdb/'</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash">curl http://127.0.0.1:4243/initdb/</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -995,7 +990,7 @@ The following example uses <em>pymysql</em> as a DB driver, which is not include
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/initdb/'</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash">curl http://127.0.0.1:4243/initdb/</code></pre>
 </div>
 </div>
 </div>
@@ -1011,7 +1006,7 @@ The following example uses <em>pymysql</em> as a DB driver, which is not include
 </div>
 <div class="paragraph">
 <p>Step 2: Set the database URI in your automx2 configuration.
-The following example uses <em>psycopg2-binary</em> as a DB driver, which is not included in the automx2 distribution.</p>
+The following example uses <em>psycopg2</em> as a DB driver, which is not included in the automx2 distribution.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1024,7 +1019,7 @@ The following example uses <em>psycopg2-binary</em> as a DB driver, which is not
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/initdb/'</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash">curl http://127.0.0.1:4243/initdb/</code></pre>
 </div>
 </div>
 </div>
@@ -1119,8 +1114,8 @@ This is purely optional.</p>
 <div class="content">
 <pre class="rouge highlight"><code data-lang="ini"><span class="nn">[Unit]</span>
 <span class="py">After</span><span class="p">=</span><span class="s">network.target</span>
-<span class="py">Description</span><span class="p">=</span><span class="s">"automx2 - MUA configuration service"</span>
-<span class="py">Documentation</span><span class="p">=</span><span class="s">https://github.com/rseichter/automx2/blob/master/doc/automx2.adoc</span>
+<span class="py">Description</span><span class="p">=</span><span class="s">MUA configuration service</span>
+<span class="py">Documentation</span><span class="p">=</span><span class="s">https://rseichter.github.io/automx2/</span>
 
 <span class="nn">[Service]</span>
 <span class="py">Environment</span><span class="p">=</span><span class="s">FLASK_APP=automx2.server:app</span>
@@ -1148,7 +1143,7 @@ This is purely optional.</p>
 <div class="listingblock small">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="nb">sudo </span>systemctl status automx2
-● automx2.service - <span class="s2">"automx2 - MUA configuration service"</span>
+● automx2.service - MUA configuration service
      Loaded: loaded <span class="o">(</span>/etc/systemd/system/automx2.service<span class="p">;</span> disabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
      Active: inactive <span class="o">(</span>dead<span class="o">)</span></code></pre>
 </div>
@@ -1168,7 +1163,7 @@ Created symlink /etc/systemd/system/multi-user.target.wants/automx2.service → 
 <div class="listingblock small">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="nb">sudo </span>systemctl status automx2
-● automx2.service - <span class="s2">"automx2 - MUA configuration service"</span>
+● automx2.service - MUA configuration service
      Loaded: loaded <span class="o">(</span>/etc/systemd/system/automx2.service<span class="p">;</span> enabled<span class="p">;</span> vendor preset: enabled<span class="o">)</span>
      Active: active <span class="o">(</span>running<span class="o">)</span> since Mon 2021-03-01 12:54:31 CET<span class="p">;</span> 19s ago
    Main PID: 126966 <span class="o">(</span>python<span class="o">)</span>
@@ -1278,7 +1273,7 @@ The following example assumes your service runs on localhost on port 4243. The e
 <div class="paragraph">
 <p>While it is technically possible to run automx2 without a web server in front of it, I do not recommend doing that in a production environment.
 A web server can provide features automx2 was designed not to have.
-Features such as transport layer encryption for HTTPS or, for example, the capability to rate-limit clients are handled very well by full-fledged web servers working as reverse proxies.
+Features such as transport layer encryption for HTTPS (required for <a href="#mobileconfig">Mobileconfig</a>) or, for example, the capability to rate-limit clients are handled very well by full-fledged web servers working as reverse proxies.
 It would be a waste to re-implement all this in a web service.</p>
 </div>
 <div class="paragraph">
@@ -1395,86 +1390,222 @@ If you are interested in sponsoring a specific feature yourself, please contact 
 <div id="footer">
 <div id="footer-text">
 Version 2021.3.dev1<br>
-Last updated 2021-03-07 09:19:52 +0100
+Last updated 2021-03-08 02:26:10 +0100
 </div>
 </div>
 <style>
 pre.rouge table td { padding: 5px; }
 pre.rouge table pre { margin: 0; }
-pre.rouge, pre.rouge .w {
-  color: #586e75;
-}
-pre.rouge .err {
-  color: #002b36;
-  background-color: #dc322f;
-}
-pre.rouge .c, pre.rouge .ch, pre.rouge .cd, pre.rouge .cm, pre.rouge .cpf, pre.rouge .c1, pre.rouge .cs {
-  color: #657b83;
+pre.rouge .cm {
+  color: #999988;
+  font-style: italic;
 }
 pre.rouge .cp {
-  color: #b58900;
-}
-pre.rouge .nt {
-  color: #b58900;
-}
-pre.rouge .o, pre.rouge .ow {
-  color: #93a1a1;
-}
-pre.rouge .p, pre.rouge .pi {
-  color: #93a1a1;
-}
-pre.rouge .gi {
-  color: #859900;
-}
-pre.rouge .gd {
-  color: #dc322f;
-}
-pre.rouge .gh {
-  color: #268bd2;
-  background-color: #002b36;
+  color: #999999;
   font-weight: bold;
 }
-pre.rouge .k, pre.rouge .kn, pre.rouge .kp, pre.rouge .kr, pre.rouge .kv {
-  color: #6c71c4;
+pre.rouge .c1 {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cs {
+  color: #999999;
+  font-weight: bold;
+  font-style: italic;
+}
+pre.rouge .c, pre.rouge .ch, pre.rouge .cd, pre.rouge .cpf {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .err {
+  color: #a61717;
+  background-color: #e3d2d2;
+}
+pre.rouge .gd {
+  color: #000000;
+  background-color: #ffdddd;
+}
+pre.rouge .ge {
+  color: #000000;
+  font-style: italic;
+}
+pre.rouge .gr {
+  color: #aa0000;
+}
+pre.rouge .gh {
+  color: #999999;
+}
+pre.rouge .gi {
+  color: #000000;
+  background-color: #ddffdd;
+}
+pre.rouge .go {
+  color: #888888;
+}
+pre.rouge .gp {
+  color: #555555;
+}
+pre.rouge .gs {
+  font-weight: bold;
+}
+pre.rouge .gu {
+  color: #aaaaaa;
+}
+pre.rouge .gt {
+  color: #aa0000;
 }
 pre.rouge .kc {
-  color: #cb4b16;
-}
-pre.rouge .kt {
-  color: #cb4b16;
+  color: #000000;
+  font-weight: bold;
 }
 pre.rouge .kd {
-  color: #cb4b16;
+  color: #000000;
+  font-weight: bold;
 }
-pre.rouge .s, pre.rouge .sa, pre.rouge .sb, pre.rouge .sc, pre.rouge .dl, pre.rouge .sd, pre.rouge .s2, pre.rouge .sh, pre.rouge .sx, pre.rouge .s1 {
-  color: #859900;
+pre.rouge .kn {
+  color: #000000;
+  font-weight: bold;
 }
-pre.rouge .sr {
-  color: #2aa198;
+pre.rouge .kp {
+  color: #000000;
+  font-weight: bold;
 }
-pre.rouge .si {
-  color: #d33682;
+pre.rouge .kr {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kt {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .k, pre.rouge .kv {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .mf {
+  color: #009999;
+}
+pre.rouge .mh {
+  color: #009999;
+}
+pre.rouge .il {
+  color: #009999;
+}
+pre.rouge .mi {
+  color: #009999;
+}
+pre.rouge .mo {
+  color: #009999;
+}
+pre.rouge .m, pre.rouge .mb, pre.rouge .mx {
+  color: #009999;
+}
+pre.rouge .sa {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .sb {
+  color: #d14;
+}
+pre.rouge .sc {
+  color: #d14;
+}
+pre.rouge .sd {
+  color: #d14;
+}
+pre.rouge .s2 {
+  color: #d14;
 }
 pre.rouge .se {
-  color: #d33682;
+  color: #d14;
 }
-pre.rouge .nn {
-  color: #b58900;
+pre.rouge .sh {
+  color: #d14;
 }
-pre.rouge .nc {
-  color: #b58900;
+pre.rouge .si {
+  color: #d14;
 }
-pre.rouge .no {
-  color: #b58900;
+pre.rouge .sx {
+  color: #d14;
 }
-pre.rouge .na {
-  color: #268bd2;
+pre.rouge .sr {
+  color: #009926;
 }
-pre.rouge .m, pre.rouge .mb, pre.rouge .mf, pre.rouge .mh, pre.rouge .mi, pre.rouge .il, pre.rouge .mo, pre.rouge .mx {
-  color: #859900;
+pre.rouge .s1 {
+  color: #d14;
 }
 pre.rouge .ss {
-  color: #859900;
+  color: #990073;
+}
+pre.rouge .s, pre.rouge .dl {
+  color: #d14;
+}
+pre.rouge .na {
+  color: #008080;
+}
+pre.rouge .bp {
+  color: #999999;
+}
+pre.rouge .nb {
+  color: #0086B3;
+}
+pre.rouge .nc {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .no {
+  color: #008080;
+}
+pre.rouge .nd {
+  color: #3c5d5d;
+  font-weight: bold;
+}
+pre.rouge .ni {
+  color: #800080;
+}
+pre.rouge .ne {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nf, pre.rouge .fm {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nl {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nn {
+  color: #555555;
+}
+pre.rouge .nt {
+  color: #000080;
+}
+pre.rouge .vc {
+  color: #008080;
+}
+pre.rouge .vg {
+  color: #008080;
+}
+pre.rouge .vi {
+  color: #008080;
+}
+pre.rouge .nv, pre.rouge .vm {
+  color: #008080;
+}
+pre.rouge .ow {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .o {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .w {
+  color: #bbbbbb;
+}
+pre.rouge {
+  background-color: #f8f8f8;
 }
 </style>
 </body>

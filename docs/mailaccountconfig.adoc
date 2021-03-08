@@ -18,11 +18,9 @@ The vendor specific methods have in common that the mail client seeking configur
 The service will use the mail address to lookup configuration data and will return that data as response to the client.
 Format – XML response or file – and complexity differ depending on the method.
 
-[NOTE]
-====
-automx2 implements everything necessary to configure a mailbox account.
-It does not currently provide functionality to also configure calendar or address book settings.
-====
+automx2 implements everything necessary to configure email accounts.
+Functionality to configure calendar or address book settings is not included.
+This may change in some future version, but the focus of automx2 is email.
 
 The following subsections will explain more detailed how the four methods work.
 
@@ -37,6 +35,7 @@ When a user begins to create a new mail account she is asked to enter her realna
 Thunderbird will then extract the domainpart (_example.com_) from the mail address and build a list of URIs to search for a configuration web service in the following order:
 
 [source,text]
+[.small]
 ----
 https://autoconfig.thunderbird.net/v1.1/example.com
 https://autoconfig.example.com/mail/config-v1.1.xml?emailaddress=alice@example.com
@@ -56,9 +55,12 @@ After that she can immediately start to use her new mail account.
 === Autodiscover
 
 Autodiscover is a proprietary method developed by Microsoft.
-It was designed to configure a mail account within Outlook and has expanded to also configure Office 365. Service lookups use the following URLs and, as a fallback option, DNS lookups.
+The protocol version supported by automx2 was designed to configure a mail account within Outlook 2016 ff.
+Service lookups use the URLs shown below and, as a fallback option, DNS lookups.
+Please note that Microsft uses a different autodiscover mechanism for Office 365, which is not yet supported by automx2 because information about the technical details are not available free of charge.
 
 [source,text]
+[.small]
 ----
 https://example.com/autodiscover/autodiscover.xml
 https://autodiscover.example.com/autodiscover/autodiscover.xml
@@ -73,6 +75,7 @@ The DNS queries search for a `CNAME` resource record first, which is supposed to
 If the first DNS query fails the client may be redirected to a configuration service using a `SRV` RR like this:
 
 [source,bind]
+[.small]
 ----
 _autodiscover._tcp.example.com.  0   443 service.example-provider.com.
 ----
@@ -83,12 +86,15 @@ The `SRV` RR used in the example above would send Alice's client to
 [[mobileconfig]]
 === Mobileconfig
 
-TODO - Requests and responses use proprietary content types and Apple's PLIST data format.
+Requests and responses use proprietary content types with an underlying link:https://en.wikipedia.org/wiki/Property_list[property list] format.
+automx2 will return _unsigned_ data, which means that the service must be accessed via HTTPS only.
+Otherwise, your users have no way of knowing if they access the correct service and will be vulnerable to man-in-the-middle attacks.
 
 [[dnsrr]]
 === DNS SRV resource records
 
 [source,bind]
+[.small]
 ----
 _imap._tcp.example.com          SRV  10  20  143  mail.example.com.
 _imaps._tcp.example.com         SRV  0   1   993  .

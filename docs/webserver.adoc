@@ -4,7 +4,7 @@
 
 While it is technically possible to run automx2 without a web server in front of it, I do not recommend doing that in a production environment.
 A web server can provide features automx2 was designed not to have.
-Features such as transport layer encryption for HTTPS or, for example, the capability to rate-limit clients are handled very well by full-fledged web servers working as reverse proxies.
+Features such as transport layer encryption for HTTPS (required for <<Mobileconfig>>) or, for example, the capability to rate-limit clients are handled very well by full-fledged web servers working as reverse proxies.
 It would be a waste to re-implement all this in a web service.
 
 This section will explain how to configure a web server as a reverse proxy in front of automx2. Before you set up the proxy you need to tell automx2 it operates behind one.

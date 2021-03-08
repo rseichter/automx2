@@ -52,7 +52,7 @@ and send the following request to populate your database:
 
 [source,bash]
 ----
-curl 'http://127.0.0.1:4243/initdb/'
+curl http://127.0.0.1:4243/initdb/
 ----
 
 This example assumes you are running automx2 on localhost listening on TCP port 4243, which is the suggested default port.
@@ -65,7 +65,8 @@ Use curl to send an account configuration request for +user@example.com+:
 curl 'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=user@example.com'
 ----
 
-As shown in the example, make sure to use quotes as necessary to prevent your shell from matching/replacing patterns.
+As shown in the example, make sure to quote the URL as necessary.
+Otherwise, your command shell might perform pattern matching for characters like the question mark `?` (FISH does).
 
 === Database configuration
 
@@ -110,7 +111,7 @@ Step 2: Launch automx2 and access the DB initialisation URL:
 
 [source,bash]
 ----
-curl 'http://127.0.0.1:4243/initdb/'
+curl http://127.0.0.1:4243/initdb/
 ----
 
 The Git repository contains a xref:../contrib/sqlite-generate.sh[sqlite-generate.sh] helper script which demonstrates how the database can be populated programmatically.
@@ -161,7 +162,7 @@ Step 3: Launch automx2 and access the DB initialisation URL:
 
 [source,bash]
 ----
-curl 'http://127.0.0.1:4243/initdb/'
+curl http://127.0.0.1:4243/initdb/
 ----
 
 ==== PostgreSQL
@@ -174,7 +175,7 @@ CREATE DATABASE automx2 LOCALE 'en_US.utf8';
 ----
 
 Step 2: Set the database URI in your automx2 configuration.
-The following example uses _psycopg2-binary_ as a DB driver, which is not included in the automx2 distribution.
+The following example uses _psycopg2_ as a DB driver, which is not included in the automx2 distribution.
 
 [source,ini]
 ----
@@ -186,5 +187,5 @@ Step 3: Launch automx2 and access the DB initialisation URL:
 
 [source,bash]
 ----
-curl 'http://127.0.0.1:4243/initdb/'
+curl http://127.0.0.1:4243/initdb/
 ----

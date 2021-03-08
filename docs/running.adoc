@@ -53,7 +53,7 @@ It should now be able to tell you about a service named automx2:
 [.small]
 ----
 sudo systemctl status automx2
-● automx2.service - "automx2 - MUA configuration service"
+● automx2.service - MUA configuration service
      Loaded: loaded (/etc/systemd/system/automx2.service; disabled; vendor preset: enabled)
      Active: inactive (dead)
 ----
@@ -73,7 +73,7 @@ You should see automx2 enabled and running:
 [.small]
 ----
 sudo systemctl status automx2
-● automx2.service - "automx2 - MUA configuration service"
+● automx2.service - MUA configuration service
      Loaded: loaded (/etc/systemd/system/automx2.service; enabled; vendor preset: enabled)
      Active: active (running) since Mon 2021-03-01 12:54:31 CET; 19s ago
    Main PID: 126966 (python)

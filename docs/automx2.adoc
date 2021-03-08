@@ -3,7 +3,7 @@
 :keywords: autoconfig, autodiscover, mobileconfig, automx, automx2
 :subject: automx2: Email client configuration made easy
 :revnumber: 2021.3.dev1
-:revdate: 2021-03-07
+:revdate: 2021-03-08
 :copyright: © 2019-2021 Ralph Seichter
 :publisher: Ralph Seichter
 :lang: en
@@ -18,8 +18,9 @@
 :icons: font
 :title-page:
 :media: print
+//:source-highlighter: coderay
 :source-highlighter: rouge
-:rouge-style: base16.solarized.light
+:rouge-style: github
 :asciidoctor-diagram:
 
 == Copyright

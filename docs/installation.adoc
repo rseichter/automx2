@@ -33,7 +33,7 @@ Download the script that will download and setup your automx2 service:
 
 [source,bash]
 ----
-wget -O setupvenv.sh 'https://github.com/rseichter/automx2/raw/master/contrib/setupvenv.sh'
+wget https://github.com/rseichter/automx2/raw/master/contrib/setupvenv.sh
 chmod u+x setupvenv.sh
 ----
 

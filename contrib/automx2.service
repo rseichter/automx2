@@ -1,6 +1,6 @@
 [Unit]
 After=network.target
-Description="automx2 - MUA configuration service"
+Description=MUA configuration service
 Documentation=https://rseichter.github.io/automx2/
 
 [Service]
