@@ -22,8 +22,6 @@ automx2 implements everything necessary to configure email accounts.
 Functionality to configure calendar or address book settings is not included.
 This may change in some future version, but the focus of automx2 is email.
 
-The following subsections will explain more detailed how the four methods work.
-
 [[autoconfig]]
 === Autoconfig
 
