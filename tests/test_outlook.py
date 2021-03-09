@@ -31,6 +31,7 @@ from automx2.model import EXAMPLE_NET
 from automx2.model import EXAMPLE_ORG
 from automx2.model import SERVERLESS_DOMAIN
 from automx2.model import sample_server_names
+from automx2.server import MSOFT_ALTERNATE_ROUTE
 from automx2.server import MSOFT_CONFIG_ROUTE
 from automx2.views import CONTENT_TYPE_XML
 from tests.base import TestCase
@@ -88,7 +89,7 @@ class MsRoutes(TestCase):
 
     def test_ms_pop(self):
         with self.app:
-            r = self.get_msoft_config(f'a@{EXAMPLE_ORG}')
+            r = self.get_msoft_config(f'a@{EXAMPLE_ORG}', MSOFT_ALTERNATE_ROUTE)
             x = self.pop_server_elements(fromstring(body(r)))
             self.assertEqual(sample_server_names['pop1'], x[0].text)
 
@@ -100,7 +101,7 @@ class MsRoutes(TestCase):
 
     def test_domain_without_servers(self):
         with self.app:
-            r = self.get_msoft_config(f'a@{SERVERLESS_DOMAIN}')
+            r = self.get_msoft_config(f'a@{SERVERLESS_DOMAIN}', MSOFT_ALTERNATE_ROUTE)
             b = fromstring(body(r))
             self.assertEqual([], self.imap_server_elements(b))
             self.assertEqual([], self.smtp_server_elements(b))

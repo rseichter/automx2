@@ -88,7 +88,7 @@ class TestCase(unittest.TestCase):
     def get_mozilla_config(self, address: str) -> Response:
         return self.get(f'{MOZILLA_CONFIG_ROUTE}?{EMAIL_MOZILLA}={address}')
 
-    def get_msoft_config(self, address: str) -> Response:
+    def get_msoft_config(self, address: str, route: str = MSOFT_CONFIG_ROUTE) -> Response:
         data = (
             f'<Autodiscover xmlns="{NS_REQUEST}">'
             f'<AcceptableResponseSchema>{NS_RESPONSE_PAYLOAD}</AcceptableResponseSchema>'
@@ -97,7 +97,7 @@ class TestCase(unittest.TestCase):
             '</Request>'
             '</Autodiscover>'
         )
-        return self.post(MSOFT_CONFIG_ROUTE, data=data, content_type=CONTENT_TYPE_XML)
+        return self.post(route, data=data, content_type=CONTENT_TYPE_XML)
 
 
 if __name__ == '__main__':
