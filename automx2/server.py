@@ -32,6 +32,7 @@ from automx2.views.site import SiteRoot
 
 APPLE_CONFIG_ROUTE = '/mobileconfig/'
 MOZILLA_CONFIG_ROUTE = '/mail/config-v1.1.xml'
+MSOFT_ALTERNATE_ROUTE = '/AutoDiscover/AutoDiscover.xml'
 MSOFT_CONFIG_ROUTE = '/autodiscover/autodiscover.xml'
 
 
@@ -53,7 +54,8 @@ app.add_url_rule('/', view_func=SiteRoot.as_view('root'), methods=['GET'])
 app.add_url_rule('/initdb/', view_func=InitDatabase.as_view('initdb'), methods=['GET'])
 app.add_url_rule(APPLE_CONFIG_ROUTE, view_func=mobileconfig.AppleView.as_view('apple'), methods=['GET'])
 app.add_url_rule(MOZILLA_CONFIG_ROUTE, view_func=autoconfig.MozillaView.as_view('mozilla'), methods=['GET'])
-app.add_url_rule(MSOFT_CONFIG_ROUTE, view_func=autodiscover.OutlookView.as_view('msoft'), methods=['POST'])
+app.add_url_rule(MSOFT_ALTERNATE_ROUTE, view_func=autodiscover.OutlookView.as_view('ms2'), methods=['POST'])
+app.add_url_rule(MSOFT_CONFIG_ROUTE, view_func=autodiscover.OutlookView.as_view('ms1'), methods=['POST'])
 _proxy_fix()
 
 db.init_app(app)
