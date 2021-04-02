@@ -44,6 +44,8 @@ LDAP_PORT = from_environ('LDAP_PORT', 636)
 LDAP_SEARCH_BASE = from_environ('LDAP_SEARCH_BASE', 'dc=example,dc=com')
 
 sample_server_names = {
+    'cal': f'https://caldav.{unique()}.com',
+    'card': f'http://carddav.{unique()}.com',
     'imap1': f'imap1.{unique()}.com',
     'imap2': f'imap2.{unique()}.com',
     'pop1': f'pop1.{unique()}.com',
@@ -53,9 +55,16 @@ sample_server_names = {
 
 db = SQLAlchemy()
 
-server_domain_map = db.Table('server_domain',
-                             db.Column('server_id', db.Integer, db.ForeignKey('server.id'), primary_key=True),
-                             db.Column('domain_id', db.Integer, db.ForeignKey('domain.id'), primary_key=True))
+davserver_domain_map = db.Table(
+    'davserver_domain',
+    db.Column('davserver_id', db.Integer, db.ForeignKey('davserver.id'), primary_key=True),
+    db.Column('domain_id', db.Integer, db.ForeignKey('domain.id'), primary_key=True)
+)
+server_domain_map = db.Table(
+    'server_domain',
+    db.Column('server_id', db.Integer, db.ForeignKey('server.id'), primary_key=True),
+    db.Column('domain_id', db.Integer, db.ForeignKey('domain.id'), primary_key=True)
+)
 
 
 class Provider(db.Model):
@@ -82,6 +91,21 @@ class Server(db.Model):
 
     def __repr__(self) -> str:
         return f'<Server id={self.id} type={self.type} name={self.name}>'
+
+
+class Davserver(db.Model):
+    id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
+    url = db.Column(db.String, nullable=False)
+    port = db.Column(db.Integer, nullable=False, default=0)
+    type = db.Column(db.String, nullable=False)
+    use_ssl = db.Column(db.Boolean, nullable=False)
+    domain_required = db.Column(db.Boolean, nullable=False)
+    user_name = db.Column(db.String, nullable=True)
+    domains = db.relationship('Domain', secondary=davserver_domain_map, lazy='subquery',
+                              backref=db.backref('davservers', lazy='select'))
+
+    def __repr__(self) -> str:
+        return f'<Davserver id={self.id} type={self.type} url={self.url}>'
 
 
 class Ldapserver(db.Model):
@@ -157,3 +181,11 @@ def populate_db():
     i += 1
     s6 = Server(id=i, type='INVALID', port=123, name=f'{unique()}.{EGGS_DOMAIN}', domains=[eggs])
     db.session.add_all([s1, s2, s3, s4, s5, s6])
+
+    i = 4100
+    d1 = Davserver(id=i, type='caldav', url=sample_server_names['cal'], port=443, use_ssl=True,
+                   domain_required=False, user_name=PLACEHOLDER_ADDRESS, domains=[ex_com])
+    i += 1
+    d2 = Davserver(id=i, type='carddav', url=sample_server_names['card'], use_ssl=False,
+                   domain_required=True, domains=[ex_com, ex_net])
+    db.session.add_all([d1, d2])

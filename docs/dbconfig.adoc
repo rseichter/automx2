@@ -1,0 +1,122 @@
+// vim:ts=4:sw=4:et:ft=asciidoc
+=== Database configuration
+
+automx2 uses the SQLAlchemy toolkit to access databases.
+This allows a variety of databases, a.k.a. link:https://docs.sqlalchemy.org/en/latest/dialects/[dialects], to be used, simply by defining the appropriate connection URL.
+
+[NOTE]
+.API based configuration
+====
+I consider adding an API for configuration changes in an upcoming version but have not decided when that might happen.
+Feel free to contact me if you are interested in a <<Sponsorship,sponsorship>>.
+====
+
+==== Database support
+
+While you probably already have SQLite support available on your local machine, you may need to install additional Python packages for PostgreSQL, MySQL, etc.
+Detailed instructions to support a particular database dialect are out of scope for this document.
+Please search the Internet for detailed instructions on supporting a particular dialect.
+The SQLAlchemy documentation provides a useful starting point.
+
+While the `contrib` directory contains example database schemas which you can use as a reference, I recommend using the built-in method to create the necessary DB structure from scratch by accessing the `/initdb/` service endpoint.
+This will also populate the database with some example data.
+
+If you upgrade from an early automx2 release and wish to migrate your existing database, you can use the built-in Alembic support.
+However, this requires cloning the Git repository, modifying `alembic.ini` and invoking the migration from the command line.
+It is usually easier to export your existing data, create a fresh DB and import the data.
+
+==== SQLite
+
+This section demonstrates what you need to do to in order to use SQLite version 3 or higher as a backend database for automx2.
+
+Step 1: Set the database URI in your automx2 configuration.
+Please note that specifying an absolute path for the database requires a total of four slashes after the schema identifier:
+
+[source,ini]
+----
+[automx2]
+db_uri = sqlite:////var/lib/automx2/db.sqlite
+----
+
+Step 2: Launch automx2 and access the DB initialisation URL:
+
+[source,bash]
+----
+curl http://127.0.0.1:4243/initdb/
+----
+
+The Git repository contains a xref:../contrib/sqlite-generate.sh[sqlite-generate.sh] helper script which demonstrates how the database can be populated programmatically.
+You only need to adapt a few settings according to your needs:
+
+[source,bash]
+----
+include::../contrib/sqlite-generate.sh[lines=10..15]
+----
+
+The script will print the SQL statements to standard output, which can be piped into `sqlite3` for processing.
+Make sure to match the automx2.conf `db_uri` setting when specifying the database.
+
+[source,bash]
+----
+contrib/sqlite-generate.sh | sqlite3 /var/lib/automx2/db.sqlite
+----
+
+[NOTE]
+.Placeholders
+====
+See Mozilla's
+link:https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat#Placeholders[placeholder]
+documentation for further details.
+====
+
+Once you have populated the database automx2 is ready to run.
+
+==== MySQL
+
+Step 1: Create a database.
+
+[source,mysql]
+----
+CREATE DATABASE `automx2` COLLATE 'utf8mb4_general_ci';
+----
+
+Step 2: Set the database URI in your automx2 configuration.
+The following example uses _pymysql_ as a DB driver, which is not included in the automx2 distribution.
+
+[source,ini]
+----
+[automx2]
+db_uri = mysql+pymysql://user:pass@dbhost/automx2?charset=utf8mb4
+----
+
+Step 3: Launch automx2 and access the DB initialisation URL:
+
+[source,bash]
+----
+curl http://127.0.0.1:4243/initdb/
+----
+
+==== PostgreSQL
+
+Step 1: Create a database.
+
+[source,postgresql]
+----
+CREATE DATABASE automx2 LOCALE 'en_US.utf8';
+----
+
+Step 2: Set the database URI in your automx2 configuration.
+The following example uses _psycopg2_ as a DB driver, which is not included in the automx2 distribution.
+
+[source,ini]
+----
+[automx2]
+db_uri = postgresql+psycopg2://user:pass@dbhost/automx2
+----
+
+Step 3: Launch automx2 and access the DB initialisation URL:
+
+[source,bash]
+----
+curl http://127.0.0.1:4243/initdb/
+----

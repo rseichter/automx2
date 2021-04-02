@@ -12,4 +12,4 @@
 
 2021.2 (2021-03-07): Change XML root element namespace in Outlook generator.
 
-2021.3 (TBA): Support additional mixed-case route in Outlook generator.
+2021.3 (2021-04-02): Support additional mixed-case route in Outlook generator. Support CalDAV/CardDAV for eM Client.

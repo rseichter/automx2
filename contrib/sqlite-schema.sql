@@ -1,4 +1,3 @@
--- SQLite schema definition
 CREATE TABLE provider (
 	id INTEGER NOT NULL, 
 	name VARCHAR NOT NULL, 
@@ -15,6 +14,18 @@ CREATE TABLE server (
 	user_name VARCHAR NOT NULL, 
 	authentication VARCHAR NOT NULL, 
 	PRIMARY KEY (id)
+);
+CREATE TABLE davserver (
+	id INTEGER NOT NULL, 
+	url VARCHAR NOT NULL, 
+	port INTEGER NOT NULL, 
+	type VARCHAR NOT NULL, 
+	use_ssl BOOLEAN NOT NULL, 
+	domain_required BOOLEAN NOT NULL, 
+	user_name VARCHAR, 
+	PRIMARY KEY (id), 
+	CHECK (use_ssl IN (0, 1)), 
+	CHECK (domain_required IN (0, 1))
 );
 CREATE TABLE ldapserver (
 	id INTEGER NOT NULL, 
@@ -39,6 +50,13 @@ CREATE TABLE domain (
 	UNIQUE (name), 
 	FOREIGN KEY(provider_id) REFERENCES provider (id), 
 	FOREIGN KEY(ldapserver_id) REFERENCES ldapserver (id)
+);
+CREATE TABLE davserver_domain (
+	davserver_id INTEGER NOT NULL, 
+	domain_id INTEGER NOT NULL, 
+	PRIMARY KEY (davserver_id, domain_id), 
+	FOREIGN KEY(davserver_id) REFERENCES davserver (id), 
+	FOREIGN KEY(domain_id) REFERENCES domain (id)
 );
 CREATE TABLE server_domain (
 	server_id INTEGER NOT NULL, 

@@ -27,6 +27,7 @@ from automx2.generators import ConfigGenerator
 from automx2.generators import xml_to_string
 from automx2.ldap import LookupResult
 from automx2.ldap import STATUS_SUCCESS
+from automx2.model import Davserver
 from automx2.model import Domain
 from automx2.model import Server
 from automx2.util import expand_placeholders
@@ -35,6 +36,10 @@ NS_REQUEST = 'http://schemas.microsoft.com/exchange/autodiscover/outlook/request
 NS_RESPONSE_PAYLOAD = 'http://schemas.microsoft.com/exchange/autodiscover/outlook/responseschema/2006a'
 NS_RESPONSE_ROOT = 'http://schemas.microsoft.com/exchange/autodiscover/responseschema/2006'
 
+DAVSERVER_TYPE_MAP = {
+    'caldav': 'CalDAV',
+    'carddav': 'CardDAV',
+}
 SERVER_TYPE_MAP = {
     'imap': 'IMAP',
     'pop': 'POP3',
@@ -54,7 +59,18 @@ class OutlookGenerator(ConfigGenerator):
             return 'on'
         return 'off'
 
-    def protocol_element(self, parent: Element, server: Server, login_name: str) -> None:
+    def davserver_element(self, parent: Element, server: Davserver, login_name: str) -> None:
+        element = SubElement(parent, 'Protocol')
+        SubElement(element, 'Type').text = DAVSERVER_TYPE_MAP[server.type]
+        SubElement(element, 'Server').text = server.url
+        if server.port > 0:
+            SubElement(element, 'Port').text = str(server.port)
+        SubElement(element, 'SSL').text = self.on_off(server.use_ssl)
+        SubElement(element, 'DomainRequired').text = self.on_off(server.domain_required)
+        if login_name:
+            SubElement(element, 'LoginName').text = login_name
+
+    def mailserver_element(self, parent: Element, server: Server, login_name: str) -> None:
         element = SubElement(parent, 'Protocol')
         SubElement(element, 'Type').text = SERVER_TYPE_MAP[server.type]
         SubElement(element, 'Server').text = server.name
@@ -81,13 +97,18 @@ class OutlookGenerator(ConfigGenerator):
         if lookup_result.cn:
             self.user_element(response, lookup_result.cn)
         account = SubElement(response, 'Account')
+        # Mandatory mail servers
         SubElement(account, 'AccountType').text = 'email'
         SubElement(account, 'Action').text = 'settings'
         for server in self.servers_by_prio(domain.servers):
             if server.type not in SERVER_TYPE_MAP:
                 raise InvalidServerType(f'Invalid server type "{server.type}"')
-            login_name = expand_placeholders(
-                self.pick_one(server.user_name, lookup_result.uid), local_part, domain_part
-            )
-            self.protocol_element(account, server, login_name)
+            name = expand_placeholders(self.pick_one(server.user_name, lookup_result.uid), local_part, domain_part)
+            self.mailserver_element(account, server, name)
+        # Optional DAV servers
+        for server in domain.davservers:
+            if server.type not in DAVSERVER_TYPE_MAP:  # pragma: no cover
+                raise InvalidServerType(f'Invalid DAV server type "{server.type}"')
+            name = expand_placeholders(self.pick_one(server.user_name, lookup_result.uid), local_part, domain_part)
+            self.davserver_element(account, server, name)
         return xml_to_string(root_element)
