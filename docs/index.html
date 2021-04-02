@@ -443,7 +443,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <div id="header">
 <h1>automx2: Email client configuration made easy</h1>
 <div class="details">
-<span id="revnumber">version 2021.3,</span>
+<span id="revnumber">version 2021.3.1,</span>
 <span id="revdate">2021-04-02</span>
 </div>
 <div id="toc" class="toc2">
@@ -1029,7 +1029,7 @@ Follow the steps shown below, setting the <code>RELEASE</code> variable to the G
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nb">export </span><span class="nv">RELEASE</span><span class="o">=</span><span class="s2">"2021.3"</span>
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">export </span><span class="nv">RELEASE</span><span class="o">=</span><span class="s2">"2021.3.1"</span>
 wget https://github.com/rseichter/automx2/archive/refs/tags/<span class="nv">$RELEASE</span>.zip
 unzip <span class="nv">$RELEASE</span>.zip
 <span class="nb">cd </span>automx2-<span class="nv">$RELEASE</span>/alembic</code></pre>
@@ -1052,7 +1052,7 @@ make upgrade</code></pre>
 <div class="listingblock small">
 <div class="content">
 <pre class="rouge highlight"><code>PYTHONPATH=.. FLASK_APP=automx2.server:app flask db upgrade -d .
-Running automx2 version 2021.3
+Running automx2 version 2021.3.1
 INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
 INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
 INFO  [alembic.runtime.migration] Running upgrade  -&gt; f62e64b43d2f, DB schema for automx2 version 2020.0
@@ -1428,8 +1428,8 @@ If you are interested in sponsoring a specific feature yourself, please contact 
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2021.3<br>
-Last updated 2021-04-02 18:05:24 +0200
+Version 2021.3.1<br>
+Last updated 2021-04-02 18:54:11 +0200
 </div>
 </div>
 <style>

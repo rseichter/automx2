@@ -8,7 +8,7 @@ Follow the steps shown below, setting the `RELEASE` variable to the GitHub tag o
 
 [source,bash]
 ----
-export RELEASE="2021.3"
+export RELEASE="2021.3.1"
 wget https://github.com/rseichter/automx2/archive/refs/tags/$RELEASE.zip
 unzip $RELEASE.zip
 cd automx2-$RELEASE/alembic
@@ -28,7 +28,7 @@ You should see output similar to the following:
 [.small]
 ----
 PYTHONPATH=.. FLASK_APP=automx2.server:app flask db upgrade -d .
-Running automx2 version 2021.3
+Running automx2 version 2021.3.1
 INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
 INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
 INFO  [alembic.runtime.migration] Running upgrade  -> f62e64b43d2f, DB schema for automx2 version 2020.0
