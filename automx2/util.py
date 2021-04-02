@@ -49,6 +49,8 @@ def unique() -> str:
 
 
 def expand_placeholders(string: str, local_part: str, domain_part: str) -> str:
+    if not string:
+        return ''
     placeholder_map = {
         PLACEHOLDER_ADDRESS: f'{local_part}@{domain_part}',
         PLACEHOLDER_DOMAIN: domain_part,
