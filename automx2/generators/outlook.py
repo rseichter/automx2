@@ -1,8 +1,6 @@
 """
 Copyright © 2019-2021 Ralph Seichter
 
-Sponsored by sys4 AG <https://sys4.de/>
-
 This file is part of automx2.
 
 automx2 is free software: you can redistribute it and/or modify
@@ -76,8 +74,7 @@ class OutlookGenerator(ConfigGenerator):
         SubElement(element, 'Server').text = server.name
         SubElement(element, 'Port').text = str(server.port)
         SubElement(element, 'LoginName').text = login_name
-        SubElement(element, 'SSL').text = self.on_off('SSL' == server.authentication)
-        SubElement(element, 'AuthRequired').text = self.on_off(True)
+        SubElement(element, 'SSL').text = self.on_off('SSL' == server.socket_type)
 
     @staticmethod
     def user_element(parent: Element, display_name: str) -> None:
