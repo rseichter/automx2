@@ -12,4 +12,7 @@
 
 2021.2 (2021-03-07): Change XML root element namespace in Outlook generator.
 
-2021.3 (2021-04-02): Support additional mixed-case route in Outlook generator. Support CalDAV/CardDAV for eM Client.
+2021.3.1 (2021-04-02): Support additional mixed-case route in Outlook generator. Support CalDAV/CardDAV for eM Client.
+
+2021.4 (2021-04-20): Bugfix: "SSL" element now depends on socket_type DB column. Drop "AuthRequired" XML element from
+  Autodiscover response because automx2 always returned "on", which is the default value if the element is absent.
