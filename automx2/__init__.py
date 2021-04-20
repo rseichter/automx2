@@ -1,8 +1,6 @@
 """
 Copyright © 2019-2021 Ralph Seichter
 
-Sponsored by sys4 AG <https://sys4.de/>
-
 This file is part of automx2.
 
 automx2 is free software: you can redistribute it and/or modify
@@ -21,7 +19,7 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 import logging
 
 IDENTIFIER = 'automx2'  # Do not change this!
-VERSION = '2021.3.1'
+VERSION = '2021.4'
 
 PLACEHOLDER_ADDRESS = r'%EMAILADDRESS%'
 PLACEHOLDER_DOMAIN = r'%EMAILDOMAIN%'
