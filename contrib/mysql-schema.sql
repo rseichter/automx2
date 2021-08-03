@@ -77,6 +77,19 @@ INSERT INTO `server` (`id`, `name`, `port`, `type`, `socket_type`, `user_name`, 
 (1, 'imap.example.com', 993, 'imap', 'SSL', '%EMAILADDRESS%', 'plain', 10),
 (2, 'smtp.example.com', 587, 'smtp', 'STARTTLS', '%EMAILADDRESS%', 'plain', 10);
 
+CREATE TABLE `davserver` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `url` varchar(128) COLLATE utf8mb4_general_ci NOT NULL,
+  `port` int NOT NULL,
+  `type` varchar(128) COLLATE utf8mb4_general_ci NOT NULL,
+  `use_ssl` tinyint(1) NOT NULL,
+  `domain_required` tinyint(1) NOT NULL,
+  `user_name` varchar(128) COLLATE utf8mb4_general_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  CONSTRAINT `use_ssl_chk_1` CHECK ((`use_ssl` in (0,1))),
+  CONSTRAINT `domain_required_chk_2` CHECK ((`domain_required` in (0,1)))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 CREATE TABLE `server_domain` (
   `server_id` int NOT NULL,
   `domain_id` int NOT NULL,
@@ -84,6 +97,15 @@ CREATE TABLE `server_domain` (
   KEY `domain_id` (`domain_id`),
   CONSTRAINT `server_domain_ibfk_1` FOREIGN KEY (`domain_id`) REFERENCES `domain` (`id`),
   CONSTRAINT `server_domain_ibfk_2` FOREIGN KEY (`server_id`) REFERENCES `server` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+CREATE TABLE `davserver_domain` (
+  `davserver_id` int NOT NULL,
+  `domain_id` int NOT NULL,
+  PRIMARY KEY (`davserver_id`,`domain_id`),
+  KEY `domain_id` (`domain_id`),
+  CONSTRAINT `davserver_domain_ibfk_1` FOREIGN KEY (`domain_id`) REFERENCES `domain` (`id`),
+  CONSTRAINT `davserver_domain_ibfk_2` FOREIGN KEY (`davserver_id`) REFERENCES `davserver` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 INSERT INTO `server_domain` (`server_id`, `domain_id`) VALUES
