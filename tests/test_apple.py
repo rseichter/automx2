@@ -153,20 +153,6 @@ class AppleRoutes(TestCase):
                 s = Server(authentication=k)
                 self.assertEqual(AUTH_MAP[k], _map_authentication(s))
 
-    def test_map_bad_socktype(self):
-        from automx2.generators.apple import _map_socket_type
-        with self.app:
-            s = Server(socket_type='BAD')
-            self.assertFalse(_map_socket_type(s))
-
-    def test_map_valid_socktype(self):
-        from automx2.generators.apple import _map_socket_type
-        with self.app:
-            s1 = Server(socket_type='SSL')
-            s2 = Server(socket_type='STARTTLS')
-            self.assertTrue(_map_socket_type(s1))
-            self.assertTrue(_map_socket_type(s2))
-
 
 if __name__ == '__main__':
     unittest.main()

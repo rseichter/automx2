@@ -35,6 +35,7 @@ from automx2.model import Domain
 from automx2.model import Provider
 from automx2.model import Server
 from automx2.util import expand_placeholders
+from automx2.util import socket_type_needs_ssl
 from automx2.util import unique
 
 AUTH_MAP = {
@@ -145,13 +146,6 @@ def _sanitise(data: dict, local: str, domain: str):
             data[key] = new
 
 
-def _map_socket_type(server: Server) -> bool:
-    """Map socket type to True (use SSL) or False (do not use SSL)."""
-    if 'SSL' == server.socket_type or 'STARTTLS' == server.socket_type:
-        return True
-    return False
-
-
 def _map_authentication(server: Server) -> str:
     if server.authentication in AUTH_MAP:
         return AUTH_MAP[server.authentication]
@@ -185,7 +179,7 @@ class AppleGenerator(ConfigGenerator):
             inner[f'{direction}MailServerPortNumber'] = server.port
             inner[f'{direction}MailServerUsername'] = self.pick_one(server.user_name, lookup_result.uid)
             inner[f'{direction}MailServerAuthentication'] = _map_authentication(server)
-            inner[f'{direction}MailServerUseSSL'] = _map_socket_type(server)
+            inner[f'{direction}MailServerUseSSL'] = socket_type_needs_ssl(server.socket_type)
         inner['EmailAccountName'] = lookup_result.cn
         _sanitise(outer, local_part, domain_part)
         _subtree(root_element, '', outer)
