@@ -21,6 +21,7 @@ from xml.etree.ElementTree import SubElement
 
 from automx2 import DomainNotFound
 from automx2 import InvalidServerType
+from automx2.util import socket_type_needs_ssl
 from automx2.generators import ConfigGenerator
 from automx2.generators import xml_to_string
 from automx2.ldap import LookupResult
@@ -74,7 +75,7 @@ class OutlookGenerator(ConfigGenerator):
         SubElement(element, 'Server').text = server.name
         SubElement(element, 'Port').text = str(server.port)
         SubElement(element, 'LoginName').text = login_name
-        SubElement(element, 'SSL').text = self.on_off('SSL' == server.socket_type)
+        SubElement(element, 'SSL').text = self.on_off(socket_type_needs_ssl(server.socket_type))
 
     @staticmethod
     def user_element(parent: Element, display_name: str) -> None:

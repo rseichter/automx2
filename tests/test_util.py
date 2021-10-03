@@ -28,6 +28,7 @@ from automx2 import PLACEHOLDER_LOCALPART
 from automx2.util import expand_placeholders
 from automx2.util import from_environ
 from automx2.util import parse_email_address
+from automx2.util import socket_type_needs_ssl
 from automx2.util import unique
 
 
@@ -73,6 +74,11 @@ class UtilTests(unittest.TestCase):
         self.assertEqual('1a@b.c2', expand_placeholders(f'1{PLACEHOLDER_ADDRESS}2', local, domain))
         self.assertEqual('3a4', expand_placeholders(f'3{PLACEHOLDER_LOCALPART}4', local, domain))
         self.assertEqual('5b.c6', expand_placeholders(f'5{PLACEHOLDER_DOMAIN}6', local, domain))
+
+    def test_needs_ssl(self):
+        self.assertTrue(socket_type_needs_ssl('SSL'))
+        self.assertFalse(socket_type_needs_ssl('STARTTLS'))
+        self.assertFalse(socket_type_needs_ssl('INVALID'))
 
 
 if __name__ == '__main__':

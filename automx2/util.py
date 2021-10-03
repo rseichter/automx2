@@ -26,6 +26,7 @@ from automx2 import InvalidEMailAddressError
 from automx2 import PLACEHOLDER_ADDRESS
 from automx2 import PLACEHOLDER_DOMAIN
 from automx2 import PLACEHOLDER_LOCALPART
+from automx2 import log
 
 email_address_re = re.compile(r'^([^@]+)@([^@]+)$', re.IGNORECASE)
 
@@ -59,3 +60,18 @@ def expand_placeholders(string: str, local_part: str, domain_part: str) -> str:
     for k, v in placeholder_map.items():
         string = string.replace(k, v)
     return string
+
+
+def socket_type_needs_ssl(socket_type: str):
+    """Map socket type to True (use SSL) or False (do not use SSL)."""
+    if 'SSL' == socket_type:
+        return True
+    elif 'STARTTLS' != socket_type:
+        """
+        Existing versions auf automx2 return False for socket types other than
+        SSL and STARTTLS. This can cause unexpected results. Future automx2 versions
+        will raise an exception for invalid socket types, so log an error to notify
+        users of this upcoming change.
+        """
+        log.error(f'Unexpected socket type "{socket_type}" will cause a failure in future versions')
+    return False
