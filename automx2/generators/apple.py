@@ -173,7 +173,7 @@ class AppleGenerator(ConfigGenerator):
         if not domain:
             raise DomainNotFound(f'Domain "{domain_part}" not found')
         provider: Provider = domain.provider
-        if not provider:
+        if not provider:  # pragma: no cover (db constraints prevent this during testing)
             raise NoProviderForDomain(f'No provider for domain "{domain_part}"')
         if not domain.servers:
             raise NoServersForDomain(f'No servers for domain "{domain_part}"')

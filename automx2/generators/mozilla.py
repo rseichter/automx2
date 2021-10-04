@@ -61,7 +61,7 @@ class MozillaGenerator(ConfigGenerator):
         else:
             lookup_result = LookupResult(STATUS_SUCCESS, display_name, None)
         provider: Provider = domain.provider
-        if not provider:
+        if not provider:  # pragma: no cover (db constraints prevent this during testing)
             raise NoProviderForDomain(f'No provider for domain "{domain_part}"')
         provider_element = SubElement(root_element, 'emailProvider', attrib={'id': branded_id(provider.id)})
         SubElement(provider_element, 'identity')  # Deliberately left empty
