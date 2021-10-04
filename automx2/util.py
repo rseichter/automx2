@@ -75,3 +75,8 @@ def socket_type_needs_ssl(socket_type: str):
         """
         log.error(f'Unexpected socket type "{socket_type}" will cause a failure in future versions')
     return False
+
+
+def strip_none_values(data: dict) -> dict:
+    """Return copy of a dict containing only keys without 'None' values."""
+    return {k: v for (k, v) in data.items() if v is not None}

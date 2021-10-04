@@ -34,6 +34,7 @@ from automx2.model import SERVERLESS_DOMAIN
 from automx2.model import Server
 from automx2.model import sample_server_names
 from automx2.server import APPLE_CONFIG_ROUTE
+from automx2.util import unique
 from automx2.views.mobileconfig import CONTENT_TYPE_APPLE
 from tests.base import TestCase
 from tests.base import body
@@ -133,11 +134,13 @@ class AppleRoutes(TestCase):
             _sanitise(d, 'l', 'd')
             self.assertEqual('l@d', d['a'])
 
-    def test_sanitise_missing(self):
-        from automx2.generators.apple import _sanitise
+    def test_strip_none_values(self):
+        from automx2.util import strip_none_values
         with self.app:
-            with self.assertRaises(TypeError):
-                _sanitise({'a': None}, 'l', 'd')
+            b = unique()
+            d = strip_none_values({'a': None, 'b': b})
+            self.assertEqual(len(d.items()), 1)
+            self.assertEqual(b, d['b'])
 
     def test_map_bad_auth(self):
         from automx2.generators.apple import _map_authentication
