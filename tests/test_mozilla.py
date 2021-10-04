@@ -85,11 +85,6 @@ class MozillaRoutes(TestCase):
             x = self.smtp_server_elements(fromstring(body(r)))
             self.assertEqual(sample_server_names['smtp1'], x[0].text)
 
-    def test_broken_provider_id(self):
-        with self.app:
-            r = self.get_mozilla_config(f'a@{ORPHAN_DOMAIN}')
-            self.assertEqual(400, r.status_code)
-
     def test_domain_without_servers(self):
         with self.app:
             r = self.get_mozilla_config(f'a@{SERVERLESS_DOMAIN}')
