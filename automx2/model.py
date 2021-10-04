@@ -69,8 +69,8 @@ server_domain_map = db.Table(
 
 class Provider(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
-    name = db.Column(db.String, nullable=False)
-    short_name = db.Column(db.String, nullable=False)
+    name = db.Column(db.String(128), nullable=False)
+    short_name = db.Column(db.String(32), nullable=False)
     domains = db.relationship('Domain', lazy='select', backref=db.backref('provider', lazy='joined'))
 
     def __repr__(self) -> str:
@@ -80,12 +80,12 @@ class Provider(db.Model):
 class Server(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
     prio = db.Column(db.Integer, nullable=False, server_default='10')
-    name = db.Column(db.String, nullable=False)
+    name = db.Column(db.String(128), nullable=False)
     port = db.Column(db.Integer, nullable=False)
-    type = db.Column(db.String, nullable=False)
-    socket_type = db.Column(db.String, nullable=False, default='STARTTLS')
-    user_name = db.Column(db.String, nullable=False, default=PLACEHOLDER_ADDRESS)
-    authentication = db.Column(db.String, nullable=False, default='plain')
+    type = db.Column(db.String(32), nullable=False)
+    socket_type = db.Column(db.String(32), nullable=False, default='STARTTLS')
+    user_name = db.Column(db.String(64), nullable=False, default=PLACEHOLDER_ADDRESS)
+    authentication = db.Column(db.String(32), nullable=False, default='plain')
     domains = db.relationship('Domain', secondary=server_domain_map, lazy='subquery',
                               backref=db.backref('servers', lazy='select'))
 
@@ -95,12 +95,12 @@ class Server(db.Model):
 
 class Davserver(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
-    url = db.Column(db.String, nullable=False)
+    url = db.Column(db.String(128), nullable=False)
     port = db.Column(db.Integer, nullable=False, default=0)
-    type = db.Column(db.String, nullable=False)
+    type = db.Column(db.String(32), nullable=False)
     use_ssl = db.Column(db.Boolean, nullable=False)
     domain_required = db.Column(db.Boolean, nullable=False)
-    user_name = db.Column(db.String, nullable=True)
+    user_name = db.Column(db.String(64), nullable=True)
     domains = db.relationship('Domain', secondary=davserver_domain_map, lazy='subquery',
                               backref=db.backref('davservers', lazy='select'))
 
@@ -110,15 +110,15 @@ class Davserver(db.Model):
 
 class Ldapserver(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
-    name = db.Column(db.String, nullable=False)
+    name = db.Column(db.String(128), nullable=False)
     port = db.Column(db.Integer, nullable=False)
     use_ssl = db.Column(db.Boolean, nullable=False)
-    search_base = db.Column(db.String, nullable=False)
-    search_filter = db.Column(db.String, nullable=False)
-    attr_uid = db.Column(db.String, nullable=False)
-    attr_cn = db.Column(db.String, nullable=True)
-    bind_password = db.Column(db.String, nullable=True)
-    bind_user = db.Column(db.String, nullable=True)
+    search_base = db.Column(db.String(128), nullable=False)
+    search_filter = db.Column(db.String(128), nullable=False)
+    attr_uid = db.Column(db.String(32), nullable=False)
+    attr_cn = db.Column(db.String(32), nullable=True)
+    bind_password = db.Column(db.String(128), nullable=True)
+    bind_user = db.Column(db.String(128), nullable=True)
     domains = db.relationship('Domain', lazy='select', backref=db.backref('ldapserver', lazy='joined'))
 
     def __repr__(self) -> str:
@@ -127,7 +127,7 @@ class Ldapserver(db.Model):
 
 class Domain(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
-    name = db.Column(db.String, nullable=False, unique=True)
+    name = db.Column(db.String(128), nullable=False, unique=True)
     provider_id = db.Column(db.Integer, db.ForeignKey('provider.id'), nullable=False)
     ldapserver_id = db.Column(db.Integer, db.ForeignKey('ldapserver.id'), nullable=True)
 
@@ -163,10 +163,11 @@ def populate_db():
     i += 1
     eggs = Domain(id=i, name=EGGS_DOMAIN, provider=eggs)
     i += 1
-    orphan = Domain(id=i, name=ORPHAN_DOMAIN, provider_id=(-1 * i))
-    i += 1
+    #orphan = Domain(id=i, name=ORPHAN_DOMAIN, provider_id=(-1 * i))
+    #i += 1
     serverless = Domain(id=i, name=SERVERLESS_DOMAIN, provider=other)
-    db.session.add_all([ex_com, ex_net, ex_org, eggs, orphan, serverless])
+    #db.session.add_all([ex_com, ex_net, ex_org, eggs, orphan, serverless])
+    db.session.add_all([ex_com, ex_net, ex_org, eggs, serverless])
 
     i = 4000
     s1 = Server(id=i, type='smtp', port=587, name=sample_server_names['smtp1'], domains=[ex_com, ex_net])
