@@ -17,7 +17,7 @@
 2021.4 (2021-04-20): Bugfix: "SSL" element now depends on socket_type DB column. Drop "AuthRequired" XML element from
   Autodiscover response because automx2 always returned "on", which is the default value if the element is absent.
 
-2021.5 (TBA): Existing versions auf automx2 return "do not use SSL" for socket types other than SSL and STARTTLS. This
-  previously undocumented behaviour can cause unexpected results. Future automx2 versions will terminate automx2 when
-  encountering invalid socket type strings in the database. The current release logs an error to notify users of the
-  upcoming change.
+2021.5 (2021-10-04): Existing versions auf automx2 return "do not use SSL" for socket types other than SSL and STARTTLS.
+  This previously undocumented behaviour can cause unexpected results. Future automx2 versions will terminate automx2
+  when encountering invalid socket type strings in the database. The current release logs an error to notify users of
+  the upcoming change.
