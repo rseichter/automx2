@@ -189,7 +189,7 @@ class AppleGenerator(ConfigGenerator):
             if not mail_server:
                 raise NoServersForDomain(f'No IMAP/POP server for domain "{domain_part}"')
         smtp_server = _preferred_server(servers, 'smtp')
-        if not smtp_server:
+        if not smtp_server:  # pragma: no cover (not expected during testing)
             raise NoServersForDomain(f'No SMTP server for domain "{domain_part}"')
         account = _account_payload(local_part, domain_part, SERVER_TYPE_MAP[mail_server.type][1], lookup_result.cn)
         for server in [mail_server, smtp_server]:

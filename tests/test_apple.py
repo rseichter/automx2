@@ -156,6 +156,18 @@ class AppleRoutes(TestCase):
                 s = Server(authentication=k)
                 self.assertEqual(AUTH_MAP[k], _map_authentication(s))
 
+    def test_preferred_server(self):
+        from automx2.generators.apple import _preferred_server
+        imap1 = Server(id=1, prio=10, name='imap1', type='imap', socket_type='')
+        imap2 = Server(id=2, prio=20, name='imap2', type='imap', socket_type='STARTTLS')
+        smtp1 = Server(id=3, prio=20, name='smtp1', type='smtp', socket_type='STARTTLS')
+        smtp2 = Server(id=4, prio=20, name='smtp2', type='smtp', socket_type='SSL')
+        servers = [imap1, imap2, smtp1, smtp2]
+        with self.app:
+            self.assertIsNone(_preferred_server([imap1], 'smtp'))
+            self.assertEqual(2, _preferred_server(servers, 'imap').id)
+            self.assertEqual(3, _preferred_server(servers, 'smtp').id)
+
 
 if __name__ == '__main__':
     unittest.main()
