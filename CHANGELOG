@@ -21,3 +21,5 @@
   This previously undocumented behaviour can cause unexpected results. Future automx2 versions will terminate automx2
   when encountering invalid socket type strings in the database. The current release logs an error to notify users of
   the upcoming change.
+  This release also improves the Mobileconfig generator, making it smarter when choosing among multiple servers defined
+  in the database.
