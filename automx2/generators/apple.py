@@ -107,13 +107,12 @@ def _account_payload(local: str, domain: str, account_type: str, account_name: s
         'OutgoingMailServerUseSSL': None,
         'OutgoingMailServerUsername': None,
         'OutgoingPasswordSameAsIncomingPassword': True,
-        'PayloadDescription': f'Email account configuration for {address}',
+        'PayloadDescription': f'Email account {address}',
         'PayloadDisplayName': domain,
         'PayloadIdentifier': f'com.apple.mail.managed.{uuid}',
         'PayloadType': 'com.apple.mail.managed',
         'PayloadUUID': uuid,
         'PayloadVersion': 1,
-        'SMIMESigningEnabled': False,
     }
 
 
@@ -121,7 +120,7 @@ def _config_payload(domain: str, content: dict) -> dict:
     uuid = unique()
     return {
         'PayloadContent': [content],
-        'PayloadDisplayName': f'Mail account {domain}',
+        'PayloadDisplayName': f'Email account {domain}',
         'PayloadIdentifier': branded_id(uuid),
         'PayloadRemovalDisallowed': False,
         'PayloadType': 'Configuration',
