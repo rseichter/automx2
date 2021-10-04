@@ -90,7 +90,7 @@ class Server(db.Model):
                               backref=db.backref('servers', lazy='select'))
 
     def __repr__(self) -> str:
-        return f'<Server id={self.id} type={self.type} name={self.name}>'
+        return f'<Server id={self.id} prio={self.prio} type={self.type} name={self.name}>'
 
 
 class Davserver(db.Model):
