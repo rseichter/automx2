@@ -1,5 +1,10 @@
 // vim:ts=4:sw=4:et:ft=asciidoc
 == Sponsorship
 
-Sponsors for this project include (in alphabetical order) https://www.mediabeam.com/[mediaBEAM GmbH] and https://sys4.de/[sys4 AG].
+Sponsors for this project include (in alphabetical order)
+
+* https://www.jetbrains.com/[JetBrains s.r.o.]
+* https://www.mediabeam.com/[mediaBEAM GmbH]
+* https://sys4.de/[sys4 AG].
+
 If you are interested in sponsoring a specific feature yourself, please contact me using the email address _<automx2 AT_ _seichter DOT_ _de>_.
