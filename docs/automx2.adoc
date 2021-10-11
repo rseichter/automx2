@@ -3,7 +3,7 @@
 :keywords: autoconfig, autodiscover, mobileconfig, automx, automx2
 :subject: automx2: Email client configuration made easy
 :revnumber: 2021.5
-:revdate: 2021-10-04
+:revdate: 2021-10-11
 :copyright: © 2019-2021 Ralph Seichter
 :publisher: Ralph Seichter
 :lang: en
@@ -46,6 +46,7 @@ include::installation.adoc[]
 include::configuration.adoc[]
 include::dbconfig.adoc[]
 include::dbupgrade.adoc[]
+include::ldap.adoc[]
 
 include::running.adoc[]
 include::webserver.adoc[]

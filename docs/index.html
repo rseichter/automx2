@@ -660,7 +660,7 @@ pre.rouge {
 <h1>automx2: Email client configuration made easy</h1>
 <div class="details">
 <span id="revnumber">version 2021.5,</span>
-<span id="revdate">2021-10-04</span>
+<span id="revdate">2021-10-11</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -691,21 +691,22 @@ pre.rouge {
 <li><a href="#_alembic">6.3. Alembic</a></li>
 </ul>
 </li>
-<li><a href="#runningautomx2">7. Running automx2</a>
+<li><a href="#ldap">7. LDAP support</a></li>
+<li><a href="#runningautomx2">8. Running automx2</a>
 <ul class="sectlevel2">
-<li><a href="#_as_a_openrc_service">7.1. As a OpenRC service</a></li>
-<li><a href="#_as_a_systemd_service">7.2. As a systemd service</a></li>
-<li><a href="#_manually_from_a_shell">7.3. Manually from a shell</a></li>
+<li><a href="#_as_a_openrc_service">8.1. As a OpenRC service</a></li>
+<li><a href="#_as_a_systemd_service">8.2. As a systemd service</a></li>
+<li><a href="#_manually_from_a_shell">8.3. Manually from a shell</a></li>
 </ul>
 </li>
-<li><a href="#local-testing">8. Testing automx2 locally</a></li>
-<li><a href="#webserverconfig">9. Configuring a web server</a>
+<li><a href="#local-testing">9. Testing automx2 locally</a></li>
+<li><a href="#webserverconfig">10. Configuring a web server</a>
 <ul class="sectlevel2">
-<li><a href="#_nginx">9.1. NGINX</a></li>
-<li><a href="#_apache">9.2. Apache</a></li>
+<li><a href="#_nginx">10.1. NGINX</a></li>
+<li><a href="#_apache">10.2. Apache</a></li>
 </ul>
 </li>
-<li><a href="#_sponsorship">10. Sponsorship</a></li>
+<li><a href="#sponsorship">11. Sponsorship</a></li>
 </ul>
 </div>
 </div>
@@ -1085,7 +1086,7 @@ This allows a variety of databases, a.k.a. <a href="https://docs.sqlalchemy.org/
 <div class="title">API based configuration</div>
 <div class="paragraph">
 <p>I consider adding an API for configuration changes in an upcoming version but have not decided when that might happen.
-Feel free to contact me if you are interested in a <a href="#_sponsorship">sponsorship</a>.</p>
+Feel free to contact me if you are interested in a <a href="#sponsorship">sponsorship</a>.</p>
 </div>
 </td>
 </tr>
@@ -1282,7 +1283,64 @@ INFO  [alembic.runtime.migration] Running upgrade 5334f8a8282c -&gt; 43ebb40d057
 </div>
 </div>
 <div class="sect1">
-<h2 id="runningautomx2"><a class="anchor" href="#runningautomx2"></a>7. Running automx2</h2>
+<h2 id="ldap"><a class="anchor" href="#ldap"></a>7. LDAP support</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>automx2 supports looking up user account data using LDAP.
+A typical application is finding the user ID required for IMAP/SMTP authentication given an associated email address.
+The following partial LDIF snippet shows how a mail account can be defined in a widely used LDAP schema:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="ldif">dn: uid=jdoe,ou=mailusers,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: posixAccount
+objectClass: top
+cn: John Doe
+givenName: John
+homeDirectory: /var/maildata/jdoe
+mail: johndoe@example.com
+sn: Doe
+uid: jdoe
+uidNumber: 4321
+[... more attributes here ...]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In order to allow automx2 to connect, an entry similar to the following needs to be created in the database:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">ldapserver</span> <span class="p">(</span>
+    <span class="n">id</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">port</span><span class="p">,</span> <span class="n">use_ssl</span><span class="p">,</span>
+    <span class="n">search_base</span><span class="p">,</span> <span class="n">search_filter</span><span class="p">,</span> <span class="n">attr_uid</span><span class="p">,</span> <span class="n">attr_cn</span><span class="p">,</span>
+    <span class="n">bind_password</span><span class="p">,</span> <span class="n">bind_user</span>
+<span class="p">)</span> <span class="k">VALUES</span> <span class="p">(</span>
+    <span class="mi">100</span><span class="p">,</span> <span class="s1">'ldap.example.com'</span><span class="p">,</span> <span class="mi">636</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+    <span class="s1">'ou=mailusers,dc=example,dc=com'</span><span class="p">,</span> <span class="s1">'(mail={0})'</span><span class="p">,</span> <span class="s1">'uid'</span><span class="p">,</span> <span class="s1">'cn'</span><span class="p">,</span>
+    <span class="s1">'PASSWORD'</span><span class="p">,</span> <span class="s1">'cn=automx2,ou=services,dc=example,dc=com'</span>
+<span class="p">);</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>An encrypted connection (LDAPS) is used and the filter and attribute names are set according to the LDIF above.
+It is assumed that <code>cn=automx2,ou=services,dc=example,dc=com</code> with the given password is permitted read-only access to the necessary LDAP records/attributes.
+The search filter needs to contain the placeholder <code>{0}</code> which will be replaced with the email address used as the lookup key.</p>
+</div>
+<div class="paragraph">
+<p>Now all that is left is to connect the example.com domain to LDAP server ID 100:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">UPDATE</span> <span class="k">domain</span> <span class="k">SET</span> <span class="n">ldapserver_id</span><span class="o">=</span><span class="mi">100</span> <span class="k">WHERE</span> <span class="n">name</span><span class="o">=</span><span class="s1">'example.com'</span><span class="p">;</span></code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="runningautomx2"><a class="anchor" href="#runningautomx2"></a>8. Running automx2</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Running automx2 requires to start automx2 as service and serve its output via a web server to the public.
@@ -1307,7 +1365,7 @@ and have granted appropriate rights to this user:</p>
 </ul>
 </div>
 <div class="sect2">
-<h3 id="_as_a_openrc_service"><a class="anchor" href="#_as_a_openrc_service"></a>7.1. As a OpenRC service</h3>
+<h3 id="_as_a_openrc_service"><a class="anchor" href="#_as_a_openrc_service"></a>8.1. As a OpenRC service</h3>
 <div class="paragraph">
 <p>The following is an example for a OpenRC run script <code>/etc/init.d/automx2</code> which I use for Gentoo Linux:</p>
 </div>
@@ -1361,7 +1419,7 @@ This is purely optional.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_as_a_systemd_service"><a class="anchor" href="#_as_a_systemd_service"></a>7.2. As a systemd service</h3>
+<h3 id="_as_a_systemd_service"><a class="anchor" href="#_as_a_systemd_service"></a>8.2. As a systemd service</h3>
 <div class="paragraph">
 <p>If your system uses <em>systemd</em> you may want to deploy the following <a href="../contrib/automx2.service">automx2.service</a> unit file from the contrib section and place it in <code>/etc/systemd/system/automx2.service</code>:</p>
 </div>
@@ -1437,7 +1495,7 @@ Mar 01 12:54:32 mail python[126966]:  <span class="k">*</span> Running on http:/
 </div>
 </div>
 <div class="sect2">
-<h3 id="_manually_from_a_shell"><a class="anchor" href="#_manually_from_a_shell"></a>7.3. Manually from a shell</h3>
+<h3 id="_manually_from_a_shell"><a class="anchor" href="#_manually_from_a_shell"></a>8.3. Manually from a shell</h3>
 <div class="paragraph">
 <p>While logged in as an unprivileged user, change into the installation directory and start the <code>contrib/flask.sh</code> launch script:</p>
 </div>
@@ -1472,7 +1530,7 @@ Screen</a> or <a href="https://en.wikipedia.org/wiki/Tmux">tmux</a>.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="local-testing"><a class="anchor" href="#local-testing"></a>8. Testing automx2 locally</h2>
+<h2 id="local-testing"><a class="anchor" href="#local-testing"></a>9. Testing automx2 locally</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>You can use <em>curl</em> in a command shell to send a GET request to your local automx2-instance.
@@ -1523,7 +1581,7 @@ The following example assumes your service runs on localhost on port 4243. The e
 </div>
 </div>
 <div class="sect1">
-<h2 id="webserverconfig"><a class="anchor" href="#webserverconfig"></a>9. Configuring a web server</h2>
+<h2 id="webserverconfig"><a class="anchor" href="#webserverconfig"></a>10. Configuring a web server</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>While it is technically possible to run automx2 without a web server in front of it, I do not recommend doing that in a production environment.
@@ -1566,7 +1624,7 @@ Add the <code>proxy_count</code> parameter to your automx2 configuration file or
 </table>
 </div>
 <div class="sect2">
-<h3 id="_nginx"><a class="anchor" href="#_nginx"></a>9.1. NGINX</h3>
+<h3 id="_nginx"><a class="anchor" href="#_nginx"></a>10.1. NGINX</h3>
 <div class="paragraph">
 <p>The following example defines a HTTP server, which will listen for requests to both <em>autoconfig.example.com</em> and <em>autodiscover.example.com</em>.
 All requests will be forwarded to automx2, which listens on TCP port 4243 in this example.
@@ -1604,7 +1662,7 @@ The
 </div>
 </div>
 <div class="sect2">
-<h3 id="_apache"><a class="anchor" href="#_apache"></a>9.2. Apache</h3>
+<h3 id="_apache"><a class="anchor" href="#_apache"></a>10.2. Apache</h3>
 <div class="paragraph">
 <p>The following example shows an Apache configuration similar to the one above.
 <code>ProxyPreserveHost</code> directives will cause apache to pass relevant data about incoming requests' origins.</p>
@@ -1633,7 +1691,7 @@ The
 </div>
 </div>
 <div class="sect1">
-<h2 id="_sponsorship"><a class="anchor" href="#_sponsorship"></a>10. Sponsorship</h2>
+<h2 id="sponsorship"><a class="anchor" href="#sponsorship"></a>11. Sponsorship</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Sponsors for this project include (in alphabetical order)</p>
@@ -1660,7 +1718,7 @@ The
 <div id="footer">
 <div id="footer-text">
 Version 2021.5<br>
-Last updated 2021-10-04 17:55:58 +0200
+Last updated 2021-10-11 17:48:39 +0200
 </div>
 </div>
 </body>

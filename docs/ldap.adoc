@@ -1,0 +1,51 @@
+// vim:ts=4:sw=4:et:ft=asciidoc
+[[ldap]]
+== LDAP support
+
+automx2 supports looking up user account data using LDAP.
+A typical application is finding the user ID required for IMAP/SMTP authentication given an associated email address.
+The following partial LDIF snippet shows how a mail account can be defined in a widely used LDAP schema:
+
+[source,ldif]
+----
+dn: uid=jdoe,ou=mailusers,dc=example,dc=com
+objectClass: inetOrgPerson
+objectClass: organizationalPerson
+objectClass: person
+objectClass: posixAccount
+objectClass: top
+cn: John Doe
+givenName: John
+homeDirectory: /var/maildata/jdoe
+mail: johndoe@example.com
+sn: Doe
+uid: jdoe
+uidNumber: 4321
+[... more attributes here ...]
+----
+
+In order to allow automx2 to connect, an entry similar to the following needs to be created in the database:
+
+[source,sql]
+----
+INSERT INTO ldapserver (
+    id, name, port, use_ssl,
+    search_base, search_filter, attr_uid, attr_cn,
+    bind_password, bind_user
+) VALUES (
+    100, 'ldap.example.com', 636, 1,
+    'ou=mailusers,dc=example,dc=com', '(mail={0})', 'uid', 'cn',
+    'PASSWORD', 'cn=automx2,ou=services,dc=example,dc=com'
+);
+----
+
+An encrypted connection (LDAPS) is used and the filter and attribute names are set according to the LDIF above.
+It is assumed that `cn=automx2,ou=services,dc=example,dc=com` with the given password is permitted read-only access to the necessary LDAP records/attributes.
+The search filter needs to contain the placeholder `{0}` which will be replaced with the email address used as the lookup key.
+
+Now all that is left is to connect the example.com domain to LDAP server ID 100:
+
+[source,sql]
+----
+UPDATE domain SET ldapserver_id=100 WHERE name='example.com';
+----
