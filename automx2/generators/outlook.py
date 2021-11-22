@@ -76,6 +76,8 @@ class OutlookGenerator(ConfigGenerator):
         SubElement(element, 'Port').text = str(server.port)
         SubElement(element, 'LoginName').text = login_name
         SubElement(element, 'SSL').text = self.on_off(socket_type_needs_ssl(server.socket_type))
+        if 'STARTTLS' == server.socket_type:
+            SubElement(element, 'Encryption').text = 'tls'
 
     @staticmethod
     def user_element(parent: Element, display_name: str) -> None:
