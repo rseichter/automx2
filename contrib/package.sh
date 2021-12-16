@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim:tabstop=4:noexpandtab
+# vim:ts=4:sw=4:noet
 #
 # Script to package automx2 for distribution and to handle PyPI uploads.
 # You need Python modules 'wheel' and 'twine' to publish to PyPI, and
@@ -26,15 +26,15 @@ function do_dist() {
 }
 
 function do_docs() {
+	local ad="${HOME}/.gem/ruby/3.0.0/bin/asciidoctor"
 	local opt=(
-		'-r'
-		'asciidoctor-diagram'
+		'-r' 'asciidoctor-diagram'
 		'-v'
 		'automx2.adoc'
 	)
 	pushd docs >/dev/null
-	asciidoctor-pdf -a toc=preamble "${opt[@]}"
-	asciidoctor -a toc=right -o index.html "${opt[@]}"
+	${ad}-pdf -a toc=preamble "${opt[@]}"
+	${ad} -a toc=right -o index.html "${opt[@]}"
 	popd >/dev/null
 }
 
