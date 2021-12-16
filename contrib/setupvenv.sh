@@ -1,18 +1,18 @@
 #!/usr/bin/env bash
-# vim:tabstop=4:noexpandtab
+# vim:ts=4:sw=4:noet
 #
 # Creates a Python 3 virtual environment. The target directory can be passed
-# as a parameter. The default path is 'venv' in the current directory.
+# as a parameter. The default path is '.venv' in the current directory.
 
-dir="${1:-venv}"
+dir="${1:-.venv}"
 
 set -e
 if [ -d "${dir}" ]; then
-	echo "Directory '${dir}' already exists, exiting." >&2
+	echo >&2 "Directory '${dir}' already exists, exiting."
 	exit 1
 fi
 python3 -m venv "${dir}"
 source "${dir}/bin/activate"
 
 set +e
-pip install -U pip setuptools || true
+pip install -U pip setuptools wheel || true
