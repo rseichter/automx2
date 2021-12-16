@@ -29,7 +29,7 @@ db_uri = sqlite:////var/lib/automx2/db.sqlite
 proxy_count = 1
 ----
 
-<1> You should turn off echoing SQL commands to the log once you have verified automx2 works as expected.
+<1> Echoing SQL commands is only meant for debugging purposes.
 <2> Set the number to reflect the number of proxies chained in front of automx2, i.e. the number of "proxy hops" a client's request must pass before it reaches automx2.
 
 

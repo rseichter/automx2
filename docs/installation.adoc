@@ -36,8 +36,7 @@ chmod u+x setupvenv.sh
 ----
 
 Execute the setup script.
-It will create a Python virtual environment called
-`venv` in the current directory:
+It will create a Python virtual environment called `.venv` in the current directory:
 
 [source,bash]
 ----
@@ -45,13 +44,12 @@ It will create a Python virtual environment called
 ----
 
 Activate the virtual environment and install the latest automx2 release from PyPI.
-Make sure to pick the correct activation for your shell from the
-`venv/bin` directory.
+Make sure to pick the correct activation for your shell from the `.venv/bin` directory.
 This is an example for BASH:
 
 [source,bash]
 ----
-. venv/bin/activate
+source .venv/bin/activate
 pip install automx2
 ----
 
@@ -64,7 +62,7 @@ Activate the virtual environment as usual and use pip's `-U` option to update au
 [source,bash]
 ----
 cd /srv/web/automx2
-. venv/bin/activate
+source .venv/bin/activate
 pip install -U automx2
 ----
 ====
