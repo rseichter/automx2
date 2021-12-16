@@ -9,11 +9,12 @@
 set -euo pipefail
 
 function usage() {
-	local bn
-	bn="$(basename $0)"
-	echo "Usage: ${bn} {clean | dist | docs}" >&2
-	echo "       ${bn} upload [repository]" >&2
-	echo "       ${bn} setver {version}" >&2
+	local n="$(basename $0)"
+	cat >&2 <<EOT
+Usage: ${n} {clean | dist | docs}
+       ${n} upload [repository]
+       ${n} setver {version}
+EOT
 	exit 1
 }
 
@@ -33,7 +34,7 @@ function do_docs() {
 		'automx2.adoc'
 	)
 	pushd docs >/dev/null
-	${ad}-pdf -a toc=preamble "${opt[@]}"
+	"${ad}-pdf" -a toc=preamble "${opt[@]}"
 	${ad} -a toc=right -o index.html "${opt[@]}"
 	popd >/dev/null
 }
