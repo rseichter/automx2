@@ -23,3 +23,5 @@
   the upcoming change.
   This release also improves the Mobileconfig generator, making it smarter when choosing among multiple servers defined
   in the database.
+
+2021.6 (TBA): Introduce "Encryption" element in Autodiscover generator; see MS-OXDSCLI v20210817.
