@@ -1,17 +1,15 @@
 // vim:ts=4:sw=4:et:ft=asciidoc
+
 == automx2 Installation
 
-automx2 requires Python 3.7 or higher, ideally in the form of a virtual Python environment, to run.
+automx2 requires Python version 3.7 or greater, ideally in the form of a virtual Python environment, to run.
 Check the python3 version like this:
 
 [source,bash]
 ----
 $ python3 --version
-Python 3.9.2
+Python 3.9.9
 ----
-
-If you see version 3.6 or lower, you'll need to either change the active Python version for the shell session or edit link:contrib/setupvenv.sh[setupvenv.sh]
-after downloading the script.
 
 [IMPORTANT]
 .Don't run as root

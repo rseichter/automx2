@@ -1,4 +1,5 @@
 // vim:ts=4:sw=4:et:ft=asciidoc
+
 == Configuring automx2
 
 automx2 uses a file to read runtime instructions from and a database to lookup mail account configuration data.
