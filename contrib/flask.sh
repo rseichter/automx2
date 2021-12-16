@@ -13,7 +13,7 @@
 # automx2 to run without a proxy server.
 
 set -euo pipefail
-. venv/bin/activate
+. .venv/bin/activate
 
 # User configurable section -- START
 
