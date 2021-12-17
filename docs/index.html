@@ -659,8 +659,8 @@ pre.rouge {
 <div id="header">
 <h1>automx2: Email client configuration made easy</h1>
 <div class="details">
-<span id="revnumber">version 2021.5,</span>
-<span id="revdate">2021-10-11</span>
+<span id="revnumber">version 2021.6,</span>
+<span id="revdate">2021-12-17</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -680,15 +680,16 @@ pre.rouge {
 <li><a href="#automx2setup">6. Configuring automx2</a>
 <ul class="sectlevel2">
 <li><a href="#_runtime_configuration">6.1. Runtime configuration</a></li>
-<li><a href="#_testing_standalone_automx2">6.2. Testing standalone automx2</a>
+<li><a href="#_testing_standalone_automx2">6.2. Testing standalone automx2</a></li>
+<li><a href="#_database_configuration">6.3. Database configuration</a>
 <ul class="sectlevel3">
-<li><a href="#_database_support">6.2.1. Database support</a></li>
-<li><a href="#_sqlite">6.2.2. SQLite</a></li>
-<li><a href="#_mysql">6.2.3. MySQL</a></li>
-<li><a href="#_postgresql">6.2.4. PostgreSQL</a></li>
+<li><a href="#_database_support">6.3.1. Database support</a></li>
+<li><a href="#_sqlite">6.3.2. SQLite</a></li>
+<li><a href="#_mysql">6.3.3. MySQL</a></li>
+<li><a href="#_postgresql">6.3.4. PostgreSQL</a></li>
 </ul>
 </li>
-<li><a href="#_alembic">6.3. Alembic</a></li>
+<li><a href="#_alembic">6.4. Alembic</a></li>
 </ul>
 </li>
 <li><a href="#ldap">7. LDAP support</a></li>
@@ -864,18 +865,14 @@ _submission._tcp.example.com.   SRV  10  20  587  mail.example.com.</code></pre>
 <h2 id="automx2installation"><a class="anchor" href="#automx2installation"></a>5. automx2 Installation</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>automx2 requires Python 3.7 or higher, ideally in the form of a virtual Python environment, to run.
+<p>automx2 requires Python version 3.7 or greater, ideally in the form of a virtual Python environment, to run.
 Check the python3 version like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>python3 <span class="nt">--version</span>
-Python 3.9.2</code></pre>
+Python 3.9.9</code></pre>
 </div>
-</div>
-<div class="paragraph">
-<p>If you see version 3.6 or lower, you&#8217;ll need to either change the active Python version for the shell session or edit <a href="contrib/setupvenv.sh">setupvenv.sh</a>
-after downloading the script.</p>
 </div>
 <div class="admonitionblock important">
 <table>
@@ -914,8 +911,7 @@ It is recommended that you create a user account specifically for automx2, but o
 </div>
 <div class="paragraph">
 <p>Execute the setup script.
-It will create a Python virtual environment called
-<code>venv</code> in the current directory:</p>
+It will create a Python virtual environment called <code>.venv</code> in the current directory:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -924,13 +920,12 @@ It will create a Python virtual environment called
 </div>
 <div class="paragraph">
 <p>Activate the virtual environment and install the latest automx2 release from PyPI.
-Make sure to pick the correct activation for your shell from the
-<code>venv/bin</code> directory.
+Make sure to pick the correct activation for your shell from the <code>.venv/bin</code> directory.
 This is an example for BASH:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nb">.</span> venv/bin/activate
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">source</span> .venv/bin/activate
 pip <span class="nb">install </span>automx2</code></pre>
 </div>
 </div>
@@ -949,7 +944,7 @@ Activate the virtual environment as usual and use pip&#8217;s <code>-U</code> op
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> /srv/web/automx2
-<span class="nb">.</span> venv/bin/activate
+<span class="nb">source</span> .venv/bin/activate
 pip <span class="nb">install</span> <span class="nt">-U</span> automx2</code></pre>
 </div>
 </div>
@@ -1069,9 +1064,11 @@ Use curl to send an account configuration request for user@example.com:</p>
 </div>
 <div class="paragraph">
 <p>As shown in the example, make sure to quote the URL as necessary.
-Otherwise, your command shell might perform pattern matching for characters like the question mark <code>?</code> (FISH does).
-=== Database configuration</p>
+Otherwise, your command shell might perform pattern matching for characters like the question mark <code>?</code> (FISH does).</p>
 </div>
+</div>
+<div class="sect2">
+<h3 id="_database_configuration"><a class="anchor" href="#_database_configuration"></a>6.3. Database configuration</h3>
 <div class="paragraph">
 <p>automx2 uses the SQLAlchemy toolkit to access databases.
 This allows a variety of databases, a.k.a. <a href="https://docs.sqlalchemy.org/en/latest/dialects/">dialects</a>, to be used, simply by defining the appropriate connection URL.</p>
@@ -1093,7 +1090,7 @@ Feel free to contact me if you are interested in a <a href="#sponsorship">sponso
 </table>
 </div>
 <div class="sect3">
-<h4 id="_database_support"><a class="anchor" href="#_database_support"></a>6.2.1. Database support</h4>
+<h4 id="_database_support"><a class="anchor" href="#_database_support"></a>6.3.1. Database support</h4>
 <div class="paragraph">
 <p>While you probably already have SQLite support available on your local machine, you may need to install additional Python packages for PostgreSQL, MySQL, etc.
 Detailed instructions to support a particular database dialect are out of scope for this document.
@@ -1111,7 +1108,7 @@ It is usually easier to export your existing data, create a fresh DB and import 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_sqlite"><a class="anchor" href="#_sqlite"></a>6.2.2. SQLite</h4>
+<h4 id="_sqlite"><a class="anchor" href="#_sqlite"></a>6.3.2. SQLite</h4>
 <div class="paragraph">
 <p>This section demonstrates what you need to do to in order to use SQLite version 3 or higher as a backend database for automx2.</p>
 </div>
@@ -1178,7 +1175,7 @@ documentation for further details.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_mysql"><a class="anchor" href="#_mysql"></a>6.2.3. MySQL</h4>
+<h4 id="_mysql"><a class="anchor" href="#_mysql"></a>6.3.3. MySQL</h4>
 <div class="paragraph">
 <p>Step 1: Create a database.</p>
 </div>
@@ -1207,7 +1204,7 @@ The following example uses <em>pymysql</em> as a DB driver, which is not include
 </div>
 </div>
 <div class="sect3">
-<h4 id="_postgresql"><a class="anchor" href="#_postgresql"></a>6.2.4. PostgreSQL</h4>
+<h4 id="_postgresql"><a class="anchor" href="#_postgresql"></a>6.3.4. PostgreSQL</h4>
 <div class="paragraph">
 <p>Step 1: Create a database.</p>
 </div>
@@ -1237,7 +1234,7 @@ The following example uses <em>psycopg2</em> as a DB driver, which is not includ
 </div>
 </div>
 <div class="sect2">
-<h3 id="_alembic"><a class="anchor" href="#_alembic"></a>6.3. Alembic</h3>
+<h3 id="_alembic"><a class="anchor" href="#_alembic"></a>6.4. Alembic</h3>
 <div class="paragraph">
 <p>As mentioned in a previous section, you can use <a href="https://alembic.sqlalchemy.org/">Alembic</a> to create or upgrade your database.
 You need to start your first run using an empty database for this to work, because Alembic stores versioning information in said database.
@@ -1246,7 +1243,7 @@ Follow the steps shown below, setting the <code>RELEASE</code> variable to the G
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nb">export </span><span class="nv">RELEASE</span><span class="o">=</span><span class="s2">"2021.3.1"</span>
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">export </span><span class="nv">RELEASE</span><span class="o">=</span><span class="s2">"2021.6"</span>
 wget https://github.com/rseichter/automx2/archive/refs/tags/<span class="nv">$RELEASE</span>.zip
 unzip <span class="nv">$RELEASE</span>.zip
 <span class="nb">cd </span>automx2-<span class="nv">$RELEASE</span>/alembic</code></pre>
@@ -1259,7 +1256,7 @@ The final steps are activating the automx2 virtual Python environment and invoke
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nb">source</span> /path/to/automx2/venv/bin/activate
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">source</span> /path/to/automx2/.venv/bin/activate
 make upgrade</code></pre>
 </div>
 </div>
@@ -1269,7 +1266,7 @@ make upgrade</code></pre>
 <div class="listingblock small">
 <div class="content">
 <pre class="rouge highlight"><code>PYTHONPATH=.. FLASK_APP=automx2.server:app flask db upgrade -d .
-Running automx2 version 2021.3.1
+Running automx2 version 2021.6
 INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
 INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
 INFO  [alembic.runtime.migration] Running upgrade  -&gt; f62e64b43d2f, DB schema for automx2 version 2020.0
@@ -1615,7 +1612,7 @@ Add the <code>proxy_count</code> parameter to your automx2 configuration file or
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>You should turn off echoing SQL commands to the log once you have verified automx2 works as expected.</td>
+<td>Echoing SQL commands is only meant for debugging purposes.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
@@ -1717,8 +1714,8 @@ The
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2021.5<br>
-Last updated 2021-10-11 17:48:39 +0200
+Version 2021.6<br>
+Last updated 2021-12-17 05:02:54 +0100
 </div>
 </div>
 </body>

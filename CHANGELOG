@@ -24,6 +24,6 @@
   This release also improves the Mobileconfig generator, making it smarter when choosing among multiple servers defined
   in the database.
 
-2021.6 (2021-12-16): Introduce "Encryption" element (see MS-OXDSCLI v20210817) in Autodiscover generator to better
+2021.6 (2021-12-17): Introduce "Encryption" element (see MS-OXDSCLI v20210817) in Autodiscover generator to better
   support server connections which require the use of STARTTLS.
 

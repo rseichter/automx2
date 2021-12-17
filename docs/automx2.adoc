@@ -4,7 +4,7 @@
 :keywords: autoconfig, autodiscover, mobileconfig, automx, automx2
 :subject: automx2: Email client configuration made easy
 :revnumber: 2021.6
-:revdate: 2021-12-16
+:revdate: 2021-12-17
 :copyright: © 2019-2021 Ralph Seichter
 :publisher: Ralph Seichter
 :lang: en
