@@ -46,7 +46,7 @@ function do_upload() {
 	local opt=(
 		'-sign'
 		'-i'
-		'D3DCBBA4EFA680A1C5C85708593AAE2E98E2219D'
+		'6AE2A84723D56D985B340BC08E5FA4709F69E911'
 		'-r'
 		"${repo:-testpypi}"
 	)
