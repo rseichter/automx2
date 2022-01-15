@@ -4,7 +4,7 @@
 :keywords: autoconfig, autodiscover, mobileconfig, automx, automx2
 :subject: automx2: Email client configuration made easy
 :revnumber: 2021.6
-:revdate: 2022-01-01
+:revdate: 2022-01-15
 :copyright: © 2019-2022 Ralph Seichter
 :publisher: Ralph Seichter
 :lang: en
@@ -32,23 +32,15 @@ The project is hosted on GitHub in the https://github.com/rseichter/automx2[rsei
 
 == Preface
 
-This document explains how automx2 works, how <<muaautoconf,automated mail client configuration>> works, and what it takes to install and configure automx2. If you are already familiar with automated mailbox configuration methods you may want skip the following sections and jump right ahead to <<automx2installation>> and <<automx2setup>>.
+This document explains how automx2 works, how <<muaconf,automated mail client configuration>> works, and what it takes to install and configure automx2. If you are already familiar with automated mailbox configuration methods you may want skip the following sections and jump right ahead to <<install>> and <<configure>>.
 
-[[howitworks]]
-include::howitworks.adoc[]
-
-[[muaautoconf]]
+include::operation.adoc[]
 include::mailaccountconfig.adoc[]
-
-[[automx2installation]]
 include::installation.adoc[]
-
-[[automx2setup]]
 include::configuration.adoc[]
 include::dbconfig.adoc[]
 include::dbupgrade.adoc[]
 include::ldap.adoc[]
-
 include::running.adoc[]
 include::webserver.adoc[]
 include::sponsorship.adoc[]

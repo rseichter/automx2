@@ -1,6 +1,6 @@
 // vim:ts=4:sw=4:et:ft=asciidoc
 
-[[runningautomx2]]
+[[run]]
 == Running automx2
 
 Running automx2 requires to start automx2 as service and serve its output via a web server to the public.
@@ -92,18 +92,18 @@ You are now ready to start testing automx2, as described in <<local-testing>>.
 
 === Manually from a shell
 
-While logged in as an unprivileged user, change into the installation directory and start the `contrib/flask.sh` launch script:
+While logged in as an unprivileged user, change into the installation directory and start the `.venv/scripts/flask.sh` launch script:
 
 [source,bash]
 ----
 cd /srv/web/automx2
-contrib/flask.sh run --host=127.0.0.1 --port=4243
+.venv/scripts/flask.sh run --host=127.0.0.1 --port=4243
 ----
 
 [NOTE]
 .Handling terminal output
 ====
-The flask.sh script will deliberately keep automx2 running in the foreground, and log data will be displayed in the terminal.
+The launch script will deliberately keep automx2 running in the foreground, and log data will be displayed in the terminal.
 If you press Ctrl-C or close the shell session, the application will terminate.
 To run automx2 in the background, you can use a window manager like link:https://www.gnu.org/software/screen/[GNU
 Screen] or link:https://en.wikipedia.org/wiki/Tmux[tmux].

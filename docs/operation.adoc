@@ -1,6 +1,7 @@
 // vim:ts=4:sw=4:et:ft=asciidoc
 
-== How does automx2 work?
+[[operation]]
+== How does automx2 operate?
 
 automx2 is a web service.
 It is usually located behind a web server like NGINX and waits for configuration requests.

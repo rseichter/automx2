@@ -1,6 +1,7 @@
 // vim:ts=4:sw=4:et:ft=asciidoc
 
-== automx2 Installation
+[[install]]
+== Installing automx2
 
 automx2 requires Python version 3.7 or greater, ideally in the form of a virtual Python environment, to run.
 Check the python3 version like this:
@@ -15,28 +16,35 @@ Python 3.9.9
 .Don't run as root
 ====
 If you use a port number greater than 1024 (I suggest port 4243), the application does not require super user privileges when running.
-It also does not need to be installed as root.
-It is recommended that you create a user account specifically for automx2, but other unprivileged users will do as well.
+Doing so would pose a security risk and is therefore strongly discouraged.
+I recommend creating a fresh user account called `automx2`.
 ====
 
 Prepare the virtual environment for the automx2 web service, adjusting the installation path to your taste (automx2 itself does not care).
+The path `/srv/web/automx2` will be used as an example throughout this documentation.
+The BASH shell commands below should work with any modern Linux distribution.
 
 [source,bash]
 ----
-mkdir -p /srv/web/automx2
-cd /srv/web/automx2
+# Best practice: Create a fresh user account.
+sudo useradd --home-dir /srv/web/automx2 --create-home automx2
+
+# Alternative: If the user account already exists.
+# sudo bash -c 'mkdir -p /srv/web/automx2 && chown automx2 /srv/web/automx2'
 ----
 
+Next, make sure to either login as the user created above, or change to this user via the 'su' command.
+This is important to ensure the correct file permissions.
 Download the script that will download and setup your automx2 service:
 
 [source,bash]
 ----
+cd /srv/web/automx2
 wget https://github.com/rseichter/automx2/raw/master/contrib/setupvenv.sh
 chmod u+x setupvenv.sh
 ----
 
-Execute the setup script.
-It will create a Python virtual environment called `.venv` in the current directory:
+Executing the setup script will create a Python virtual environment called `.venv` in the current directory.
 
 [source,bash]
 ----
@@ -54,15 +62,15 @@ pip install automx2
 ----
 
 [NOTE]
-.Updating automx2
+.Updating to a newer automx2 release
 ====
 Change to the directory where automx2 has been installed previously.
-Activate the virtual environment as usual and use pip's `-U` option to update automx2:
+Activate the virtual environment as usual and use pip's `--upgrade` option:
 
 [source,bash]
 ----
 cd /srv/web/automx2
 source .venv/bin/activate
-pip install -U automx2
+pip install --upgrade automx2
 ----
 ====

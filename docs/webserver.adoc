@@ -1,6 +1,6 @@
 // vim:ts=4:sw=4:et:ft=asciidoc
 
-[[webserverconfig]]
+[[wsconf]]
 == Configuring a web server
 
 While it is technically possible to run automx2 without a web server in front of it, I do not recommend doing that in a production environment.

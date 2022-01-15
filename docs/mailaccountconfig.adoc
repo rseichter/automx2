@@ -1,5 +1,6 @@
 // vim:ts=4:sw=4:et:ft=asciidoc
 
+[[muaconf]]
 == How does auto config work?
 
 Modern email clients (Mail User Agents) can look for configuration data when a user begins to create a new account.

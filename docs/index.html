@@ -660,15 +660,15 @@ pre.rouge {
 <h1>automx2: Email client configuration made easy</h1>
 <div class="details">
 <span id="revnumber">version 2021.6,</span>
-<span id="revdate">2022-01-01</span>
+<span id="revdate">2022-01-15</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_copyright">1. Copyright</a></li>
 <li><a href="#_preface">2. Preface</a></li>
-<li><a href="#howitworks">3. How does automx2 work?</a></li>
-<li><a href="#muaautoconf">4. How does auto config work?</a>
+<li><a href="#operation">3. How does automx2 operate?</a></li>
+<li><a href="#muaconf">4. How does auto config work?</a>
 <ul class="sectlevel2">
 <li><a href="#autoconfig">4.1. Autoconfig</a></li>
 <li><a href="#autodiscover">4.2. Autodiscover</a></li>
@@ -676,8 +676,8 @@ pre.rouge {
 <li><a href="#dnsrr">4.4. DNS SRV resource records</a></li>
 </ul>
 </li>
-<li><a href="#automx2installation">5. automx2 Installation</a></li>
-<li><a href="#automx2setup">6. Configuring automx2</a>
+<li><a href="#install">5. Installing automx2</a></li>
+<li><a href="#configure">6. Configuring automx2</a>
 <ul class="sectlevel2">
 <li><a href="#_runtime_configuration">6.1. Runtime configuration</a></li>
 <li><a href="#_testing_standalone_automx2">6.2. Testing standalone automx2</a></li>
@@ -693,7 +693,7 @@ pre.rouge {
 </ul>
 </li>
 <li><a href="#ldap">7. LDAP support</a></li>
-<li><a href="#runningautomx2">8. Running automx2</a>
+<li><a href="#run">8. Running automx2</a>
 <ul class="sectlevel2">
 <li><a href="#_as_a_openrc_service">8.1. As a OpenRC service</a></li>
 <li><a href="#_as_a_systemd_service">8.2. As a systemd service</a></li>
@@ -701,7 +701,7 @@ pre.rouge {
 </ul>
 </li>
 <li><a href="#local-testing">9. Testing automx2 locally</a></li>
-<li><a href="#webserverconfig">10. Configuring a web server</a>
+<li><a href="#wsconf">10. Configuring a web server</a>
 <ul class="sectlevel2">
 <li><a href="#_nginx">10.1. NGINX</a></li>
 <li><a href="#_apache">10.2. Apache</a></li>
@@ -727,12 +727,12 @@ The project is hosted on GitHub in the <a href="https://github.com/rseichter/aut
 <h2 id="_preface"><a class="anchor" href="#_preface"></a>2. Preface</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This document explains how automx2 works, how <a href="#muaautoconf">automated mail client configuration</a> works, and what it takes to install and configure automx2. If you are already familiar with automated mailbox configuration methods you may want skip the following sections and jump right ahead to <a href="#automx2installation">automx2 Installation</a> and <a href="#automx2setup">Configuring automx2</a>.</p>
+<p>This document explains how automx2 works, how <a href="#muaconf">automated mail client configuration</a> works, and what it takes to install and configure automx2. If you are already familiar with automated mailbox configuration methods you may want skip the following sections and jump right ahead to <a href="#install">Installing automx2</a> and <a href="#configure">Configuring automx2</a>.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="howitworks"><a class="anchor" href="#howitworks"></a>3. How does automx2 work?</h2>
+<h2 id="operation"><a class="anchor" href="#operation"></a>3. How does automx2 operate?</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>automx2 is a web service.
@@ -748,7 +748,7 @@ The web server then acts as a proxy and forwards all requests to automx2 and pas
 </div>
 </div>
 <div class="sect1">
-<h2 id="muaautoconf"><a class="anchor" href="#muaautoconf"></a>4. How does auto config work?</h2>
+<h2 id="muaconf"><a class="anchor" href="#muaconf"></a>4. How does auto config work?</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Modern email clients (Mail User Agents) can look for configuration data when a user begins to create a new account.
@@ -863,7 +863,7 @@ _submission._tcp.example.com.   SRV  10  20  587  mail.example.com.</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="automx2installation"><a class="anchor" href="#automx2installation"></a>5. automx2 Installation</h2>
+<h2 id="install"><a class="anchor" href="#install"></a>5. Installing automx2</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>automx2 requires Python version 3.7 or greater, ideally in the form of a virtual Python environment, to run.
@@ -885,34 +885,41 @@ Python 3.9.9</code></pre>
 <div class="title">Don&#8217;t run as root</div>
 <div class="paragraph">
 <p>If you use a port number greater than 1024 (I suggest port 4243), the application does not require super user privileges when running.
-It also does not need to be installed as root.
-It is recommended that you create a user account specifically for automx2, but other unprivileged users will do as well.</p>
+Doing so would pose a security risk and is therefore strongly discouraged.
+I recommend creating a fresh user account called <code>automx2</code>.</p>
 </div>
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>Prepare the virtual environment for the automx2 web service, adjusting the installation path to your taste (automx2 itself does not care).</p>
+<p>Prepare the virtual environment for the automx2 web service, adjusting the installation path to your taste (automx2 itself does not care).
+The path <code>/srv/web/automx2</code> will be used as an example throughout this documentation.
+The BASH shell commands below should work with any modern Linux distribution.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nb">mkdir</span> <span class="nt">-p</span> /srv/web/automx2
-<span class="nb">cd</span> /srv/web/automx2</code></pre>
+<pre class="rouge highlight"><code data-lang="bash"><span class="c"># Best practice: Create a fresh user account.</span>
+<span class="nb">sudo </span>useradd <span class="nt">--home-dir</span> /srv/web/automx2 <span class="nt">--create-home</span> automx2
+
+<span class="c"># Alternative: If the user account already exists.</span>
+<span class="c"># sudo bash -c 'mkdir -p /srv/web/automx2 &amp;&amp; chown automx2 /srv/web/automx2'</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Download the script that will download and setup your automx2 service:</p>
+<p>Next, make sure to either login as the user created above, or change to this user via the 'su' command.
+This is important to ensure the correct file permissions.
+Download the script that will download and setup your automx2 service:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">wget https://github.com/rseichter/automx2/raw/master/contrib/setupvenv.sh
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> /srv/web/automx2
+wget https://github.com/rseichter/automx2/raw/master/contrib/setupvenv.sh
 <span class="nb">chmod </span>u+x setupvenv.sh</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Execute the setup script.
-It will create a Python virtual environment called <code>.venv</code> in the current directory:</p>
+<p>Executing the setup script will create a Python virtual environment called <code>.venv</code> in the current directory.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -937,16 +944,16 @@ pip <span class="nb">install </span>automx2</code></pre>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-<div class="title">Updating automx2</div>
+<div class="title">Updating to a newer automx2 release</div>
 <div class="paragraph">
 <p>Change to the directory where automx2 has been installed previously.
-Activate the virtual environment as usual and use pip&#8217;s <code>-U</code> option to update automx2:</p>
+Activate the virtual environment as usual and use pip&#8217;s <code>--upgrade</code> option:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> /srv/web/automx2
 <span class="nb">source</span> .venv/bin/activate
-pip <span class="nb">install</span> <span class="nt">-U</span> automx2</code></pre>
+pip <span class="nb">install</span> <span class="nt">--upgrade</span> automx2</code></pre>
 </div>
 </div>
 </td>
@@ -956,7 +963,7 @@ pip <span class="nb">install</span> <span class="nt">-U</span> automx2</code></p
 </div>
 </div>
 <div class="sect1">
-<h2 id="automx2setup"><a class="anchor" href="#automx2setup"></a>6. Configuring automx2</h2>
+<h2 id="configure"><a class="anchor" href="#configure"></a>6. Configuring automx2</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>automx2 uses a file to read runtime instructions from and a database to lookup mail account configuration data.</p>
@@ -987,7 +994,7 @@ Launched without a config it will use an in-memory SQLite database and all data 
 <p>During startup automx2 searches for runtime configuration instructions in the following locations.
 The first match will determine the configuration used.</p>
 </div>
-<div id="configurationlocations" class="listingblock">
+<div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="txt">env  : AUTOMX2_CONF  <i class="conum" data-value="1"></i><b>(1)</b>
 file : ~/.automx2.conf
@@ -1043,8 +1050,7 @@ Then configure the database backend with data that suits your setup, as describe
 <h3 id="_testing_standalone_automx2"><a class="anchor" href="#_testing_standalone_automx2"></a>6.2. Testing standalone automx2</h3>
 <div class="paragraph">
 <p>If you want to verify a vanilla installation of automx2 works, you can populate it with internal test data.
-Start automx2 as described in section <a href="#runningautomx2">Running automx2</a>
-and send the following request to populate your database:</p>
+Start automx2 as described in section <a href="#run">Running automx2</a> and send the following request to populate your database:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1338,7 +1344,7 @@ The search filter needs to contain the placeholder <code>{0}</code> which will b
 </div>
 </div>
 <div class="sect1">
-<h2 id="runningautomx2"><a class="anchor" href="#runningautomx2"></a>8. Running automx2</h2>
+<h2 id="run"><a class="anchor" href="#run"></a>8. Running automx2</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Running automx2 requires to start automx2 as service and serve its output via a web server to the public.
@@ -1495,12 +1501,12 @@ Mar 01 12:54:32 mail python[126966]:  <span class="k">*</span> Running on http:/
 <div class="sect2">
 <h3 id="_manually_from_a_shell"><a class="anchor" href="#_manually_from_a_shell"></a>8.3. Manually from a shell</h3>
 <div class="paragraph">
-<p>While logged in as an unprivileged user, change into the installation directory and start the <code>contrib/flask.sh</code> launch script:</p>
+<p>While logged in as an unprivileged user, change into the installation directory and start the <code>.venv/scripts/flask.sh</code> launch script:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> /srv/web/automx2
-contrib/flask.sh run <span class="nt">--host</span><span class="o">=</span>127.0.0.1 <span class="nt">--port</span><span class="o">=</span>4243</code></pre>
+.venv/scripts/flask.sh run <span class="nt">--host</span><span class="o">=</span>127.0.0.1 <span class="nt">--port</span><span class="o">=</span>4243</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -1512,7 +1518,7 @@ contrib/flask.sh run <span class="nt">--host</span><span class="o">=</span>127.0
 <td class="content">
 <div class="title">Handling terminal output</div>
 <div class="paragraph">
-<p>The flask.sh script will deliberately keep automx2 running in the foreground, and log data will be displayed in the terminal.
+<p>The launch script will deliberately keep automx2 running in the foreground, and log data will be displayed in the terminal.
 If you press Ctrl-C or close the shell session, the application will terminate.
 To run automx2 in the background, you can use a window manager like <a href="https://www.gnu.org/software/screen/">GNU
 Screen</a> or <a href="https://en.wikipedia.org/wiki/Tmux">tmux</a>.</p>
@@ -1579,7 +1585,7 @@ The following example assumes your service runs on localhost on port 4243. The e
 </div>
 </div>
 <div class="sect1">
-<h2 id="webserverconfig"><a class="anchor" href="#webserverconfig"></a>10. Configuring a web server</h2>
+<h2 id="wsconf"><a class="anchor" href="#wsconf"></a>10. Configuring a web server</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>While it is technically possible to run automx2 without a web server in front of it, I do not recommend doing that in a production environment.
@@ -1716,7 +1722,7 @@ The
 <div id="footer">
 <div id="footer-text">
 Version 2021.6<br>
-Last updated 2022-01-01 20:20:43 +0100
+Last updated 2022-01-15 11:25:42 +0100
 </div>
 </div>
 </body>

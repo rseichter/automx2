@@ -1,5 +1,6 @@
 // vim:ts=4:sw=4:et:ft=asciidoc
 
+[[configure]]
 == Configuring automx2
 
 automx2 uses a file to read runtime instructions from and a database to lookup mail account configuration data.
@@ -19,7 +20,6 @@ Launched without a config it will use an in-memory SQLite database and all data 
 During startup automx2 searches for runtime configuration instructions in the following locations.
 The first match will determine the configuration used.
 
-[[configurationlocations]]
 [source,txt]
 ----
 env  : AUTOMX2_CONF  <1>
@@ -48,8 +48,7 @@ Then configure the database backend with data that suits your setup, as describe
 === Testing standalone automx2
 
 If you want to verify a vanilla installation of automx2 works, you can populate it with internal test data.
-Start automx2 as described in section <<runningautomx2>>
-and send the following request to populate your database:
+Start automx2 as described in section <<run>> and send the following request to populate your database:
 
 [source,bash]
 ----
