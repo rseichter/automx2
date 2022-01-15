@@ -665,9 +665,9 @@ pre.rouge {
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_copyright">1. Copyright</a></li>
-<li><a href="#_contact">2. Contact</a></li>
-<li><a href="#_preface">3. Preface</a></li>
+<li><a href="#copyright">1. Copyright</a></li>
+<li><a href="#contact">2. Contact</a></li>
+<li><a href="#preface">3. Preface</a></li>
 <li><a href="#operation">4. How does automx2 operate?</a></li>
 <li><a href="#muaconf">5. How does auto config work?</a>
 <ul class="sectlevel2">
@@ -702,11 +702,11 @@ pre.rouge {
 <li><a href="#_manually_from_a_shell">9.3. Manually from a shell</a></li>
 </ul>
 </li>
-<li><a href="#local-testing">10. Testing automx2 locally</a></li>
+<li><a href="#localtest">10. Testing automx2 locally</a></li>
 <li><a href="#wsconf">11. Configuring a web server</a>
 <ul class="sectlevel2">
-<li><a href="#_nginx">11.1. NGINX</a></li>
-<li><a href="#_apache">11.2. Apache</a></li>
+<li><a href="#nginx">11.1. NGINX</a></li>
+<li><a href="#apache">11.2. Apache</a></li>
 </ul>
 </li>
 <li><a href="#sponsorship">12. Sponsorship</a></li>
@@ -715,7 +715,7 @@ pre.rouge {
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_copyright"><a class="anchor" href="#_copyright"></a>1. Copyright</h2>
+<h2 id="copyright"><a class="anchor" href="#copyright"></a>1. Copyright</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>automx2 is Copyright © 2019-2022 Ralph Seichter.
@@ -726,17 +726,18 @@ The project is hosted on GitHub in the <a href="https://github.com/rseichter/aut
 </div>
 </div>
 <div class="sect1">
-<h2 id="_contact"><a class="anchor" href="#_contact"></a>2. Contact</h2>
+<h2 id="contact"><a class="anchor" href="#contact"></a>2. Contact</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>If you have questions about setting up or operating automx2, or if you would like to discuss or suggest features, please use the <a href="https://mail.sys4.de/mailman/listinfo/automx-users" target="_blank" rel="noopener">mailing list</a> as the preferred means of contacting me.
 Doing so makes it easier for other users to participate, and it is usually low-traffic, so you need not worry about volume.
-There is also an <a href="https://github.com/rseichter/automx2/issues" target="_blank" rel="noopener">issue tracker</a> available.</p>
+There is also an <a href="https://github.com/rseichter/automx2/issues" target="_blank" rel="noopener">issue tracker</a> available.
+Should you be interested in supporting the project as a sponsor, you can find a contact email address in the <a href="#sponsorship">sponsorship</a> section.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_preface"><a class="anchor" href="#_preface"></a>3. Preface</h2>
+<h2 id="preface"><a class="anchor" href="#preface"></a>3. Preface</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This document explains how automx2 works, how <a href="#muaconf">automated mail client configuration</a> works, and what it takes to install and configure automx2. If you are already familiar with automated mailbox configuration methods you may want skip the following sections and jump right ahead to <a href="#install">Installing automx2</a> and <a href="#configure">Configuring automx2</a>.</p>
@@ -1502,7 +1503,7 @@ Mar 01 12:54:32 mail python[126966]:  <span class="k">*</span> Running on http:/
 </div>
 </div>
 <div class="paragraph">
-<p>You are now ready to start testing automx2, as described in <a href="#local-testing">Testing automx2 locally</a>.</p>
+<p>You are now ready to start testing automx2, as described <a href="#localtest">below</a>.</p>
 </div>
 </div>
 <div class="sect2">
@@ -1541,7 +1542,7 @@ Screen</a> or <a href="https://en.wikipedia.org/wiki/Tmux">tmux</a>.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="local-testing"><a class="anchor" href="#local-testing"></a>10. Testing automx2 locally</h2>
+<h2 id="localtest"><a class="anchor" href="#localtest"></a>10. Testing automx2 locally</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>You can use <em>curl</em> in a command shell to send a GET request to your local automx2-instance.
@@ -1635,7 +1636,7 @@ Add the <code>proxy_count</code> parameter to your automx2 configuration file or
 </table>
 </div>
 <div class="sect2">
-<h3 id="_nginx"><a class="anchor" href="#_nginx"></a>11.1. NGINX</h3>
+<h3 id="nginx"><a class="anchor" href="#nginx"></a>11.1. NGINX</h3>
 <div class="paragraph">
 <p>The following example defines a HTTP server, which will listen for requests to both <em>autoconfig.example.com</em> and <em>autodiscover.example.com</em>.
 All requests will be forwarded to automx2, which listens on TCP port 4243 in this example.
@@ -1673,7 +1674,7 @@ The
 </div>
 </div>
 <div class="sect2">
-<h3 id="_apache"><a class="anchor" href="#_apache"></a>11.2. Apache</h3>
+<h3 id="apache"><a class="anchor" href="#apache"></a>11.2. Apache</h3>
 <div class="paragraph">
 <p>The following example shows an Apache configuration similar to the one above.
 <code>ProxyPreserveHost</code> directives will cause apache to pass relevant data about incoming requests' origins.</p>
@@ -1729,7 +1730,7 @@ The
 <div id="footer">
 <div id="footer-text">
 Version 2021.6<br>
-Last updated 2022-01-15 12:25:18 +0100
+Last updated 2022-01-15 12:34:08 +0100
 </div>
 </div>
 </body>

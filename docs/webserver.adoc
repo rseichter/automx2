@@ -32,7 +32,7 @@ proxy_count = 1
 <1> Echoing SQL commands is only meant for debugging purposes.
 <2> Set the number to reflect the number of proxies chained in front of automx2, i.e. the number of "proxy hops" a client's request must pass before it reaches automx2.
 
-
+[[nginx]]
 === NGINX
 
 The following example defines a HTTP server, which will listen for requests to both _autoconfig.example.com_ and _autodiscover.example.com_.
@@ -46,6 +46,7 @@ The
 include::../contrib/nginx-sample.conf[]
 ----
 
+[[apache]]
 === Apache
 
 The following example shows an Apache configuration similar to the one above.

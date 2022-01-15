@@ -88,7 +88,7 @@ Mar 01 12:54:32 mail python[126966]: Config.get: loglevel = WARNING
 Mar 01 12:54:32 mail python[126966]:  * Running on http://127.0.0.1:4243/ (Press CTRL+C to quit)
 ----
 
-You are now ready to start testing automx2, as described in <<local-testing>>.
+You are now ready to start testing automx2, as described <<localtest,below>>.
 
 === Manually from a shell
 
@@ -111,7 +111,7 @@ Screen] or link:https://en.wikipedia.org/wiki/Tmux[tmux].
 
 Now that automx2 is up and running, you need to configure the web server proxy that will receive requests from the outside and forwards them to automx2.
 
-[[local-testing]]
+[[localtest]]
 == Testing automx2 locally
 
 You can use _curl_ in a command shell to send a GET request to your local automx2-instance.
