@@ -35,9 +35,9 @@ The project is hosted on GitHub in the https://github.com/rseichter/automx2[rsei
 This document explains how automx2 works, how <<muaconf,automated mail client configuration>> works, and what it takes to install and configure automx2. If you are already familiar with automated mailbox configuration methods you may want skip the following sections and jump right ahead to <<install>> and <<configure>>.
 
 include::operation.adoc[]
-include::mailaccountconfig.adoc[]
+include::muaconfig.adoc[]
 include::installation.adoc[]
-include::configuration.adoc[]
+include::config.adoc[]
 include::dbconfig.adoc[]
 include::dbupgrade.adoc[]
 include::ldap.adoc[]

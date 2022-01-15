@@ -4,7 +4,10 @@
 == LDAP support
 
 automx2 supports looking up user account data using LDAP.
-A typical application is finding the user ID required for IMAP/SMTP authentication given an associated email address.
+This is typically used to find users' login IDs for IMAP/SMTP authentication given an associated email address.
+Note that this is an optional configuration element commonly used by larger organisations.
+For smaller user bases, using <<placeholders,placeholders>> may be sufficient.
+
 The following partial LDIF snippet shows how a mail account can be defined in a widely used LDAP schema:
 
 [source,ldif]

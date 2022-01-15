@@ -679,17 +679,18 @@ pre.rouge {
 <li><a href="#install">5. Installing automx2</a></li>
 <li><a href="#configure">6. Configuring automx2</a>
 <ul class="sectlevel2">
-<li><a href="#_runtime_configuration">6.1. Runtime configuration</a></li>
-<li><a href="#_testing_standalone_automx2">6.2. Testing standalone automx2</a></li>
-<li><a href="#_database_configuration">6.3. Database configuration</a>
+<li><a href="#placeholders">6.1. Placeholders</a></li>
+<li><a href="#_runtime_configuration">6.2. Runtime configuration</a></li>
+<li><a href="#_testing_standalone_automx2">6.3. Testing standalone automx2</a></li>
+<li><a href="#dbconf">6.4. Database configuration</a>
 <ul class="sectlevel3">
-<li><a href="#_database_support">6.3.1. Database support</a></li>
-<li><a href="#_sqlite">6.3.2. SQLite</a></li>
-<li><a href="#_mysql">6.3.3. MySQL</a></li>
-<li><a href="#_postgresql">6.3.4. PostgreSQL</a></li>
+<li><a href="#_database_support">6.4.1. Database support</a></li>
+<li><a href="#_sqlite">6.4.2. SQLite</a></li>
+<li><a href="#_mysql">6.4.3. MySQL</a></li>
+<li><a href="#_postgresql">6.4.4. PostgreSQL</a></li>
 </ul>
 </li>
-<li><a href="#_alembic">6.4. Alembic</a></li>
+<li><a href="#_alembic">6.5. Alembic</a></li>
 </ul>
 </li>
 <li><a href="#ldap">7. LDAP support</a></li>
@@ -969,7 +970,15 @@ pip <span class="nb">install</span> <span class="nt">--upgrade</span> automx2</c
 <p>automx2 uses a file to read runtime instructions from and a database to lookup mail account configuration data.</p>
 </div>
 <div class="sect2">
-<h3 id="_runtime_configuration"><a class="anchor" href="#_runtime_configuration"></a>6.1. Runtime configuration</h3>
+<h3 id="placeholders"><a class="anchor" href="#placeholders"></a>6.1. Placeholders</h3>
+<div class="paragraph">
+<p>To make configuration more convenient, automx2 supports <a href="https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat#Placeholders" target="_blank" rel="noopener">Mozilla-style placeholders</a>.
+For example, the string <code>%EMAILADDRESS%</code> in database records will be replaced with the email address specified during the query.
+While based on a proprietary feature of Autoconfig, automx2 also applies placeholders to Autodiscover and Mobileconfig responses.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_runtime_configuration"><a class="anchor" href="#_runtime_configuration"></a>6.2. Runtime configuration</h3>
 <div class="paragraph">
 <p>The configuration file defines automx2 runtime behaviour and it specifies the backend automx2 should read mailbox account configuration data from.</p>
 </div>
@@ -1047,7 +1056,7 @@ Then configure the database backend with data that suits your setup, as describe
 </div>
 </div>
 <div class="sect2">
-<h3 id="_testing_standalone_automx2"><a class="anchor" href="#_testing_standalone_automx2"></a>6.2. Testing standalone automx2</h3>
+<h3 id="_testing_standalone_automx2"><a class="anchor" href="#_testing_standalone_automx2"></a>6.3. Testing standalone automx2</h3>
 <div class="paragraph">
 <p>If you want to verify a vanilla installation of automx2 works, you can populate it with internal test data.
 Start automx2 as described in section <a href="#run">Running automx2</a> and send the following request to populate your database:</p>
@@ -1075,7 +1084,7 @@ Otherwise, your command shell might perform pattern matching for characters like
 </div>
 </div>
 <div class="sect2">
-<h3 id="_database_configuration"><a class="anchor" href="#_database_configuration"></a>6.3. Database configuration</h3>
+<h3 id="dbconf"><a class="anchor" href="#dbconf"></a>6.4. Database configuration</h3>
 <div class="paragraph">
 <p>automx2 uses the SQLAlchemy toolkit to access databases.
 This allows a variety of databases, a.k.a. <a href="https://docs.sqlalchemy.org/en/latest/dialects/">dialects</a>, to be used, simply by defining the appropriate connection URL.</p>
@@ -1097,7 +1106,7 @@ Feel free to contact me if you are interested in a <a href="#sponsorship">sponso
 </table>
 </div>
 <div class="sect3">
-<h4 id="_database_support"><a class="anchor" href="#_database_support"></a>6.3.1. Database support</h4>
+<h4 id="_database_support"><a class="anchor" href="#_database_support"></a>6.4.1. Database support</h4>
 <div class="paragraph">
 <p>While you probably already have SQLite support available on your local machine, you may need to install additional Python packages for PostgreSQL, MySQL, etc.
 Detailed instructions to support a particular database dialect are out of scope for this document.
@@ -1115,7 +1124,7 @@ It is usually easier to export your existing data, create a fresh DB and import 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_sqlite"><a class="anchor" href="#_sqlite"></a>6.3.2. SQLite</h4>
+<h4 id="_sqlite"><a class="anchor" href="#_sqlite"></a>6.4.2. SQLite</h4>
 <div class="paragraph">
 <p>This section demonstrates what you need to do to in order to use SQLite version 3 or higher as a backend database for automx2.</p>
 </div>
@@ -1160,29 +1169,12 @@ Make sure to match the automx2.conf <code>db_uri</code> setting when specifying 
 <pre class="rouge highlight"><code data-lang="bash">contrib/sqlite-generate.sh | sqlite3 /var/lib/automx2/db.sqlite</code></pre>
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="title">Placeholders</div>
-<div class="paragraph">
-<p>See Mozilla&#8217;s
-<a href="https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat#Placeholders">placeholder</a>
-documentation for further details.</p>
-</div>
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
 <p>Once you have populated the database automx2 is ready to run.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_mysql"><a class="anchor" href="#_mysql"></a>6.3.3. MySQL</h4>
+<h4 id="_mysql"><a class="anchor" href="#_mysql"></a>6.4.3. MySQL</h4>
 <div class="paragraph">
 <p>Step 1: Create a database.</p>
 </div>
@@ -1211,7 +1203,7 @@ The following example uses <em>pymysql</em> as a DB driver, which is not include
 </div>
 </div>
 <div class="sect3">
-<h4 id="_postgresql"><a class="anchor" href="#_postgresql"></a>6.3.4. PostgreSQL</h4>
+<h4 id="_postgresql"><a class="anchor" href="#_postgresql"></a>6.4.4. PostgreSQL</h4>
 <div class="paragraph">
 <p>Step 1: Create a database.</p>
 </div>
@@ -1241,7 +1233,7 @@ The following example uses <em>psycopg2</em> as a DB driver, which is not includ
 </div>
 </div>
 <div class="sect2">
-<h3 id="_alembic"><a class="anchor" href="#_alembic"></a>6.4. Alembic</h3>
+<h3 id="_alembic"><a class="anchor" href="#_alembic"></a>6.5. Alembic</h3>
 <div class="paragraph">
 <p>As mentioned in a previous section, you can use <a href="https://alembic.sqlalchemy.org/">Alembic</a> to create or upgrade your database.
 You need to start your first run using an empty database for this to work, because Alembic stores versioning information in said database.
@@ -1291,8 +1283,12 @@ INFO  [alembic.runtime.migration] Running upgrade 5334f8a8282c -&gt; 43ebb40d057
 <div class="sectionbody">
 <div class="paragraph">
 <p>automx2 supports looking up user account data using LDAP.
-A typical application is finding the user ID required for IMAP/SMTP authentication given an associated email address.
-The following partial LDIF snippet shows how a mail account can be defined in a widely used LDAP schema:</p>
+This is typically used to find users' login IDs for IMAP/SMTP authentication given an associated email address.
+Note that this is an optional configuration element commonly used by larger organisations.
+For smaller user bases, using <a href="#placeholders">placeholders</a> may be sufficient.</p>
+</div>
+<div class="paragraph">
+<p>The following partial LDIF snippet shows how a mail account can be defined in a widely used LDAP schema:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1703,13 +1699,13 @@ The
 <div class="ulist">
 <ul>
 <li>
-<p><a href="https://www.jetbrains.com/">JetBrains s.r.o.</a></p>
+<p><a href="https://www.jetbrains.com/" target="_blank" rel="noopener">JetBrains s.r.o.</a></p>
 </li>
 <li>
-<p><a href="https://www.mediabeam.com/">mediaBEAM GmbH</a></p>
+<p><a href="https://www.mediabeam.com/" target="_blank" rel="noopener">mediaBEAM GmbH</a></p>
 </li>
 <li>
-<p><a href="https://sys4.de/">sys4 AG</a>.</p>
+<p><a href="https://sys4.de/" target="_blank" rel="noopener">sys4 AG</a>.</p>
 </li>
 </ul>
 </div>
@@ -1722,7 +1718,7 @@ The
 <div id="footer">
 <div id="footer-text">
 Version 2021.6<br>
-Last updated 2022-01-15 11:25:42 +0100
+Last updated 2022-01-15 12:09:29 +0100
 </div>
 </div>
 </body>

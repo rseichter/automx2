@@ -5,8 +5,8 @@
 
 Sponsors for this project include (in alphabetical order)
 
-* https://www.jetbrains.com/[JetBrains s.r.o.]
-* https://www.mediabeam.com/[mediaBEAM GmbH]
-* https://sys4.de/[sys4 AG].
+* https://www.jetbrains.com/[JetBrains s.r.o.,window=_blank]
+* https://www.mediabeam.com/[mediaBEAM GmbH,window=_blank]
+* https://sys4.de/[sys4 AG,window=_blank].
 
 If you are interested in sponsoring a specific feature yourself, please contact me using the email address _<automx2 AT_ _seichter DOT_ _de>_.

@@ -1,5 +1,6 @@
 // vim:ts=4:sw=4:et:ft=asciidoc
 
+[[dbconf]]
 === Database configuration
 
 automx2 uses the SQLAlchemy toolkit to access databases.
@@ -61,14 +62,6 @@ Make sure to match the automx2.conf `db_uri` setting when specifying the databas
 ----
 contrib/sqlite-generate.sh | sqlite3 /var/lib/automx2/db.sqlite
 ----
-
-[NOTE]
-.Placeholders
-====
-See Mozilla's
-link:https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat#Placeholders[placeholder]
-documentation for further details.
-====
 
 Once you have populated the database automx2 is ready to run.
 

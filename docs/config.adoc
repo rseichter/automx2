@@ -5,6 +5,13 @@
 
 automx2 uses a file to read runtime instructions from and a database to lookup mail account configuration data.
 
+[[placeholders]]
+=== Placeholders
+
+To make configuration more convenient, automx2 supports https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat#Placeholders[Mozilla-style placeholders,window=_blank].
+For example, the string `%EMAILADDRESS%` in database records will be replaced with the email address specified during the query.
+While based on a proprietary feature of Autoconfig, automx2 also applies placeholders to Autodiscover and Mobileconfig responses.
+
 === Runtime configuration
 
 The configuration file defines automx2 runtime behaviour and it specifies the backend automx2 should read mailbox account configuration data from.
