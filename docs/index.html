@@ -666,49 +666,50 @@ pre.rouge {
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
 <li><a href="#_copyright">1. Copyright</a></li>
-<li><a href="#_preface">2. Preface</a></li>
-<li><a href="#operation">3. How does automx2 operate?</a></li>
-<li><a href="#muaconf">4. How does auto config work?</a>
+<li><a href="#_contact">2. Contact</a></li>
+<li><a href="#_preface">3. Preface</a></li>
+<li><a href="#operation">4. How does automx2 operate?</a></li>
+<li><a href="#muaconf">5. How does auto config work?</a>
 <ul class="sectlevel2">
-<li><a href="#autoconfig">4.1. Autoconfig</a></li>
-<li><a href="#autodiscover">4.2. Autodiscover</a></li>
-<li><a href="#mobileconfig">4.3. Mobileconfig</a></li>
-<li><a href="#dnsrr">4.4. DNS SRV resource records</a></li>
+<li><a href="#autoconfig">5.1. Autoconfig</a></li>
+<li><a href="#autodiscover">5.2. Autodiscover</a></li>
+<li><a href="#mobileconfig">5.3. Mobileconfig</a></li>
+<li><a href="#dnsrr">5.4. DNS SRV resource records</a></li>
 </ul>
 </li>
-<li><a href="#install">5. Installing automx2</a></li>
-<li><a href="#configure">6. Configuring automx2</a>
+<li><a href="#install">6. Installing automx2</a></li>
+<li><a href="#configure">7. Configuring automx2</a>
 <ul class="sectlevel2">
-<li><a href="#placeholders">6.1. Placeholders</a></li>
-<li><a href="#_runtime_configuration">6.2. Runtime configuration</a></li>
-<li><a href="#_testing_standalone_automx2">6.3. Testing standalone automx2</a></li>
-<li><a href="#dbconf">6.4. Database configuration</a>
+<li><a href="#placeholders">7.1. Placeholders</a></li>
+<li><a href="#_runtime_configuration">7.2. Runtime configuration</a></li>
+<li><a href="#_testing_standalone_automx2">7.3. Testing standalone automx2</a></li>
+<li><a href="#dbconf">7.4. Database configuration</a>
 <ul class="sectlevel3">
-<li><a href="#_database_support">6.4.1. Database support</a></li>
-<li><a href="#_sqlite">6.4.2. SQLite</a></li>
-<li><a href="#_mysql">6.4.3. MySQL</a></li>
-<li><a href="#_postgresql">6.4.4. PostgreSQL</a></li>
+<li><a href="#_database_support">7.4.1. Database support</a></li>
+<li><a href="#_sqlite">7.4.2. SQLite</a></li>
+<li><a href="#_mysql">7.4.3. MySQL</a></li>
+<li><a href="#_postgresql">7.4.4. PostgreSQL</a></li>
 </ul>
 </li>
-<li><a href="#_alembic">6.5. Alembic</a></li>
+<li><a href="#_alembic">7.5. Alembic</a></li>
 </ul>
 </li>
-<li><a href="#ldap">7. LDAP support</a></li>
-<li><a href="#run">8. Running automx2</a>
+<li><a href="#ldap">8. LDAP support</a></li>
+<li><a href="#run">9. Running automx2</a>
 <ul class="sectlevel2">
-<li><a href="#_as_a_openrc_service">8.1. As a OpenRC service</a></li>
-<li><a href="#_as_a_systemd_service">8.2. As a systemd service</a></li>
-<li><a href="#_manually_from_a_shell">8.3. Manually from a shell</a></li>
+<li><a href="#_as_a_openrc_service">9.1. As a OpenRC service</a></li>
+<li><a href="#_as_a_systemd_service">9.2. As a systemd service</a></li>
+<li><a href="#_manually_from_a_shell">9.3. Manually from a shell</a></li>
 </ul>
 </li>
-<li><a href="#local-testing">9. Testing automx2 locally</a></li>
-<li><a href="#wsconf">10. Configuring a web server</a>
+<li><a href="#local-testing">10. Testing automx2 locally</a></li>
+<li><a href="#wsconf">11. Configuring a web server</a>
 <ul class="sectlevel2">
-<li><a href="#_nginx">10.1. NGINX</a></li>
-<li><a href="#_apache">10.2. Apache</a></li>
+<li><a href="#_nginx">11.1. NGINX</a></li>
+<li><a href="#_apache">11.2. Apache</a></li>
 </ul>
 </li>
-<li><a href="#sponsorship">11. Sponsorship</a></li>
+<li><a href="#sponsorship">12. Sponsorship</a></li>
 </ul>
 </div>
 </div>
@@ -725,7 +726,17 @@ The project is hosted on GitHub in the <a href="https://github.com/rseichter/aut
 </div>
 </div>
 <div class="sect1">
-<h2 id="_preface"><a class="anchor" href="#_preface"></a>2. Preface</h2>
+<h2 id="_contact"><a class="anchor" href="#_contact"></a>2. Contact</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>If you have questions about setting up or operating automx2, or if you would like to discuss or suggest features, please use the <a href="https://mail.sys4.de/mailman/listinfo/automx-users" target="_blank" rel="noopener">mailing list</a> as the preferred means of contacting me.
+Doing so makes it easier for other users to participate, and it is usually low-traffic, so you need not worry about volume.
+There is also an <a href="https://github.com/rseichter/automx2/issues" target="_blank" rel="noopener">issue tracker</a> available.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_preface"><a class="anchor" href="#_preface"></a>3. Preface</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>This document explains how automx2 works, how <a href="#muaconf">automated mail client configuration</a> works, and what it takes to install and configure automx2. If you are already familiar with automated mailbox configuration methods you may want skip the following sections and jump right ahead to <a href="#install">Installing automx2</a> and <a href="#configure">Configuring automx2</a>.</p>
@@ -733,7 +744,7 @@ The project is hosted on GitHub in the <a href="https://github.com/rseichter/aut
 </div>
 </div>
 <div class="sect1">
-<h2 id="operation"><a class="anchor" href="#operation"></a>3. How does automx2 operate?</h2>
+<h2 id="operation"><a class="anchor" href="#operation"></a>4. How does automx2 operate?</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>automx2 is a web service.
@@ -749,7 +760,7 @@ The web server then acts as a proxy and forwards all requests to automx2 and pas
 </div>
 </div>
 <div class="sect1">
-<h2 id="muaconf"><a class="anchor" href="#muaconf"></a>4. How does auto config work?</h2>
+<h2 id="muaconf"><a class="anchor" href="#muaconf"></a>5. How does auto config work?</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Modern email clients (Mail User Agents) can look for configuration data when a user begins to create a new account.
@@ -778,7 +789,7 @@ Functionality to configure calendar or address book settings is not included.
 This may change in some future version, but the focus of automx2 is email.</p>
 </div>
 <div class="sect2">
-<h3 id="autoconfig"><a class="anchor" href="#autoconfig"></a>4.1. Autoconfig</h3>
+<h3 id="autoconfig"><a class="anchor" href="#autoconfig"></a>5.1. Autoconfig</h3>
 <div class="paragraph">
 <p>Autoconfig is a proprietary method developed by the Mozilla foundation.
 It was designed to configure a mail account within Thunderbird, and other email suites like Evolution and KMail
@@ -808,7 +819,7 @@ After that she can immediately start to use her new mail account.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="autodiscover"><a class="anchor" href="#autodiscover"></a>4.2. Autodiscover</h3>
+<h3 id="autodiscover"><a class="anchor" href="#autodiscover"></a>5.2. Autodiscover</h3>
 <div class="paragraph">
 <p>Autodiscover is a proprietary method developed by Microsoft.
 The protocol version supported by automx2 was designed to configure a mail account within Outlook 2016 ff.
@@ -841,7 +852,7 @@ If the first DNS query fails the client may be redirected to a configuration ser
 </div>
 </div>
 <div class="sect2">
-<h3 id="mobileconfig"><a class="anchor" href="#mobileconfig"></a>4.3. Mobileconfig</h3>
+<h3 id="mobileconfig"><a class="anchor" href="#mobileconfig"></a>5.3. Mobileconfig</h3>
 <div class="paragraph">
 <p>Requests and responses use proprietary content types with an underlying <a href="https://en.wikipedia.org/wiki/Property_list">property list</a> format.
 automx2 will return <em>unsigned</em> data, which means that the service must be accessed via HTTPS only.
@@ -849,7 +860,7 @@ Otherwise, your users have no way of knowing if they access the correct service 
 </div>
 </div>
 <div class="sect2">
-<h3 id="dnsrr"><a class="anchor" href="#dnsrr"></a>4.4. DNS SRV resource records</h3>
+<h3 id="dnsrr"><a class="anchor" href="#dnsrr"></a>5.4. DNS SRV resource records</h3>
 <div class="listingblock small">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bind">_imap._tcp.example.com          SRV  10  20  143  mail.example.com.
@@ -864,7 +875,7 @@ _submission._tcp.example.com.   SRV  10  20  587  mail.example.com.</code></pre>
 </div>
 </div>
 <div class="sect1">
-<h2 id="install"><a class="anchor" href="#install"></a>5. Installing automx2</h2>
+<h2 id="install"><a class="anchor" href="#install"></a>6. Installing automx2</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>automx2 requires Python version 3.7 or greater, ideally in the form of a virtual Python environment, to run.
@@ -964,13 +975,13 @@ pip <span class="nb">install</span> <span class="nt">--upgrade</span> automx2</c
 </div>
 </div>
 <div class="sect1">
-<h2 id="configure"><a class="anchor" href="#configure"></a>6. Configuring automx2</h2>
+<h2 id="configure"><a class="anchor" href="#configure"></a>7. Configuring automx2</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>automx2 uses a file to read runtime instructions from and a database to lookup mail account configuration data.</p>
 </div>
 <div class="sect2">
-<h3 id="placeholders"><a class="anchor" href="#placeholders"></a>6.1. Placeholders</h3>
+<h3 id="placeholders"><a class="anchor" href="#placeholders"></a>7.1. Placeholders</h3>
 <div class="paragraph">
 <p>To make configuration more convenient, automx2 supports <a href="https://wiki.mozilla.org/Thunderbird:Autoconfiguration:ConfigFileFormat#Placeholders" target="_blank" rel="noopener">Mozilla-style placeholders</a>.
 For example, the string <code>%EMAILADDRESS%</code> in database records will be replaced with the email address specified during the query.
@@ -978,7 +989,7 @@ While based on a proprietary feature of Autoconfig, automx2 also applies placeho
 </div>
 </div>
 <div class="sect2">
-<h3 id="_runtime_configuration"><a class="anchor" href="#_runtime_configuration"></a>6.2. Runtime configuration</h3>
+<h3 id="_runtime_configuration"><a class="anchor" href="#_runtime_configuration"></a>7.2. Runtime configuration</h3>
 <div class="paragraph">
 <p>The configuration file defines automx2 runtime behaviour and it specifies the backend automx2 should read mailbox account configuration data from.</p>
 </div>
@@ -1056,7 +1067,7 @@ Then configure the database backend with data that suits your setup, as describe
 </div>
 </div>
 <div class="sect2">
-<h3 id="_testing_standalone_automx2"><a class="anchor" href="#_testing_standalone_automx2"></a>6.3. Testing standalone automx2</h3>
+<h3 id="_testing_standalone_automx2"><a class="anchor" href="#_testing_standalone_automx2"></a>7.3. Testing standalone automx2</h3>
 <div class="paragraph">
 <p>If you want to verify a vanilla installation of automx2 works, you can populate it with internal test data.
 Start automx2 as described in section <a href="#run">Running automx2</a> and send the following request to populate your database:</p>
@@ -1084,7 +1095,7 @@ Otherwise, your command shell might perform pattern matching for characters like
 </div>
 </div>
 <div class="sect2">
-<h3 id="dbconf"><a class="anchor" href="#dbconf"></a>6.4. Database configuration</h3>
+<h3 id="dbconf"><a class="anchor" href="#dbconf"></a>7.4. Database configuration</h3>
 <div class="paragraph">
 <p>automx2 uses the SQLAlchemy toolkit to access databases.
 This allows a variety of databases, a.k.a. <a href="https://docs.sqlalchemy.org/en/latest/dialects/">dialects</a>, to be used, simply by defining the appropriate connection URL.</p>
@@ -1106,7 +1117,7 @@ Feel free to contact me if you are interested in a <a href="#sponsorship">sponso
 </table>
 </div>
 <div class="sect3">
-<h4 id="_database_support"><a class="anchor" href="#_database_support"></a>6.4.1. Database support</h4>
+<h4 id="_database_support"><a class="anchor" href="#_database_support"></a>7.4.1. Database support</h4>
 <div class="paragraph">
 <p>While you probably already have SQLite support available on your local machine, you may need to install additional Python packages for PostgreSQL, MySQL, etc.
 Detailed instructions to support a particular database dialect are out of scope for this document.
@@ -1124,7 +1135,7 @@ It is usually easier to export your existing data, create a fresh DB and import 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_sqlite"><a class="anchor" href="#_sqlite"></a>6.4.2. SQLite</h4>
+<h4 id="_sqlite"><a class="anchor" href="#_sqlite"></a>7.4.2. SQLite</h4>
 <div class="paragraph">
 <p>This section demonstrates what you need to do to in order to use SQLite version 3 or higher as a backend database for automx2.</p>
 </div>
@@ -1174,7 +1185,7 @@ Make sure to match the automx2.conf <code>db_uri</code> setting when specifying 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_mysql"><a class="anchor" href="#_mysql"></a>6.4.3. MySQL</h4>
+<h4 id="_mysql"><a class="anchor" href="#_mysql"></a>7.4.3. MySQL</h4>
 <div class="paragraph">
 <p>Step 1: Create a database.</p>
 </div>
@@ -1203,7 +1214,7 @@ The following example uses <em>pymysql</em> as a DB driver, which is not include
 </div>
 </div>
 <div class="sect3">
-<h4 id="_postgresql"><a class="anchor" href="#_postgresql"></a>6.4.4. PostgreSQL</h4>
+<h4 id="_postgresql"><a class="anchor" href="#_postgresql"></a>7.4.4. PostgreSQL</h4>
 <div class="paragraph">
 <p>Step 1: Create a database.</p>
 </div>
@@ -1233,7 +1244,7 @@ The following example uses <em>psycopg2</em> as a DB driver, which is not includ
 </div>
 </div>
 <div class="sect2">
-<h3 id="_alembic"><a class="anchor" href="#_alembic"></a>6.5. Alembic</h3>
+<h3 id="_alembic"><a class="anchor" href="#_alembic"></a>7.5. Alembic</h3>
 <div class="paragraph">
 <p>As mentioned in a previous section, you can use <a href="https://alembic.sqlalchemy.org/">Alembic</a> to create or upgrade your database.
 You need to start your first run using an empty database for this to work, because Alembic stores versioning information in said database.
@@ -1279,7 +1290,7 @@ INFO  [alembic.runtime.migration] Running upgrade 5334f8a8282c -&gt; 43ebb40d057
 </div>
 </div>
 <div class="sect1">
-<h2 id="ldap"><a class="anchor" href="#ldap"></a>7. LDAP support</h2>
+<h2 id="ldap"><a class="anchor" href="#ldap"></a>8. LDAP support</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>automx2 supports looking up user account data using LDAP.
@@ -1340,7 +1351,7 @@ The search filter needs to contain the placeholder <code>{0}</code> which will b
 </div>
 </div>
 <div class="sect1">
-<h2 id="run"><a class="anchor" href="#run"></a>8. Running automx2</h2>
+<h2 id="run"><a class="anchor" href="#run"></a>9. Running automx2</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Running automx2 requires to start automx2 as service and serve its output via a web server to the public.
@@ -1365,7 +1376,7 @@ and have granted appropriate rights to this user:</p>
 </ul>
 </div>
 <div class="sect2">
-<h3 id="_as_a_openrc_service"><a class="anchor" href="#_as_a_openrc_service"></a>8.1. As a OpenRC service</h3>
+<h3 id="_as_a_openrc_service"><a class="anchor" href="#_as_a_openrc_service"></a>9.1. As a OpenRC service</h3>
 <div class="paragraph">
 <p>The following is an example for a OpenRC run script <code>/etc/init.d/automx2</code> which I use for Gentoo Linux:</p>
 </div>
@@ -1419,7 +1430,7 @@ This is purely optional.</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_as_a_systemd_service"><a class="anchor" href="#_as_a_systemd_service"></a>8.2. As a systemd service</h3>
+<h3 id="_as_a_systemd_service"><a class="anchor" href="#_as_a_systemd_service"></a>9.2. As a systemd service</h3>
 <div class="paragraph">
 <p>If your system uses <em>systemd</em> you may want to deploy the following <a href="../contrib/automx2.service">automx2.service</a> unit file from the contrib section and place it in <code>/etc/systemd/system/automx2.service</code>:</p>
 </div>
@@ -1495,7 +1506,7 @@ Mar 01 12:54:32 mail python[126966]:  <span class="k">*</span> Running on http:/
 </div>
 </div>
 <div class="sect2">
-<h3 id="_manually_from_a_shell"><a class="anchor" href="#_manually_from_a_shell"></a>8.3. Manually from a shell</h3>
+<h3 id="_manually_from_a_shell"><a class="anchor" href="#_manually_from_a_shell"></a>9.3. Manually from a shell</h3>
 <div class="paragraph">
 <p>While logged in as an unprivileged user, change into the installation directory and start the <code>.venv/scripts/flask.sh</code> launch script:</p>
 </div>
@@ -1530,7 +1541,7 @@ Screen</a> or <a href="https://en.wikipedia.org/wiki/Tmux">tmux</a>.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="local-testing"><a class="anchor" href="#local-testing"></a>9. Testing automx2 locally</h2>
+<h2 id="local-testing"><a class="anchor" href="#local-testing"></a>10. Testing automx2 locally</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>You can use <em>curl</em> in a command shell to send a GET request to your local automx2-instance.
@@ -1581,7 +1592,7 @@ The following example assumes your service runs on localhost on port 4243. The e
 </div>
 </div>
 <div class="sect1">
-<h2 id="wsconf"><a class="anchor" href="#wsconf"></a>10. Configuring a web server</h2>
+<h2 id="wsconf"><a class="anchor" href="#wsconf"></a>11. Configuring a web server</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>While it is technically possible to run automx2 without a web server in front of it, I do not recommend doing that in a production environment.
@@ -1624,7 +1635,7 @@ Add the <code>proxy_count</code> parameter to your automx2 configuration file or
 </table>
 </div>
 <div class="sect2">
-<h3 id="_nginx"><a class="anchor" href="#_nginx"></a>10.1. NGINX</h3>
+<h3 id="_nginx"><a class="anchor" href="#_nginx"></a>11.1. NGINX</h3>
 <div class="paragraph">
 <p>The following example defines a HTTP server, which will listen for requests to both <em>autoconfig.example.com</em> and <em>autodiscover.example.com</em>.
 All requests will be forwarded to automx2, which listens on TCP port 4243 in this example.
@@ -1662,7 +1673,7 @@ The
 </div>
 </div>
 <div class="sect2">
-<h3 id="_apache"><a class="anchor" href="#_apache"></a>10.2. Apache</h3>
+<h3 id="_apache"><a class="anchor" href="#_apache"></a>11.2. Apache</h3>
 <div class="paragraph">
 <p>The following example shows an Apache configuration similar to the one above.
 <code>ProxyPreserveHost</code> directives will cause apache to pass relevant data about incoming requests' origins.</p>
@@ -1691,7 +1702,7 @@ The
 </div>
 </div>
 <div class="sect1">
-<h2 id="sponsorship"><a class="anchor" href="#sponsorship"></a>11. Sponsorship</h2>
+<h2 id="sponsorship"><a class="anchor" href="#sponsorship"></a>12. Sponsorship</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>Sponsors for this project include (in alphabetical order)</p>
@@ -1718,7 +1729,7 @@ The
 <div id="footer">
 <div id="footer-text">
 Version 2021.6<br>
-Last updated 2022-01-15 12:09:29 +0100
+Last updated 2022-01-15 12:25:18 +0100
 </div>
 </div>
 </body>

@@ -30,6 +30,12 @@ Parts of the initial documentation were written by Patrick Ben Koetter.
 automx2 is licensed under the GNU General Public License V3 or later.
 The project is hosted on GitHub in the https://github.com/rseichter/automx2[rseichter/automx2] repository.
 
+== Contact
+
+If you have questions about setting up or operating automx2, or if you would like to discuss or suggest features, please use the https://mail.sys4.de/mailman/listinfo/automx-users[mailing list,window=_blank] as the preferred means of contacting me.
+Doing so makes it easier for other users to participate, and it is usually low-traffic, so you need not worry about volume.
+There is also an https://github.com/rseichter/automx2/issues[issue tracker,window=_blank] available.
+
 == Preface
 
 This document explains how automx2 works, how <<muaconf,automated mail client configuration>> works, and what it takes to install and configure automx2. If you are already familiar with automated mailbox configuration methods you may want skip the following sections and jump right ahead to <<install>> and <<configure>>.
