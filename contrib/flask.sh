@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim:tabstop=4:noexpandtab
+# vim:ts=4:sw=4:noet
 #
 # Launches automx2 as a Flask application. Execute this script from
 # within the parent directory of your Python venv. Example usage:
@@ -13,7 +13,7 @@
 # automx2 to run without a proxy server.
 
 set -euo pipefail
-. .venv/bin/activate
+source .venv/bin/activate
 
 # User configurable section -- START
 

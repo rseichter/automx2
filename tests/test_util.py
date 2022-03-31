@@ -24,6 +24,7 @@ from automx2 import PLACEHOLDER_ADDRESS
 from automx2 import PLACEHOLDER_DOMAIN
 from automx2 import PLACEHOLDER_LOCALPART
 from automx2.util import expand_placeholders
+from automx2.util import from_dict
 from automx2.util import from_environ
 from automx2.util import parse_email_address
 from automx2.util import socket_type_needs_ssl
@@ -38,6 +39,12 @@ class UtilTests(unittest.TestCase):
 
     def setUp(self) -> None:
         os.environ[self.EXISTS] = self.VALUE
+
+    def test_key_exists(self):
+        self.assertEqual('b', from_dict({'a': 'b'}, 'a', None))
+
+    def test_key_missing(self):
+        self.assertEqual('c', from_dict({}, 'a', 'c'))
 
     def test_exists(self):
         x = from_environ(self.EXISTS)

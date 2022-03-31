@@ -21,7 +21,7 @@ from flask.views import MethodView
 from sqlalchemy.exc import OperationalError
 
 from automx2 import log
-from automx2.model import EXAMPLE_COM
+from automx2.database import EXAMPLE_COM
 from automx2.model import Provider
 from automx2.views import EMAIL_MOZILLA
 

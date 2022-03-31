@@ -23,12 +23,12 @@ from xml.etree.ElementTree import ParseError
 from xml.etree.ElementTree import fromstring
 
 from automx2.generators.outlook import NS_RESPONSE_PAYLOAD
-from automx2.model import EGGS_DOMAIN
-from automx2.model import EXAMPLE_COM
-from automx2.model import EXAMPLE_NET
-from automx2.model import EXAMPLE_ORG
-from automx2.model import SERVERLESS_DOMAIN
-from automx2.model import sample_server_names
+from automx2.database import EGGS_DOMAIN
+from automx2.database import EXAMPLE_COM
+from automx2.database import EXAMPLE_NET
+from automx2.database import EXAMPLE_ORG
+from automx2.database import SERVERLESS_DOMAIN
+from automx2.database import sample_server_names
 from automx2.server import MSOFT_ALTERNATE_ROUTE
 from automx2.server import MSOFT_CONFIG_ROUTE
 from automx2.views import CONTENT_TYPE_XML

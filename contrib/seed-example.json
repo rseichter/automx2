@@ -1,0 +1,8 @@
+{
+  "provider": "Example Inc.",
+  "domains": ["example.com", "example.net", "example.org"],
+  "servers": [
+    {"name": "imap.example.com", "type": "imap"},
+    {"name": "smtp.example.com", "type": "smtp"}
+  ]
+}

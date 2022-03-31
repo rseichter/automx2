@@ -9,7 +9,7 @@ Check the python3 version like this:
 [source,bash]
 ----
 $ python3 --version
-Python 3.9.9
+Python 3.9.11
 ----
 
 [IMPORTANT]

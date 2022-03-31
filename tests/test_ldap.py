@@ -23,6 +23,11 @@ from automx2 import LdapNoMatch
 from automx2.generators.apple import AppleGenerator
 from automx2.generators.mozilla import MozillaGenerator
 from automx2.generators.outlook import OutlookGenerator
+from automx2.database import LDAP_BIND_PASSWORD
+from automx2.database import LDAP_BIND_USER
+from automx2.database import LDAP_HOSTNAME
+from automx2.database import LDAP_PORT
+from automx2.database import LDAP_SEARCH_BASE
 from automx2.ldap import LdapAccess
 from automx2.ldap import LookupResult
 from automx2.ldap import STATUS_ERROR
@@ -30,11 +35,6 @@ from automx2.ldap import STATUS_NO_MATCH
 from automx2.ldap import STATUS_SUCCESS
 from automx2.model import Ldapserver
 from automx2.util import unique
-from tests.base import LDAP_BIND_PASSWORD
-from tests.base import LDAP_BIND_USER
-from tests.base import LDAP_HOSTNAME
-from tests.base import LDAP_PORT
-from tests.base import LDAP_SEARCH_BASE
 from tests.base import RUN_LDAP_TESTS
 from tests.base import TestCase
 from tests.base import app

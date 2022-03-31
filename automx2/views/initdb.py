@@ -16,22 +16,42 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
+from typing import Optional
+
+from flask import request
 from flask import url_for
 from flask.views import MethodView
 
+from automx2.database import populate_db
+from automx2.database import purge_db
 from automx2.model import Provider
 from automx2.model import db
-from automx2.model import populate_db
 
 
 class InitDatabase(MethodView):
     """Initialise database."""
 
-    # noinspection PyMethodMayBeStatic
-    def get(self):
+    @staticmethod
+    def _response(msg) -> str:
+        url = url_for('root')
+        return f'<html><body>{msg}. <a href="{url}">Click here</a> to go back.</body></html>'
+
+    def init_db(self, data: Optional[dict]) -> str:
         db.create_all()
         if Provider.query.count() == 0:
-            populate_db()
+            populate_db(data)
             db.session.commit()
-        url = url_for('root')
-        return f'Database is now prepared. <a href="{url}">Click here</a> to go back.'
+            m = 'Database is now prepared'
+        else:  # pragma: no cover
+            m = 'Database already contains provider data'
+        return self._response(m)
+
+    def delete(self):
+        purge_db()
+        return self._response('Database content purged')
+
+    def get(self):
+        return self.init_db(None)
+
+    def post(self):
+        return self.init_db(request.json)

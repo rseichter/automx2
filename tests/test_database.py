@@ -18,6 +18,7 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
 import unittest
 
+from automx2.server import INITDB_ROUTE
 from tests.base import TestCase
 from tests.base import body
 
@@ -25,13 +26,42 @@ from tests.base import body
 class DatabaseRoute(TestCase):
     create_db = False
 
-    def test_init_db(self):
+    def test_init_internal(self):
         with self.app:
-            r = self.get('/initdb/')
+            r = self.get(INITDB_ROUTE)
             self.assertEqual(200, r.status_code)
             self.assertEqual('text/html', r.mimetype)
             x = body(r).find('Database is now prepared')
             self.assertNotEqual(-1, x)
+
+    def test_init_incomplete(self):
+        with self.app:
+            with self.assertRaises(KeyError):
+                self.post(INITDB_ROUTE, json={'a': 'b'})
+
+    def test_init_json(self):
+        data = {
+            'provider': 'Test Provider',
+            'domains': ['test.com'],
+            'servers': [
+                {'name': 'imap', 'type': 'imap'},
+                {'name': 'pop', 'type': 'pop'},
+                {'name': 'smtp', 'type': 'smtp'},
+            ],
+        }
+        with self.app:
+            r = self.post(INITDB_ROUTE, json=data)
+            self.assertEqual(200, r.status_code)
+            self.assertEqual('text/html', r.mimetype)
+            self.assertNotEqual(-1, body(r).find('Database is now prepared'))
+
+    def test_purge_db(self):
+        with self.app:
+            r = self.get(INITDB_ROUTE)
+            self.assertEqual(200, r.status_code)
+            r = self.app.delete(INITDB_ROUTE)
+            self.assertEqual(200, r.status_code)
+            self.assertNotEqual(-1, body(r).find('Database content purged'))
 
 
 if __name__ == '__main__':

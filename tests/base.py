@@ -22,14 +22,14 @@ from flask import Response
 
 from automx2.generators.outlook import NS_REQUEST
 from automx2.generators.outlook import NS_RESPONSE_PAYLOAD
-from automx2.model import LDAP_BIND_PASSWORD
-from automx2.model import LDAP_BIND_USER
-from automx2.model import LDAP_HOSTNAME
-from automx2.model import LDAP_PORT
-from automx2.model import LDAP_SEARCH_BASE
+from automx2.database import LDAP_BIND_PASSWORD
+from automx2.database import LDAP_BIND_USER
+from automx2.database import LDAP_HOSTNAME
+from automx2.database import LDAP_PORT
+from automx2.database import LDAP_SEARCH_BASE
+from automx2.database import populate_db
 from automx2.model import Ldapserver
 from automx2.model import db
-from automx2.model import populate_db
 from automx2.server import APPLE_CONFIG_ROUTE
 from automx2.server import MOZILLA_CONFIG_ROUTE
 from automx2.server import MSOFT_CONFIG_ROUTE
@@ -59,7 +59,7 @@ class TestCase(unittest.TestCase):
             db.drop_all()
             if self.create_db:
                 db.create_all()
-                populate_db()
+                populate_db(None)
                 if RUN_LDAP_TESTS:
                     ls = Ldapserver(id=LDAP_PORT, name=LDAP_HOSTNAME, port=LDAP_PORT, use_ssl=True, attr_uid='uid',
                                     attr_cn='cn', bind_user=LDAP_BIND_USER, bind_password=LDAP_BIND_PASSWORD,

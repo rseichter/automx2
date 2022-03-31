@@ -19,7 +19,7 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 import logging
 
 IDENTIFIER = 'automx2'  # Do not change this!
-VERSION = '2021.6'
+VERSION = '2022.0'
 
 PLACEHOLDER_ADDRESS = r'%EMAILADDRESS%'
 PLACEHOLDER_DOMAIN = r'%EMAILDOMAIN%'

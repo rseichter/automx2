@@ -23,14 +23,13 @@ from xml.dom.minidom import Element
 
 from automx2 import InvalidAuthenticationType
 from automx2 import PLACEHOLDER_ADDRESS
-from automx2.model import EGGS_DOMAIN
-from automx2.model import EXAMPLE_COM
-from automx2.model import EXAMPLE_NET
-from automx2.model import EXAMPLE_ORG
-from automx2.model import ORPHAN_DOMAIN
-from automx2.model import SERVERLESS_DOMAIN
+from automx2.database import EGGS_DOMAIN
+from automx2.database import EXAMPLE_COM
+from automx2.database import EXAMPLE_NET
+from automx2.database import EXAMPLE_ORG
+from automx2.database import SERVERLESS_DOMAIN
+from automx2.database import sample_server_names
 from automx2.model import Server
-from automx2.model import sample_server_names
 from automx2.server import APPLE_CONFIG_ROUTE
 from automx2.util import unique
 from automx2.views.mobileconfig import CONTENT_TYPE_APPLE

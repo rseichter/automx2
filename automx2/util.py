@@ -29,6 +29,12 @@ from automx2 import log
 email_address_re = re.compile(r'^([^@]+)@([^@]+)$', re.IGNORECASE)
 
 
+def from_dict(data: dict, key: str, default: object = None):
+    if key in data:
+        return data[key]
+    return default
+
+
 def from_environ(env_var_name: str, default: object = None):
     if env_var_name in os.environ:
         return os.environ[env_var_name]
