@@ -27,3 +27,5 @@
 2021.6 (2021-12-17): Introduce "Encryption" element (see MS-OXDSCLI v20210817) in Autodiscover generator to better
   support server connections which require the use of STARTTLS.
 
+2022.0 (2022-12-31): Simplified database initialisation is now possible via HTTP POST and a JSON payload.
+
