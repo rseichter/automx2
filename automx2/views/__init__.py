@@ -51,5 +51,5 @@ class MailConfig:
     @staticmethod
     def is_xml_request() -> bool:
         if CONTENT_TYPE in request.headers:
-            return request.headers[CONTENT_TYPE] == CONTENT_TYPE_XML or request.headers[CONTENT_TYPE] == 'text/xml'
+            return request.headers[CONTENT_TYPE].startswith(CONTENT_TYPE_XML) or request.headers[CONTENT_TYPE].startswith('text/xml')
         return False
