@@ -16,6 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
+import re
+
 from flask import Response
 from flask import make_response
 from flask import request
@@ -31,6 +33,8 @@ CONTENT_TYPE_XML = 'application/xml'
 
 
 class MailConfig:
+    CONTENT_TYPE_RE = re.compile(r'\b(?:application|text)/xml\b', re.IGNORECASE)
+
     def config_from_address(self, address: str, realname: str = '', password: str = '') -> Response:
         local_part, domain_part = parse_email_address(address)
         data = self.config_response(local_part, domain_part, realname, password)
@@ -48,8 +52,7 @@ class MailConfig:
         response.headers[CONTENT_TYPE] = self.response_type()
         return response
 
-    @staticmethod
-    def is_xml_request() -> bool:
-        if CONTENT_TYPE in request.headers:
-            return request.headers[CONTENT_TYPE] == CONTENT_TYPE_XML or request.headers[CONTENT_TYPE] == 'text/xml'
+    def is_expected_content_type(self) -> bool:
+        if CONTENT_TYPE in request.headers and self.CONTENT_TYPE_RE.search(request.headers[CONTENT_TYPE]):
+            return True
         return False

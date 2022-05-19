@@ -28,7 +28,6 @@ from automx2 import NotFoundException
 from automx2 import log
 from automx2.generators.outlook import NS_REQUEST
 from automx2.generators.outlook import OutlookGenerator
-from automx2.views import CONTENT_TYPE_XML
 from automx2.views import EMAIL_OUTLOOK
 from automx2.views import MailConfig
 
@@ -38,8 +37,8 @@ class OutlookView(MailConfig, MethodView):
 
     def post(self):
         """Outlook-style POST request is expected to contain XML."""
-        if not self.is_xml_request():
-            message = f'Required content type is "{CONTENT_TYPE_XML}"'
+        if not self.is_expected_content_type():
+            message = 'Unexpected content type'
             log.error(message)
             return message, 400
         element: Element = fromstring(str(request.data, encoding='utf-8', errors='strict'))
