@@ -108,6 +108,9 @@ CREATE TABLE `provider` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
   `short_name` varchar(32) NOT NULL,
+  `sign` tinyint(1) DEFAULT 0 NOT NULL,
+  `sign_cert` text NULL,
+  `sign_key` text NULL
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1003 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;

@@ -156,7 +156,10 @@ ALTER SEQUENCE public.ldapserver_id_seq OWNED BY public.ldapserver.id;
 CREATE TABLE public.provider (
     id integer NOT NULL,
     name character varying(128) NOT NULL,
-    short_name character varying(32) NOT NULL
+    short_name character varying(32) NOT NULL,
+	sign boolean DEFAULT 0 NOT NULL,
+	sign_cert text null,
+	sign_key text null
 );
 
 

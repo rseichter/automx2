@@ -16,6 +16,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
+from typing import Union
+
 from flask import abort
 from flask import request
 from flask.views import MethodView
@@ -34,7 +36,7 @@ class AppleView(MailConfig, MethodView):
     """Autoconfigure mail, Apple-style."""
 
     @staticmethod
-    def response_type() -> str:
+    def response_type() -> Union[str, bytes]:
         return CONTENT_TYPE_APPLE
 
     def get(self):
@@ -53,6 +55,6 @@ class AppleView(MailConfig, MethodView):
             log.exception(e)
             abort(400)
 
-    def config_response(self, local_part, domain_part: str, realname: str, password: str) -> str:
+    def config_response(self, local_part, domain_part: str, realname: str, password: str) -> Union[str, bytes]:
         data = AppleGenerator().client_config(local_part, domain_part, realname)
         return data

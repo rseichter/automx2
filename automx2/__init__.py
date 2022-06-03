@@ -82,6 +82,21 @@ class LdapNoMatch(NotFoundException):
     pass
 
 
+class NoCertsForSigningMobileconfig(AutomxException):
+    """Database did not contain the required certificates for mobileconfig signing."""
+    pass
+
+
+class NoKeyForSigningMobileconfig(AutomxException):
+    """Database did not contain the required key for mobileconfig signing."""
+    pass
+
+
+class MobileConfigSigningError(AutomxException):
+    """An error occurred while signing mobileconfig content."""
+    pass
+
+
 log = logging.getLogger(__name__)
 _handler = logging.StreamHandler()
 _handler.setFormatter(logging.Formatter())

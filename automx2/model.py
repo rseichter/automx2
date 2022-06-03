@@ -39,6 +39,9 @@ class Provider(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
     name = db.Column(db.String(128), nullable=False)
     short_name = db.Column(db.String(32), nullable=False)
+    sign = db.Column(db.Boolean, nullable=False, default=False)
+    sign_cert = db.Column(db.String, nullable=True, default=None)
+    sign_key = db.Column(db.String, nullable=True, default=None)
     domains = db.relationship('Domain', lazy='select', backref=db.backref('provider', lazy='joined'))
 
     def __repr__(self) -> str:

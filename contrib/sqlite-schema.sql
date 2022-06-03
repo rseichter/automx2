@@ -1,7 +1,10 @@
 CREATE TABLE provider (
 	id INTEGER NOT NULL, 
 	name VARCHAR(128) NOT NULL, 
-	short_name VARCHAR(32) NOT NULL, 
+	short_name VARCHAR(32) NOT NULL,
+	sign BOOLEAN DEFAULT 0 NOT NULL,
+	sign_cert TEXT null,
+	sign_key TEXT null,
 	PRIMARY KEY (id)
 );
 CREATE TABLE server (

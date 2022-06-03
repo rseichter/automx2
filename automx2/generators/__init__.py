@@ -16,7 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
-from typing import List
+from typing import List, Union
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import tostring
 
@@ -35,7 +35,7 @@ def branded_id(id_) -> str:
     return f'{IDENTIFIER}-{id_}'
 
 
-def xml_to_string(root_element: Element) -> str:
+def xml_to_string(root_element: Element) -> Union[str ,bytes]:
     return tostring(root_element, 'utf-8')
 
 

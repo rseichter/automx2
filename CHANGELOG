@@ -30,3 +30,5 @@
 2022.0 (2022-03-31): Simplified database initialisation is now possible via HTTP POST and a JSON payload.
 
 2022.1 (2022-05-20): Request content type verification now works if additional parameters like "charset" are passed.
+
+2022.2 (2022-06-03): Add support for mobileconfig signing.

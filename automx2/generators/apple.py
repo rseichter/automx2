@@ -16,14 +16,19 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
-from typing import List
+from typing import List, Union
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import SubElement
+
+import M2Crypto.X509
 
 from automx2 import DomainNotFound
 from automx2 import InvalidAuthenticationType
 from automx2 import NoProviderForDomain
 from automx2 import NoServersForDomain
+from automx2 import NoCertsForSigningMobileconfig
+from automx2 import NoKeyForSigningMobileconfig
+from automx2 import MobileConfigSigningError
 from automx2.generators import ConfigGenerator
 from automx2.generators import branded_id
 from automx2.generators import xml_to_string
@@ -36,6 +41,8 @@ from automx2.util import expand_placeholders
 from automx2.util import socket_type_needs_ssl
 from automx2.util import strip_none_values
 from automx2.util import unique
+
+from M2Crypto import BIO, SMIME
 
 AUTH_MAP = {
     'none': 'EmailAuthNone',
@@ -165,7 +172,7 @@ def _preferred_server(servers: List[Server], type_: str) -> Server:
 
 
 class AppleGenerator(ConfigGenerator):
-    def client_config(self, local_part: str, domain_part: str, display_name: str) -> str:
+    def client_config(self, local_part: str, domain_part: str, display_name: str) -> Union[str, bytes]:
         root_element = Element('plist', attrib={'version': '1.0'})
         domain: Domain = Domain.query.filter_by(name=domain_part).first()
         if not domain:
@@ -200,4 +207,36 @@ class AppleGenerator(ConfigGenerator):
         config = _config_payload(domain_part, strip_none_values(account))
         _sanitise(config, local_part, domain_part)
         _subtree(root_element, '', config)
-        return xml_to_string(root_element)
+
+        mobileconfig_content = xml_to_string(root_element)
+
+        if provider.sign:
+            if not provider.sign_cert:
+                raise NoCertsForSigningMobileconfig(
+                    f'Mobileconfig signing certificates for provider "{provider.short_name}" are missing')
+            if not provider.sign_key:
+                raise NoKeyForSigningMobileconfig(
+                    f'Mobileconfig signing key provider "{provider.short_name}" is missing')
+
+            mobileconfig_content_bio = BIO.MemoryBuffer(mobileconfig_content)
+
+            pkey_bio = BIO.MemoryBuffer(provider.sign_key.encode('utf-8'))
+            cert_bio = BIO.MemoryBuffer(provider.sign_cert.encode('utf-8'))
+
+            try:
+                signer = SMIME.SMIME()
+                signer.load_key_bio(keybio=pkey_bio, certbio=cert_bio)
+
+                p7f = signer.sign(mobileconfig_content_bio)
+                data = BIO.MemoryBuffer(None)
+                p7f.write_der(data)
+
+            except (IOError, SMIME.SMIME_Error, SMIME.PKCS7_Error, M2Crypto.X509.X509Error) as e:
+                raise MobileConfigSigningError(
+                    f'Unable to sign mobileconfig key for provider "{provider.short_name}" and mail address '
+                    f'"{local_part}@{domain_part} : "{e}"')
+
+            signed_mobileconfig = data.read()
+            return signed_mobileconfig
+
+        return mobileconfig_content
