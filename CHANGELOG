@@ -30,3 +30,6 @@
 2022.0 (2022-03-31): Simplified database initialisation is now possible via HTTP POST and a JSON payload.
 
 2022.1 (2022-05-20): Request content type verification now works if additional parameters like "charset" are passed.
+
+2023.0.dev1 (TBA): Removed redundant Flask initialisation call in unit tests. This call caused errors when running the
+  test suite with recent versions of SQLAlchemy.

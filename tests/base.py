@@ -55,7 +55,6 @@ class TestCase(unittest.TestCase):
         app.config['DEBUG'] = False
         self.app = app.test_client()
         with app.app_context():
-            db.init_app(app)
             db.drop_all()
             if self.create_db:
                 db.create_all()
