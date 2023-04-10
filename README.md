@@ -8,7 +8,7 @@ automx2 is successor to automx. It has been designed to be easier to setup, easi
 
 ## Copyright
 
-automx2 is Copyright © 2019-2022 Ralph Seichter.
+automx2 is Copyright © 2019-2023 Ralph Seichter.
 automx2 is licensed under the GNU General Public License V3 or later. The project is hosted on GitHub in the
 [rseichter/automx2](https://github.com/rseichter/automx2) repository and published on
 [PyPI.org](https://pypi.org/project/automx2/).
