@@ -47,6 +47,13 @@ An encrypted connection (LDAPS) is used and the filter and attribute names are s
 It is assumed that `cn=automx2,ou=services,dc=example,dc=com` with the given password is permitted read-only access to the necessary LDAP records/attributes.
 The search filter needs to contain the placeholder `{0}` which will be replaced with the email address used as the lookup key.
 
+Values of the LDAP attributes specified using `attr_uid` and `attr_cn` will be returned as the resulting login ID and common name, respectively. If your users are required to login using their email address instead of a technical user ID, and based on the example LDIF above, set `attr_uid` to _mail_ instead of _uid_:
+
+[source,sql]
+----
+UPDATE ldapserver SET attr_uid='mail' WHERE id=100;
+----
+
 Now all that is left is to connect the example.com domain to LDAP server ID 100:
 
 [source,sql]

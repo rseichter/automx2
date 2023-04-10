@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.17">
+<meta name="generator" content="Asciidoctor 2.0.18">
 <meta name="keywords" content="autoconfig, autodiscover, mobileconfig, automx, automx2">
-<meta name="copyright" content="© 2019-2022 Ralph Seichter">
+<meta name="copyright" content="© 2019-2023 Ralph Seichter">
 <title>automx2: Email client configuration made easy</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -86,10 +86,10 @@ code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;
 ul,ol,dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
 ul,ol{margin-left:1.5em}
 ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0}
-ul.square li ul,ul.circle li ul,ul.disc li ul{list-style:inherit}
-ul.square{list-style-type:square}
 ul.circle{list-style-type:circle}
 ul.disc{list-style-type:disc}
+ul.square{list-style-type:square}
+ul.circle ul:not([class]),ul.disc ul:not([class]),ul.square ul:not([class]){list-style:inherit}
 ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
 dl dt{margin-bottom:.3125em;font-weight:bold}
 dl dd{margin-bottom:1.25em}
@@ -658,8 +658,8 @@ pre.rouge {
 <div id="header">
 <h1>automx2: Email client configuration made easy</h1>
 <div class="details">
-<span id="revnumber">version 2022.1,</span>
-<span id="revdate">2022-05-20</span>
+<span id="revnumber">version 2022.1.1,</span>
+<span id="revdate">2023-04-10</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -717,7 +717,7 @@ pre.rouge {
 <h2 id="copyright"><a class="anchor" href="#copyright"></a>1. Copyright</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>automx2 is Copyright © 2019-2022 Ralph Seichter.
+<p>automx2 is Copyright © 2019-2023 Ralph Seichter.
 automx2 is licensed under the GNU General Public License V3 or later.
 The project is hosted on GitHub in the <a href="https://github.com/rseichter/automx2">rseichter/automx2</a> repository.</p>
 </div>
@@ -1381,6 +1381,14 @@ It is assumed that <code>cn=automx2,ou=services,dc=example,dc=com</code> with th
 The search filter needs to contain the placeholder <code>{0}</code> which will be replaced with the email address used as the lookup key.</p>
 </div>
 <div class="paragraph">
+<p>Values of the LDAP attributes specified using <code>attr_uid</code> and <code>attr_cn</code> will be returned as the resulting login ID and common name, respectively. If your users are required to login using their email address instead of a technical user ID, and based on the example LDIF above, set <code>attr_uid</code> to <em>mail</em> instead of <em>uid</em>:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="sql"><span class="k">UPDATE</span> <span class="n">ldapserver</span> <span class="k">SET</span> <span class="n">attr_uid</span><span class="o">=</span><span class="s1">'mail'</span> <span class="k">WHERE</span> <span class="n">id</span><span class="o">=</span><span class="mi">100</span><span class="p">;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>Now all that is left is to connect the example.com domain to LDAP server ID 100:</p>
 </div>
 <div class="listingblock">
@@ -1752,8 +1760,8 @@ The
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2022.1<br>
-Last updated 2022-05-20 01:28:19 +0200
+Version 2022.1.1<br>
+Last updated 2023-04-10 21:01:28 +0200
 </div>
 </div>
 </body>
