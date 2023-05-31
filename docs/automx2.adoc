@@ -4,7 +4,7 @@
 :keywords: autoconfig, autodiscover, mobileconfig, automx, automx2
 :subject: automx2: Email client configuration made easy
 :revnumber: 2023.0.dev1
-:revdate: 2023-04-10
+:revdate: 2023-05-31
 :copyright: © 2019-2023 Ralph Seichter
 :publisher: Ralph Seichter
 :lang: en
@@ -33,9 +33,6 @@ The project is hosted on GitHub in the https://github.com/rseichter/automx2[rsei
 [[contact]]
 == Contact
 
-If you have questions about setting up or operating automx2, or if you would like to discuss or suggest features, please use the https://mail.sys4.de/mailman/listinfo/automx-users[mailing list,window=_blank] as the preferred means of contacting me.
-Doing so makes it easier for other users to participate, and it is usually low-traffic, so you need not worry about volume.
-There is also an https://github.com/rseichter/automx2/issues[issue tracker,window=_blank] available.
 Should you be interested in supporting the project as a sponsor, you can find a contact email address in the <<sponsorship,sponsorship>> section.
 
 [[preface]]
