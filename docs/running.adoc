@@ -96,7 +96,7 @@ While logged in as an unprivileged user, change into the installation directory 
 
 [source,bash]
 ----
-cd /srv/web/automx2
+cd /srv/www/automx2
 .venv/scripts/flask.sh run --host=127.0.0.1 --port=4243
 ----
 

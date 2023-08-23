@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.18">
+<meta name="generator" content="Asciidoctor 2.0.20">
 <meta name="keywords" content="autoconfig, autodiscover, mobileconfig, automx, automx2">
 <meta name="copyright" content="© 2019-2023 Ralph Seichter">
 <title>automx2: Email client configuration made easy</title>
@@ -210,13 +210,10 @@ table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
 .admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
 .admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
 .exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
-.exampleblock>.content>:first-child{margin-top:0}
-.exampleblock>.content>:last-child{margin-bottom:0}
 .sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
-.sidebarblock>:first-child{margin-top:0}
-.sidebarblock>:last-child{margin-bottom:0}
 .sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
-.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content>:first-child,.sidebarblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child,.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
 .literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
 @media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
 @media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
@@ -395,7 +392,7 @@ b.conum *{color:inherit!important}
 dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
 h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
 p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
-p,blockquote,dt,td.content,span.alt,summary{font-size:1.0625rem}
+p,blockquote,dt,td.content,td.hdlist1,span.alt,summary{font-size:1.0625rem}
 p{margin-bottom:1.25rem}
 .sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
 .exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
@@ -659,7 +656,7 @@ pre.rouge {
 <h1>automx2: Email client configuration made easy</h1>
 <div class="details">
 <span id="revnumber">version 2023.0.dev1,</span>
-<span id="revdate">2023-05-31</span>
+<span id="revdate">2023-08-23</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -902,16 +899,16 @@ I recommend creating a fresh user account called <code>automx2</code>.</p>
 </div>
 <div class="paragraph">
 <p>Prepare the virtual environment for the automx2 web service, adjusting the installation path to your taste (automx2 itself does not care).
-The path <code>/srv/web/automx2</code> will be used as an example throughout this documentation.
+The path <code>/srv/www/automx2</code> will be used as an example throughout this documentation.
 The BASH shell commands below should work with any modern Linux distribution.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="c"># Best practice: Create a fresh user account.</span>
-<span class="nb">sudo </span>useradd <span class="nt">--home-dir</span> /srv/web/automx2 <span class="nt">--create-home</span> automx2
+<span class="nb">sudo </span>useradd <span class="nt">--home-dir</span> /srv/www/automx2 <span class="nt">--create-home</span> automx2
 
 <span class="c"># Alternative: If the user account already exists.</span>
-<span class="c"># sudo bash -c 'mkdir -p /srv/web/automx2 &amp;&amp; chown automx2 /srv/web/automx2'</span></code></pre>
+<span class="c"># sudo bash -c 'mkdir -p /srv/www/automx2 &amp;&amp; chown automx2 /srv/www/automx2'</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -921,7 +918,7 @@ Download the script that will download and setup your automx2 service:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> /srv/web/automx2
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> /srv/www/automx2
 wget https://github.com/rseichter/automx2/raw/master/contrib/setupvenv.sh
 <span class="nb">chmod </span>u+x setupvenv.sh</code></pre>
 </div>
@@ -959,7 +956,7 @@ Activate the virtual environment as usual and use pip&#8217;s <code>--upgrade</c
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> /srv/web/automx2
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> /srv/www/automx2
 <span class="nb">source</span> .venv/bin/activate
 pip <span class="nb">install</span> <span class="nt">--upgrade</span> automx2</code></pre>
 </div>
@@ -1557,7 +1554,7 @@ Mar 01 12:54:32 mail python[126966]:  <span class="k">*</span> Running on http:/
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> /srv/web/automx2
+<pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> /srv/www/automx2
 .venv/scripts/flask.sh run <span class="nt">--host</span><span class="o">=</span>127.0.0.1 <span class="nt">--port</span><span class="o">=</span>4243</code></pre>
 </div>
 </div>
@@ -1758,7 +1755,7 @@ The
 <div id="footer">
 <div id="footer-text">
 Version 2023.0.dev1<br>
-Last updated 2023-05-31 03:12:35 +0200
+Last updated 2023-08-23 17:46:10 +0200
 </div>
 </div>
 </body>

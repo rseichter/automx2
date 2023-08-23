@@ -21,16 +21,16 @@ I recommend creating a fresh user account called `automx2`.
 ====
 
 Prepare the virtual environment for the automx2 web service, adjusting the installation path to your taste (automx2 itself does not care).
-The path `/srv/web/automx2` will be used as an example throughout this documentation.
+The path `/srv/www/automx2` will be used as an example throughout this documentation.
 The BASH shell commands below should work with any modern Linux distribution.
 
 [source,bash]
 ----
 # Best practice: Create a fresh user account.
-sudo useradd --home-dir /srv/web/automx2 --create-home automx2
+sudo useradd --home-dir /srv/www/automx2 --create-home automx2
 
 # Alternative: If the user account already exists.
-# sudo bash -c 'mkdir -p /srv/web/automx2 && chown automx2 /srv/web/automx2'
+# sudo bash -c 'mkdir -p /srv/www/automx2 && chown automx2 /srv/www/automx2'
 ----
 
 Next, make sure to either login as the user created above, or change to this user via the 'su' command.
@@ -39,7 +39,7 @@ Download the script that will download and setup your automx2 service:
 
 [source,bash]
 ----
-cd /srv/web/automx2
+cd /srv/www/automx2
 wget https://github.com/rseichter/automx2/raw/master/contrib/setupvenv.sh
 chmod u+x setupvenv.sh
 ----
@@ -69,7 +69,7 @@ Activate the virtual environment as usual and use pip's `--upgrade` option:
 
 [source,bash]
 ----
-cd /srv/web/automx2
+cd /srv/www/automx2
 source .venv/bin/activate
 pip install --upgrade automx2
 ----
