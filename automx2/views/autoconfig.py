@@ -1,5 +1,5 @@
 """
-Copyright © 2019-2023 Ralph Seichter
+Copyright © 2019-2024 Ralph Seichter
 
 This file is part of automx2.
 

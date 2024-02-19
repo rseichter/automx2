@@ -1,2 +1,3 @@
+build
 coverage>=5.3
 flake8

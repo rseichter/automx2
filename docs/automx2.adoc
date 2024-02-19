@@ -3,9 +3,9 @@
 = automx2: Email client configuration made easy
 :keywords: autoconfig, autodiscover, mobileconfig, automx, automx2
 :subject: automx2: Email client configuration made easy
-:revnumber: 2023.0.dev1
-:revdate: 2023-08-23
-:copyright: © 2019-2023 Ralph Seichter
+:revnumber: 2024.0.dev1
+:revdate: 2024-02-19
+:copyright: © 2019-2024 Ralph Seichter
 :publisher: Ralph Seichter
 :lang: en
 :hyphens: en
@@ -26,7 +26,7 @@
 [[copyright]]
 == Copyright
 
-automx2 is Copyright © 2019-2023 Ralph Seichter.
+automx2 is Copyright © 2019-2024 Ralph Seichter.
 automx2 is licensed under the GNU General Public License V3 or later.
 The project is hosted on GitHub in the https://github.com/rseichter/automx2[rseichter/automx2] repository.
 
