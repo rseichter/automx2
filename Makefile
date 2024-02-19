@@ -1,11 +1,24 @@
 PKG 		= contrib/package.sh
 RUN_LDAP_TESTS	?= 0
 
-.PHONY:	clean dist docs push usage
+define usage
 
-usage:
-	@echo >&2 "Usage: make {clean | devtest | dist | docs | push}"
-	@exit 1
+Available make targets:
+
+  clean
+  devtest
+  dist
+  docs
+  help
+  push
+
+endef
+
+.PHONY:	clean devtest dist docs help push
+
+help:
+	$(info $(usage))
+	@exit 0
 
 clean:
 	$(PKG) clean || true
