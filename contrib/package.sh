@@ -40,17 +40,7 @@ function do_docs() {
 }
 
 function do_upload() {
-	if [ $# -gt 0 ]; then
-		repo="$1"
-	fi
-	local opt=(
-		'-sign'
-		'-i'
-		'6AE2A84723D56D985B340BC08E5FA4709F69E911'
-		'-r'
-		"${repo:-testpypi}"
-	)
-	twine upload "${opt[@]}" dist/*
+	twine upload dist/*
 }
 
 function do_setver() {
