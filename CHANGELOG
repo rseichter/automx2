@@ -31,7 +31,7 @@
 
 2022.1 (2022-05-20): Request content type verification now works if additional parameters like "charset" are passed.
 
-2024.0.dev1 (TBA): Removed redundant Flask initialisation call in unit tests. This call caused errors when running the
-  test suite with recent versions of SQLAlchemy.
+2024.0 (2024-02-19): Remove redundant Flask initialisation call in unit tests. This call caused errors when running
+  the test suite with recent versions of SQLAlchemy.
   Introduce PEP 517 compliant build.
 
