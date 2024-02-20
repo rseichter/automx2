@@ -22,7 +22,7 @@ if [ ! -f ${AUTOMX2_CONF} ]; then
 fi
 
 function usage() {
-	echo "Usage: $(basename ${0}) [coverage]" >&2
+	echo "Usage: $(basename "${0}") [coverage]" >&2
 	exit 1
 }
 
@@ -34,15 +34,15 @@ function run_tests() {
 	)
 	local cmd="${1}"
 	shift
-	env "${env_[@]}" ${cmd} -m unittest discover tests/ "$@"
+	env "${env_[@]}" "${cmd}" -m unittest discover tests/ "$@"
 }
 
 function run_coverage() {
 	local rcf="--rcfile=tests/coverage.rc"
 	local opt="${rcf} --precision=1 --skip-empty"
 	run_tests "coverage run ${rcf} --source=automx2"
-	coverage report ${opt}
-	coverage html ${opt}
+	coverage report "${opt}"
+	coverage html "${opt}"
 }
 
 if [ $# -gt 0 ]; then

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim:ts=4:sw=4:noet
+# vim: ts=4 sw=4 noet
 #
 # Script to package automx2 for distribution and to handle PyPI uploads.
 # You need Python modules 'wheel' and 'twine' to publish to PyPI, and
@@ -9,10 +9,9 @@
 set -euo pipefail
 
 function usage() {
-	local n="$(basename $0)"
+	local n="$(basename "${0}")"
 	cat >&2 <<EOT
-Usage: ${n} {clean | dist | docs}
-       ${n} upload [repository]
+Usage: ${n} {clean | dist | docs | pypi}
        ${n} setver {version}
 EOT
 	exit 1
@@ -39,7 +38,7 @@ function do_docs() {
 	popd >/dev/null
 }
 
-function do_upload() {
+function do_pypi() {
 	twine upload dist/*
 }
 
@@ -52,18 +51,18 @@ function do_setver() {
 }
 
 [ $# -gt 0 ] || usage
-arg="$1"
+arg="${1}"
 shift
-case "$arg" in
-	clean | docs)
-		do_$arg
+case "${arg}" in
+	clean|docs)
+		do_"${arg}"
 		;;
-	dist | upload)
+	dist|pypi)
 		source .venv/bin/activate
-		do_$arg "$@"
+		do_"${arg}" "$@"
 		;;
 	setver)
-		do_$arg "$@"
+		do_"${arg}" "$@"
 		;;
 	*)
 		usage

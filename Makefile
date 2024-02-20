@@ -11,10 +11,11 @@ Available make targets:
   docs
   help
   push
+  scheck
 
 endef
 
-.PHONY:	clean devtest dist docs help push
+.PHONY:	clean devtest dist docs help push scheck
 
 help:
 	$(info $(usage))
@@ -35,3 +36,6 @@ docs:
 
 push:
 	@for r in $(shell git remote); do git push $$r; done
+
+scheck:
+	shellcheck -e SC2155 -x contrib/*.sh
