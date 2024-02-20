@@ -35,12 +35,12 @@ from automx2.ldap import STATUS_NO_MATCH
 from automx2.ldap import STATUS_SUCCESS
 from automx2.model import Ldapserver
 from automx2.util import unique
-from tests.base import RUN_LDAP_TESTS
-from tests.base import TestCase
-from tests.base import app
+from tests import RUN_LDAP_TESTS
+from tests import TestCase
+from tests import app
 
 
-@unittest.skipUnless(RUN_LDAP_TESTS, 'Skipping LDAP tests')
+@unittest.skipUnless(RUN_LDAP_TESTS, 'LDAP tests disabled')
 class LdapTests(TestCase):
     """Tests for LDAP access methods."""
     EXISTS_LOCAL = 'a'
@@ -65,7 +65,7 @@ class LdapTests(TestCase):
     def test_attribute_missing(self):
         self.assertIsNone(self.ldap.get_attribute(self.ATTRIBUTES, 'y'))
 
-    @unittest.skip  # Avoid triggering fail2ban
+    @unittest.skipUnless(RUN_LDAP_TESTS, 'LDAP tests disabled')
     def test_bind_failed(self):
         self.ldap = LdapAccess(hostname=LDAP_HOSTNAME, user=LDAP_BIND_USER, password=self.UNIQUE)
         x: LookupResult = self.ldap.lookup(LDAP_SEARCH_BASE, self.search_filter(self.EXISTS_EMAIL))

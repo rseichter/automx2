@@ -30,8 +30,9 @@ from automx2.database import SERVERLESS_DOMAIN
 from automx2.database import sample_server_names
 from automx2.server import MOZILLA_CONFIG_ROUTE
 from automx2.views import CONTENT_TYPE_XML
-from tests.base import TestCase
-from tests.base import body
+from tests import NETWORK_TESTS
+from tests import TestCase
+from tests import body
 
 
 class MozillaRoutes(TestCase):
@@ -59,6 +60,7 @@ class MozillaRoutes(TestCase):
             r = self.get_mozilla_config('a@b.c')
             self.assertEqual(204, r.status_code)
 
+    @unittest.skipUnless(NETWORK_TESTS, 'network tests disabled')
     def test_mozilla_domain_match(self):
         with self.app:
             r = self.get_mozilla_config(f'a@{EXAMPLE_COM}')

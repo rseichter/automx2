@@ -19,8 +19,8 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 import unittest
 
 from automx2.server import MOZILLA_CONFIG_ROUTE
-from tests.base import TestCase
-from tests.base import body
+from tests import TestCase
+from tests import body
 
 
 class IndexRoute(TestCase):

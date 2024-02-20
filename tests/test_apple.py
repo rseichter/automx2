@@ -33,8 +33,9 @@ from automx2.model import Server
 from automx2.server import APPLE_CONFIG_ROUTE
 from automx2.util import unique
 from automx2.views.mobileconfig import CONTENT_TYPE_APPLE
-from tests.base import TestCase
-from tests.base import body
+from tests import NETWORK_TESTS
+from tests import TestCase
+from tests import body
 
 
 class AppleRoutes(TestCase):
@@ -81,6 +82,7 @@ class AppleRoutes(TestCase):
             r = self.get_apple_config('a@b.c')
             self.assertEqual(204, r.status_code)
 
+    @unittest.skipUnless(NETWORK_TESTS, 'network tests disabled')
     def test_apple_domain_match(self):
         with self.app:
             r = self.get_apple_config(f'a@{EXAMPLE_COM}')

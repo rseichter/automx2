@@ -35,3 +35,5 @@
   the test suite with recent versions of SQLAlchemy.
   Introduce PEP 517 compliant build.
 
+2024.1 (TBA): Fix packaging of unit tests.
+  Permit network tests to be enabled/disabled.
