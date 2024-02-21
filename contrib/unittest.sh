@@ -32,8 +32,9 @@ function run_tests() {
 		RUN_LDAP_TESTS=0
 		PYTHONPATH=.
 	)
-	local cmd="${1}"
+	local cmd=${1}
 	shift
+	# shellcheck disable=SC2086
 	env "${env_[@]}" ${cmd} -m unittest discover tests/ "$@"
 }
 
