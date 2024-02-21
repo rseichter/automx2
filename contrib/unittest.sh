@@ -34,7 +34,7 @@ function run_tests() {
 	)
 	local cmd="${1}"
 	shift
-	env "${env_[@]}" "${cmd}" -m unittest discover tests/ "$@"
+	env "${env_[@]}" ${cmd} -m unittest discover tests/ "$@"
 }
 
 function run_coverage() {
