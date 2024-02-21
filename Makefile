@@ -36,7 +36,7 @@ docs:
 	$(package) docs
 
 push:
-	@for _r in $(shell git remote); do git push $$_r; done
+	for _r in $(shell git remote); do git push $$_r; done; unset _r
 
 schk:
 	shellcheck -e SC2155 -x contrib/*.sh
