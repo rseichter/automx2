@@ -1,4 +1,4 @@
-# automx2: Email client configuration made easy
+# automx2: Mail User Agent (email client) configuration made easy
 
 automx2 makes configuring email accounts easy. It unites methods for automated mailbox configuration from Apple's
 [Mobileconfig](https://support.apple.com/de-de/guide/profile-manager/pmdbd71ebc9/mac), Microsoft's
