@@ -1,41 +1,42 @@
-PKG 		= contrib/package.sh
-RUN_LDAP_TESTS	?= 0
+# vim: ts=4 sw=4 noet
+package 	= contrib/package.sh
+test_env	?= AUTOMX2_CONF=tests/unittest.conf NETWORK_TESTS=1 RUN_LDAP_TESTS=0 PYTHONPATH=.
 
 define usage
 
 Available make targets:
 
-  clean
-  devtest
-  dist
-  docs
-  help
-  push
-  scheck
+  clean  Cleanup build artifacts
+  dist   Build distribution artifacts
+  docs   Generate documentation
+  dtest  Developer tests
+  help   Display this text
+  push   Push to all configured Git remotes
+  schk   Shell script check
 
 endef
 
-.PHONY:	clean devtest dist docs help push scheck
+.PHONY:	clean dtest dist docs help push schk
 
 help:
 	$(info $(usage))
 	@exit 0
 
 clean:
-	$(PKG) clean || true
+	$(package) clean || true
 
-devtest:
-	AUTOMX2_CONF=tests/unittest.conf RUN_LDAP_TESTS=$(RUN_LDAP_TESTS) PYTHONPATH=. coverage run --source automx2 -m unittest discover -v tests/
+dtest:
+	$(test_env) coverage run --source automx2 -m unittest discover -v tests/
 	coverage html --rcfile=tests/coverage.rc
 
 dist:
-	$(PKG) dist
+	$(package) dist
 
 docs:
-	$(PKG) docs
+	$(package) docs
 
 push:
-	@for r in $(shell git remote); do git push $$r; done
+	@for _r in $(shell git remote); do git push $$_r; done
 
-scheck:
+schk:
 	shellcheck -e SC2155 -x contrib/*.sh
