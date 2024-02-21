@@ -17,15 +17,15 @@ EOT
 	exit 1
 }
 
-function do_clean() {
-	/bin/rm -r build/* dist/*
+function _clean() {
+	/bin/rm -fr build/* dist/*
 }
 
-function do_dist() {
+function _dist() {
 	python -m build --no-isolation
 }
 
-function do_docs() {
+function _docs() {
 	local ad="${HOME}/.gem/ruby/3.0.0/bin/asciidoctor"
 	local opt=(
 		'-r' 'asciidoctor-diagram'
@@ -34,37 +34,38 @@ function do_docs() {
 	)
 	pushd docs >/dev/null
 	"${ad}-pdf" -a toc=preamble "${opt[@]}"
-	${ad} -a toc=right -o index.html "${opt[@]}"
+	"${ad}" -a toc=right -o index.html "${opt[@]}"
 	popd >/dev/null
 }
 
-function do_pypi() {
+function _pypi() {
 	twine upload dist/*
 }
 
-function do_setver() {
-	[ $# -gt 0 ] || usage
+function _setver() {
+	[[ $# -gt 0 ]] || usage
 	sed -E -i -e "s/^(VERSION =).*/\1 '${1}'/" automx2/__init__.py
 	sed -E -i -e "s/^(version =).*/\1 ${1}/" setup.cfg
 	sed -E -i -e "s/^(:revnumber:).+/\1 ${1}/" docs/automx2.adoc
 	sed -E -i -e "s/^(:revdate:).+/\1 $(date +%F)/" docs/automx2.adoc
 }
 
-[ $# -gt 0 ] || usage
-arg="${1}"
+[[ $# -gt 0 ]] || usage
+declare -r verb="${1}"
 shift
-case "${arg}" in
+case "${verb}" in
 	clean|docs)
-		do_"${arg}"
+		_"${verb}"
 		;;
 	dist|pypi)
-		source .venv/bin/activate
-		do_"${arg}" "$@"
+		. .venv/bin/activate
+		_"${verb}" "$@"
 		;;
 	setver)
-		do_"${arg}" "$@"
+		_"${verb}" "$@"
 		;;
 	*)
 		usage
 		;;
 esac
+unset verb
