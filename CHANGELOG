@@ -38,3 +38,5 @@
 2024.1 (2024-02-21): Fix unit tests packaging problem.
   Bundle documentation for offline use.
   Permit network tests to be enabled/disabled on demand.
+
+2024.2 (TBA): Update CI tests (drop Python version 3.7, include 3.13).
