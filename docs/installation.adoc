@@ -9,7 +9,7 @@ Check the python3 version like this:
 [source,bash]
 ----
 $ python3 --version
-Python 3.9.11
+Python 3.12.3
 ----
 
 [IMPORTANT]
@@ -29,7 +29,6 @@ Please make sure to check the version numbers if you decide to go this route.
 === Pip based installation
 
 This is the method which should always provide you with the latest release.
-Prepare the virtual environment for the automx2 web service, adjusting the installation path to your taste (automx2 itself does not care).
 The path `/srv/www/automx2` will be used as an example throughout this documentation.
 The BASH shell commands below should work with any modern Linux distribution.
 
@@ -49,35 +48,21 @@ Download the script that will download and setup your automx2 service:
 [source,bash]
 ----
 cd /srv/www/automx2
-wget https://raw.githubusercontent.com/rseichter/automx2/master/contrib/setupvenv.sh
-chmod u+x setupvenv.sh
+wget https://raw.githubusercontent.com/rseichter/automx2/master/contrib/install.sh
+# Alternative: curl -O https://raw.githubusercontent.com/rseichter/automx2/master/contrib/install.sh
+bash ./install.sh
 ----
 
 Executing the setup script will create a Python virtual environment called `.venv` in the current directory.
+You may pass a custom directory path as an argument to install.sh, if necessary.
 
 [source,bash]
 ----
-./setupvenv.sh
+bash ./install.sh /path/to/your/venv
 ----
 
-Activate the virtual environment and install the latest automx2 release from PyPI.
-Make sure to pick the correct activation for your shell from the `.venv/bin` directory.
-This is an example for BASH:
-
-[source,bash]
-----
-source .venv/bin/activate
-pip install automx2
-----
-
-Ensure that the flask.sh wrapper script is both available and executable:
-
-[source,bash]
-----
-cd .venv/bin
-wget https://raw.githubusercontent.com/rseichter/automx2/master/contrib/flask.sh
-chmod u+x flask.sh
-----
+The script will automatically download the automx2 Python module and place it inside the newly created virtual environment.
+It will also create a launch script `.venv/bin/flask.sh`, which can run automx2 after you prepared the configuration.
 
 === Updating
 
@@ -90,6 +75,5 @@ Activate the virtual environment as usual and use pip's `--upgrade` option:
 [source,bash]
 ----
 cd /srv/www/automx2
-source .venv/bin/activate
-pip install --upgrade automx2
+.venv/bin/pip install --upgrade automx2
 ----

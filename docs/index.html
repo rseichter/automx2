@@ -782,7 +782,7 @@ Check the python3 version like this:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="nv">$ </span>python3 <span class="nt">--version</span>
-Python 3.9.11</code></pre>
+Python 3.12.3</code></pre>
 </div>
 </div>
 <div class="admonitionblock important">
@@ -814,7 +814,6 @@ Please make sure to check the version numbers if you decide to go this route.</p
 <h3 id="_pip_based_installation"><a class="anchor" href="#_pip_based_installation"></a>6.2. Pip based installation</h3>
 <div class="paragraph">
 <p>This is the method which should always provide you with the latest release.
-Prepare the virtual environment for the automx2 web service, adjusting the installation path to your taste (automx2 itself does not care).
 The path <code>/srv/www/automx2</code> will be used as an example throughout this documentation.
 The BASH shell commands below should work with any modern Linux distribution.</p>
 </div>
@@ -835,38 +834,23 @@ Download the script that will download and setup your automx2 service:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> /srv/www/automx2
-wget https://raw.githubusercontent.com/rseichter/automx2/master/contrib/setupvenv.sh
-<span class="nb">chmod </span>u+x setupvenv.sh</code></pre>
+wget https://raw.githubusercontent.com/rseichter/automx2/master/contrib/install.sh
+<span class="c"># Alternative: curl -O https://raw.githubusercontent.com/rseichter/automx2/master/contrib/install.sh</span>
+bash ./install.sh</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Executing the setup script will create a Python virtual environment called <code>.venv</code> in the current directory.</p>
+<p>Executing the setup script will create a Python virtual environment called <code>.venv</code> in the current directory.
+You may pass a custom directory path as an argument to install.sh, if necessary.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">./setupvenv.sh</code></pre>
+<pre class="rouge highlight"><code data-lang="bash">bash ./install.sh /path/to/your/venv</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Activate the virtual environment and install the latest automx2 release from PyPI.
-Make sure to pick the correct activation for your shell from the <code>.venv/bin</code> directory.
-This is an example for BASH:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nb">source</span> .venv/bin/activate
-pip <span class="nb">install </span>automx2</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Ensure that the flask.sh wrapper script is both available and executable:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> .venv/bin
-wget https://raw.githubusercontent.com/rseichter/automx2/master/contrib/flask.sh
-<span class="nb">chmod </span>u+x flask.sh</code></pre>
-</div>
+<p>The script will automatically download the automx2 Python module and place it inside the newly created virtual environment.
+It will also create a launch script <code>.venv/bin/flask.sh</code>, which can run automx2 after you prepared the configuration.</p>
 </div>
 </div>
 <div class="sect2">
@@ -882,8 +866,7 @@ Activate the virtual environment as usual and use pip&#8217;s <code>--upgrade</c
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> /srv/www/automx2
-<span class="nb">source</span> .venv/bin/activate
-pip <span class="nb">install</span> <span class="nt">--upgrade</span> automx2</code></pre>
+.venv/bin/pip <span class="nb">install</span> <span class="nt">--upgrade</span> automx2</code></pre>
 </div>
 </div>
 </div>
