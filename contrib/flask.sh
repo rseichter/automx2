@@ -12,19 +12,15 @@
 # Launches application for http://somehost.example.com/ . This allows
 # automx2 to run without a proxy server.
 
-set -euo pipefail
-source .venv/bin/activate
-
 # User configurable section -- START
 
 # If you want to override the paths where automx2 searches for configuration
 # files, set the following environment variable to an absolute path.
 #export AUTOMX2_CONF='/path/to/your/automx2.conf'
-
 # Set the following to either 'development' or 'production'.
-export FLASK_ENV='production'
+export FLASK_ENV=production
 
 # User configurable section -- END
 
-export FLASK_APP='automx2.server:app'
-flask "$@"
+export FLASK_APP=automx2.server:app
+"$(dirname "$0")/flask" "$@"
