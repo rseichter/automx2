@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim:tabstop=4:noexpandtab
+# vim: ts=4 sw=4 noet
 #
 # Generates SQL statements to add a provider, servers, and domain.
 # Adapt the configurable section below to your needs.

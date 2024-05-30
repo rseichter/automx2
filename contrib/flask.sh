@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# vim:ts=4:sw=4:noet
+# vim: ts=4 sw=4 noet
 #
 # Launches automx2 as a Flask application. Execute this script from
 # within the parent directory of your Python venv. Example usage:
