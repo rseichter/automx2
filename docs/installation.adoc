@@ -20,6 +20,15 @@ Doing so would pose a security risk and is therefore strongly discouraged.
 I recommend creating a fresh user account called `automx2`.
 ====
 
+=== Package based installation
+
+There are packages available for link:https://aur.archlinux.org/packages/automx2[Arch Linux] and link:https://packages.gentoo.org/packages/net-mail/automx2[Gentoo Linux].
+Note that these packages may not alway be up to date, because Linux distributions have their own release schedules.
+Please make sure to check the version numbers if you decide to go this route.
+
+=== Pip based installation
+
+This is the method which should always provide you with the latest release.
 Prepare the virtual environment for the automx2 web service, adjusting the installation path to your taste (automx2 itself does not care).
 The path `/srv/www/automx2` will be used as an example throughout this documentation.
 The BASH shell commands below should work with any modern Linux distribution.
@@ -70,9 +79,11 @@ wget https://raw.githubusercontent.com/rseichter/automx2/master/contrib/flask.sh
 chmod u+x flask.sh
 ----
 
-[NOTE]
-.Updating to a newer automx2 release
-====
+=== Updating
+
+If you use pre-built packages, please consult the documentation for your specific Linux distribution.
+The following applies only to pip based installations:
+
 Change to the directory where automx2 has been installed previously.
 Activate the virtual environment as usual and use pip's `--upgrade` option:
 
@@ -82,4 +93,3 @@ cd /srv/www/automx2
 source .venv/bin/activate
 pip install --upgrade automx2
 ----
-====

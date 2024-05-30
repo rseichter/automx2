@@ -572,7 +572,13 @@ pre.rouge .gs {
 <li><a href="#dnsrr">5.4. DNS SRV resource records</a></li>
 </ul>
 </li>
-<li><a href="#install">6. Installing automx2</a></li>
+<li><a href="#install">6. Installing automx2</a>
+<ul class="sectlevel2">
+<li><a href="#_package_based_installation">6.1. Package based installation</a></li>
+<li><a href="#_pip_based_installation">6.2. Pip based installation</a></li>
+<li><a href="#_updating">6.3. Updating</a></li>
+</ul>
+</li>
 <li><a href="#configure">7. Configuring automx2</a>
 <ul class="sectlevel2">
 <li><a href="#placeholders">7.1. Placeholders</a></li>
@@ -796,8 +802,19 @@ I recommend creating a fresh user account called <code>automx2</code>.</p>
 </tr>
 </table>
 </div>
+<div class="sect2">
+<h3 id="_package_based_installation"><a class="anchor" href="#_package_based_installation"></a>6.1. Package based installation</h3>
 <div class="paragraph">
-<p>Prepare the virtual environment for the automx2 web service, adjusting the installation path to your taste (automx2 itself does not care).
+<p>There are packages available for <a href="https://aur.archlinux.org/packages/automx2">Arch Linux</a> and <a href="https://packages.gentoo.org/packages/net-mail/automx2">Gentoo Linux</a>.
+Note that these packages may not alway be up to date, because Linux distributions have their own release schedules.
+Please make sure to check the version numbers if you decide to go this route.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_pip_based_installation"><a class="anchor" href="#_pip_based_installation"></a>6.2. Pip based installation</h3>
+<div class="paragraph">
+<p>This is the method which should always provide you with the latest release.
+Prepare the virtual environment for the automx2 web service, adjusting the installation path to your taste (automx2 itself does not care).
 The path <code>/srv/www/automx2</code> will be used as an example throughout this documentation.
 The BASH shell commands below should work with any modern Linux distribution.</p>
 </div>
@@ -851,14 +868,13 @@ wget https://raw.githubusercontent.com/rseichter/automx2/master/contrib/flask.sh
 <span class="nb">chmod </span>u+x flask.sh</code></pre>
 </div>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-<div class="title">Updating to a newer automx2 release</div>
+</div>
+<div class="sect2">
+<h3 id="_updating"><a class="anchor" href="#_updating"></a>6.3. Updating</h3>
+<div class="paragraph">
+<p>If you use pre-built packages, please consult the documentation for your specific Linux distribution.
+The following applies only to pip based installations:</p>
+</div>
 <div class="paragraph">
 <p>Change to the directory where automx2 has been installed previously.
 Activate the virtual environment as usual and use pip&#8217;s <code>--upgrade</code> option:</p>
@@ -870,9 +886,6 @@ Activate the virtual environment as usual and use pip&#8217;s <code>--upgrade</c
 pip <span class="nb">install</span> <span class="nt">--upgrade</span> automx2</code></pre>
 </div>
 </div>
-</td>
-</tr>
-</table>
 </div>
 </div>
 </div>
@@ -1102,7 +1115,8 @@ The required data format is as follows:</p>
 </div>
 <div class="paragraph">
 <p>If you prefer SQL statements for greater control of the database content, the Git repository contains a <a href="../contrib/sqlite-generate.sh">sqlite-generate.sh</a> helper script which demonstrates how the database can be populated programmatically.
-You only need to adapt a few settings according to your needs:</p>
+Note that this is merely an example script, limited in scope, and not meant to configure a production-ready service.
+Also, you need to adapt a few settings according to your needs:</p>
 </div>
 <div class="listingblock">
 <div class="content">

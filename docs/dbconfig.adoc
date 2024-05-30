@@ -71,7 +71,8 @@ include::../contrib/seed-example.json[]
 Using JSON is recommended when you are content with automx2 choosing some details like port numbers or socket types for you.
 
 If you prefer SQL statements for greater control of the database content, the Git repository contains a xref:../contrib/sqlite-generate.sh[sqlite-generate.sh] helper script which demonstrates how the database can be populated programmatically.
-You only need to adapt a few settings according to your needs:
+Note that this is merely an example script, limited in scope, and not meant to configure a production-ready service.
+Also, you need to adapt a few settings according to your needs:
 
 [source,bash]
 ----
