@@ -68,4 +68,3 @@ case "${verb}" in
 		usage
 		;;
 esac
-unset verb
