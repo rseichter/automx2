@@ -41,7 +41,6 @@ function download {
 	else
 		die "Found neither curl nor wget in PATH, exiting."
 	fi
-	chmod 0755 "$dest"
 }
 
 function main {
@@ -59,6 +58,7 @@ function main {
 	flask="$venv/bin/flask.sh"
 	echo "Download wrapper script $flask"
 	download https://raw.githubusercontent.com/rseichter/automx2/master/contrib/flask.sh "$flask"
+	chmod 0755 "$flask"
 	pip="$venv/bin/pip"
 	"$pip" install -U pip wheel setuptools
 	"$pip" install automx2
