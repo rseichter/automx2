@@ -40,7 +40,7 @@ Download the script that will download and setup your automx2 service:
 [source,bash]
 ----
 cd /srv/www/automx2
-wget https://github.com/rseichter/automx2/raw/master/contrib/setupvenv.sh
+wget https://raw.githubusercontent.com/rseichter/automx2/master/contrib/setupvenv.sh
 chmod u+x setupvenv.sh
 ----
 
@@ -59,6 +59,15 @@ This is an example for BASH:
 ----
 source .venv/bin/activate
 pip install automx2
+----
+
+Ensure that the flask.sh wrapper script is both available and executable:
+
+[source,bash]
+----
+cd .venv/bin
+wget https://raw.githubusercontent.com/rseichter/automx2/master/contrib/flask.sh
+chmod u+x flask.sh
 ----
 
 [NOTE]

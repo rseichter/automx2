@@ -26,7 +26,7 @@ function _dist() {
 }
 
 function _docs() {
-	local ad="${HOME}/.gem/ruby/3.0.0/bin/asciidoctor"
+	local ad="${HOME}/.gem/ruby/3.1.0/bin/asciidoctor"
 	local opt=(
 		'-r' 'asciidoctor-diagram'
 		'-v'
