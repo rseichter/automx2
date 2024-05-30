@@ -92,12 +92,12 @@ You are now ready to start testing automx2, as described <<localtest,below>>.
 
 === Manually from a shell
 
-While logged in as an unprivileged user, change into the installation directory and start the `.venv/scripts/flask.sh` launch script:
+While logged in as an unprivileged user, change into the installation directory and start the `.venv/bin/flask.sh` launch script:
 
 [source,bash]
 ----
 cd /srv/www/automx2
-.venv/scripts/flask.sh run --host=127.0.0.1 --port=4243
+.venv/bin/flask.sh run --host=127.0.0.1 --port=4243
 ----
 
 [NOTE]
