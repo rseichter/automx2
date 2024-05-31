@@ -829,23 +829,27 @@ The BASH shell commands below should work with any modern Linux distribution.</p
 <div class="paragraph">
 <p>Next, make sure to either login as the user created above, or change to this user via the 'su' command.
 This is important to ensure the correct file permissions.
-Download the script that will download and setup your automx2 service:</p>
+Now download the script that will install your automx2 service.
+Installation requires BASH plus either curl or wget to download additional data.
+The script will abort if neither of the latter two can be found.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> /srv/www/automx2
 wget https://raw.githubusercontent.com/rseichter/automx2/master/contrib/install.sh
 <span class="c"># Alternative: curl -O https://raw.githubusercontent.com/rseichter/automx2/master/contrib/install.sh</span>
-bash ./install.sh</code></pre>
+bash install.sh</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>Executing the setup script will create a Python virtual environment called <code>.venv</code> in the current directory.
-You may pass a custom directory path as an argument to install.sh, if necessary.</p>
+You may pass a custom directory path as an argument to install.sh, if necessary.
+To ensure a clean slate, installation will abort if the destination path already exists.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">bash ./install.sh /path/to/your/venv</code></pre>
+<pre class="rouge highlight"><code data-lang="bash"><span class="c"># Example of how to pass a custom directory</span>
+bash install.sh /path/to/your/venv</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1661,7 +1665,7 @@ The
 <div id="footer">
 <div id="footer-text">
 Version 2024.2.dev1<br>
-Last updated 2024-05-30 08:28:42 +0200
+Last updated 2024-05-30 15:32:57 +0200
 </div>
 </div>
 </body>

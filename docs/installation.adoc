@@ -43,22 +43,26 @@ sudo useradd --home-dir /srv/www/automx2 --create-home automx2
 
 Next, make sure to either login as the user created above, or change to this user via the 'su' command.
 This is important to ensure the correct file permissions.
-Download the script that will download and setup your automx2 service:
+Now download the script that will install your automx2 service.
+Installation requires BASH plus either curl or wget to download additional data.
+The script will abort if neither of the latter two can be found.
 
 [source,bash]
 ----
 cd /srv/www/automx2
 wget https://raw.githubusercontent.com/rseichter/automx2/master/contrib/install.sh
 # Alternative: curl -O https://raw.githubusercontent.com/rseichter/automx2/master/contrib/install.sh
-bash ./install.sh
+bash install.sh
 ----
 
 Executing the setup script will create a Python virtual environment called `.venv` in the current directory.
 You may pass a custom directory path as an argument to install.sh, if necessary.
+To ensure a clean slate, installation will abort if the destination path already exists.
 
 [source,bash]
 ----
-bash ./install.sh /path/to/your/venv
+# Example of how to pass a custom directory
+bash install.sh /path/to/your/venv
 ----
 
 The script will automatically download the automx2 Python module and place it inside the newly created virtual environment.
