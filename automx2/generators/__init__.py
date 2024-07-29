@@ -40,7 +40,7 @@ def xml_to_string(root_element: Element) -> str:
 
 
 class ConfigGenerator:
-    def client_config(self, local_part: str, domain_part: str, display_name: str) -> str:
+    def client_config(self, local_part: str, domain_part: str, display_name: str, password: str) -> str:
         raise NotImplementedError
 
     @staticmethod

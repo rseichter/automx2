@@ -49,7 +49,7 @@ class MozillaGenerator(ConfigGenerator):
         SubElement(element, 'username').text = self.pick_one(server.user_name, override_uid)
         SubElement(element, 'authentication').text = server.authentication
 
-    def client_config(self, local_part, domain_part: str, display_name: str) -> str:
+    def client_config(self, local_part, domain_part: str, display_name: str, ignored_password: str) -> str:
         root_element = Element('clientConfig', attrib={'version': '1.1'})
         domain: Domain = Domain.query.filter_by(name=domain_part).first()
         if not domain:

@@ -47,5 +47,5 @@ class MozillaView(MailConfig, MethodView):
             abort(400)
 
     def config_response(self, local_part, domain_part: str, realname: str, password: str) -> str:
-        data = MozillaGenerator().client_config(local_part, domain_part, realname)
+        data = MozillaGenerator().client_config(local_part, domain_part, realname, '')
         return data
