@@ -4,7 +4,7 @@
 == How does auto config work?
 
 Modern email clients (Mail User Agents) can look for configuration data when a user begins to create a new account.
-They will either send the user's mail address to a service and ask the service to reply with configuration that suits the user's profile or they will query the DNS system for advice.
+They will either send the user's mail address to a service and ask the service to reply with configuration that suits the user's profile, or they will query the DNS system for advice.
 
 Using a specialized mail account configuration service allows for individualized setups.
 It also allows to enforce a specific policy, which for example configures the mail client to use a specific authentication mechanism.
@@ -71,7 +71,7 @@ dns: _autodiscover._tcp.example.com
 ----
 
 All HTTP(S) queries send a POST request and submit XML which contains information about the account that should be configured.
-The DNS queries search for a `CNAME` resource record first, which is supposed to redirect the mail client to a resource outside of the mailbox owners domain, e.g. _alice@example.com_ would be redirected to `service.example-provider.com` for configuration instructions.
+The DNS queries search for a `CNAME` resource record first, which is supposed to redirect the mail client to a resource outside the mailbox owners domain, e.g. _alice@example.com_ would be redirected to `service.example-provider.com` for configuration instructions.
 If the first DNS query fails the client may be redirected to a configuration service using a `SRV` RR like this:
 
 [source,bind]

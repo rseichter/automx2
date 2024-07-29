@@ -4,7 +4,7 @@ automx2 makes configuring email accounts easy. It unites methods for automated m
 [Mobileconfig](https://support.apple.com/de-de/guide/profile-manager/pmdbd71ebc9/mac), Microsoft's
 [Autodiscover](https://docs.microsoft.com/de-de/exchange/architecture/client-access/autodiscover?view=exchserver-2019)
 and Mozilla's [Autoconfig](https://developer.mozilla.org/de/docs/Mozilla/Thunderbird/Autokonfiguration) in one tool.
-automx2 is successor to automx. It has been designed to be easier to setup, easier to configure and easier to use.
+automx2 is successor to automx. It has been designed to be easier to set up, easier to configure and easier to use.
 
 ## Copyright
 

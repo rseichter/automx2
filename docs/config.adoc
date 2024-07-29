@@ -14,7 +14,7 @@ While based on a proprietary feature of Autoconfig, automx2 also applies placeho
 
 === Runtime configuration
 
-The configuration file defines automx2 runtime behaviour and it specifies the backend automx2 should read mailbox account configuration data from.
+The configuration file defines automx2 runtime behaviour, and it specifies the backend automx2 should read mailbox account configuration data from.
 
 [NOTE]
 .Running without runtime config

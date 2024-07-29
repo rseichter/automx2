@@ -35,7 +35,7 @@ proxy_count = 1
 [[nginx]]
 === NGINX
 
-The following example defines a HTTP server, which will listen for requests to both _autoconfig.example.com_ and _autodiscover.example.com_.
+The following example defines an HTTP server, which will listen for requests to both _autoconfig.example.com_ and _autodiscover.example.com_.
 All requests will be forwarded to automx2, which listens on TCP port 4243 in this example.
 Requests to `/initdb` are restricted to clients connecting from the local host.
 The

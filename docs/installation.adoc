@@ -15,7 +15,7 @@ Python 3.12.3
 [IMPORTANT]
 .Don't run as root
 ====
-If you use a port number greater than 1024 (I suggest port 4243), the application does not require super user privileges when running.
+If you use a port number greater than 1024 (I suggest port 4243), the application does not require superuser privileges when running.
 Doing so would pose a security risk and is therefore strongly discouraged.
 I recommend creating a fresh user account called `automx2`.
 ====
@@ -23,7 +23,7 @@ I recommend creating a fresh user account called `automx2`.
 === Package based installation
 
 There are packages available for link:https://aur.archlinux.org/packages/automx2[Arch Linux], link:https://packages.gentoo.org/packages/net-mail/automx2[Gentoo Linux] and link:https://search.nixos.org/packages?type=packages&query=automx[NixOS].
-Note that these packages may not alway be up to date, because Linux distributions have their own release schedules.
+Note that these packages may not alway be up-to-date, because Linux distributions have their own release schedules.
 Please make sure to check the version numbers if you decide to go this route.
 
 === Pip based installation
