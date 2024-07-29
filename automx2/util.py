@@ -20,6 +20,7 @@ import os
 import re
 from uuid import uuid4
 
+from automx2 import AutomxException
 from automx2 import InvalidEMailAddressError
 from automx2 import PLACEHOLDER_ADDRESS
 from automx2 import PLACEHOLDER_DOMAIN
@@ -29,10 +30,16 @@ from automx2 import log
 email_address_re = re.compile(r'^([^@]+)@([^@]+)$', re.IGNORECASE)
 
 
-def from_dict(data: dict, key: str, default: object = None):
+def dictget_optional(data: dict, key: str, default: object = None):
     if key in data:
         return data[key]
     return default
+
+
+def dictget_mandatory(data: dict, key: str):
+    if key in data:
+        return data[key]
+    raise AutomxException(f'Missing mandatory key "{key}"')
 
 
 def from_environ(env_var_name: str, default: object = None):

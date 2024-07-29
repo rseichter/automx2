@@ -27,7 +27,8 @@ from automx2.model import Ldapserver
 from automx2.model import Provider
 from automx2.model import Server
 from automx2.model import db
-from automx2.util import from_dict
+from automx2.util import dictget_mandatory
+from automx2.util import dictget_optional
 from automx2.util import from_environ
 from automx2.util import unique
 
@@ -118,13 +119,13 @@ def populate_with_example_data():
 
 
 def populate_with_dict(config: dict) -> None:
-    name: str = config['provider']
+    name: str = dictget_mandatory(config, 'provider')
     short_name = name.split(' ')[0]
     provider = Provider(id=Provider.query.count(), name=name, short_name=short_name)
     db.session.add(provider)
     domains = []
     did = Domain.query.count()
-    for domain in config['domains']:
+    for domain in dictget_mandatory(config, 'domains'):
         domains.append(Domain(id=did, name=domain, provider=provider))
         did += 1
     if len(domains) < 1:  # pragma: no cover
@@ -133,29 +134,54 @@ def populate_with_dict(config: dict) -> None:
     db.session.add_all(domains)
     servers = []
     sid = Server.query.count()
-    for server in config['servers']:
-        name = server['name']
-        type_ = server['type']
-        if type_ == 'imap':
-            port = from_dict(server, 'port', 993)
+    davservers = []
+    did = Davserver.query.count()
+    for server in dictget_mandatory(config, 'servers'):
+        type_ = dictget_mandatory(server, 'type')
+        if type_ == 'caldav' or type_ == 'carddav':
+            url = dictget_mandatory(server, 'url')
+            if url[:6] == 'https:':
+                ssl = 1
+            else:
+                ssl = 0
+            port = dictget_optional(server, 'port', 0)
+            davservers.append(Davserver(
+                id=did, type=type_, url=url,
+                port=port, use_ssl=ssl, domain_required=True,
+                user_name=PLACEHOLDER_ADDRESS, domains=domains
+            ))
+            did += 1
+            continue
+        elif type_ == 'imap':
+            port = dictget_optional(server, 'port', 993)
         elif type_ == 'pop':
-            port = from_dict(server, 'port', 995)
+            port = dictget_optional(server, 'port', 995)
         elif type_ == 'smtp':
-            port = from_dict(server, 'port', 465)
+            port = dictget_optional(server, 'port', 465)
         else:
             log.error(f'Unknown server type {type_}')
             sys.exit(1)
-        prio = from_dict(server, 'prio', 10)
+        prio = dictget_optional(server, 'prio', 10)
         if port in [465, 993, 995]:
             s = 'SSL'
         else:
             s = 'STARTTLS'
-        servers.append(Server(id=sid, prio=prio, type=type_, port=port, socket_type=s, name=name, domains=domains))
+        name = dictget_mandatory(server, 'name')
+        servers.append(Server(
+            id=sid, prio=prio, type=type_, port=port,
+            socket_type=s, name=name, domains=domains
+        ))
         sid += 1
-    if len(servers) < 1:
-        log.error('No servers specified')
+    sl = len(servers)
+    if sl < 1:
+        log.error('No mail servers specified')
     else:
+        log.info(f'Adding {sl} mail servers')
         db.session.add_all(servers)
+    dl = len(davservers)
+    if dl > 0:
+        log.info(f'Adding {dl} DAV servers')
+        db.session.add_all(davservers)
 
 
 def populate_db(data_source: Optional[dict]):

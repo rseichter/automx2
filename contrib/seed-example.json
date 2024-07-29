@@ -2,7 +2,9 @@
   "provider": "Example Inc.",
   "domains": ["example.com", "example.net", "example.org"],
   "servers": [
-    {"name": "imap.example.com", "type": "imap"},
-    {"name": "smtp.example.com", "type": "smtp"}
+    {"type": "imap", "name": "imap.example.com"},
+    {"type": "smtp", "name": "smtp.example.com"},
+    {"type": "caldav", "port": 47443,
+     "url": "https://www.horus-it.com:47443/SOGo/dav/%EMAILADDRESS%/Calendar/personal/"}
   ]
 }
