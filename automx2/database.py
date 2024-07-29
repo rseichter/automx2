@@ -136,11 +136,11 @@ def populate_with_dict(config: dict) -> None:
     for server in config['servers']:
         name = server['name']
         type_ = server['type']
-        if type_ == "imap":
+        if type_ == 'imap':
             port = from_dict(server, 'port', 993)
-        elif type_ == "pop":
+        elif type_ == 'pop':
             port = from_dict(server, 'port', 995)
-        elif type_ == "smtp":
+        elif type_ == 'smtp':
             port = from_dict(server, 'port', 465)
         else:
             log.error(f'Unknown server type {type_}')
