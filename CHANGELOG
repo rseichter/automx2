@@ -42,3 +42,4 @@
 2024.2 (TBA): Fix: Interpret STARTTLS as "uses SSL" in mobileconfig.
   Feature: Support CalDAV/CardDAV in mobileconfig.
   Update CI tests (drop Python version 3.7, include 3.13).
+  Introduce environment variable PERMIT_CLEARTEXT_PASSWORD for mobileconfig.

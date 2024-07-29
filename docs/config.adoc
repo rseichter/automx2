@@ -69,8 +69,43 @@ Use curl to send an account configuration request for +user@example.com+:
 
 [source,bash]
 ----
-curl 'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=user@example.com'
+curl 'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=alice@example.com&name=Alice%20Jones'
 ----
 
 As shown in the example, make sure to quote the URL as necessary.
 Otherwise, your command shell might perform pattern matching for characters like the question mark `?` (FISH does).
+
+=== Password support
+
+For years I have refused to support passwords in the generated configuration data, because of the risks involved.
+By the very nature of the process, _cleartext_ passwords are required.
+This means that passwords can potentially be intercepted in transit, e.g. between a HTTPS proxy and automx2.
+Even worse, if the receiving user foolishly decides to save a configuration file locally, that file will contain the user's password in plain text, visible for everybody with read access to the file.
+Also, depending on how automx2 is configured, cleartext passwords can potentially be written to log files.
+
+My reluctance to implement password support has resulted in some code forks where people added the feature anyway.
+Recognising the desire for password support, I have decided on a compromise.
+automx2 version 2024.2 introduces password support, but for the time being only for Apple's Mobileconfig.
+This is due to iOS devices downloading configuration profiles to a staging area by default, not offering the user an easy method to save the data elsewhere.
+
+Note that the password support feature is deliberately disabled by default.
+To opt in, you need to set the environment variable `PERMIT_CLEARTEXT_PASSWORDS=I_understand_the_risks`.
+If you don't know what that means, I suggest you hold off on this feature until you have done some research.
+
+[IMPORTANT]
+.Your responsibility
+====
+Caveat emptor: By opting in, and I recommend that you do _not_ opt in, you acknowledge that you take full responsibility for any and all harm that could result from leaked passwords.
+Please ask yourself if a bit of added convenience for users, i.e. having to enter passwords less frequently during a one-time device setup, is worth the risks.
+====
+
+Once the feature is activated, you can send GET requests with additional parameters.
+Sending a password with support disabled will result in an error log message, and the supplied password will be ignored.
+URL encoding is very important here.
+I suggest that you create a HTML landing page for your users, with explanation about the risks inolved.
+Include a `<form>` to submit the necessary fields to automx2.
+
+[source,bash]
+----
+curl 'http://127.0.0.1:4243/mobileconfig?emailaddress=jd@example.com&name=John%20Doe&password=ThisIsInsecure'
+----
