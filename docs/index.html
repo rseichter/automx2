@@ -554,8 +554,8 @@ pre.rouge .gs {
 <div id="header">
 <h1>automx2: Email client configuration made easy</h1>
 <div class="details">
-<span id="revnumber">version 2024.2.dev1,</span>
-<span id="revdate">2024-05-30</span>
+<span id="revnumber">version 2024.2.dev2,</span>
+<span id="revdate">2024-07-29</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -584,15 +584,16 @@ pre.rouge .gs {
 <li><a href="#placeholders">7.1. Placeholders</a></li>
 <li><a href="#_runtime_configuration">7.2. Runtime configuration</a></li>
 <li><a href="#_testing_standalone_automx2">7.3. Testing standalone automx2</a></li>
-<li><a href="#dbconf">7.4. Database configuration</a>
+<li><a href="#_password_support">7.4. Password support</a></li>
+<li><a href="#dbconf">7.5. Database configuration</a>
 <ul class="sectlevel3">
-<li><a href="#_database_support">7.4.1. Database support</a></li>
-<li><a href="#_sqlite">7.4.2. SQLite</a></li>
-<li><a href="#_mysql">7.4.3. MySQL</a></li>
-<li><a href="#_postgresql">7.4.4. PostgreSQL</a></li>
+<li><a href="#_database_support">7.5.1. Database support</a></li>
+<li><a href="#_sqlite">7.5.2. SQLite</a></li>
+<li><a href="#_mysql">7.5.3. MySQL</a></li>
+<li><a href="#_postgresql">7.5.4. PostgreSQL</a></li>
 </ul>
 </li>
-<li><a href="#_alembic">7.5. Alembic</a></li>
+<li><a href="#_alembic">7.6. Alembic</a></li>
 </ul>
 </li>
 <li><a href="#ldap">8. LDAP support</a></li>
@@ -662,7 +663,7 @@ The web server then acts as a proxy and forwards all requests to automx2 and pas
 <div class="sectionbody">
 <div class="paragraph">
 <p>Modern email clients (Mail User Agents) can look for configuration data when a user begins to create a new account.
-They will either send the user&#8217;s mail address to a service and ask the service to reply with configuration that suits the user&#8217;s profile or they will query the DNS system for advice.</p>
+They will either send the user&#8217;s mail address to a service and ask the service to reply with configuration that suits the user&#8217;s profile, or they will query the DNS system for advice.</p>
 </div>
 <div class="paragraph">
 <p>Using a specialized mail account configuration service allows for individualized setups.
@@ -736,7 +737,7 @@ dns: _autodiscover._tcp.example.com</code></pre>
 </div>
 <div class="paragraph">
 <p>All HTTP(S) queries send a POST request and submit XML which contains information about the account that should be configured.
-The DNS queries search for a <code>CNAME</code> resource record first, which is supposed to redirect the mail client to a resource outside of the mailbox owners domain, e.g. <em>alice@example.com</em> would be redirected to <code>service.example-provider.com</code> for configuration instructions.
+The DNS queries search for a <code>CNAME</code> resource record first, which is supposed to redirect the mail client to a resource outside the mailbox owners domain, e.g. <em>alice@example.com</em> would be redirected to <code>service.example-provider.com</code> for configuration instructions.
 If the first DNS query fails the client may be redirected to a configuration service using a <code>SRV</code> RR like this:</p>
 </div>
 <div class="listingblock small">
@@ -794,7 +795,7 @@ Python 3.12.3</code></pre>
 <td class="content">
 <div class="title">Don&#8217;t run as root</div>
 <div class="paragraph">
-<p>If you use a port number greater than 1024 (I suggest port 4243), the application does not require super user privileges when running.
+<p>If you use a port number greater than 1024 (I suggest port 4243), the application does not require superuser privileges when running.
 Doing so would pose a security risk and is therefore strongly discouraged.
 I recommend creating a fresh user account called <code>automx2</code>.</p>
 </div>
@@ -806,7 +807,7 @@ I recommend creating a fresh user account called <code>automx2</code>.</p>
 <h3 id="_package_based_installation"><a class="anchor" href="#_package_based_installation"></a>6.1. Package based installation</h3>
 <div class="paragraph">
 <p>There are packages available for <a href="https://aur.archlinux.org/packages/automx2">Arch Linux</a>, <a href="https://packages.gentoo.org/packages/net-mail/automx2">Gentoo Linux</a> and <a href="https://search.nixos.org/packages?type=packages&amp;query=automx">NixOS</a>.
-Note that these packages may not alway be up to date, because Linux distributions have their own release schedules.
+Note that these packages may not alway be up-to-date, because Linux distributions have their own release schedules.
 Please make sure to check the version numbers if you decide to go this route.</p>
 </div>
 </div>
@@ -893,7 +894,7 @@ While based on a proprietary feature of Autoconfig, automx2 also applies placeho
 <div class="sect2">
 <h3 id="_runtime_configuration"><a class="anchor" href="#_runtime_configuration"></a>7.2. Runtime configuration</h3>
 <div class="paragraph">
-<p>The configuration file defines automx2 runtime behaviour and it specifies the backend automx2 should read mailbox account configuration data from.</p>
+<p>The configuration file defines automx2 runtime behaviour, and it specifies the backend automx2 should read mailbox account configuration data from.</p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -988,7 +989,7 @@ Use curl to send an account configuration request for user@example.com:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=user@example.com'</span></code></pre>
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/mail/config-v1.1.xml?emailaddress=alice@example.com&amp;name=Alice%20Jones'</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -997,7 +998,56 @@ Otherwise, your command shell might perform pattern matching for characters like
 </div>
 </div>
 <div class="sect2">
-<h3 id="dbconf"><a class="anchor" href="#dbconf"></a>7.4. Database configuration</h3>
+<h3 id="_password_support"><a class="anchor" href="#_password_support"></a>7.4. Password support</h3>
+<div class="paragraph">
+<p>For years I have refused to support passwords in the generated configuration data, because of the risks involved.
+By the very nature of the process, <em>cleartext</em> passwords are required.
+This means that passwords can potentially be intercepted in transit, e.g. between a HTTPS proxy and automx2.
+Even worse, if the receiving user foolishly decides to save a configuration file locally, that file will contain the user&#8217;s password in plain text, visible for everybody with read access to the file.
+Also, depending on how automx2 is configured, cleartext passwords can potentially be written to log files.</p>
+</div>
+<div class="paragraph">
+<p>My reluctance to implement password support has resulted in some code forks where people added the feature anyway.
+Recognising the desire for password support, I have decided on a compromise.
+automx2 version 2024.2 introduces password support, but for the time being only for Apple&#8217;s Mobileconfig.
+This is due to iOS devices downloading configuration profiles to a staging area by default, not offering the user an easy method to save the data elsewhere.</p>
+</div>
+<div class="paragraph">
+<p>Note that the password support feature is deliberately disabled by default.
+To opt in, you need to set the environment variable <code>PERMIT_CLEARTEXT_PASSWORDS=I_understand_the_risks</code>.
+If you don&#8217;t know what that means, I suggest you hold off on this feature until you have done some research.</p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="title">Your responsibility</div>
+<div class="paragraph">
+<p>Caveat emptor: By opting in, and I recommend that you do <em>not</em> opt in, you acknowledge that you take full responsibility for any and all harm that could result from leaked passwords.
+Please ask yourself if a bit of added convenience for users, i.e. having to enter passwords less frequently during a one-time device setup, is worth the risks.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Once the feature is activated, you can send GET requests with additional parameters.
+Sending a password with support disabled will result in an error log message, and the supplied password will be ignored.
+URL encoding is very important here.
+I suggest that you create a HTML landing page for your users, with explanation about the risks inolved.
+Include a <code>&lt;form&gt;</code> to submit the necessary fields to automx2.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="bash">curl <span class="s1">'http://127.0.0.1:4243/mobileconfig?emailaddress=jd@example.com&amp;name=John%20Doe&amp;password=ThisIsInsecure'</span></code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="dbconf"><a class="anchor" href="#dbconf"></a>7.5. Database configuration</h3>
 <div class="paragraph">
 <p>automx2 uses the SQLAlchemy toolkit to access databases.
 This allows a variety of databases, a.k.a. <a href="https://docs.sqlalchemy.org/en/latest/dialects/">dialects</a>, to be used, simply by defining the appropriate connection URL.</p>
@@ -1019,7 +1069,7 @@ Feel free to contact me if you are interested in a <a href="#sponsorship">sponso
 </table>
 </div>
 <div class="sect3">
-<h4 id="_database_support"><a class="anchor" href="#_database_support"></a>7.4.1. Database support</h4>
+<h4 id="_database_support"><a class="anchor" href="#_database_support"></a>7.5.1. Database support</h4>
 <div class="paragraph">
 <p>While you probably already have SQLite support available on your local machine, you may need to install additional Python packages for PostgreSQL, MySQL, etc.
 Detailed instructions to support a particular database dialect are out of scope for this document.
@@ -1028,7 +1078,7 @@ The SQLAlchemy documentation provides a useful starting point.</p>
 </div>
 <div class="paragraph">
 <p>While the <code>contrib</code> directory contains example database schemas which you can use as a reference, I recommend using the
-built-in method to create the necessary DB structure from scratch by sending a HTTP GET request to the <code>/initdb/</code>
+built-in method to create the necessary DB structure from scratch by sending an HTTP GET request to the <code>/initdb/</code>
 service endpoint.
 This will also populate the database with some hard-coded example data.
 Alternatively, you can send a POST request with custom JSON data to the same endpoint, as described below.</p>
@@ -1042,7 +1092,7 @@ Alternatively, you can send a POST request with custom JSON data to the same end
 <td class="content">
 <div class="title">Purging the database</div>
 <div class="paragraph">
-<p>Sending a HTTP DELETE request to <code>/initdb/</code> will purge all existing data.
+<p>Sending an HTTP DELETE request to <code>/initdb/</code> will purge all existing data.
 Be sure to limit access accordingly!</p>
 </div>
 </td>
@@ -1056,7 +1106,7 @@ It is usually easier to export your existing data, create a fresh DB and import 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_sqlite"><a class="anchor" href="#_sqlite"></a>7.4.2. SQLite</h4>
+<h4 id="_sqlite"><a class="anchor" href="#_sqlite"></a>7.5.2. SQLite</h4>
 <div class="paragraph">
 <p>This section demonstrates what you need to do to in order to use SQLite version 3 or higher as a backend database for automx2.</p>
 </div>
@@ -1091,8 +1141,10 @@ The required data format is as follows:</p>
   </span><span class="nl">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Example Inc."</span><span class="p">,</span><span class="w">
   </span><span class="nl">"domains"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">"example.com"</span><span class="p">,</span><span class="w"> </span><span class="s2">"example.net"</span><span class="p">,</span><span class="w"> </span><span class="s2">"example.org"</span><span class="p">],</span><span class="w">
   </span><span class="nl">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-    </span><span class="p">{</span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"imap.example.com"</span><span class="p">,</span><span class="w"> </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"imap"</span><span class="p">},</span><span class="w">
-    </span><span class="p">{</span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"smtp.example.com"</span><span class="p">,</span><span class="w"> </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"smtp"</span><span class="p">}</span><span class="w">
+    </span><span class="p">{</span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"imap"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"imap.example.com"</span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"smtp"</span><span class="p">,</span><span class="w"> </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"smtp.example.com"</span><span class="p">},</span><span class="w">
+    </span><span class="p">{</span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"caldav"</span><span class="p">,</span><span class="w"> </span><span class="nl">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">47443</span><span class="p">,</span><span class="w">
+     </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://www.horus-it.com:47443/SOGo/dav/%EMAILADDRESS%/Calendar/personal/"</span><span class="p">}</span><span class="w">
   </span><span class="p">]</span><span class="w">
 </span><span class="p">}</span></code></pre>
 </div>
@@ -1129,7 +1181,7 @@ Make sure to match the automx2.conf <code>db_uri</code> setting when specifying 
 </div>
 </div>
 <div class="sect3">
-<h4 id="_mysql"><a class="anchor" href="#_mysql"></a>7.4.3. MySQL</h4>
+<h4 id="_mysql"><a class="anchor" href="#_mysql"></a>7.5.3. MySQL</h4>
 <div class="paragraph">
 <p>Step 1: Create a database.</p>
 </div>
@@ -1158,7 +1210,7 @@ The following example uses <em>pymysql</em> as a DB driver, which is not include
 </div>
 </div>
 <div class="sect3">
-<h4 id="_postgresql"><a class="anchor" href="#_postgresql"></a>7.4.4. PostgreSQL</h4>
+<h4 id="_postgresql"><a class="anchor" href="#_postgresql"></a>7.5.4. PostgreSQL</h4>
 <div class="paragraph">
 <p>Step 1: Create a database.</p>
 </div>
@@ -1188,7 +1240,7 @@ The following example uses <em>psycopg2</em> as a DB driver, which is not includ
 </div>
 </div>
 <div class="sect2">
-<h3 id="_alembic"><a class="anchor" href="#_alembic"></a>7.5. Alembic</h3>
+<h3 id="_alembic"><a class="anchor" href="#_alembic"></a>7.6. Alembic</h3>
 <div class="paragraph">
 <p>As mentioned in a previous section, you can use <a href="https://alembic.sqlalchemy.org/">Alembic</a> to create or upgrade your database.
 You need to start your first run using an empty database for this to work, because Alembic stores versioning information in said database.
@@ -1285,7 +1337,7 @@ It is assumed that <code>cn=automx2,ou=services,dc=example,dc=com</code> with th
 The search filter needs to contain the placeholder <code>{0}</code> which will be replaced with the email address used as the lookup key.</p>
 </div>
 <div class="paragraph">
-<p>Values of the LDAP attributes specified using <code>attr_uid</code> and <code>attr_cn</code> will be returned as the resulting login ID and common name, respectively. If your users are required to login using their email address instead of a technical user ID, and based on the example LDIF above, set <code>attr_uid</code> to <em>mail</em> instead of <em>uid</em>:</p>
+<p>Values of the LDAP attributes specified using <code>attr_uid</code> and <code>attr_cn</code> will be returned as the resulting login ID and common name, respectively. If your users are required to log in using their email address instead of a technical user ID, and based on the example LDIF above, set <code>attr_uid</code> to <em>mail</em> instead of <em>uid</em>:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1589,7 +1641,7 @@ Add the <code>proxy_count</code> parameter to your automx2 configuration file or
 <div class="sect2">
 <h3 id="nginx"><a class="anchor" href="#nginx"></a>11.1. NGINX</h3>
 <div class="paragraph">
-<p>The following example defines a HTTP server, which will listen for requests to both <em>autoconfig.example.com</em> and <em>autodiscover.example.com</em>.
+<p>The following example defines an HTTP server, which will listen for requests to both <em>autoconfig.example.com</em> and <em>autodiscover.example.com</em>.
 All requests will be forwarded to automx2, which listens on TCP port 4243 in this example.
 Requests to <code>/initdb</code> are restricted to clients connecting from the local host.
 The
@@ -1664,8 +1716,8 @@ The
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2024.2.dev1<br>
-Last updated 2024-05-30 15:32:57 +0200
+Version 2024.2.dev2<br>
+Last updated 2024-07-29 03:01:44 +0200
 </div>
 </div>
 </body>
