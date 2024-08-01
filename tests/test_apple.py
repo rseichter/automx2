@@ -162,6 +162,11 @@ class AppleRoutes(TestCase):
             self.assertEqual(2, _preferred_server(servers, 'imap').id)
             self.assertEqual(3, _preferred_server(servers, 'smtp').id)
 
+    def test_cleartext_password(self):
+        from automx2.generators.apple import cleartext_password_if_permitted
+        self.assertEqual('x', cleartext_password_if_permitted('x', force_permission_for_unittest=True))
+        self.assertIsNone(cleartext_password_if_permitted('x'))
+
 
 if __name__ == '__main__':
     unittest.main()

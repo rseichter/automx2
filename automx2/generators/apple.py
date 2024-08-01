@@ -98,9 +98,9 @@ def _subtree(parent: Element, key: str, value):
         _str_element(parent, key, value)
 
 
-def cleartext_password_if_permitted(password: str) -> Optional[str]:
+def cleartext_password_if_permitted(password: str, force_permission_for_unittest: bool = False) -> Optional[str]:
     if password is not None and password != '':
-        if PERMIT_CLEARTEXT_PASSWORDS == 'I_understand_the_risks':
+        if PERMIT_CLEARTEXT_PASSWORDS == 'I_understand_the_risks' or force_permission_for_unittest:
             return password
         else:
             log.error('Password support is disabled, ignoring provided password.')
