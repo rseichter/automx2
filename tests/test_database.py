@@ -18,6 +18,7 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
 import unittest
 
+from automx2 import AutomxException
 from automx2.server import INITDB_ROUTE
 from tests import TestCase
 from tests import body
@@ -36,7 +37,7 @@ class DatabaseRoute(TestCase):
 
     def test_init_incomplete(self):
         with self.app:
-            with self.assertRaises(KeyError):
+            with self.assertRaises(AutomxException):
                 self.post(INITDB_ROUTE, json={'a': 'b'})
 
     def test_init_json(self):
