@@ -39,7 +39,7 @@
   Bundle documentation for offline use.
   Permit network tests to be enabled/disabled on demand.
 
-2024.2 (TBA): Fix: Interpret STARTTLS as "uses SSL" in mobileconfig.
-  Feature: Support CalDAV/CardDAV in mobileconfig.
-  Update CI tests (drop Python version 3.7, include 3.13).
-  Introduce environment variable PERMIT_CLEARTEXT_PASSWORD for mobileconfig.
+2024.2 (2024-08-01): Fix: Interpret STARTTLS as "uses SSL" in mobileconfig.
+  Feature: Support CalDAV and CardDAV in mobileconfig.
+  Feature: Support passwords in mobileconfig (disabled by default, opt-in required to enable).
+  CI: Drop Python version 3.7 from matrix.
