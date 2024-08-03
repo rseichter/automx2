@@ -2,8 +2,8 @@
   "provider": "Example Inc.",
   "domains": ["example.com", "example.net", "example.org"],
   "servers": [
-    {"type": "imap", "name": "imap.example.com"},
-    {"type": "smtp", "name": "smtp.example.com"},
+    {"type": "imap", "name": "imap.example.com", "user_name": "%EMAILADDRESS%"},
+    {"type": "smtp", "name": "smtp.example.com", "user_name": "%EMAILADDRESS%"},
     {"type": "caldav", "port": 443,
      "url": "https://www.example.net/SOGo/dav/%EMAILADDRESS%/Calendar/personal/"},
     {"type": "carddav", "port": 443,

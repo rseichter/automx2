@@ -166,10 +166,12 @@ def populate_with_dict(config: dict) -> None:
             s = 'SSL'
         else:
             s = 'STARTTLS'
+        u = dictget_optional(server, 'user_name', "%EMAILADDRESS%")
         name = dictget_mandatory(server, 'name')
         servers.append(Server(
             id=sid, prio=prio, type=type_, port=port,
-            socket_type=s, name=name, domains=domains
+            socket_type=s, name=name, domains=domains,
+            user_name=u
         ))
         sid += 1
     sl = len(servers)
