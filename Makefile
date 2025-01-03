@@ -16,7 +16,7 @@ shc     Shell script care
 
 endef
 
-.PHONY:	clean distro dtest help shc
+.PHONY:	clean distro docs dtest help shc
 
 help:
 	$(info $(usage))
