@@ -6,17 +6,17 @@ define usage
 
 Available make targets:
 
-  clean  Cleanup build artifacts
-  dist   Build distribution artifacts
-  docs   Generate documentation
-  dtest  Developer tests
-  help   Display this text
-  push   Push to all configured Git remotes
-  shc    Shell script care
+clean   Cleanup build artifacts
+distro  Build distribution artifacts
+docs    Generate documentation
+dtest   Developer tests
+help    Display this text
+push    Push to all configured Git remotes
+shc     Shell script care
 
 endef
 
-.PHONY:	clean dtest help push shc
+.PHONY:	clean distro dtest help shc
 
 help:
 	$(info $(usage))
@@ -29,14 +29,11 @@ dtest:
 	$(test_env) coverage run --source automx2 -m unittest discover -v tests/
 	coverage html --rcfile=tests/coverage.rc
 
-dist:
-	$(package) dist
+distro:
+	$(package) $@
 
 docs:
-	$(package) docs
-
-push:
-	for _r in $(shell git remote); do git push $$_r; done; unset _r
+	$(package) $@
 
 shc:
 	shcare contrib/*.sh || shellcheck -x contrib/*.sh

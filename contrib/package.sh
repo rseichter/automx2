@@ -12,7 +12,7 @@ set -euo pipefail
 function usage() {
 	local n="$(basename "${0}")"
 	cat >&2 <<EOT
-Usage: ${n} {clean | dist | docs | pypi}
+Usage: ${n} {clean | distro | docs | pypi}
        ${n} setver {version}
 EOT
 	exit 1
@@ -23,7 +23,7 @@ function _clean() {
 	find automx2 -type d -name __pycache__ -print0 | xargs -0r rm -r
 }
 
-function _dist() {
+function _distro() {
 	python -m build --no-isolation
 }
 
@@ -59,7 +59,7 @@ case "${verb}" in
 clean | docs)
 	_"${verb}"
 	;;
-dist | pypi)
+distro | pypi)
 	. .venv/bin/activate
 	_"${verb}" "$@"
 	;;
