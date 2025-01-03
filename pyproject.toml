@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "automx2"
-version = "2025.1.dev4"
+version = "2025.1.dev5"
 authors = [{name= "Ralph Seichter", email="automx2@seichter.de"}]
 classifiers = [
 	"Development Status :: 5 - Production/Stable",
