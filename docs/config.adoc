@@ -85,7 +85,7 @@ Also, depending on how automx2 is configured, cleartext passwords can potentiall
 
 My reluctance to implement password support has resulted in some code forks where people added the feature anyway.
 Recognising the desire for password support, I have decided on a compromise.
-automx2 version 2024.2 introduces password support, but for the time being only for Apple's Mobileconfig.
+automx2 version 2025.2 introduces password support, but for the time being only for Apple's Mobileconfig.
 This is due to iOS devices downloading configuration profiles to a staging area by default, not offering the user an easy method to save the data elsewhere.
 
 Note that the password support feature is deliberately disabled by default.

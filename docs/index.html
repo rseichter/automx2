@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.20">
+<meta name="generator" content="Asciidoctor 2.0.23">
 <meta name="keywords" content="autoconfig, autodiscover, mobileconfig, automx, automx2">
-<meta name="copyright" content="© 2019-2024 Ralph Seichter">
+<meta name="copyright" content="© 2019-2025 Ralph Seichter">
 <title>automx2: Email client configuration made easy</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -142,7 +142,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #content::before{content:none}
 #header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
 #header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
-#header>h1:only-child,body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
 #header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
 #header .details span:first-child{margin-left:-.125em}
 #header .details span.email a{color:rgba(0,0,0,.85)}
@@ -164,6 +164,7 @@ p a>code:hover{color:rgba(0,0,0,.9)}
 #toctitle{color:#7a2518;font-size:1.2em}
 @media screen and (min-width:768px){#toctitle{font-size:1.375em}
 body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
 #toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
 #toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
 #toc.toc2>ul{font-size:.9em;margin-bottom:0}
@@ -329,7 +330,7 @@ a.image{text-decoration:none;display:inline-block}
 a.image object{pointer-events:none}
 sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
 sup.footnote a,sup.footnoteref a{text-decoration:none}
-sup.footnote a:active,sup.footnoteref a:active{text-decoration:underline}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
 #footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
 #footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
 #footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
@@ -438,115 +439,216 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <style>
 pre.rouge table td { padding: 5px; }
 pre.rouge table pre { margin: 0; }
-pre.rouge, pre.rouge .w {
-  color: #24292f;
-  background-color: #f6f8fa;
+pre.rouge .cm {
+  color: #999988;
+  font-style: italic;
 }
-pre.rouge .k, pre.rouge .kd, pre.rouge .kn, pre.rouge .kp, pre.rouge .kr, pre.rouge .kt, pre.rouge .kv {
-  color: #cf222e;
+pre.rouge .cp {
+  color: #999999;
+  font-weight: bold;
 }
-pre.rouge .gr {
-  color: #f6f8fa;
+pre.rouge .c1 {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .cs {
+  color: #999999;
+  font-weight: bold;
+  font-style: italic;
+}
+pre.rouge .c, pre.rouge .ch, pre.rouge .cd, pre.rouge .cpf {
+  color: #999988;
+  font-style: italic;
+}
+pre.rouge .err {
+  color: #a61717;
+  background-color: #e3d2d2;
 }
 pre.rouge .gd {
-  color: #82071e;
-  background-color: #ffebe9;
+  color: #000000;
+  background-color: #ffdddd;
 }
-pre.rouge .nb {
-  color: #953800;
+pre.rouge .ge {
+  color: #000000;
+  font-style: italic;
 }
-pre.rouge .nc {
-  color: #953800;
-}
-pre.rouge .no {
-  color: #953800;
-}
-pre.rouge .nn {
-  color: #953800;
-}
-pre.rouge .sr {
-  color: #116329;
-}
-pre.rouge .na {
-  color: #116329;
-}
-pre.rouge .nt {
-  color: #116329;
-}
-pre.rouge .gi {
-  color: #116329;
-  background-color: #dafbe1;
-}
-pre.rouge .kc {
-  color: #0550ae;
-}
-pre.rouge .l, pre.rouge .ld, pre.rouge .m, pre.rouge .mb, pre.rouge .mf, pre.rouge .mh, pre.rouge .mi, pre.rouge .il, pre.rouge .mo, pre.rouge .mx {
-  color: #0550ae;
-}
-pre.rouge .sb {
-  color: #0550ae;
-}
-pre.rouge .bp {
-  color: #0550ae;
-}
-pre.rouge .ne {
-  color: #0550ae;
-}
-pre.rouge .nl {
-  color: #0550ae;
-}
-pre.rouge .py {
-  color: #0550ae;
-}
-pre.rouge .nv, pre.rouge .vc, pre.rouge .vg, pre.rouge .vi, pre.rouge .vm {
-  color: #0550ae;
-}
-pre.rouge .o, pre.rouge .ow {
-  color: #0550ae;
+pre.rouge .gr {
+  color: #aa0000;
 }
 pre.rouge .gh {
-  color: #0550ae;
+  color: #999999;
+}
+pre.rouge .gi {
+  color: #000000;
+  background-color: #ddffdd;
+}
+pre.rouge .go {
+  color: #888888;
+}
+pre.rouge .gp {
+  color: #555555;
+}
+pre.rouge .gs {
   font-weight: bold;
 }
 pre.rouge .gu {
-  color: #0550ae;
-  font-weight: bold;
-}
-pre.rouge .s, pre.rouge .sa, pre.rouge .sc, pre.rouge .dl, pre.rouge .sd, pre.rouge .s2, pre.rouge .se, pre.rouge .sh, pre.rouge .sx, pre.rouge .s1, pre.rouge .ss {
-  color: #0a3069;
-}
-pre.rouge .nd {
-  color: #8250df;
-}
-pre.rouge .nf, pre.rouge .fm {
-  color: #8250df;
-}
-pre.rouge .err {
-  color: #f6f8fa;
-  background-color: #82071e;
-}
-pre.rouge .c, pre.rouge .ch, pre.rouge .cd, pre.rouge .cm, pre.rouge .cp, pre.rouge .cpf, pre.rouge .c1, pre.rouge .cs {
-  color: #6e7781;
-}
-pre.rouge .gl {
-  color: #6e7781;
+  color: #aaaaaa;
 }
 pre.rouge .gt {
-  color: #6e7781;
+  color: #aa0000;
 }
-pre.rouge .ni {
-  color: #24292f;
+pre.rouge .kc {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kd {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kn {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kp {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kr {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .kt {
+  color: #445588;
+  font-weight: bold;
+}
+pre.rouge .k, pre.rouge .kv {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .mf {
+  color: #009999;
+}
+pre.rouge .mh {
+  color: #009999;
+}
+pre.rouge .il {
+  color: #009999;
+}
+pre.rouge .mi {
+  color: #009999;
+}
+pre.rouge .mo {
+  color: #009999;
+}
+pre.rouge .m, pre.rouge .mb, pre.rouge .mx {
+  color: #009999;
+}
+pre.rouge .sa {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .sb {
+  color: #d14;
+}
+pre.rouge .sc {
+  color: #d14;
+}
+pre.rouge .sd {
+  color: #d14;
+}
+pre.rouge .s2 {
+  color: #d14;
+}
+pre.rouge .se {
+  color: #d14;
+}
+pre.rouge .sh {
+  color: #d14;
 }
 pre.rouge .si {
-  color: #24292f;
+  color: #d14;
 }
-pre.rouge .ge {
-  color: #24292f;
-  font-style: italic;
+pre.rouge .sx {
+  color: #d14;
 }
-pre.rouge .gs {
-  color: #24292f;
+pre.rouge .sr {
+  color: #009926;
+}
+pre.rouge .s1 {
+  color: #d14;
+}
+pre.rouge .ss {
+  color: #990073;
+}
+pre.rouge .s, pre.rouge .dl {
+  color: #d14;
+}
+pre.rouge .na {
+  color: #008080;
+}
+pre.rouge .bp {
+  color: #999999;
+}
+pre.rouge .nb {
+  color: #0086B3;
+}
+pre.rouge .nc {
+  color: #445588;
   font-weight: bold;
+}
+pre.rouge .no {
+  color: #008080;
+}
+pre.rouge .nd {
+  color: #3c5d5d;
+  font-weight: bold;
+}
+pre.rouge .ni {
+  color: #800080;
+}
+pre.rouge .ne {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nf, pre.rouge .fm {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nl {
+  color: #990000;
+  font-weight: bold;
+}
+pre.rouge .nn {
+  color: #555555;
+}
+pre.rouge .nt {
+  color: #000080;
+}
+pre.rouge .vc {
+  color: #008080;
+}
+pre.rouge .vg {
+  color: #008080;
+}
+pre.rouge .vi {
+  color: #008080;
+}
+pre.rouge .nv, pre.rouge .vm {
+  color: #008080;
+}
+pre.rouge .ow {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .o {
+  color: #000000;
+  font-weight: bold;
+}
+pre.rouge .w {
+  color: #bbbbbb;
+}
+pre.rouge {
+  background-color: #f8f8f8;
 }
 </style>
 </head>
@@ -554,8 +656,8 @@ pre.rouge .gs {
 <div id="header">
 <h1>automx2: Email client configuration made easy</h1>
 <div class="details">
-<span id="revnumber">version 2024.2,</span>
-<span id="revdate">2024-08-01</span>
+<span id="revnumber">version 2025.1.dev1,</span>
+<span id="revdate">2025-01-03</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -620,7 +722,7 @@ pre.rouge .gs {
 <h2 id="copyright"><a class="anchor" href="#copyright"></a>1. Copyright</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>automx2 is Copyright © 2019-2024 Ralph Seichter.
+<p>automx2 is Copyright © 2019-2025 Ralph Seichter.
 automx2 is licensed under the GNU General Public License V3 or later.
 The project is hosted on GitHub in the <a href="https://github.com/rseichter/automx2">rseichter/automx2</a> repository.</p>
 </div>
@@ -1009,7 +1111,7 @@ Also, depending on how automx2 is configured, cleartext passwords can potentiall
 <div class="paragraph">
 <p>My reluctance to implement password support has resulted in some code forks where people added the feature anyway.
 Recognising the desire for password support, I have decided on a compromise.
-automx2 version 2024.2 introduces password support, but for the time being only for Apple&#8217;s Mobileconfig.
+automx2 version 2025.2 introduces password support, but for the time being only for Apple&#8217;s Mobileconfig.
 This is due to iOS devices downloading configuration profiles to a staging area by default, not offering the user an easy method to save the data elsewhere.</p>
 </div>
 <div class="paragraph">
@@ -1438,7 +1540,7 @@ This is purely optional.</p>
 <div class="sect2">
 <h3 id="_as_a_systemd_service"><a class="anchor" href="#_as_a_systemd_service"></a>9.2. As a systemd service</h3>
 <div class="paragraph">
-<p>If your system uses <em>systemd</em> you may want to deploy the following <a href="../contrib/automx2.service">automx2.service</a> unit file from the contrib section and place it in <code>/etc/systemd/system/automx2.service</code>:</p>
+<p>If your system uses <em>systemd</em> you may want to deploy the following <a href="../contrib/automx2.service">automx2.service</a> unit file from the contrib section and place it in <code>/etc/systemd/system/automx2.service</code>. Starting with version 2025.1, automx2 will auto-detect the presence of the <code>NOTIFY_SOCKET</code> environment variable and signal service readiness to systemd.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1718,8 +1820,8 @@ The
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2024.2<br>
-Last updated 2024-08-01 09:20:51 +0200
+Version 2025.1.dev1<br>
+Last updated 2025-01-03 11:12:45 +0100
 </div>
 </div>
 </body>

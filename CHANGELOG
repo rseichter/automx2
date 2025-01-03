@@ -44,4 +44,4 @@
   Feature: Support passwords in mobileconfig (disabled by default, opt-in required to enable).
   CI: Drop Python version 3.7 from matrix.
 
-2025.1 (TBA): Feature: Add sd_notify support.
+2025.1 (TBA): Feature: Signal readiness via sd_notify if NOTIFY_SOCKET environment variable is set.

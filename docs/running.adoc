@@ -33,7 +33,7 @@ include::../contrib/OpenRC/conf_d[]
 
 === As a systemd service
 
-If your system uses _systemd_ you may want to deploy the following xref:../contrib/automx2.service[automx2.service] unit file from the contrib section and place it in `/etc/systemd/system/automx2.service`:
+If your system uses _systemd_ you may want to deploy the following xref:../contrib/automx2.service[automx2.service] unit file from the contrib section and place it in `/etc/systemd/system/automx2.service`. Starting with version 2025.1, automx2 will auto-detect the presence of the `NOTIFY_SOCKET` environment variable and signal service readiness to systemd.
 
 [source,ini]
 ----
