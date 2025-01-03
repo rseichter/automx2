@@ -19,7 +19,8 @@ EOT
 }
 
 function _clean() {
-	/bin/rm -fr build/* dist/*
+	rm -fr build/* dist/*
+	find automx2 -type d -name __pycache__ -print0 | xargs -0r rm -r
 }
 
 function _dist() {

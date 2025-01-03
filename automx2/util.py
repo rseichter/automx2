@@ -1,5 +1,5 @@
 """
-Copyright © 2019-2024 Ralph Seichter
+Copyright © 2019-2025 Ralph Seichter
 
 This file is part of automx2.
 
@@ -16,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
+
 import os
 import re
 from uuid import uuid4
@@ -27,7 +28,7 @@ from automx2 import PLACEHOLDER_DOMAIN
 from automx2 import PLACEHOLDER_LOCALPART
 from automx2 import log
 
-email_address_re = re.compile(r'^([^@]+)@([^@]+)$', re.IGNORECASE)
+email_address_re = re.compile(r"^([^@]+)@([^@]+)$", re.IGNORECASE)
 
 
 def dictget_optional(data: dict, key: str, default: object = None):
@@ -53,7 +54,7 @@ def parse_email_address(address: str):
         match = email_address_re.search(address)
         if match:
             return match[1], match[2]
-    raise InvalidEMailAddressError('Invalid email address')
+    raise InvalidEMailAddressError("Invalid email address")
 
 
 def unique() -> str:
@@ -62,9 +63,9 @@ def unique() -> str:
 
 def expand_placeholders(string: str, local_part: str, domain_part: str) -> str:
     if not string:
-        return ''
+        return ""
     placeholder_map = {
-        PLACEHOLDER_ADDRESS: f'{local_part}@{domain_part}',
+        PLACEHOLDER_ADDRESS: f"{local_part}@{domain_part}",
         PLACEHOLDER_DOMAIN: domain_part,
         PLACEHOLDER_LOCALPART: local_part,
     }
@@ -75,9 +76,9 @@ def expand_placeholders(string: str, local_part: str, domain_part: str) -> str:
 
 def socket_type_needs_ssl(socket_type: str):
     """Map socket type to True (use SSL) or False (do not use SSL)."""
-    if 'SSL' == socket_type:
+    if "SSL" == socket_type:
         return True
-    elif 'STARTTLS' != socket_type:
+    elif "STARTTLS" != socket_type:
         """
         Existing versions auf automx2 return False for socket types other than
         SSL and STARTTLS. This can cause unexpected results. Future automx2 versions

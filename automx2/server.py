@@ -17,6 +17,9 @@ You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
 
+import os
+import errno
+import socket
 from flask import Flask
 from flask_migrate import Migrate
 from werkzeug.middleware.proxy_fix import ProxyFix
@@ -46,17 +49,58 @@ def _proxy_fix():
         app.wsgi_app = ProxyFix(app.wsgi_app, x_for=p, x_host=p, x_port=p, x_prefix=p, x_proto=p)
 
 
+def _sd_notify(message: str) -> None:
+    """
+    Send notification message to systemd. Based on the sample implementation
+    at https://www.freedesktop.org/software/systemd/man/latest/sd_notify.html
+    """
+    sock_path = os.environ.get("NOTIFY_SOCKET")
+    if not sock_path:
+        # No notification wanted/possible.
+        return
+    elif sock_path[0] == "@":
+        # Abstract socket, replace first byte with NUL.
+        sock_path = "\0" + sock_path[1:]
+    elif sock_path[0] != "/":
+        raise OSError(errno.EAFNOSUPPORT, f"Unsupported socket path {sock_path}")
+    with socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM | socket.SOCK_CLOEXEC) as sock:
+        sock.connect(sock_path)
+        sock.sendall(message.encode())
+
+
+_sd_notify(f"STATUS=Starting {__name__}")
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = config.db_uri()
 app.config["SQLALCHEMY_ECHO"] = config.db_echo()
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.add_url_rule("/", view_func=SiteRoot.as_view("root"), methods=["GET"])
-app.add_url_rule(APPLE_CONFIG_ROUTE, view_func=mobileconfig.AppleView.as_view("apple"), methods=["GET"])
-app.add_url_rule(INITDB_ROUTE, view_func=InitDatabase.as_view("initdb"), methods=["DELETE", "GET", "POST"])
-app.add_url_rule(MOZILLA_CONFIG_ROUTE, view_func=autoconfig.MozillaView.as_view("mozilla"), methods=["GET"])
-app.add_url_rule(MSOFT_ALTERNATE_ROUTE, view_func=autodiscover.OutlookView.as_view("ms2"), methods=["POST"])
-app.add_url_rule(MSOFT_CONFIG_ROUTE, view_func=autodiscover.OutlookView.as_view("ms1"), methods=["POST"])
+app.add_url_rule(
+    APPLE_CONFIG_ROUTE,
+    view_func=mobileconfig.AppleView.as_view("apple"),
+    methods=["GET"],
+)
+app.add_url_rule(
+    INITDB_ROUTE,
+    view_func=InitDatabase.as_view("initdb"),
+    methods=["DELETE", "GET", "POST"],
+)
+app.add_url_rule(
+    MOZILLA_CONFIG_ROUTE,
+    view_func=autoconfig.MozillaView.as_view("mozilla"),
+    methods=["GET"],
+)
+app.add_url_rule(
+    MSOFT_ALTERNATE_ROUTE,
+    view_func=autodiscover.OutlookView.as_view("ms2"),
+    methods=["POST"],
+)
+app.add_url_rule(
+    MSOFT_CONFIG_ROUTE,
+    view_func=autodiscover.OutlookView.as_view("ms1"),
+    methods=["POST"],
+)
 _proxy_fix()
 
 db.init_app(app)
 migrate = Migrate(app, db)
+_sd_notify("READY=1")
