@@ -1,5 +1,5 @@
 """
-Copyright © 2019-2024 Ralph Seichter
+Copyright © 2019-2025 Ralph Seichter
 
 This file is part of automx2.
 
@@ -16,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
+
 from collections import namedtuple
 
 from ldap3 import Connection
@@ -27,7 +28,7 @@ STATUS_SUCCESS = 0
 STATUS_ERROR = 1
 STATUS_NO_MATCH = 2
 
-LookupResult = namedtuple('LookupResult', 'status cn uid')
+LookupResult = namedtuple("LookupResult", "status cn uid")
 
 
 class LdapAccess:
@@ -35,9 +36,9 @@ class LdapAccess:
         self._server = Server(hostname, port=port, use_ssl=use_ssl)
         self._connection = Connection(self._server, lazy=False, read_only=True, user=user, password=password)
 
-    def lookup(self, search_base: str, search_filter: str, attr_uid='uid', attr_cn=None) -> LookupResult:
+    def lookup(self, search_base: str, search_filter: str, attr_uid="uid", attr_cn=None) -> LookupResult:
         if not self._connection.bind():  # pragma: no cover (bind errors are not expected during unittests)
-            log.error(f'LDAP bind failed: {self._connection.result}')
+            log.error(f"LDAP bind failed: {self._connection.result}")
             return LookupResult(STATUS_ERROR, None, None)
         attributes = [attr_uid]
         if attr_cn:
@@ -50,7 +51,7 @@ class LdapAccess:
             uid = self.get_attribute(ldap_entry, attr_uid)
             result = LookupResult(STATUS_SUCCESS, cn, uid)
         else:
-            log.warning(f'No LDAP match for filter {search_filter}')
+            log.warning(f"No LDAP match for filter {search_filter}")
             result = LookupResult(STATUS_NO_MATCH, None, None)
         self._connection.unbind()
         log.debug(result)
@@ -58,7 +59,7 @@ class LdapAccess:
 
     @staticmethod
     def get_attribute(ldap_entry: dict, attribute: str):
-        attributes = ldap_entry['attributes']
+        attributes = ldap_entry["attributes"]
         if attribute and attribute in attributes:
             value = attributes[attribute]
             if isinstance(value, str):  # pragma: no cover (Will not happen when testing against OpenLDAP)
@@ -67,7 +68,7 @@ class LdapAccess:
             elif isinstance(value, list):
                 log.debug(f'Returning list element "{value[0]}"')
                 return value[0]
-            log.error(f'Unexpected lookup result type: {type(value).__name__}')
+            log.error(f"Unexpected lookup result type: {type(value).__name__}")
         elif attribute:
             log.warning(f"Attribute '{attribute}' not found")
         return None

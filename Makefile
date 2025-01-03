@@ -12,11 +12,11 @@ Available make targets:
   dtest  Developer tests
   help   Display this text
   push   Push to all configured Git remotes
-  schk   Shell script check
+  shc    Shell script care
 
 endef
 
-.PHONY:	clean dtest dist docs help push schk
+.PHONY:	clean dtest help push shc
 
 help:
 	$(info $(usage))
@@ -38,5 +38,5 @@ docs:
 push:
 	for _r in $(shell git remote); do git push $$_r; done; unset _r
 
-schk:
-	shellcheck -e SC2155 -x contrib/*.sh
+shc:
+	shcare contrib/*.sh || shellcheck -x contrib/*.sh

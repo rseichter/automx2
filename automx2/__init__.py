@@ -1,5 +1,5 @@
 """
-Copyright © 2019-2024 Ralph Seichter
+Copyright © 2019-2025 Ralph Seichter
 
 This file is part of automx2.
 
@@ -16,14 +16,15 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
+
 import logging
 
-IDENTIFIER = 'automx2'  # Do not change this!
-VERSION = '2024.2'
+IDENTIFIER = "automx2"  # Do not change this!
+VERSION = "2025.1"
 
-PLACEHOLDER_ADDRESS = r'%EMAILADDRESS%'
-PLACEHOLDER_DOMAIN = r'%EMAILDOMAIN%'
-PLACEHOLDER_LOCALPART = r'%EMAILLOCALPART%'
+PLACEHOLDER_ADDRESS = r"%EMAILADDRESS%"
+PLACEHOLDER_DOMAIN = r"%EMAILDOMAIN%"
+PLACEHOLDER_LOCALPART = r"%EMAILLOCALPART%"
 
 
 class AutomxException(Exception):
@@ -31,6 +32,7 @@ class AutomxException(Exception):
 
     Will result in HTTP code 400 (bad request).
     """
+
     pass
 
 
@@ -39,46 +41,55 @@ class NotFoundException(AutomxException):
 
     Will result in HTTP code 204 (no content).
     """
+
     pass
 
 
 class InvalidEMailAddressError(AutomxException):
     """Email address is invalid/unparseable."""
+
     pass
 
 
 class DomainNotFound(NotFoundException):
     """Database did not contain the given domain."""
+
     pass
 
 
 class NoProviderForDomain(AutomxException):
     """Database did not contain a provider for the given address."""
+
     pass
 
 
 class NoServersForDomain(AutomxException):
     """Database did not contain any servers for the given address."""
+
     pass
 
 
 class InvalidServerType(AutomxException):
     """Database contains an invalid server type."""
+
     pass
 
 
 class InvalidAuthenticationType(AutomxException):
     """Database contains an invalid authentication type."""
+
     pass
 
 
 class LdapLookupError(AutomxException):
     """LDAP lookup failed."""
+
     pass
 
 
 class LdapNoMatch(NotFoundException):
     """LDAP lookup returned no match."""
+
     pass
 
 
@@ -87,4 +98,4 @@ _handler = logging.StreamHandler()
 _handler.setFormatter(logging.Formatter())
 log.addHandler(_handler)
 log.setLevel(logging.DEBUG)
-log.warning(f'Running {IDENTIFIER} version {VERSION}')
+log.warning(f"Running {IDENTIFIER} version {VERSION}")
