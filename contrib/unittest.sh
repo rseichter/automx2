@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # vim: ts=4 sw=4 noet
+# shellcheck disable=1091
 #
 # Runs unittests for automx2. Example usage:
 #
@@ -48,11 +49,12 @@ function run_coverage() {
 
 if [ $# -gt 0 ]; then
 	case "${1}" in
-		coverage)
-			run_"${1}"
-			;;
-		*)
-			usage
+	coverage)
+		run_"${1}"
+		;;
+	*)
+		usage
+		;;
 	esac
 else
 	run_tests python

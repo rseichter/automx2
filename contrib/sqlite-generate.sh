@@ -30,7 +30,7 @@ s2_id=$((PROVIDER_ID + 22))
 s3_id=$((PROVIDER_ID + 23))
 s4_id=$((PROVIDER_ID + 24))
 
-cat << EOT
+cat <<EOT
 BEGIN;
 
 DELETE FROM provider;
@@ -38,9 +38,9 @@ INSERT INTO provider(id, name, short_name) VALUES(${PROVIDER_ID}, '${PROVIDER_NA
 
 EOT
 
-if [[ -n "${LDAP_SERVER}" ]]; then
+if [[ -n ${LDAP_SERVER} ]]; then
 	root="dc=${DOM},dc=${TLD}"
-	cat << EOT
+	cat <<EOT
 -- Settings tested with OpenLDAP
 DELETE FROM ldapserver;
 INSERT INTO ldapserver(id, name, port, use_ssl, search_base, search_filter, attr_uid, attr_cn, bind_password, bind_user)
@@ -51,7 +51,7 @@ else
 	ldap_id='NULL'
 fi
 
-cat << EOT
+cat <<EOT
 DELETE FROM server;
 INSERT INTO server(id, prio, port, type, name, socket_type, user_name, authentication)
   VALUES(${s1_id}, 5, 993, 'imap', '${IMAP_SERVER}', 'SSL', '%EMAILADDRESS%', 'plain');

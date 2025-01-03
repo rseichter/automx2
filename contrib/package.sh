@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 # vim: ts=4 sw=4 noet
+# shellcheck disable=1091,2155
 #
 # Script to package automx2 for distribution and to handle PyPI uploads.
 # You need Python modules 'wheel' and 'twine' to publish to PyPI, and
@@ -54,17 +55,17 @@ function _setver() {
 declare -r verb="${1}"
 shift
 case "${verb}" in
-	clean|docs)
-		_"${verb}"
-		;;
-	dist|pypi)
-		. .venv/bin/activate
-		_"${verb}" "$@"
-		;;
-	setver)
-		_"${verb}" "$@"
-		;;
-	*)
-		usage
-		;;
+clean | docs)
+	_"${verb}"
+	;;
+dist | pypi)
+	. .venv/bin/activate
+	_"${verb}" "$@"
+	;;
+setver)
+	_"${verb}" "$@"
+	;;
+*)
+	usage
+	;;
 esac

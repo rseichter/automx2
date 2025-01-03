@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# vim: ts=4 sw=4 noet ft=sh
+# vim: ts=4 sw=4 noet ft=bash
 #
-# Copyright © 2019-2024 Ralph Seichter
+# Copyright © 2019-2025 Ralph Seichter
 #
 # This file is part of automx2.
 #
@@ -52,7 +52,7 @@ function main {
 	else
 		usage
 	fi
-	[[ ! -r "$venv" ]] || die "$venv already exists, exiting."
+	[[ ! -r $venv ]] || die "$venv already exists, exiting."
 	echo "Create Python virtual environment"
 	python3 -m venv "$venv"
 	flask="$venv/bin/flask.sh"
