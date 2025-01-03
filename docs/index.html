@@ -656,7 +656,7 @@ pre.rouge {
 <div id="header">
 <h1>automx2: Email client configuration made easy</h1>
 <div class="details">
-<span id="revnumber">version 2025.1.dev1,</span>
+<span id="revnumber">version 2025.1.dev4,</span>
 <span id="revdate">2025-01-03</span>
 </div>
 <div id="toc" class="toc2">
@@ -1553,7 +1553,9 @@ This is purely optional.</p>
 <span class="py">Environment</span><span class="p">=</span><span class="s">FLASK_APP=automx2.server:app</span>
 <span class="py">Environment</span><span class="p">=</span><span class="s">FLASK_CONFIG=production</span>
 <span class="py">ExecStart</span><span class="p">=</span><span class="s">/srv/www/automx2/bin/flask run --host=127.0.0.1 --port=4243</span>
+<span class="py">NotifyAccess</span><span class="p">=</span><span class="s">exec</span>
 <span class="py">Restart</span><span class="p">=</span><span class="s">always</span>
+<span class="py">Type</span><span class="p">=</span><span class="s">notify</span>
 <span class="py">User</span><span class="p">=</span><span class="s">automx2</span>
 <span class="py">WorkingDirectory</span><span class="p">=</span><span class="s">/var/lib/automx2</span>
 
@@ -1820,8 +1822,8 @@ The
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2025.1.dev1<br>
-Last updated 2025-01-03 11:12:45 +0100
+Version 2025.1.dev4<br>
+Last updated 2025-01-03 15:16:47 +0100
 </div>
 </div>
 </body>

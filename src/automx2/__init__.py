@@ -20,7 +20,7 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 import logging
 
 IDENTIFIER = "automx2"  # Do not change this!
-VERSION = "2025.1.dev1"
+__version__ = "2025.1.dev4"
 
 PLACEHOLDER_ADDRESS = r"%EMAILADDRESS%"
 PLACEHOLDER_DOMAIN = r"%EMAILDOMAIN%"
@@ -98,4 +98,4 @@ _handler = logging.StreamHandler()
 _handler.setFormatter(logging.Formatter())
 log.addHandler(_handler)
 log.setLevel(logging.DEBUG)
-log.warning(f"Running {IDENTIFIER} version {VERSION}")
+log.warning(f"Running {IDENTIFIER} version {__version__}")

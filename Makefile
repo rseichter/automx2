@@ -1,6 +1,6 @@
 # vim: ts=4 sw=4 noet
 package 	= contrib/package.sh
-test_env	?= AUTOMX2_CONF=tests/unittest.conf NETWORK_TESTS=1 RUN_LDAP_TESTS=0 PYTHONPATH=.
+test_env	?= AUTOMX2_CONF=tests/unittest.conf NETWORK_TESTS=1 RUN_LDAP_TESTS=0 PYTHONPATH=src
 
 define usage
 

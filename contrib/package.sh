@@ -24,7 +24,9 @@ function _clean() {
 }
 
 function _dist() {
-	python -m build --no-isolation
+	rm -fr docs/.asciidoctor
+	python -m build
+	#python -m build --no-isolation
 }
 
 function _docs() {
@@ -46,8 +48,8 @@ function _pypi() {
 
 function _setver() {
 	[[ $# -gt 0 ]] || usage
-	sed -E -i "" "s/^(VERSION =).*/\1 \"${1}\"/" automx2/__init__.py
-	sed -E -i "" "s/^(version =).*/\1 ${1}/" setup.cfg
+	sed -E -i "" "s/^(__version__ =).*/\1 \"${1}\"/" src/automx2/__init__.py
+	sed -E -i "" "s/^(version =).*/\1 \"${1}\"/" pyproject.toml
 	sed -E -i "" "s/^(:revnumber:).+/\1 ${1}/" docs/automx2.adoc
 	sed -E -i "" "s/^(:revdate:).+/\1 $(date +%F)/" docs/automx2.adoc
 }

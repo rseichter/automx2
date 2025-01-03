@@ -1,3 +1,31 @@
 [build-system]
-requires = ["setuptools", "wheel"]
+requires = ["setuptools >= 61.0", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "automx2"
+version = "2025.1.dev4"
+authors = [{name= "Ralph Seichter", email="automx2@seichter.de"}]
+classifiers = [
+	"Development Status :: 5 - Production/Stable",
+	"License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+	"Operating System :: OS Independent",
+	"Programming Language :: Python :: 3.7",
+	"Topic :: System :: Systems Administration",
+	"Topic :: Utilities",
+]
+dependencies = [
+	"Flask-Migrate>=2.5.2",
+	"Flask-SQLAlchemy>=2.4.1",
+	"Flask>=1.1.1",
+	"ldap3>=2.6",
+]
+description = "Mail User Agent auto-configuration service"
+keywords = [ "autoconfig", "mobileconfig", "mua" ]
+readme = "README.md"
+requires-python = ">=3.7"
+
+[project.urls]
+Documentation = "https://rseichter.github.io/automx2/"
+Issues = "https://github.com/rseichter/automx2/issues"
+Source = "https://github.com/rseichter/automx2"
