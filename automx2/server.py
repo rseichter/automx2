@@ -46,29 +46,35 @@ def _proxy_fix():
     p = int(config.proxy_count())
     if p > 0:  # pragma: no cover (Tests don't use a proxy)
         # See https://werkzeug.palletsprojects.com/en/0.15.x/middleware/proxy_fix/
-        app.wsgi_app = ProxyFix(app.wsgi_app, x_for=p, x_host=p, x_port=p, x_prefix=p, x_proto=p)
+        app.wsgi_app = ProxyFix(
+            app.wsgi_app, x_for=p, x_host=p, x_port=p, x_prefix=p, x_proto=p
+        )
 
 
-def _sd_notify(message: str) -> None:
+def _sd_notify(message: str) -> bool:
     """
     Send notification message to systemd. Based on the sample implementation
-    at https://www.freedesktop.org/software/systemd/man/latest/sd_notify.html
+    at https://www.freedesktop.org/software/systemd/man/latest/sd_notify.html .
+    Returns True on success, False otherwise.
     """
     sock_path = os.environ.get("NOTIFY_SOCKET")
     if not sock_path:
-        # No notification wanted/possible.
-        return
+        # No notification socket defined.
+        return True
     elif sock_path[0] == "@":
         # Abstract socket, replace first byte with NUL.
         sock_path = "\0" + sock_path[1:]
     elif sock_path[0] != "/":
         raise OSError(errno.EAFNOSUPPORT, f"Unsupported socket path {sock_path}")
-    with socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM | socket.SOCK_CLOEXEC) as sock:
-        sock.connect(sock_path)
-        sock.sendall(message.encode())
+    with socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM) as sock:
+        if sock.connect_ex(sock_path) == 0:
+            sock.sendall(message.encode())
+            sock.close()
+            return True
+    return False
 
 
-_sd_notify(f"STATUS=Starting {__name__}")
+_sd_notify(f"STATUS=Starting application {__name__}")
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = config.db_uri()
 app.config["SQLALCHEMY_ECHO"] = config.db_echo()
@@ -100,7 +106,6 @@ app.add_url_rule(
     methods=["POST"],
 )
 _proxy_fix()
-
 db.init_app(app)
 migrate = Migrate(app, db)
 _sd_notify("READY=1")

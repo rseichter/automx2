@@ -106,17 +106,33 @@ def populate_with_example_data():
     db.session.add_all([ex_com, ex_net, ex_org, eggs, serverless])
 
     i = 4000
-    s1 = Server(id=i, type="smtp", port=587, name=sample_server_names["smtp1"], domains=[ex_com, ex_net])
+    s1 = Server(
+        id=i,
+        type="smtp",
+        port=587,
+        name=sample_server_names["smtp1"],
+        domains=[ex_com, ex_net],
+    )
     i += 1
-    s2 = Server(id=i, type="smtp", port=587, name=sample_server_names["smtp2"], domains=[ex_org])
+    s2 = Server(
+        id=i, type="smtp", port=587, name=sample_server_names["smtp2"], domains=[ex_org]
+    )
     i += 1
-    s3 = Server(id=i, type="imap", port=143, name=sample_server_names["imap1"], domains=[ex_com])
+    s3 = Server(
+        id=i, type="imap", port=143, name=sample_server_names["imap1"], domains=[ex_com]
+    )
     i += 1
-    s4 = Server(id=i, type="imap", port=143, name=sample_server_names["imap2"], domains=[ex_net])
+    s4 = Server(
+        id=i, type="imap", port=143, name=sample_server_names["imap2"], domains=[ex_net]
+    )
     i += 1
-    s5 = Server(id=i, type="pop", port=143, name=sample_server_names["pop1"], domains=[ex_org])
+    s5 = Server(
+        id=i, type="pop", port=143, name=sample_server_names["pop1"], domains=[ex_org]
+    )
     i += 1
-    s6 = Server(id=i, type="INVALID", port=123, name=f"{unique()}.{EGGS_DOMAIN}", domains=[eggs])
+    s6 = Server(
+        id=i, type="INVALID", port=123, name=f"{unique()}.{EGGS_DOMAIN}", domains=[eggs]
+    )
     db.session.add_all([s1, s2, s3, s4, s5, s6])
 
     i = 4100
@@ -198,7 +214,17 @@ def populate_with_dict(config: dict) -> None:
         else:
             s = "STARTTLS"
         name = dictget_mandatory(server, "name")
-        servers.append(Server(id=sid, prio=prio, type=type_, port=port, socket_type=s, name=name, domains=domains))
+        servers.append(
+            Server(
+                id=sid,
+                prio=prio,
+                type=type_,
+                port=port,
+                socket_type=s,
+                name=name,
+                domains=domains,
+            )
+        )
         sid += 1
     sl = len(servers)
     if sl < 1:

@@ -85,7 +85,9 @@ def socket_type_needs_ssl(socket_type: str):
         will raise an exception for invalid socket types, so log an error to notify
         users of this upcoming change.
         """
-        log.error(f'Unexpected socket type "{socket_type}" will cause a failure in future versions')
+        log.error(
+            f'Unexpected socket type "{socket_type}" will cause a failure in future versions'
+        )
     return False
 
 

@@ -32,18 +32,28 @@ LookupResult = namedtuple("LookupResult", "status cn uid")
 
 
 class LdapAccess:
-    def __init__(self, hostname, port=636, use_ssl=True, user=None, password=None) -> None:
+    def __init__(
+        self, hostname, port=636, use_ssl=True, user=None, password=None
+    ) -> None:
         self._server = Server(hostname, port=port, use_ssl=use_ssl)
-        self._connection = Connection(self._server, lazy=False, read_only=True, user=user, password=password)
+        self._connection = Connection(
+            self._server, lazy=False, read_only=True, user=user, password=password
+        )
 
-    def lookup(self, search_base: str, search_filter: str, attr_uid="uid", attr_cn=None) -> LookupResult:
-        if not self._connection.bind():  # pragma: no cover (bind errors are not expected during unittests)
+    def lookup(
+        self, search_base: str, search_filter: str, attr_uid="uid", attr_cn=None
+    ) -> LookupResult:
+        if (
+            not self._connection.bind()
+        ):  # pragma: no cover (bind errors are not expected during unittests)
             log.error(f"LDAP bind failed: {self._connection.result}")
             return LookupResult(STATUS_ERROR, None, None)
         attributes = [attr_uid]
         if attr_cn:
             attributes.append(attr_cn)
-        self._connection.search(search_base, search_filter, attributes=attributes, size_limit=1)
+        self._connection.search(
+            search_base, search_filter, attributes=attributes, size_limit=1
+        )
         if self._connection.response:
             ldap_entry = self._connection.response[0]
             log.debug(f'LDAP match {ldap_entry["dn"]}')
@@ -62,7 +72,9 @@ class LdapAccess:
         attributes = ldap_entry["attributes"]
         if attribute and attribute in attributes:
             value = attributes[attribute]
-            if isinstance(value, str):  # pragma: no cover (Will not happen when testing against OpenLDAP)
+            if isinstance(
+                value, str
+            ):  # pragma: no cover (Will not happen when testing against OpenLDAP)
                 log.debug(f'Returning string "{value}"')
                 return value
             elif isinstance(value, list):

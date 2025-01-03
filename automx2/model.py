@@ -25,7 +25,9 @@ db = SQLAlchemy()
 
 davserver_domain_map = db.Table(
     "davserver_domain",
-    db.Column("davserver_id", db.Integer, db.ForeignKey("davserver.id"), primary_key=True),
+    db.Column(
+        "davserver_id", db.Integer, db.ForeignKey("davserver.id"), primary_key=True
+    ),
     db.Column("domain_id", db.Integer, db.ForeignKey("domain.id"), primary_key=True),
 )
 server_domain_map = db.Table(
@@ -39,7 +41,9 @@ class Provider(db.Model):
     id = db.Column(db.Integer, nullable=False, primary_key=True, autoincrement=True)
     name = db.Column(db.String(128), nullable=False)
     short_name = db.Column(db.String(32), nullable=False)
-    domains = db.relationship("Domain", lazy="select", backref=db.backref("provider", lazy="joined"))
+    domains = db.relationship(
+        "Domain", lazy="select", backref=db.backref("provider", lazy="joined")
+    )
 
     def __repr__(self) -> str:
         return f"<Provider id={self.id} name={self.short_name}>"
@@ -55,11 +59,16 @@ class Server(db.Model):
     user_name = db.Column(db.String(64), nullable=False, default=PLACEHOLDER_ADDRESS)
     authentication = db.Column(db.String(32), nullable=False, default="plain")
     domains = db.relationship(
-        "Domain", secondary=server_domain_map, lazy="subquery", backref=db.backref("servers", lazy="select")
+        "Domain",
+        secondary=server_domain_map,
+        lazy="subquery",
+        backref=db.backref("servers", lazy="select"),
     )
 
     def __repr__(self) -> str:
-        return f"<Server id={self.id} prio={self.prio} type={self.type} name={self.name}>"
+        return (
+            f"<Server id={self.id} prio={self.prio} type={self.type} name={self.name}>"
+        )
 
 
 class Davserver(db.Model):
@@ -71,7 +80,10 @@ class Davserver(db.Model):
     domain_required = db.Column(db.Boolean, nullable=False)
     user_name = db.Column(db.String(64), nullable=True)
     domains = db.relationship(
-        "Domain", secondary=davserver_domain_map, lazy="subquery", backref=db.backref("davservers", lazy="select")
+        "Domain",
+        secondary=davserver_domain_map,
+        lazy="subquery",
+        backref=db.backref("davservers", lazy="select"),
     )
 
     def __repr__(self) -> str:
@@ -89,7 +101,9 @@ class Ldapserver(db.Model):
     attr_cn = db.Column(db.String(32), nullable=True)
     bind_password = db.Column(db.String(128), nullable=True)
     bind_user = db.Column(db.String(128), nullable=True)
-    domains = db.relationship("Domain", lazy="select", backref=db.backref("ldapserver", lazy="joined"))
+    domains = db.relationship(
+        "Domain", lazy="select", backref=db.backref("ldapserver", lazy="joined")
+    )
 
     def __repr__(self) -> str:
         return f"<Ldapserver id={self.id} name={self.name}>"
