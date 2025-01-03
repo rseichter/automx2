@@ -74,7 +74,7 @@ def _sd_notify(message: str) -> bool:
     return False
 
 
-_sd_notify(f"STATUS=Starting application {__name__}")
+_sd_notify(f"STATUS=Starting {__name__}")
 app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = config.db_uri()
 app.config["SQLALCHEMY_ECHO"] = config.db_echo()
@@ -108,4 +108,5 @@ app.add_url_rule(
 _proxy_fix()
 db.init_app(app)
 migrate = Migrate(app, db)
+_sd_notify(f"STATUS=Started {__name__}")
 _sd_notify("READY=1")
