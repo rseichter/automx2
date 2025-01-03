@@ -16,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
+
 import unittest
 from typing import List
 from xml.etree.ElementTree import Element
@@ -57,43 +58,43 @@ class MozillaRoutes(TestCase):
 
     def test_mozilla_no_domain_match(self):
         with self.app:
-            r = self.get_mozilla_config('a@b.c')
+            r = self.get_mozilla_config("a@b.c")
             self.assertEqual(204, r.status_code)
 
-    @unittest.skipUnless(NETWORK_TESTS, 'network tests disabled')
+    @unittest.skipUnless(NETWORK_TESTS, "network tests disabled")
     def test_mozilla_domain_match(self):
         with self.app:
-            r = self.get_mozilla_config(f'a@{EXAMPLE_COM}')
+            r = self.get_mozilla_config(f"a@{EXAMPLE_COM}")
             self.assertEqual(200, r.status_code)
             self.assertEqual(CONTENT_TYPE_XML, r.mimetype)
             e: Element = fromstring(body(r))
-            x = e.findall('emailProvider/displayName')
+            x = e.findall("emailProvider/displayName")
             self.assertEqual(BIGCORP_NAME, x[0].text)
 
     def test_mozilla_pop(self):
         with self.app:
-            r = self.get_mozilla_config(f'a@{EXAMPLE_ORG}')
+            r = self.get_mozilla_config(f"a@{EXAMPLE_ORG}")
             x = self.pop_server_elements(fromstring(body(r)))
-            self.assertEqual(sample_server_names['pop1'], x[0].text)
+            self.assertEqual(sample_server_names["pop1"], x[0].text)
 
     def test_mozilla_smtp(self):
         with self.app:
-            r = self.get_mozilla_config(f'a@{EXAMPLE_NET}')
+            r = self.get_mozilla_config(f"a@{EXAMPLE_NET}")
             x = self.smtp_server_elements(fromstring(body(r)))
-            self.assertEqual(sample_server_names['smtp1'], x[0].text)
+            self.assertEqual(sample_server_names["smtp1"], x[0].text)
 
     def test_domain_without_servers(self):
         with self.app:
-            r = self.get_mozilla_config(f'a@{SERVERLESS_DOMAIN}')
+            r = self.get_mozilla_config(f"a@{SERVERLESS_DOMAIN}")
             b = fromstring(body(r))
             self.assertEqual([], self.imap_server_elements(b))
             self.assertEqual([], self.smtp_server_elements(b))
 
     def test_invalid_server(self):
         with self.app:
-            r = self.get_mozilla_config(f'a@{EGGS_DOMAIN}')
+            r = self.get_mozilla_config(f"a@{EGGS_DOMAIN}")
             self.assertEqual(400, r.status_code)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

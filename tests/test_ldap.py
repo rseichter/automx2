@@ -16,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
+
 import unittest
 
 from automx2 import LdapLookupError
@@ -40,43 +41,57 @@ from tests import TestCase
 from tests import app
 
 
-@unittest.skipUnless(RUN_LDAP_TESTS, 'LDAP tests disabled')
+@unittest.skipUnless(RUN_LDAP_TESTS, "LDAP tests disabled")
 class LdapTests(TestCase):
     """Tests for LDAP access methods."""
-    EXISTS_LOCAL = 'a'
-    EXISTS_DOMAIN = 'example.com'
-    EXISTS_EMAIL = f'{EXISTS_LOCAL}@{EXISTS_DOMAIN}'
-    EXISTS_CN = 'John Doe'
-    EXISTS_UID = 'jd'
+
+    EXISTS_LOCAL = "a"
+    EXISTS_DOMAIN = "example.com"
+    EXISTS_EMAIL = f"{EXISTS_LOCAL}@{EXISTS_DOMAIN}"
+    EXISTS_CN = "John Doe"
+    EXISTS_UID = "jd"
     UNIQUE = unique()
-    ATTRIBUTES = {'attributes': {'x': [UNIQUE]}}
+    ATTRIBUTES = {"attributes": {"x": [UNIQUE]}}
 
     @staticmethod
     def search_filter(email_address):
-        return f'(mail={email_address})'
+        return f"(mail={email_address})"
 
     def setUp(self) -> None:
         super().setUp()
-        self.ldap = LdapAccess(hostname=LDAP_HOSTNAME, user=LDAP_BIND_USER, password=LDAP_BIND_PASSWORD, use_ssl=True)
+        self.ldap = LdapAccess(
+            hostname=LDAP_HOSTNAME,
+            user=LDAP_BIND_USER,
+            password=LDAP_BIND_PASSWORD,
+            use_ssl=True,
+        )
 
     def test_attribute_exists(self):
-        self.assertEqual(self.UNIQUE, self.ldap.get_attribute(self.ATTRIBUTES, 'x'))
+        self.assertEqual(self.UNIQUE, self.ldap.get_attribute(self.ATTRIBUTES, "x"))
 
     def test_attribute_missing(self):
-        self.assertIsNone(self.ldap.get_attribute(self.ATTRIBUTES, 'y'))
+        self.assertIsNone(self.ldap.get_attribute(self.ATTRIBUTES, "y"))
 
-    @unittest.skipUnless(RUN_LDAP_TESTS, 'LDAP tests disabled')
+    @unittest.skipUnless(RUN_LDAP_TESTS, "LDAP tests disabled")
     def test_bind_failed(self):
-        self.ldap = LdapAccess(hostname=LDAP_HOSTNAME, user=LDAP_BIND_USER, password=self.UNIQUE)
-        x: LookupResult = self.ldap.lookup(LDAP_SEARCH_BASE, self.search_filter(self.EXISTS_EMAIL))
+        self.ldap = LdapAccess(
+            hostname=LDAP_HOSTNAME, user=LDAP_BIND_USER, password=self.UNIQUE
+        )
+        x: LookupResult = self.ldap.lookup(
+            LDAP_SEARCH_BASE, self.search_filter(self.EXISTS_EMAIL)
+        )
         self.assertEqual(STATUS_ERROR, x.status)
 
     def test_does_not_exist(self):
-        x: LookupResult = self.ldap.lookup(LDAP_SEARCH_BASE, self.search_filter(self.UNIQUE))
+        x: LookupResult = self.ldap.lookup(
+            LDAP_SEARCH_BASE, self.search_filter(self.UNIQUE)
+        )
         self.assertEqual(STATUS_NO_MATCH, x.status)
 
     def test_exists(self):
-        x: LookupResult = self.ldap.lookup(LDAP_SEARCH_BASE, self.search_filter(self.EXISTS_EMAIL), attr_cn='cn')
+        x: LookupResult = self.ldap.lookup(
+            LDAP_SEARCH_BASE, self.search_filter(self.EXISTS_EMAIL), attr_cn="cn"
+        )
         self.assertEqual(STATUS_SUCCESS, x.status)
         self.assertEqual(self.EXISTS_CN, x.cn)
         self.assertEqual(self.EXISTS_UID, x.uid)
@@ -84,12 +99,12 @@ class LdapTests(TestCase):
     def test_apple_generator_ldap(self):
         with app.app_context():
             gen = AppleGenerator()
-            gen.client_config(self.EXISTS_LOCAL, self.EXISTS_DOMAIN, '', '')
+            gen.client_config(self.EXISTS_LOCAL, self.EXISTS_DOMAIN, "", "")
 
     def test_outlook_generator_ldap(self):
         with app.app_context():
             gen = OutlookGenerator()
-            gen.client_config(self.EXISTS_LOCAL, self.EXISTS_DOMAIN, '', '')
+            gen.client_config(self.EXISTS_LOCAL, self.EXISTS_DOMAIN, "", "")
 
     def test_mozilla_generator_ldap_exists(self):
         with app.app_context():
@@ -111,5 +126,5 @@ class LdapTests(TestCase):
             gen.ldap_lookup(self.UNIQUE, None)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

@@ -16,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
+
 import unittest
 
 from automx2.server import MOZILLA_CONFIG_ROUTE
@@ -26,9 +27,9 @@ from tests import body
 class IndexRoute(TestCase):
     def test_index(self):
         with self.app:
-            r = self.get('/')
+            r = self.get("/")
             self.assertEqual(200, r.status_code)
-            self.assertEqual('text/html', r.mimetype)
+            self.assertEqual("text/html", r.mimetype)
             x = body(r).find(f'<a href="{MOZILLA_CONFIG_ROUTE}?')
             self.assertNotEqual(-1, x)
 
@@ -38,12 +39,12 @@ class IndexRouteNoDatabase(TestCase):
 
     def test_index_without_db(self):
         with self.app:
-            r = self.get('/')
+            r = self.get("/")
             self.assertEqual(200, r.status_code)
-            self.assertEqual('text/html', r.mimetype)
-            x = body(r).find('Operational error')
+            self.assertEqual("text/html", r.mimetype)
+            x = body(r).find("Operational error")
             self.assertNotEqual(-1, x)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
