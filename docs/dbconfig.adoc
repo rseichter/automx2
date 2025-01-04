@@ -20,17 +20,15 @@ Detailed instructions to support a particular database dialect are out of scope 
 Please search the Internet for detailed instructions on supporting a particular dialect.
 The SQLAlchemy documentation provides a useful starting point.
 
-While the `contrib` directory contains example database schemas which you can use as a reference, I recommend using the
-built-in method to create the necessary DB structure from scratch by sending an HTTP GET request to the `/initdb/`
-service endpoint.
-This will also populate the database with some hard-coded example data.
+Instead of manually setting up tables, I recommend using the built-in method to create the necessary DB structure by sending an HTTP GET request to the `/initdb/` service endpoint.
+This will also populate the database with some predefined example data.
 Alternatively, you can send a POST request with custom JSON data to the same endpoint, as described below.
 
 [IMPORTANT]
 .Purging the database
 ====
 Sending an HTTP DELETE request to `/initdb/` will purge all existing data.
-Be sure to limit access accordingly!
+Be sure to limit access to this service route accordingly!
 ====
 
 If you upgrade from an early automx2 release and wish to migrate your existing database, you can use the built-in Alembic support.

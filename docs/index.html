@@ -1179,10 +1179,8 @@ Please search the Internet for detailed instructions on supporting a particular 
 The SQLAlchemy documentation provides a useful starting point.</p>
 </div>
 <div class="paragraph">
-<p>While the <code>contrib</code> directory contains example database schemas which you can use as a reference, I recommend using the
-built-in method to create the necessary DB structure from scratch by sending an HTTP GET request to the <code>/initdb/</code>
-service endpoint.
-This will also populate the database with some hard-coded example data.
+<p>Instead of manually setting up tables, I recommend using the built-in method to create the necessary DB structure by sending an HTTP GET request to the <code>/initdb/</code> service endpoint.
+This will also populate the database with some predefined example data.
 Alternatively, you can send a POST request with custom JSON data to the same endpoint, as described below.</p>
 </div>
 <div class="admonitionblock important">
@@ -1195,7 +1193,7 @@ Alternatively, you can send a POST request with custom JSON data to the same end
 <div class="title">Purging the database</div>
 <div class="paragraph">
 <p>Sending an HTTP DELETE request to <code>/initdb/</code> will purge all existing data.
-Be sure to limit access accordingly!</p>
+Be sure to limit access to this service route accordingly!</p>
 </div>
 </td>
 </tr>
