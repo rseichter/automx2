@@ -12,21 +12,10 @@ set -euo pipefail
 function usage() {
 	local n="$(basename "${0}")"
 	cat >&2 <<EOT
-Usage: ${n} {clean | dist | docs | pypi}
+Usage: ${n} {docs | pypi}
        ${n} setver {version}
 EOT
 	exit 1
-}
-
-function _clean() {
-	rm -fr build/* dist/*
-	find automx2 -type d -name __pycache__ -print0 | xargs -0r rm -r
-}
-
-function _dist() {
-	rm -fr docs/.asciidoctor
-	python -m build
-	#python -m build --no-isolation
 }
 
 function _docs() {
@@ -58,14 +47,11 @@ function _setver() {
 declare -r verb="${1}"
 shift
 case "${verb}" in
-clean | docs)
-	_"${verb}"
-	;;
-dist | pypi)
-	. .venv/bin/activate
+docs | setver)
 	_"${verb}" "$@"
 	;;
-setver)
+pypi)
+	. .venv/bin/activate
 	_"${verb}" "$@"
 	;;
 *)

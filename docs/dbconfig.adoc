@@ -68,25 +68,7 @@ The required data format is as follows:
 include::../contrib/seed-example.json[]
 ----
 
-Using JSON is recommended when you are content with automx2 choosing some details like port numbers or socket types for you.
-
-If you prefer SQL statements for greater control of the database content, the Git repository contains a xref:../contrib/sqlite-generate.sh[sqlite-generate.sh] helper script which demonstrates how the database can be populated programmatically.
-Note that this is merely an example script, limited in scope, and not meant to configure a production-ready service.
-Also, you need to adapt a few settings according to your needs:
-
-[source,bash]
-----
-include::../contrib/sqlite-generate.sh[lines=10..15]
-----
-
-The script will print the SQL statements to standard output, which can be piped into `sqlite3` for processing.
-Make sure to match the automx2.conf `db_uri` setting when specifying the database.
-
-[source,bash]
-----
-contrib/sqlite-generate.sh | sqlite3 /var/lib/automx2/db.sqlite
-----
-
+Sending JSON is the recommended method to populate the database. Some details like port numbers or socket types will be chosen for you, but you can later override them by modifying the DB directly.
 Once you have populated the database automx2 is ready to run.
 
 ==== MySQL

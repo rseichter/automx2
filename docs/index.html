@@ -656,8 +656,8 @@ pre.rouge {
 <div id="header">
 <h1>automx2: Email client configuration made easy</h1>
 <div class="details">
-<span id="revnumber">version 2025.1.dev5,</span>
-<span id="revdate">2025-01-03</span>
+<span id="revnumber">version 2025.1.dev7,</span>
+<span id="revdate">2025-01-04</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -1254,34 +1254,8 @@ The required data format is as follows:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Using JSON is recommended when you are content with automx2 choosing some details like port numbers or socket types for you.</p>
-</div>
-<div class="paragraph">
-<p>If you prefer SQL statements for greater control of the database content, the Git repository contains a <a href="../contrib/sqlite-generate.sh">sqlite-generate.sh</a> helper script which demonstrates how the database can be populated programmatically.
-Note that this is merely an example script, limited in scope, and not meant to configure a production-ready service.
-Also, you need to adapt a few settings according to your needs:</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nv">PROVIDER_NAME</span><span class="o">=</span><span class="s1">'Example Inc.'</span>
-<span class="nv">PROVIDER_SHORTNAME</span><span class="o">=</span><span class="s1">'Example'</span>
-<span class="nv">PROVIDER_ID</span><span class="o">=</span>100
-
-<span class="nv">DOM</span><span class="o">=</span><span class="s1">'example'</span>
-<span class="nv">TLD</span><span class="o">=</span><span class="s1">'com'</span></code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>The script will print the SQL statements to standard output, which can be piped into <code>sqlite3</code> for processing.
-Make sure to match the automx2.conf <code>db_uri</code> setting when specifying the database.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash">contrib/sqlite-generate.sh | sqlite3 /var/lib/automx2/db.sqlite</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Once you have populated the database automx2 is ready to run.</p>
+<p>Sending JSON is the recommended method to populate the database. Some details like port numbers or socket types will be chosen for you, but you can later override them by modifying the DB directly.
+Once you have populated the database automx2 is ready to run.</p>
 </div>
 </div>
 <div class="sect3">
@@ -1822,8 +1796,8 @@ The
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2025.1.dev5<br>
-Last updated 2025-01-03 15:53:52 +0100
+Version 2025.1.dev7<br>
+Last updated 2025-01-04 11:41:08 +0100
 </div>
 </div>
 </body>

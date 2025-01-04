@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools >= 61.0", "wheel"]
 build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61.0", "wheel"]
 
 [project]
 name = "automx2"
-version = "2025.1.dev5"
+version = "2025.1.dev7"
 authors = [{name= "Ralph Seichter", email="automx2@seichter.de"}]
 classifiers = [
 	"Development Status :: 5 - Production/Stable",

@@ -23,14 +23,14 @@ help:
 	@exit 0
 
 clean:
-	$(package) clean || true
+	rm -fr dist/* src/*.egg-info ./**/__pycache__
 
 dtest:
 	$(test_env) coverage run --source automx2 -m unittest discover -v tests/
 	coverage html --rcfile=tests/coverage.rc
 
-dist:
-	$(package) $@
+dist:	clean docs
+	python -m build
 
 docs:
 	$(package) $@

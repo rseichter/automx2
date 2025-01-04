@@ -1,4 +1,3 @@
-include contrib/flask.sh contrib/setupvenv.sh
+include contrib/*.json contrib/flask.sh contrib/setupvenv.sh
 include docs/*.html docs/*.pdf docs/*.svg
-exclude docs/*.adoc
 include tests/*.conf tests/*.py
