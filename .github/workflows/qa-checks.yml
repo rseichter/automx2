@@ -8,7 +8,7 @@ jobs:
       fail-fast: false
       matrix:
         os: ['ubuntu-latest']
-        python: ['3.8', '3.9', '3.10', '3.11', '3.12']
+        python: ['3.9', '3.10', '3.11', '3.12', '3.13']
     steps:
       - uses: actions/checkout@v4
       - name: Set up Python
@@ -30,5 +30,6 @@ jobs:
           python -m unittest discover -v tests/
         env:
           AUTOMX2_CONF: 'tests/unittest.conf'
+          PYTHONPATH: src
           # Skip LDAP-based tests for GitHub CI
           RUN_LDAP_TESTS: 0
