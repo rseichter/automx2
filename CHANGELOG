@@ -46,4 +46,4 @@
 
 2025.1 (2025-01-07): Feature: Signal readiness via sd_notify if NOTIFY_SOCKET environment variable is set.
   This benefits NixOS and other platforms using systemd. Suggested by Elias Probst.
-  CI: Drop Python version 3.8 from matrix.
+  CI: Drop Python version 3.8 from matrix, add version 3.13.
