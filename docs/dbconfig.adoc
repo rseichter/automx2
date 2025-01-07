@@ -66,7 +66,6 @@ The required data format is as follows:
 include::../contrib/seed-example.json[]
 ----
 
-Sending JSON is the recommended method to populate the database. Some details like port numbers or socket types will be chosen for you, but you can later override them by modifying the DB directly.
 Once you have populated the database automx2 is ready to run.
 
 ==== MySQL
