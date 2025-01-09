@@ -1,3 +1,4 @@
 include contrib/*.json contrib/flask.sh contrib/setupvenv.sh
 include docs/*.html docs/*.pdf docs/*.svg
-include tests/*.conf tests/*.py
+graft tests
+prune src/alembic
