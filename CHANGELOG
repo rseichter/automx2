@@ -49,4 +49,4 @@
   Build: Change to a more typical directory structure.
   CI: Drop Python version 3.8 from matrix, add version 3.13.
 
-2025.1.1 (TBA): Build: Exclude unnecessary files.
+2025.1.1 (2025-01-13): Build: Exclude unnecessary files.
