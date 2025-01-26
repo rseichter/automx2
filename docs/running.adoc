@@ -14,6 +14,9 @@ and have granted appropriate rights to this user:
 - Read and access permissions for the virtual Python environment.
 - Read and access permissions for the SQLite database.
 
+Please note that the provided files are examples only, and will probably need some changes to match your particular environment.
+Paths for Python, Flask, databases and runtime data can vary considerably.
+
 === As a OpenRC service
 
 The following is an example for a OpenRC run script `/etc/init.d/automx2` which I use for Gentoo Linux:
@@ -23,8 +26,7 @@ The following is an example for a OpenRC run script `/etc/init.d/automx2` which 
 include::../contrib/OpenRC/init_d[]
 ----
 
-If you wish to override any of the settings, copy the following to `/etc/conf.d/automx2` and uncomment/change variables according to your needs.
-This is purely optional.
+If you wish to override settings, you can copy the following to `/etc/conf.d/automx2` and uncomment/change variables according to your needs.
 
 [source,bash]
 ----
@@ -81,7 +83,7 @@ sudo systemctl status automx2
       Tasks: 1 (limit: 4620)
      Memory: 46.1M
      CGroup: /system.slice/automx2.service
-             └─126966 /srv/www/automx2/bin/flask run --host=127.0.0.1 --port=4243
+             └─126966 /srv/www/automx2/.venv/bin/flask run --host=127.0.0.1 --port=4243
 [...]
 Mar 01 12:54:32 mail python[126966]: Reading /etc/automx2.conf
 Mar 01 12:54:32 mail python[126966]: Config.get: loglevel = WARNING

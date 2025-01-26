@@ -1,6 +1,7 @@
 #!/sbin/openrc-run
-#
 # /etc/init.d/automx2
+# Change paths in this file as necessary, depending on your
+# chosen method of installation.
 
 : ${AUTOMX2_CONF:="/etc/${RC_SVCNAME}.conf"}
 : ${AUTOMX2_USER:="automx2"}

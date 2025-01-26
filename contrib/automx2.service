@@ -6,7 +6,9 @@ Documentation=https://rseichter.github.io/automx2/
 [Service]
 Environment=FLASK_APP=automx2.server:app
 Environment=FLASK_CONFIG=production
-ExecStart=/srv/www/automx2/bin/flask run --host=127.0.0.1 --port=4243
+# Change paths in this file as necessary, depending on your
+# chosen method of installation.
+ExecStart=/srv/www/automx2/.venv/bin/flask run --host=127.0.0.1 --port=4243
 NotifyAccess=exec
 Restart=always
 Type=notify

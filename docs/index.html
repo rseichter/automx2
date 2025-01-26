@@ -1454,6 +1454,10 @@ and have granted appropriate rights to this user:</p>
 </li>
 </ul>
 </div>
+<div class="paragraph">
+<p>Please note that the provided files are examples only, and will probably need some changes to match your particular environment.
+Paths for Python, Flask, databases and runtime data can vary considerably.</p>
+</div>
 <div class="sect2">
 <h3 id="_as_a_openrc_service"><a class="anchor" href="#_as_a_openrc_service"></a>9.1. As a OpenRC service</h3>
 <div class="paragraph">
@@ -1462,8 +1466,9 @@ and have granted appropriate rights to this user:</p>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="c">#!/sbin/openrc-run</span>
-<span class="c">#</span>
 <span class="c"># /etc/init.d/automx2</span>
+<span class="c"># Change paths in this file as necessary, depending on your</span>
+<span class="c"># chosen method of installation.</span>
 
 : <span class="k">${</span><span class="nv">AUTOMX2_CONF</span>:<span class="p">=</span><span class="s2">"/etc/</span><span class="k">${</span><span class="nv">RC_SVCNAME</span><span class="k">}</span><span class="s2">.conf"</span><span class="k">}</span>
 : <span class="k">${</span><span class="nv">AUTOMX2_USER</span>:<span class="p">=</span><span class="s2">"automx2"</span><span class="k">}</span>
@@ -1490,8 +1495,7 @@ start_pre<span class="o">()</span> <span class="o">{</span>
 </div>
 </div>
 <div class="paragraph">
-<p>If you wish to override any of the settings, copy the following to <code>/etc/conf.d/automx2</code> and uncomment/change variables according to your needs.
-This is purely optional.</p>
+<p>If you wish to override settings, you can copy the following to <code>/etc/conf.d/automx2</code> and uncomment/change variables according to your needs.</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1523,7 +1527,9 @@ This is purely optional.</p>
 <span class="nn">[Service]</span>
 <span class="py">Environment</span><span class="p">=</span><span class="s">FLASK_APP=automx2.server:app</span>
 <span class="py">Environment</span><span class="p">=</span><span class="s">FLASK_CONFIG=production</span>
-<span class="py">ExecStart</span><span class="p">=</span><span class="s">/srv/www/automx2/bin/flask run --host=127.0.0.1 --port=4243</span>
+<span class="c"># Change paths in this file as necessary, depending on your
+# chosen method of installation.
+</span><span class="py">ExecStart</span><span class="p">=</span><span class="s">/srv/www/automx2/.venv/bin/flask run --host=127.0.0.1 --port=4243</span>
 <span class="py">NotifyAccess</span><span class="p">=</span><span class="s">exec</span>
 <span class="py">Restart</span><span class="p">=</span><span class="s">always</span>
 <span class="py">Type</span><span class="p">=</span><span class="s">notify</span>
@@ -1575,7 +1581,7 @@ Created symlink /etc/systemd/system/multi-user.target.wants/automx2.service → 
       Tasks: 1 <span class="o">(</span>limit: 4620<span class="o">)</span>
      Memory: 46.1M
      CGroup: /system.slice/automx2.service
-             └─126966 /srv/www/automx2/bin/flask run <span class="nt">--host</span><span class="o">=</span>127.0.0.1 <span class="nt">--port</span><span class="o">=</span>4243
+             └─126966 /srv/www/automx2/.venv/bin/flask run <span class="nt">--host</span><span class="o">=</span>127.0.0.1 <span class="nt">--port</span><span class="o">=</span>4243
 <span class="o">[</span>...]
 Mar 01 12:54:32 mail python[126966]: Reading /etc/automx2.conf
 Mar 01 12:54:32 mail python[126966]: Config.get: loglevel <span class="o">=</span> WARNING
@@ -1794,7 +1800,7 @@ The
 <div id="footer">
 <div id="footer-text">
 Version 2025.1.1<br>
-Last updated 2025-01-09 16:40:26 +0100
+Last updated 2025-01-26 04:55:15 +0100
 </div>
 </div>
 </body>
