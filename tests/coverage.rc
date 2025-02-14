@@ -1,6 +1,12 @@
+[run]
+branch = true
+
 [report]
 exclude_lines =
 	def __repr__
 	log\.(debug|error|fatal|info|warn)
 	pragma: no cover
 	raise NotImplementedError
+
+[html]
+title = automx2 coverage report
