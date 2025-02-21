@@ -7,7 +7,7 @@ name = "automx2"
 version = "2025.1.1"
 authors = [{name= "Ralph Seichter", email="automx2@seichter.de"}]
 classifiers = [
-	"Development Status :: 5 - Production/Stable",
+	"Development Status :: 6 - Mature",
 	"License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
 	"Operating System :: OS Independent",
 	"Programming Language :: Python :: 3.7",
