@@ -86,9 +86,22 @@ The `SRV` RR used in the example above would send Alice's client to
 [[mobileconfig]]
 === Mobileconfig
 
-Requests and responses use proprietary content types with an underlying link:https://en.wikipedia.org/wiki/Property_list[property list] format.
-automx2 will return _unsigned_ data, which means that the service must be accessed via HTTPS only.
-Otherwise, your users have no way of knowing if they access the correct service and will be vulnerable to man-in-the-middle attacks.
+Requests and responses use Apple-proprietary content types with an underlying link:https://en.wikipedia.org/wiki/Property_list[property list] format, for both iOS and macOS.
+The easiest method to configure Apple device using automx2 is to visit your mobileconfig URL using the Safari browser directly on the device itself.
+To reduce the risk of man-in-the-middle attacks, please establish an encrypted HTTPS connection for this step. Do not use unencrypted connections unless you are on your local network.
+The appropriate email address needs to be passed via URL parameter, using `%40` to encode the @ symbol.
+
+[source]
+[.small]
+----
+https://autoconfig.example.com/mobileconfig/?emailaddress=alice%40example.com
+----
+
+Save and then install the offered configuration profile on your devices.
+The device OS will warn you about the profile being _unsigned_ (meaning it does not come with a cryptographical signature).
+This is expected behaviour.
+Make sure the configuration profile was obtained from either your personal server or from a trusted third party, by way of examining the HTTPS certificate and URL.
+
 
 [[dnsrr]]
 === DNS SRV resource records

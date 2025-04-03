@@ -758,9 +758,21 @@ If the first DNS query fails the client may be redirected to a configuration ser
 <div class="sect2">
 <h3 id="mobileconfig"><a class="anchor" href="#mobileconfig"></a>5.3. Mobileconfig</h3>
 <div class="paragraph">
-<p>Requests and responses use proprietary content types with an underlying <a href="https://en.wikipedia.org/wiki/Property_list">property list</a> format.
-automx2 will return <em>unsigned</em> data, which means that the service must be accessed via HTTPS only.
-Otherwise, your users have no way of knowing if they access the correct service and will be vulnerable to man-in-the-middle attacks.</p>
+<p>Requests and responses use Apple-proprietary content types with an underlying <a href="https://en.wikipedia.org/wiki/Property_list">property list</a> format, for both iOS and macOS.
+The easiest method to configure Apple device using automx2 is to visit your mobileconfig URL using the Safari browser directly on the device itself.
+To reduce the risk of man-in-the-middle attacks, please establish an encrypted HTTPS connection for this step. Do not use unencrypted connections unless you are on your local network.
+The appropriate email address needs to be passed via URL parameter, using <code>%40</code> to encode the @ symbol.</p>
+</div>
+<div class="listingblock small">
+<div class="content">
+<pre class="rouge highlight"><code>https://autoconfig.example.com/mobileconfig/?emailaddress=alice%40example.com</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Save and then install the offered configuration profile on your devices.
+The device OS will warn you about the profile being <em>unsigned</em> (meaning it does not come with a cryptographical signature).
+This is expected behaviour.
+Make sure the configuration profile was obtained from either your personal server or from a trusted third party, by way of examining the HTTPS certificate and URL.</p>
 </div>
 </div>
 <div class="sect2">
