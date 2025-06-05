@@ -22,13 +22,14 @@ Detailed documentation is available in [HTML](https://rseichter.github.io/automx
 
 ## Contributing
 
-To avoid copyright issues, I do not currently accept code contributions. I hope that this will change at some point
-in the future, but for now, please refrain from opening merge requests.
+To avoid copyright issues, I do not accept code contributions. Please don't
+open any pull requests, because they will be closed.
 
 However, submitting ideas, suggestions and bug reports in the form of
-[GitHub issues](https://github.com/rseichter/automx2/issues) is welcome. Please refer to
-[this blog article](https://about.gitlab.com/blog/2016/03/03/start-with-an-issue/) for an explanation on why issues
-are a good method to share and discuss ideas.
+[GitHub issues](https://github.com/rseichter/automx2/issues) is welcome.
+Please refer to
+[this blog article](https://about.gitlab.com/blog/2016/03/03/start-with-an-issue/)
+for an explanation on why issues are a good method to share and discuss ideas.
 
 ## Sponsorship
 
