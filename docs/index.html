@@ -1147,7 +1147,10 @@ curl <span class="nt">-X</span> POST <span class="nt">--json</span> @mydata.json
 </div>
 <div class="paragraph">
 <p>Starting with automx2 version 2022.0, JSON data can be used to populate the database in a simplified manner, without the need to use SQL statements.
-The required data format is as follows:</p>
+Note that JSON can not currently be used to configure LDAP server support, and does not offer the same degree of flexibility for specifying relationships between multiple domains and servers.
+JSON based configuration is meant to simplify setup for small automx2 installations.
+If you require more control or host multiple domains, I recommend that you manually create the appropriate database records.
+The supported JSON data format is as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
