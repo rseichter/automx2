@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="generator" content="Asciidoctor 2.0.23">
+<meta name="generator" content="Asciidoctor 2.0.26">
 <meta name="keywords" content="autoconfig, autodiscover, mobileconfig, automx, automx2">
-<meta name="copyright" content="© 2019-2025 Ralph Seichter">
+<meta name="copyright" content="© 2019-2026 Ralph Seichter">
 <title>automx2: Email client configuration made easy</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
@@ -118,7 +118,6 @@ h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title str
 :not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
 pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
 pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
-pre>code{display:block}
 pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
 em em{font-style:normal}
 strong strong{font-weight:400}
@@ -221,6 +220,7 @@ table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
 .literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class=highlight],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
 .literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
 .listingblock>.content{position:relative}
+.listingblock pre>code{display:block}
 .listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
 .listingblock:hover code[data-lang]::before{display:block}
 .listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
@@ -559,8 +559,8 @@ pre.rouge .gs {
 <div id="header">
 <h1>automx2: Email client configuration made easy</h1>
 <div class="details">
-<span id="revnumber">version 2025.1.1,</span>
-<span id="revdate">2025-02-14</span>
+<span id="revnumber">version 2026.0.dev1,</span>
+<span id="revdate">2026-01-13</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -625,7 +625,7 @@ pre.rouge .gs {
 <h2 id="copyright"><a class="anchor" href="#copyright"></a>1. Copyright</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>automx2 is Copyright © 2019-2025 Ralph Seichter.
+<p>automx2 is Copyright © 2019-2026 Ralph Seichter.
 automx2 is licensed under the GNU General Public License V3 or later.
 The project is hosted on GitHub in the <a href="https://github.com/rseichter/automx2">rseichter/automx2</a> repository.</p>
 </div>
@@ -960,25 +960,25 @@ configuration</a> that ships with automx2 looks like this:</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="ini"><span class="nn">[automx2]</span>
-<span class="c"># A typical production setup would use loglevel WARNING.
-</span><span class="py">loglevel</span> <span class="p">=</span> <span class="s">DEBUG</span>
+<pre class="rouge highlight"><code data-lang="ini"><span class="nn">[automx2]</span><span class="w">
+</span><span class="c"># A typical production setup would use loglevel WARNING.
+</span><span class="py">loglevel</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">DEBUG</span>
 <span class="c"># Echo SQL commands into log? Used for debugging.
-</span><span class="py">db_echo</span> <span class="p">=</span> <span class="s">no</span>
+</span><span class="py">db_echo</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">no</span>
 <span class="c"># In-memory SQLite database
-</span><span class="py">db_uri</span> <span class="p">=</span> <span class="s">sqlite:///:memory:</span>
-
-<span class="c"># SQLite database in a UNIX-like file system
+</span><span class="py">db_uri</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">sqlite:///:memory:</span>
+<span class="w">
+</span><span class="c"># SQLite database in a UNIX-like file system
 #db_uri = sqlite:////var/lib/automx2/db.sqlite
-</span>
-<span class="c"># MySQL database on a remote server. This example does not use an encrypted
+</span><span class="w">
+</span><span class="c"># MySQL database on a remote server. This example does not use an encrypted
 # connection and is therefore *not* recommended for production use.
 #db_uri = mysql://username:password@server.example.com/db
-</span>
-<span class="c"># Number of proxy servers between automx2 and the client (default: 0).
+</span><span class="w">
+</span><span class="c"># Number of proxy servers between automx2 and the client (default: 0).
 # If your logs only show 127.0.0.1 or ::1 as the source IP for incoming
 # connections, proxy_count probably needs to be changed.
-</span><span class="py">proxy_count</span> <span class="p">=</span> <span class="s">1</span></code></pre>
+</span><span class="py">proxy_count</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">1</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1130,8 +1130,8 @@ Please note that specifying an absolute path for the database requires a total o
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="ini"><span class="nn">[automx2]</span>
-<span class="py">db_uri</span> <span class="p">=</span> <span class="s">sqlite:////var/lib/automx2/db.sqlite</span></code></pre>
+<pre class="rouge highlight"><code data-lang="ini"><span class="nn">[automx2]</span><span class="w">
+</span><span class="py">db_uri</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">sqlite:////var/lib/automx2/db.sqlite</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1185,8 +1185,8 @@ The following example uses <em>pymysql</em> as a DB driver, which is not include
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="ini"><span class="nn">[automx2]</span>
-<span class="py">db_uri</span> <span class="p">=</span> <span class="s">mysql+pymysql://user:pass@dbhost/automx2?charset=utf8mb4</span></code></pre>
+<pre class="rouge highlight"><code data-lang="ini"><span class="nn">[automx2]</span><span class="w">
+</span><span class="py">db_uri</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">mysql+pymysql://user:pass@dbhost/automx2?charset=utf8mb4</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1214,8 +1214,8 @@ The following example uses <em>psycopg2</em> as a DB driver, which is not includ
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="ini"><span class="nn">[automx2]</span>
-<span class="py">db_uri</span> <span class="p">=</span> <span class="s">postgresql+psycopg2://user:pass@dbhost/automx2</span></code></pre>
+<pre class="rouge highlight"><code data-lang="ini"><span class="nn">[automx2]</span><span class="w">
+</span><span class="py">db_uri</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">postgresql+psycopg2://user:pass@dbhost/automx2</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1433,13 +1433,13 @@ start_pre<span class="o">()</span> <span class="o">{</span>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="ini"><span class="nn">[Unit]</span>
-<span class="py">After</span><span class="p">=</span><span class="s">network.target</span>
+<pre class="rouge highlight"><code data-lang="ini"><span class="nn">[Unit]</span><span class="w">
+</span><span class="py">After</span><span class="p">=</span><span class="s">network.target</span>
 <span class="py">Description</span><span class="p">=</span><span class="s">MUA configuration service</span>
 <span class="py">Documentation</span><span class="p">=</span><span class="s">https://rseichter.github.io/automx2/</span>
-
-<span class="nn">[Service]</span>
-<span class="py">Environment</span><span class="p">=</span><span class="s">FLASK_APP=automx2.server:app</span>
+<span class="w">
+</span><span class="nn">[Service]</span><span class="w">
+</span><span class="py">Environment</span><span class="p">=</span><span class="s">FLASK_APP=automx2.server:app</span>
 <span class="py">Environment</span><span class="p">=</span><span class="s">FLASK_CONFIG=production</span>
 <span class="c"># Change paths in this file as necessary, depending on your
 # chosen method of installation.
@@ -1449,9 +1449,9 @@ start_pre<span class="o">()</span> <span class="o">{</span>
 <span class="py">Type</span><span class="p">=</span><span class="s">notify</span>
 <span class="py">User</span><span class="p">=</span><span class="s">automx2</span>
 <span class="py">WorkingDirectory</span><span class="p">=</span><span class="s">/var/lib/automx2</span>
-
-<span class="nn">[Install]</span>
-<span class="py">WantedBy</span><span class="p">=</span><span class="s">multi-user.target</span></code></pre>
+<span class="w">
+</span><span class="nn">[Install]</span><span class="w">
+</span><span class="py">WantedBy</span><span class="p">=</span><span class="s">multi-user.target</span></code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -1607,20 +1607,20 @@ Add the <code>proxy_count</code> parameter to your automx2 configuration file or
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="rouge highlight"><code data-lang="ini"><span class="nn">[automx2]</span>
-<span class="c"># A typical production setup would use loglevel = WARNING
-</span><span class="py">loglevel</span> <span class="p">=</span> <span class="s">WARNING</span>
-
-<span class="c"># Disable SQL command echo.  <i class="conum" data-value="1"></i><b>(1)</b>
-</span><span class="py">db_echo</span> <span class="p">=</span> <span class="s">no</span>
-
-<span class="c"># SQLite database in a UNIX-like file system
-</span><span class="py">db_uri</span> <span class="p">=</span> <span class="s">sqlite:////var/lib/automx2/db.sqlite</span>
-
-<span class="c"># Number of proxy servers between automx2 and the client (default: 0).
+<pre class="rouge highlight"><code data-lang="ini"><span class="nn">[automx2]</span><span class="w">
+</span><span class="c"># A typical production setup would use loglevel = WARNING
+</span><span class="py">loglevel</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">WARNING</span>
+<span class="w">
+</span><span class="c"># Disable SQL command echo.  <i class="conum" data-value="1"></i><b>(1)</b>
+</span><span class="py">db_echo</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">no</span>
+<span class="w">
+</span><span class="c"># SQLite database in a UNIX-like file system
+</span><span class="py">db_uri</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">sqlite:////var/lib/automx2/db.sqlite</span>
+<span class="w">
+</span><span class="c"># Number of proxy servers between automx2 and the client (default: 0).
 # If your logs only show 127.0.0.1 or ::1 as the source IP for incoming
 # connections, proxy_count probably needs to be changed.  <i class="conum" data-value="2"></i><b>(2)</b>
-</span><span class="py">proxy_count</span> <span class="p">=</span> <span class="s">1</span></code></pre>
+</span><span class="py">proxy_count</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">1</span></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -1713,8 +1713,8 @@ The
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2025.1.1<br>
-Last updated 2025-02-14 18:41:25 +0100
+Version 2026.0.dev1<br>
+Last updated 2026-01-13 16:36:26 +0100
 </div>
 </div>
 </body>

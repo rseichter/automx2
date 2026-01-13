@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # vim: ts=4 sw=4 noet ft=bash
 #
-# Copyright © 2019-2025 Ralph Seichter
+# Copyright © 2019-2026 Ralph Seichter
 #
 # This file is part of automx2.
 #

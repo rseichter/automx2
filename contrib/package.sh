@@ -19,7 +19,8 @@ EOT
 }
 
 function _docs() {
-	local ad="$HOME"/.local/share/gem/ruby/3.3.0/bin/asciidoctor
+	local ad=asciidoctor
+	# local ad="$HOME"/.local/share/gem/ruby/3.3.0/bin/asciidoctor
 	local opt=(
 		'-r' 'asciidoctor-diagram'
 		'-v'
@@ -37,10 +38,10 @@ function _pypi() {
 
 function _setver() {
 	[[ $# -gt 0 ]] || usage
-	sed -E -i "" "s/^(__version__ =).*/\1 \"${1}\"/" src/automx2/__init__.py
-	sed -E -i "" "s/^(version =).*/\1 \"${1}\"/" pyproject.toml
-	sed -E -i "" "s/^(:revnumber:).+/\1 ${1}/" docs/automx2.adoc
-	sed -E -i "" "s/^(:revdate:).+/\1 $(date +%F)/" docs/automx2.adoc
+	sed -E -i"" "s/^(__version__ =).*/\1 \"${1}\"/" src/automx2/__init__.py
+	sed -E -i"" "s/^(version =).*/\1 \"${1}\"/" pyproject.toml
+	sed -E -i"" "s/^(:revnumber:).+/\1 ${1}/" docs/automx2.adoc
+	sed -E -i"" "s/^(:revdate:).+/\1 $(date +%F)/" docs/automx2.adoc
 }
 
 [[ $# -gt 0 ]] || usage

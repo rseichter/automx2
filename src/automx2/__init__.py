@@ -1,5 +1,5 @@
 """
-Copyright © 2019-2025 Ralph Seichter
+Copyright © 2019-2026 Ralph Seichter
 
 This file is part of automx2.
 
@@ -20,7 +20,7 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 import logging
 
 IDENTIFIER = "automx2"  # Do not change this!
-__version__ = "2025.1.1"
+__version__ = "2026.0.dev1"
 
 PLACEHOLDER_ADDRESS = r"%EMAILADDRESS%"
 PLACEHOLDER_DOMAIN = r"%EMAILDOMAIN%"
