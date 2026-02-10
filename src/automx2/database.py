@@ -114,25 +114,15 @@ def populate_with_example_data():
         domains=[ex_com, ex_net],
     )
     i += 1
-    s2 = Server(
-        id=i, type="smtp", port=587, name=sample_server_names["smtp2"], domains=[ex_org]
-    )
+    s2 = Server(id=i, type="smtp", port=587, name=sample_server_names["smtp2"], domains=[ex_org])
     i += 1
-    s3 = Server(
-        id=i, type="imap", port=143, name=sample_server_names["imap1"], domains=[ex_com]
-    )
+    s3 = Server(id=i, type="imap", port=143, name=sample_server_names["imap1"], domains=[ex_com])
     i += 1
-    s4 = Server(
-        id=i, type="imap", port=143, name=sample_server_names["imap2"], domains=[ex_net]
-    )
+    s4 = Server(id=i, type="imap", port=143, name=sample_server_names["imap2"], domains=[ex_net])
     i += 1
-    s5 = Server(
-        id=i, type="pop", port=143, name=sample_server_names["pop1"], domains=[ex_org]
-    )
+    s5 = Server(id=i, type="pop", port=143, name=sample_server_names["pop1"], domains=[ex_org])
     i += 1
-    s6 = Server(
-        id=i, type="INVALID", port=123, name=f"{unique()}.{EGGS_DOMAIN}", domains=[eggs]
-    )
+    s6 = Server(id=i, type="INVALID", port=123, name=f"{unique()}.{EGGS_DOMAIN}", domains=[eggs])
     db.session.add_all([s1, s2, s3, s4, s5, s6])
 
     i = 4100
@@ -161,21 +151,17 @@ def populate_with_example_data():
 def populate_with_dict(config: dict) -> None:
     name: str = dictget_mandatory(config, "provider")
     short_name = name.split(" ")[0]
-    provider = Provider(id=Provider.query.count(), name=name, short_name=short_name)
+    provider = Provider(name=name, short_name=short_name)
     db.session.add(provider)
     domains = []
-    did = Domain.query.count()
     for domain in dictget_mandatory(config, "domains"):
-        domains.append(Domain(id=did, name=domain, provider=provider))
-        did += 1
+        domains.append(Domain(name=domain, provider=provider))
     if len(domains) < 1:  # pragma: no cover
         log.error("No domains specified")
         return
     db.session.add_all(domains)
     servers = []
-    sid = Server.query.count()
     davservers = []
-    did = Davserver.query.count()
     for server in dictget_mandatory(config, "servers"):
         type_ = dictget_mandatory(server, "type")
         if type_ == "caldav" or type_ == "carddav":
@@ -187,7 +173,6 @@ def populate_with_dict(config: dict) -> None:
             port = dictget_optional(server, "port", 0)
             davservers.append(
                 Davserver(
-                    id=did,
                     type=type_,
                     url=url,
                     port=port,
@@ -197,7 +182,6 @@ def populate_with_dict(config: dict) -> None:
                     domains=domains,
                 )
             )
-            did += 1
             continue
         elif type_ == "imap":
             port = dictget_optional(server, "port", 993)
@@ -216,7 +200,6 @@ def populate_with_dict(config: dict) -> None:
         name = dictget_mandatory(server, "name")
         servers.append(
             Server(
-                id=sid,
                 prio=prio,
                 type=type_,
                 port=port,
@@ -225,7 +208,6 @@ def populate_with_dict(config: dict) -> None:
                 domains=domains,
             )
         )
-        sid += 1
     sl = len(servers)
     if sl < 1:
         log.error("No mail servers specified")
