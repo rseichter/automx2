@@ -65,17 +65,13 @@ sample_server_names = {
 
 def populate_with_example_data():
     """Populate the database with some fixed samples."""
-    i = 1000
-    bigcorp = Provider(id=i, name=BIGCORP_NAME, short_name=BIGCORP_SHORT)
-    i += 1
-    eggs = Provider(id=i, name=EGGS_NAME, short_name=EGGS_SHORT)
-    i += 1
-    other = Provider(id=i, name=OTHER_NAME, short_name=OTHER_SHORT)
+    bigcorp = Provider(name=BIGCORP_NAME, short_name=BIGCORP_SHORT)
+    eggs = Provider(name=EGGS_NAME, short_name=EGGS_SHORT)
+    other = Provider(name=OTHER_NAME, short_name=OTHER_SHORT)
     db.session.add_all([bigcorp, eggs, other])
 
     if LDAP_HOSTNAME:
         ls = Ldapserver(
-            id=2000,
             name=LDAP_HOSTNAME,
             port=LDAP_PORT,
             use_ssl=True,
@@ -90,44 +86,27 @@ def populate_with_example_data():
     else:  # pragma: no cover
         ls = None
 
-    i = 3000
-    ex_com = Domain(id=i, name=EXAMPLE_COM, provider=bigcorp, ldapserver=ls)
-    i += 1
-    ex_net = Domain(id=i, name=EXAMPLE_NET, provider=bigcorp)
-    i += 1
-    ex_org = Domain(id=i, name=EXAMPLE_ORG, provider=bigcorp)
-    i += 1
-    eggs = Domain(id=i, name=EGGS_DOMAIN, provider=eggs)
-    i += 1
-    # orphan = Domain(id=i, name=ORPHAN_DOMAIN, provider_id=(-1 * i))
-    # i += 1
-    serverless = Domain(id=i, name=SERVERLESS_DOMAIN, provider=other)
-    # db.session.add_all([ex_com, ex_net, ex_org, eggs, orphan, serverless])
+    ex_com = Domain(name=EXAMPLE_COM, provider=bigcorp, ldapserver=ls)
+    ex_net = Domain(name=EXAMPLE_NET, provider=bigcorp)
+    ex_org = Domain(name=EXAMPLE_ORG, provider=bigcorp)
+    eggs = Domain(name=EGGS_DOMAIN, provider=eggs)
+    serverless = Domain(name=SERVERLESS_DOMAIN, provider=other)
     db.session.add_all([ex_com, ex_net, ex_org, eggs, serverless])
 
-    i = 4000
     s1 = Server(
-        id=i,
         type="smtp",
         port=587,
         name=sample_server_names["smtp1"],
         domains=[ex_com, ex_net],
     )
-    i += 1
-    s2 = Server(id=i, type="smtp", port=587, name=sample_server_names["smtp2"], domains=[ex_org])
-    i += 1
-    s3 = Server(id=i, type="imap", port=143, name=sample_server_names["imap1"], domains=[ex_com])
-    i += 1
-    s4 = Server(id=i, type="imap", port=143, name=sample_server_names["imap2"], domains=[ex_net])
-    i += 1
-    s5 = Server(id=i, type="pop", port=143, name=sample_server_names["pop1"], domains=[ex_org])
-    i += 1
-    s6 = Server(id=i, type="INVALID", port=123, name=f"{unique()}.{EGGS_DOMAIN}", domains=[eggs])
+    s2 = Server(type="smtp", port=587, name=sample_server_names["smtp2"], domains=[ex_org])
+    s3 = Server(type="imap", port=143, name=sample_server_names["imap1"], domains=[ex_com])
+    s4 = Server(type="imap", port=143, name=sample_server_names["imap2"], domains=[ex_net])
+    s5 = Server(type="pop", port=143, name=sample_server_names["pop1"], domains=[ex_org])
+    s6 = Server(type="INVALID", port=123, name=f"{unique()}.{EGGS_DOMAIN}", domains=[eggs])
     db.session.add_all([s1, s2, s3, s4, s5, s6])
 
-    i = 4100
     d1 = Davserver(
-        id=i,
         type="caldav",
         url=sample_server_names["cal"],
         port=443,
@@ -136,9 +115,7 @@ def populate_with_example_data():
         user_name=PLACEHOLDER_ADDRESS,
         domains=[ex_com],
     )
-    i += 1
     d2 = Davserver(
-        id=i,
         type="carddav",
         url=sample_server_names["card"],
         use_ssl=False,
