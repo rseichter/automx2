@@ -177,7 +177,7 @@ def populate_with_dict(config: dict) -> None:
         name = dictget_mandatory(domain_cf, "name")
         ldapserver_id = dictget_optional(domain_cf, "ldapserver_id")
         if ldapserver_id:
-            ldapserver = Ldapserver.query.get(ldapserver_id)
+            ldapserver = db.session.get(Ldapserver, ldapserver_id)
             if ldapserver:
                 domain = Domain(name=name, provider=provider, ldapserver=ldapserver)
             else:
