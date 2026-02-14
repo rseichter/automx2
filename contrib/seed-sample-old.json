@@ -1,0 +1,29 @@
+{
+  "_comment": "This JSON format used until automx2 release 2026.0",
+  "provider": "Example Inc.",
+  "domains": [
+      "example.com",
+      "example.net",
+      "example.org"
+    ],
+  "servers": [
+      {
+        "type": "imap",
+        "name": "imap.example.com"
+      },
+      {
+        "type": "smtp",
+        "name": "smtp.example.com"
+      },
+      {
+        "type": "caldav",
+        "port": 443,
+        "url": "https://www.example.net/SOGo/dav/%EMAILADDRESS%/Calendar/personal/"
+      },
+      {
+        "type": "carddav",
+        "port": 443,
+        "url": "https://www.example.net/SOGo/dav/%EMAILADDRESS%/Contacts/personal/"
+      }
+    ]
+}

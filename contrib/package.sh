@@ -33,12 +33,14 @@ function _docs() {
 }
 
 function _lint() {
-	local src=contrib/seed-example.json
-	local tmp=$(mktemp)
+	local fn tmp=$(mktemp)
 	# shellcheck disable=2064
 	trap "rm $tmp" EXIT
-	jsonlint --strict --format --sort preserve "$src" | sed 's/" :/":/g' >>"$tmp"
-	catto "$src" "$tmp"
+	for fn in contrib/*.json; do
+		jsonlint --strict --format --sort preserve "$fn" |
+			sed -e 's/" :/":/g' -e 's/[[:space:]]\+$//' >"$tmp"
+		catto "$fn" "$tmp"
+	done
 }
 
 function _pypi() {

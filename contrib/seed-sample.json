@@ -1,16 +1,17 @@
-{ 
+{
+  "_comment": "This JSON format is required by automx2 release 2026.1",
   "version": 2,
   "provider": "Example Inc.",
-  "domains": [ 
+  "domains": [
       { "name": "example.com" },
       { "name": "example.net" },
-      { 
+      {
         "name": "example.org",
         "ldapserver_id": 42
       }
     ],
-  "ldapservers": [ 
-      { 
+  "ldapservers": [
+      {
         "id": 42,
         "name": "ldap.example.com",
         "port": 636,
@@ -22,7 +23,7 @@
         "bind_password": "CLEARTEXT",
         "bind_user": "uid=techuser,dc=example,dc=com"
       },
-      { 
+      {
         "id": 43,
         "name": "unused.example.net",
         "port": 389,
@@ -32,21 +33,21 @@
         "bind_user": "uid=foo,dc=example,dc=net"
       }
     ],
-  "servers": [ 
-      { 
+  "servers": [
+      {
         "type": "imap",
         "name": "imap.example.com"
       },
-      { 
+      {
         "type": "smtp",
         "name": "smtp.example.com"
       },
-      { 
+      {
         "type": "caldav",
         "port": 443,
         "url": "https://www.example.net/SOGo/dav/%EMAILADDRESS%/Calendar/personal/"
       },
-      { 
+      {
         "type": "carddav",
         "port": 443,
         "url": "https://www.example.net/SOGo/dav/%EMAILADDRESS%/Contacts/personal/"

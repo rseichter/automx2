@@ -59,14 +59,20 @@ curl -X POST --json @mydata.json http://127.0.0.1:4243/initdb/
 ----
 
 Starting with automx2 version 2022.0, JSON data can be used to populate the database in a simplified manner, without the need to use SQL statements.
-Note that JSON can not currently be used to configure LDAP server support, and does not offer the same degree of flexibility for specifying relationships between multiple domains and servers.
 JSON based configuration is meant to simplify setup for small automx2 installations.
 If you require more control or host multiple domains, I recommend that you manually create the appropriate database records.
-The supported JSON data format is as follows:
+The supported JSON data formats are shown here.
+Note that the format was changed to version 2 in automx2 release 2026.1.
+This release added support for LDAP servers during seeding.
 
 [source,json]
 ----
-include::../contrib/seed-example.json[]
+include::../contrib/seed-sample-old.json[]
+----
+
+[source,json]
+----
+include::../contrib/seed-sample.json[]
 ----
 
 Once you have populated the database automx2 is ready to run.
