@@ -39,7 +39,7 @@ def truthy(o: object) -> bool:
             return 0 != o
         elif not isinstance(o, str):
             o = str(o)
-        return o.lower() in ["1", "enable", "on", "true", "yes"]
+        return o.lower() in ["1", "true", "yes"]
     return False
 
 
