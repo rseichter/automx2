@@ -218,8 +218,7 @@ def populate_with_dict(config: dict) -> None:
         elif type_ == "smtp":
             port = dictget_optional(server_cf, "port", 465)
         else:
-            log.error(f"Unknown server type {type_}")
-            sys.exit(1)
+            raise SeedingAborted(f"Unknown server type {type_}")
         prio = dictget_optional(server_cf, "prio", 10)
         if port in [465, 993, 995]:
             s = "SSL"
