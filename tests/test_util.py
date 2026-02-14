@@ -95,15 +95,16 @@ class UtilTests(unittest.TestCase):
         self.assertFalse(socket_type_needs_ssl("INVALID"))
 
     def test_truthy_false(self):
-        self.assertFalse(truthy(None))
-        self.assertFalse(truthy(False))
-        self.assertFalse(truthy(0))
         self.assertFalse(truthy("no"))
+        self.assertFalse(truthy(0))
+        self.assertFalse(truthy(0.1))
+        self.assertFalse(truthy(False))
+        self.assertFalse(truthy(None))
 
     def test_truthy_true(self):
-        self.assertTrue(truthy(True))
-        self.assertTrue(truthy(1))
         self.assertTrue(truthy("yes"))
+        self.assertTrue(truthy(1))
+        self.assertTrue(truthy(True))
 
 
 if __name__ == "__main__":

@@ -45,11 +45,25 @@ class DatabaseRoute(TestCase):
         data = {
             "version": 2,
             "provider": "Test Provider",
-            "domains": [{"name": "test.com"}],
+            "domains": [
+                {"name": "test.com"},
+                {"name": "test.org", "ldapserver_id": 3},
+            ],
             "servers": [
                 {"name": "imap", "type": "imap"},
                 {"name": "pop", "type": "pop"},
                 {"name": "smtp", "type": "smtp"},
+                {"name": "caldav", "type": "caldav", "url": "x"},
+            ],
+            "ldapservers": [
+                {
+                    "id": 3,
+                    "name": "x",
+                    "port": 2,
+                    "search_base": "y",
+                    "bind_password": "z",
+                    "bind_user": "u",
+                },
             ],
         }
         with self.app:
