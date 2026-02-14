@@ -12,7 +12,7 @@ set -euo pipefail
 function usage() {
 	local n="$(basename "${0}")"
 	cat >&2 <<EOT
-Usage: ${n} {docs | pypi}
+Usage: ${n} {docs | lint | pypi}
        ${n} setver {version}
 EOT
 	exit 1
@@ -32,6 +32,15 @@ function _docs() {
 	popd >/dev/null
 }
 
+function _lint() {
+	local src=contrib/seed-example.json
+	local tmp=$(mktemp)
+	# shellcheck disable=2064
+	trap "rm $tmp" EXIT
+	jsonlint --strict --format --sort preserve "$src" | sed 's/" :/":/g' >>"$tmp"
+	catto "$src" "$tmp"
+}
+
 function _pypi() {
 	twine upload dist/*
 }
@@ -48,7 +57,7 @@ function _setver() {
 declare -r verb="${1}"
 shift
 case "${verb}" in
-docs | setver)
+docs | lint | setver)
 	_"${verb}" "$@"
 	;;
 pypi)

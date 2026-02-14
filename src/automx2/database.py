@@ -159,6 +159,8 @@ def dictget_ldapservers(config: dict):
 
 
 def populate_with_dict(config: dict) -> None:
+    if 2 != dictget_mandatory(config, "version"):
+        raise SeedingAborted("Unsupported configuration data version")
     name: str = dictget_mandatory(config, "provider")
     short_name = name.split(" ")[0]
     provider = Provider(name=name, short_name=short_name)

@@ -35,6 +35,9 @@ dist:	clean docs
 docs:
 	$(package) $@
 
+lint:
+	$(package) $@
+
 fmt:
 	black **/*.py
 

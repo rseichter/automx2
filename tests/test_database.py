@@ -43,6 +43,7 @@ class DatabaseRoute(TestCase):
 
     def test_init_json(self):
         data = {
+            "version": 2,
             "provider": "Test Provider",
             "domains": [{"name": "test.com"}],
             "servers": [
