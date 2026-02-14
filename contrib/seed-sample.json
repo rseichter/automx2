@@ -1,5 +1,5 @@
 {
-  "_comment": "This JSON format is required by automx2 release 2026.1",
+  "_comment": "For automx2 release 2026.1",
   "version": 2,
   "provider": "Example Inc.",
   "domains": [
@@ -24,12 +24,11 @@
         "bind_user": "uid=techuser,dc=example,dc=com"
       },
       {
-        "id": 43,
+        "id": 99,
         "name": "unused.example.net",
         "port": 389,
         "search_base": "dc=example,dc=net",
-        "search_filter": "(internetMail={0})",
-        "bind_password": "UNSAFE123",
+        "bind_password": "UNSAFE",
         "bind_user": "uid=foo,dc=example,dc=net"
       }
     ],

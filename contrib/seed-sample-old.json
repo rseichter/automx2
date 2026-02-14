@@ -1,5 +1,5 @@
 {
-  "_comment": "This JSON format used until automx2 release 2026.0",
+  "_comment": "For automx2 release 2026.0 and older",
   "provider": "Example Inc.",
   "domains": [
       "example.com",
