@@ -159,8 +159,9 @@ def dictget_ldapservers(config: dict):
 
 
 def populate_with_dict(config: dict) -> None:
-    if 2 != dictget_mandatory(config, "version"):
-        raise SeedingAborted("Unsupported configuration data version")
+    ver = dictget_mandatory(config, "version")
+    if 2 != ver:
+        raise SeedingAborted(f"Unsupported seed data version (found {ver}, expected 2)")
     name: str = dictget_mandatory(config, "provider")
     short_name = name.split(" ")[0]
     provider = Provider(name=name, short_name=short_name)
@@ -170,6 +171,7 @@ def populate_with_dict(config: dict) -> None:
     if n > 0:
         log.info(f"Adding {n} LDAP servers")
         db.session.add_all(ldapservers)
+    db.session.flush()
     domains = []
     for domain_cf in dictget_mandatory(config, "domains"):
         name = dictget_mandatory(domain_cf, "name")
@@ -244,6 +246,7 @@ def populate_with_dict(config: dict) -> None:
     if dl > 0:
         log.info(f"Adding {dl} DAV servers")
         db.session.add_all(davservers)
+    db.session.commit()
 
 
 def populate_db(data_source: Optional[dict]):
