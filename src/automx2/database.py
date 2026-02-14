@@ -22,6 +22,7 @@ from typing import Optional
 
 from automx2 import PLACEHOLDER_ADDRESS
 from automx2 import log
+from automx2 import SeedingAborted
 from automx2.model import Davserver
 from automx2.model import Domain
 from automx2.model import Ldapserver
@@ -83,7 +84,7 @@ def populate_with_example_data():
             search_base=LDAP_SEARCH_BASE,
             search_filter="(mail={0})",
         )
-        db.session.add_all([ls])
+        db.session.add(ls)
     else:  # pragma: no cover
         ls = None
 
@@ -127,31 +128,34 @@ def populate_with_example_data():
 
 
 def dictget_ldapservers(config: dict):
-    servers = []
+    ldapservers = []
     if "ldapservers" in config:
-        for ss in config["ldapservers"]:
-            name = dictget_mandatory(ss, "name")
-            port = dictget_optional(ss, "port", LDAP_PORT)
-            attr_uid = dictget_optional(ss, "attr_uid", "uid")
-            attr_cn = dictget_optional(ss, "attr_cn", "cn")
-            bind_password = dictget_mandatory(ss, "bind_password")
-            bind_user = dictget_mandatory(ss, "bind_user")
-            search_base = dictget_mandatory(ss, "search_base")
-            search_filter = dictget_optional(ss, "search_filter", "(mail={0})")
-            use_ssl = truthy(dictget_optional(ss, "use_ssl", port == 636))
-            ls = Ldapserver(
-                name=name,
-                port=port,
-                use_ssl=use_ssl,
-                attr_uid=attr_uid,
-                attr_cn=attr_cn,
-                bind_password=bind_password,
-                bind_user=bind_user,
-                search_base=search_base,
-                search_filter=search_filter,
+        for cf in config["ldapservers"]:
+            id = dictget_mandatory(cf, "id")
+            name = dictget_mandatory(cf, "name")
+            port = dictget_optional(cf, "port", LDAP_PORT)
+            attr_uid = dictget_optional(cf, "attr_uid", "uid")
+            attr_cn = dictget_optional(cf, "attr_cn", "cn")
+            bind_password = dictget_mandatory(cf, "bind_password")
+            bind_user = dictget_mandatory(cf, "bind_user")
+            search_base = dictget_mandatory(cf, "search_base")
+            search_filter = dictget_optional(cf, "search_filter", "(mail={0})")
+            use_ssl = truthy(dictget_optional(cf, "use_ssl", port == 636))
+            ldapservers.append(
+                Ldapserver(
+                    id=id,
+                    name=name,
+                    port=port,
+                    use_ssl=use_ssl,
+                    attr_uid=attr_uid,
+                    attr_cn=attr_cn,
+                    bind_password=bind_password,
+                    bind_user=bind_user,
+                    search_base=search_base,
+                    search_filter=search_filter,
+                )
             )
-            servers.append(ls)
-    return servers
+    return ldapservers
 
 
 def populate_with_dict(config: dict) -> None:
@@ -165,31 +169,32 @@ def populate_with_dict(config: dict) -> None:
         log.info(f"Adding {n} LDAP servers")
         db.session.add_all(ldapservers)
     domains = []
-    for domain in dictget_mandatory(config, "domains"):
-        use_ldap = truthy(dictget_optional(domain, "use_ldap"))
-        if use_ldap and len(ldapservers) > 0:
-            dom = Domain(name=domain, provider=provider, ldapserver=ldapservers[0])
-        elif use_ldap:
-            log.error("No LDAP server defined")
-            return
+    for domain_cf in dictget_mandatory(config, "domains"):
+        name = dictget_mandatory(domain_cf, "name")
+        ldapserver_id = dictget_optional(domain_cf, "ldapserver_id")
+        if ldapserver_id:
+            ldapserver = Ldapserver.query.get(ldapserver_id)
+            if ldapserver:
+                domain = Domain(name=name, provider=provider, ldapserver=ldapserver)
+            else:
+                raise SeedingAborted(f"No LDAP server with ID {ldapserver_id}")
         else:
-            dom = Domain(name=domain, provider=provider)
-        domains.append(dom)
+            domain = Domain(name=name, provider=provider)
+        domains.append(domain)
     if len(domains) < 1:  # pragma: no cover
-        log.error("No domains specified")
-        return
+        raise SeedingAborted("No domain specified")
     db.session.add_all(domains)
     servers = []
     davservers = []
-    for server in dictget_mandatory(config, "servers"):
-        type_ = dictget_mandatory(server, "type")
+    for server_cf in dictget_mandatory(config, "servers"):
+        type_ = dictget_mandatory(server_cf, "type")
         if type_ == "caldav" or type_ == "carddav":
-            url = dictget_mandatory(server, "url")
+            url = dictget_mandatory(server_cf, "url")
             if url[:6] == "https:":
                 ssl = 1
             else:
                 ssl = 0
-            port = dictget_optional(server, "port", 0)
+            port = dictget_optional(server_cf, "port", 0)
             davservers.append(
                 Davserver(
                     type=type_,
@@ -203,20 +208,20 @@ def populate_with_dict(config: dict) -> None:
             )
             continue
         elif type_ == "imap":
-            port = dictget_optional(server, "port", 993)
+            port = dictget_optional(server_cf, "port", 993)
         elif type_ == "pop":
-            port = dictget_optional(server, "port", 995)
+            port = dictget_optional(server_cf, "port", 995)
         elif type_ == "smtp":
-            port = dictget_optional(server, "port", 465)
+            port = dictget_optional(server_cf, "port", 465)
         else:
             log.error(f"Unknown server type {type_}")
             sys.exit(1)
-        prio = dictget_optional(server, "prio", 10)
+        prio = dictget_optional(server_cf, "prio", 10)
         if port in [465, 993, 995]:
             s = "SSL"
         else:
             s = "STARTTLS"
-        name = dictget_mandatory(server, "name")
+        name = dictget_mandatory(server_cf, "name")
         servers.append(
             Server(
                 prio=prio,
@@ -228,11 +233,11 @@ def populate_with_dict(config: dict) -> None:
             )
         )
     sl = len(servers)
-    if sl < 1:
-        log.error("No mail servers specified")
-    else:
+    if sl > 0:
         log.info(f"Adding {sl} mail servers")
         db.session.add_all(servers)
+    else:
+        raise SeedingAborted("No mail server specified")
     dl = len(davservers)
     if dl > 0:
         log.info(f"Adding {dl} DAV servers")
