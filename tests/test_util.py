@@ -29,6 +29,7 @@ from automx2.util import dictget_optional
 from automx2.util import from_environ
 from automx2.util import parse_email_address
 from automx2.util import socket_type_needs_ssl
+from automx2.util import truthy
 from automx2.util import unique
 
 
@@ -92,6 +93,17 @@ class UtilTests(unittest.TestCase):
         self.assertTrue(socket_type_needs_ssl("SSL"))
         self.assertFalse(socket_type_needs_ssl("STARTTLS"))
         self.assertFalse(socket_type_needs_ssl("INVALID"))
+
+    def test_truthy_false(self):
+        self.assertFalse(truthy(None))
+        self.assertFalse(truthy(False))
+        self.assertFalse(truthy(0))
+        self.assertFalse(truthy("no"))
+
+    def test_truthy_true(self):
+        self.assertTrue(truthy(True))
+        self.assertTrue(truthy(1))
+        self.assertTrue(truthy("yes"))
 
 
 if __name__ == "__main__":

@@ -31,6 +31,7 @@ from automx2.model import db
 from automx2.util import dictget_mandatory
 from automx2.util import dictget_optional
 from automx2.util import from_environ
+from automx2.util import truthy
 from automx2.util import unique
 
 LDAP_BIND_PASSWORD = from_environ("LDAP_BIND_PASSWORD")
@@ -125,14 +126,55 @@ def populate_with_example_data():
     db.session.add_all([d1, d2])
 
 
+def dictget_ldapservers(config: dict):
+    servers = []
+    if "ldapservers" in config:
+        for ss in config["ldapservers"]:
+            name = dictget_mandatory(ss, "name")
+            port = dictget_optional(ss, "port", LDAP_PORT)
+            attr_uid = dictget_optional(ss, "attr_uid", "uid")
+            attr_cn = dictget_optional(ss, "attr_cn", "cn")
+            bind_password = dictget_mandatory(ss, "bind_password")
+            bind_user = dictget_mandatory(ss, "bind_user")
+            search_base = dictget_mandatory(ss, "search_base")
+            search_filter = dictget_optional(ss, "search_filter", "(mail={0})")
+            use_ssl = truthy(dictget_optional(ss, "use_ssl", port == 636))
+            ls = Ldapserver(
+                name=name,
+                port=port,
+                use_ssl=use_ssl,
+                attr_uid=attr_uid,
+                attr_cn=attr_cn,
+                bind_password=bind_password,
+                bind_user=bind_user,
+                search_base=search_base,
+                search_filter=search_filter,
+            )
+            servers.append(ls)
+    return servers
+
+
 def populate_with_dict(config: dict) -> None:
     name: str = dictget_mandatory(config, "provider")
     short_name = name.split(" ")[0]
     provider = Provider(name=name, short_name=short_name)
     db.session.add(provider)
+    ldapservers = dictget_ldapservers(config)
+    n = len(ldapservers)
+    if n > 0:
+        log.info(f"Adding {n} LDAP servers")
+        db.session.add_all(ldapservers)
     domains = []
     for domain in dictget_mandatory(config, "domains"):
-        domains.append(Domain(name=domain, provider=provider))
+        use_ldap = truthy(dictget_optional(domain, "use_ldap"))
+        if use_ldap and len(ldapservers) > 0:
+            dom = Domain(name=domain, provider=provider, ldapserver=ldapservers[0])
+        elif use_ldap:
+            log.error("No LDAP server defined")
+            return
+        else:
+            dom = Domain(name=domain, provider=provider)
+        domains.append(dom)
     if len(domains) < 1:  # pragma: no cover
         log.error("No domains specified")
         return

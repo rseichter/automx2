@@ -31,6 +31,18 @@ from automx2 import log
 email_address_re = re.compile(r"^([^@]+)@([^@]+)$", re.IGNORECASE)
 
 
+def truthy(o: object) -> bool:
+    if o is not None:
+        if isinstance(o, bool):
+            return o
+        elif isinstance(o, int):
+            return 0 != o
+        elif not isinstance(o, str):
+            o = str(o)
+        return o.lower() in ["1", "enable", "on", "true", "yes"]
+    return False
+
+
 def dictget_optional(data: dict, key: str, default: object = None):
     if key in data:
         return data[key]
@@ -85,9 +97,7 @@ def socket_type_needs_ssl(socket_type: str):
         will raise an exception for invalid socket types, so log an error to notify
         users of this upcoming change.
         """
-        log.error(
-            f'Unexpected socket type "{socket_type}" will cause a failure in future versions'
-        )
+        log.error(f'Unexpected socket type "{socket_type}" will cause a failure in future versions')
     return False
 
 
