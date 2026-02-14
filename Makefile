@@ -12,11 +12,12 @@ docs    Generate documentation.
 dtest   Developer tests.
 fmt     Format Python code.
 help    Display this text.
+lint    Lint JSON files.
 shc     Shell script care.
 
 endef
 
-.PHONY:	clean dist docs dtest fmt help shc
+.PHONY:	clean dist docs dtest fmt help lint shc
 
 help:
 	$(info $(usage))
@@ -29,7 +30,7 @@ dtest:
 	$(test_env) coverage run --source automx2 -m unittest discover -v tests/
 	coverage html --rcfile=tests/coverage.rc
 
-dist:	clean docs
+dist:	clean fmt lint docs
 	python -m build
 
 docs:
