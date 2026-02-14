@@ -8,7 +8,6 @@ version = "2026.1.dev1"
 authors = [{name= "Ralph Seichter", email="automx2@seichter.de"}]
 classifiers = [
 	"Development Status :: 6 - Mature",
-	"License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
 	"Operating System :: OS Independent",
 	"Programming Language :: Python :: 3.7",
 	"Topic :: System :: Systems Administration",
@@ -22,6 +21,8 @@ dependencies = [
 ]
 description = "Mail User Agent auto-configuration service"
 keywords = [ "autoconfig", "mobileconfig", "mua" ]
+license = "GPL-3.0-or-later"
+license-files = ["LICENSE"]
 readme = "README.md"
 requires-python = ">=3.7"
 
