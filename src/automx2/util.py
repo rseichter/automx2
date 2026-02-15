@@ -21,11 +21,11 @@ import os
 import re
 from uuid import uuid4
 
-from automx2 import AutomxException
-from automx2 import InvalidEMailAddressError
 from automx2 import PLACEHOLDER_ADDRESS
 from automx2 import PLACEHOLDER_DOMAIN
 from automx2 import PLACEHOLDER_LOCALPART
+from automx2 import AutomxException
+from automx2 import InvalidEMailAddressError
 from automx2 import log
 
 email_address_re = re.compile(r"^([^@]+)@([^@]+)$", re.IGNORECASE)

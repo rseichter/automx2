@@ -21,19 +21,19 @@ import unittest
 
 from automx2 import LdapLookupError
 from automx2 import LdapNoMatch
-from automx2.generators.apple import AppleGenerator
-from automx2.generators.mozilla import MozillaGenerator
-from automx2.generators.outlook import OutlookGenerator
 from automx2.database import LDAP_BIND_PASSWORD
 from automx2.database import LDAP_BIND_USER
 from automx2.database import LDAP_HOSTNAME
 from automx2.database import LDAP_PORT
 from automx2.database import LDAP_SEARCH_BASE
-from automx2.ldap import LdapAccess
-from automx2.ldap import LookupResult
+from automx2.generators.apple import AppleGenerator
+from automx2.generators.mozilla import MozillaGenerator
+from automx2.generators.outlook import OutlookGenerator
 from automx2.ldap import STATUS_ERROR
 from automx2.ldap import STATUS_NO_MATCH
 from automx2.ldap import STATUS_SUCCESS
+from automx2.ldap import LdapAccess
+from automx2.ldap import LookupResult
 from automx2.model import Ldapserver
 from automx2.util import unique
 from tests import RUN_LDAP_TESTS

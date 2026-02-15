@@ -17,9 +17,10 @@ You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
 
-import os
 import errno
+import os
 import socket
+
 from flask import Flask
 from flask_migrate import Migrate
 from werkzeug.middleware.proxy_fix import ProxyFix

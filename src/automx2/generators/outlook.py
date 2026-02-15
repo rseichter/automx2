@@ -23,8 +23,8 @@ from automx2 import DomainNotFound
 from automx2 import InvalidServerType
 from automx2.generators import ConfigGenerator
 from automx2.generators import xml_to_string
-from automx2.ldap import LookupResult
 from automx2.ldap import STATUS_SUCCESS
+from automx2.ldap import LookupResult
 from automx2.model import Davserver
 from automx2.model import Domain
 from automx2.model import Server

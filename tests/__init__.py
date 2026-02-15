@@ -21,14 +21,14 @@ import unittest
 
 from flask import Response
 
-from automx2.generators.outlook import NS_REQUEST
-from automx2.generators.outlook import NS_RESPONSE_PAYLOAD
 from automx2.database import LDAP_BIND_PASSWORD
 from automx2.database import LDAP_BIND_USER
 from automx2.database import LDAP_HOSTNAME
 from automx2.database import LDAP_PORT
 from automx2.database import LDAP_SEARCH_BASE
 from automx2.database import populate_db
+from automx2.generators.outlook import NS_REQUEST
+from automx2.generators.outlook import NS_RESPONSE_PAYLOAD
 from automx2.model import Ldapserver
 from automx2.model import db
 from automx2.server import APPLE_CONFIG_ROUTE

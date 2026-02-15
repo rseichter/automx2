@@ -21,8 +21,8 @@ import sys
 from typing import Optional
 
 from automx2 import PLACEHOLDER_ADDRESS
-from automx2 import log
 from automx2 import SeedingAborted
+from automx2 import log
 from automx2.model import Davserver
 from automx2.model import Domain
 from automx2.model import Ldapserver

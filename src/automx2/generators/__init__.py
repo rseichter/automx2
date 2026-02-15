@@ -23,10 +23,10 @@ from xml.etree.ElementTree import tostring
 from automx2 import IDENTIFIER
 from automx2 import LdapLookupError
 from automx2 import LdapNoMatch
-from automx2.ldap import LdapAccess
-from automx2.ldap import LookupResult
 from automx2.ldap import STATUS_ERROR
 from automx2.ldap import STATUS_NO_MATCH
+from automx2.ldap import LdapAccess
+from automx2.ldap import LookupResult
 from automx2.model import Ldapserver
 from automx2.model import Server
 

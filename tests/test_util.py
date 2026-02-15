@@ -20,12 +20,12 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 import os
 import unittest
 
-from automx2 import InvalidEMailAddressError
 from automx2 import PLACEHOLDER_ADDRESS
 from automx2 import PLACEHOLDER_DOMAIN
 from automx2 import PLACEHOLDER_LOCALPART
-from automx2.util import expand_placeholders
+from automx2 import InvalidEMailAddressError
 from automx2.util import dictget_optional
+from automx2.util import expand_placeholders
 from automx2.util import from_environ
 from automx2.util import parse_email_address
 from automx2.util import socket_type_needs_ssl

@@ -40,6 +40,7 @@ lint:
 	$(package) $@
 
 fmt:
+	isort src/automx2 tests
 	black **/*.py
 
 shc:

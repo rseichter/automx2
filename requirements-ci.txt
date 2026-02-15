@@ -2,4 +2,5 @@ black
 build
 coverage>=5.3
 flake8
+isort
 twine

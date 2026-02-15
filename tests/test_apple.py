@@ -22,8 +22,8 @@ from typing import List
 from xml.dom import minidom
 from xml.dom.minidom import Element
 
-from automx2 import InvalidAuthenticationType
 from automx2 import PLACEHOLDER_ADDRESS
+from automx2 import InvalidAuthenticationType
 from automx2.database import EGGS_DOMAIN
 from automx2.database import EXAMPLE_COM
 from automx2.database import EXAMPLE_NET
@@ -151,7 +151,8 @@ class AppleRoutes(TestCase):
                 _map_authentication(s)
 
     def test_map_valid_auth(self):
-        from automx2.generators.apple import _map_authentication, AUTH_MAP
+        from automx2.generators.apple import AUTH_MAP
+        from automx2.generators.apple import _map_authentication
 
         with self.app:
             for k, v in AUTH_MAP.items():
