@@ -1,6 +1,6 @@
 black
 build
 coverage>=5.3
-flake8
+Flake8-pyproject
 isort
 twine

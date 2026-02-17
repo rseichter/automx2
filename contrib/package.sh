@@ -41,6 +41,8 @@ function _lint() {
 			sed -e 's/" :/":/g' -e 's/[[:space:]]\+$//' >"$tmp"
 		catto "$fn" "$tmp"
 	done
+	flake8 . --select=E9,F63,F7,F82 --show-source
+	flake8 . --exit-zero
 }
 
 function _pypi() {

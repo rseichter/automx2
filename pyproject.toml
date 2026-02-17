@@ -34,3 +34,18 @@ Source = "https://github.com/rseichter/automx2"
 [tool.isort]
 force_single_line = true
 profile = "black"
+
+[tool.flake8]
+count = true
+exclude = [
+    ".git",
+    ".venv",
+    "__pycache__",
+    "alembic",
+    "build",
+    "dist",
+    "tests"
+]
+max-complexity = 10
+max-line-length = 120
+statistics = true
