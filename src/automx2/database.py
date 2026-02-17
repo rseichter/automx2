@@ -17,7 +17,6 @@ You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
 
-import sys
 from typing import Optional
 
 from automx2 import PLACEHOLDER_ADDRESS
