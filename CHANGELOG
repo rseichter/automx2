@@ -54,3 +54,5 @@
 2026.0 (2026-02-12): Fix: Leave the assignment of IDs during database seeding to the SQLAlchemy library.
   This shifts certain responsibilities related to session state away from automx2, and addresses seeding
   problems when using non-SQLite databases.
+
+2026.1 (TBA): Feature: Support LDAP servers in JSON-based seeding.
