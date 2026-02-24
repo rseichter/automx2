@@ -594,8 +594,9 @@ pre.rouge .gs {
 <ul class="sectlevel3">
 <li><a href="#_database_support">7.5.1. Database support</a></li>
 <li><a href="#_sqlite">7.5.2. SQLite</a></li>
-<li><a href="#_mysql">7.5.3. MySQL</a></li>
-<li><a href="#_postgresql">7.5.4. PostgreSQL</a></li>
+<li><a href="#_json">7.5.3. JSON</a></li>
+<li><a href="#_mysql">7.5.4. MySQL</a></li>
+<li><a href="#_postgresql">7.5.5. PostgreSQL</a></li>
 </ul>
 </li>
 <li><a href="#_alembic">7.6. Alembic</a></li>
@@ -1145,46 +1146,20 @@ curl <span class="nt">-X</span> GET http://127.0.0.1:4243/initdb/
 curl <span class="nt">-X</span> POST <span class="nt">--json</span> @mydata.json http://127.0.0.1:4243/initdb/</code></pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="_json"><a class="anchor" href="#_json"></a>7.5.3. JSON</h4>
 <div class="paragraph">
 <p>Starting with automx2 version 2022.0, JSON data can be used to populate the database in a simplified manner, without the need to use SQL statements.
-JSON based configuration is meant to simplify setup for small automx2 installations.
-If you require more control or host multiple domains, I recommend that you manually create the appropriate database records.
-The supported JSON data formats are shown here.
-Note that the format was changed to version 2 in automx2 release 2026.1.
-This release added support for LDAP servers during seeding.</p>
+JSON based configuration is meant to ease setup for small automx2 installations and makes certain assumptions about the relationships between servers and domains.
+If you require more flexibility, I recommend that you manually create the appropriate database records.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
-  </span><span class="nl">"_comment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"For automx2 release 2026.0 and older"</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Example Inc."</span><span class="p">,</span><span class="w">
-  </span><span class="nl">"domains"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="s2">"example.com"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"example.net"</span><span class="p">,</span><span class="w">
-      </span><span class="s2">"example.org"</span><span class="w">
-    </span><span class="p">],</span><span class="w">
-  </span><span class="nl">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"imap"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"imap.example.com"</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"smtp"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"smtp.example.com"</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"caldav"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://www.example.net/SOGo/dav/%EMAILADDRESS%/Calendar/personal/"</span><span class="w">
-      </span><span class="p">},</span><span class="w">
-      </span><span class="p">{</span><span class="w">
-        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"carddav"</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w">
-        </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://www.example.net/SOGo/dav/%EMAILADDRESS%/Contacts/personal/"</span><span class="w">
-      </span><span class="p">}</span><span class="w">
-    </span><span class="p">]</span><span class="w">
-</span><span class="p">}</span></code></pre>
+<div class="paragraph">
+<p>Supported JSON data formats are shown here.
+Note that the format was changed to version 2 in automx2 release 2026.1, which added support for LDAP servers during seeding.</p>
 </div>
+<div class="paragraph">
+<p>Current <a href="https://github.com/rseichter/automx2/blob/master/contrib/seed-sample.json">V2 format</a>, for release 2026.1:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -1246,11 +1221,47 @@ This release added support for LDAP servers during seeding.</p>
 </div>
 </div>
 <div class="paragraph">
+<p>Older <a href="https://github.com/rseichter/automx2/blob/master/contrib/seed-sample-old.json">V1 format</a>, only for releases 2026.0 and earlier:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="rouge highlight"><code data-lang="json"><span class="p">{</span><span class="w">
+  </span><span class="nl">"_comment"</span><span class="p">:</span><span class="w"> </span><span class="s2">"For automx2 release 2026.0 and older"</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"provider"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Example Inc."</span><span class="p">,</span><span class="w">
+  </span><span class="nl">"domains"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"example.com"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"example.net"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"example.org"</span><span class="w">
+    </span><span class="p">],</span><span class="w">
+  </span><span class="nl">"servers"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"imap"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"imap.example.com"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"smtp"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"smtp.example.com"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"caldav"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://www.example.net/SOGo/dav/%EMAILADDRESS%/Calendar/personal/"</span><span class="w">
+      </span><span class="p">},</span><span class="w">
+      </span><span class="p">{</span><span class="w">
+        </span><span class="nl">"type"</span><span class="p">:</span><span class="w"> </span><span class="s2">"carddav"</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"port"</span><span class="p">:</span><span class="w"> </span><span class="mi">443</span><span class="p">,</span><span class="w">
+        </span><span class="nl">"url"</span><span class="p">:</span><span class="w"> </span><span class="s2">"https://www.example.net/SOGo/dav/%EMAILADDRESS%/Contacts/personal/"</span><span class="w">
+      </span><span class="p">}</span><span class="w">
+    </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
 <p>Once you have populated the database automx2 is ready to run.</p>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_mysql"><a class="anchor" href="#_mysql"></a>7.5.3. MySQL</h4>
+<h4 id="_mysql"><a class="anchor" href="#_mysql"></a>7.5.4. MySQL</h4>
 <div class="paragraph">
 <p>Step 1: Create a database.</p>
 </div>
@@ -1279,7 +1290,7 @@ The following example uses <em>pymysql</em> as a DB driver, which is not include
 </div>
 </div>
 <div class="sect3">
-<h4 id="_postgresql"><a class="anchor" href="#_postgresql"></a>7.5.4. PostgreSQL</h4>
+<h4 id="_postgresql"><a class="anchor" href="#_postgresql"></a>7.5.5. PostgreSQL</h4>
 <div class="paragraph">
 <p>Step 1: Create a database.</p>
 </div>
@@ -1794,7 +1805,7 @@ The
 <div id="footer">
 <div id="footer-text">
 Version 2026.1.dev1<br>
-Last updated 2026-02-14 02:08:22 +0100
+Last updated 2026-02-24 05:51:55 +0100
 </div>
 </div>
 </body>
