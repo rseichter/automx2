@@ -22,7 +22,7 @@ I recommend creating a fresh user account called `automx2`.
 
 === Package based installation
 
-There are packages available for link:https://aur.archlinux.org/packages/automx2[Arch Linux], link:https://packages.gentoo.org/packages/net-mail/automx2[Gentoo Linux] and link:https://search.nixos.org/packages?type=packages&query=automx[NixOS].
+There are packages available for link:https://aur.archlinux.org/packages/automx2[Arch Linux], link:https://packages.gentoo.org/packages/net-mail/automx2[Gentoo Linux] and link:https://search.nixos.org/packages?type=packages&query=automx2[NixOS].
 Note that these packages may not alway be up-to-date, because Linux distributions have their own release schedules.
 Please make sure to check the version numbers if you decide to go this route.
 
