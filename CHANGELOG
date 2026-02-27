@@ -55,4 +55,4 @@
   This shifts certain responsibilities related to session state away from automx2, and addresses seeding
   problems when using non-SQLite databases.
 
-2026.1 (TBA): Feature: Support LDAP servers in JSON-based seeding.
+2026.1 (2026-02-27): Feature: Support LDAP servers in JSON-based seeding.
