@@ -12,16 +12,22 @@ docs    Generate documentation.
 dtest   Developer tests.
 fmt     Format Python code.
 help    Display this text.
-lint    Lint JSON files.
-shc     Shell script care.
+lint    Lint JSON files, check scripts.
+setup   Setup development venv.
 
 endef
 
-.PHONY:	clean dist docs dtest fmt help lint shc
+.PHONY:	clean dist docs dtest fmt help lint setup
 
 help:
 	$(info $(usage))
 	@exit 0
+
+setup:
+	@if [[ -e .venv ]]; then echo >&2 Found existing .venv; exit 1; fi
+	python3 -m venv .venv
+	.venv/bin/pip install -U pip wheel
+	.venv/bin/pip install -r requirements.txt -r requirements-ci.txt -r requirements-db.txt
 
 clean:
 	rm -fr dist/* src/*.egg-info ./**/__pycache__
@@ -37,11 +43,9 @@ docs:
 	$(package) $@
 
 lint:
+	scare contrib/*.sh || shellcheck -x contrib/*.sh
 	$(package) $@
 
 fmt:
 	isort src/automx2 tests
 	black **/*.py
-
-shc:
-	shcare contrib/*.sh || shellcheck -x contrib/*.sh
