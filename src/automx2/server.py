@@ -22,7 +22,6 @@ import os
 import socket
 
 from flask import Flask
-from flask_migrate import Migrate
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 from automx2.config import config
@@ -108,6 +107,5 @@ app.add_url_rule(
 )
 _proxy_fix()
 db.init_app(app)
-migrate = Migrate(app, db)
 _sd_notify(f"STATUS=Started {__name__}")
 _sd_notify("READY=1")

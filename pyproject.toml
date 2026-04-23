@@ -4,7 +4,7 @@ requires = ["setuptools>=61.0", "wheel"]
 
 [project]
 name = "automx2"
-version = "2026.1"
+version = "2026.2.dev1"
 authors = [{name= "Ralph Seichter", email="automx2@seichter.de"}]
 classifiers = [
 	"Development Status :: 6 - Mature",
@@ -14,7 +14,6 @@ classifiers = [
 	"Topic :: Utilities",
 ]
 dependencies = [
-	"Flask-Migrate>=2.5.2",
 	"Flask-SQLAlchemy>=2.4.1",
 	"Flask>=1.1.1",
 	"ldap3>=2.6",
@@ -41,7 +40,6 @@ exclude = [
     ".git",
     ".venv",
     "__pycache__",
-    "alembic",
     "build",
     "dist",
     "tests"

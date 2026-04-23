@@ -559,8 +559,8 @@ pre.rouge .gs {
 <div id="header">
 <h1>automx2: Email client configuration made easy</h1>
 <div class="details">
-<span id="revnumber">version 2026.1,</span>
-<span id="revdate">2026-02-27</span>
+<span id="revnumber">version 2026.2.dev1,</span>
+<span id="revdate">2026-04-23</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -599,7 +599,6 @@ pre.rouge .gs {
 <li><a href="#_postgresql">7.5.5. PostgreSQL</a></li>
 </ul>
 </li>
-<li><a href="#_alembic">7.6. Alembic</a></li>
 </ul>
 </li>
 <li><a href="#ldap">8. LDAP support</a></li>
@@ -1115,9 +1114,7 @@ Be sure to limit access to this service route accordingly!</p>
 </table>
 </div>
 <div class="paragraph">
-<p>If you upgrade from an early automx2 release and wish to migrate your existing database, you can use the built-in Alembic support.
-However, this requires cloning the Git repository, modifying <code>alembic.ini</code> and invoking the migration from the command line.
-It is usually easier to export your existing data, create a fresh DB and import the data.</p>
+<p>Note that support for automatic, Alembic based database migration was removed in automx2 version 2026.2.</p>
 </div>
 </div>
 <div class="sect3">
@@ -1316,50 +1313,6 @@ The following example uses <em>psycopg2</em> as a DB driver, which is not includ
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash">curl http://127.0.0.1:4243/initdb/</code></pre>
 </div>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_alembic"><a class="anchor" href="#_alembic"></a>7.6. Alembic</h3>
-<div class="paragraph">
-<p>As mentioned in a previous section, you can use <a href="https://alembic.sqlalchemy.org/">Alembic</a> to create or upgrade your database.
-You need to start your first run using an empty database for this to work, because Alembic stores versioning information in said database.
-Database upgrades are based on this information.
-Follow the steps shown below, setting the <code>RELEASE</code> variable to the GitHub tag or release number of your choice.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nb">export </span><span class="nv">RELEASE</span><span class="o">=</span><span class="s2">"2021.6"</span>
-wget https://github.com/rseichter/automx2/archive/refs/tags/<span class="nv">$RELEASE</span>.zip
-unzip <span class="nv">$RELEASE</span>.zip
-<span class="nb">cd </span>automx2-<span class="nv">$RELEASE</span>/alembic</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Next, change the value for <em>sqlalchemy.url</em> in <code>alembic.ini</code> to match your automx2 configuration.
-Create an empty database unless you are using SQLite, in which case Alembic will create the database for you.
-The final steps are activating the automx2 virtual Python environment and invoke <em>make</em>.</p>
-</div>
-<div class="listingblock">
-<div class="content">
-<pre class="rouge highlight"><code data-lang="bash"><span class="nb">source</span> /path/to/automx2/.venv/bin/activate
-make upgrade</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>You should see output similar to the following:</p>
-</div>
-<div class="listingblock small">
-<div class="content">
-<pre class="rouge highlight"><code>PYTHONPATH=.. FLASK_APP=automx2.server:app flask db upgrade -d .
-Running automx2 version 2021.6
-INFO  [alembic.runtime.migration] Context impl SQLiteImpl.
-INFO  [alembic.runtime.migration] Will assume non-transactional DDL.
-INFO  [alembic.runtime.migration] Running upgrade  -&gt; f62e64b43d2f, DB schema for automx2 version 2020.0
-Created: 2020-01-17 22:30:05.748651
-INFO  [alembic.runtime.migration] Running upgrade f62e64b43d2f -&gt; 5334f8a8282c, Add "prio" column to "server" table.
-Created: 2020-12-15 15:04:49.371802
-INFO  [alembic.runtime.migration] Running upgrade 5334f8a8282c -&gt; 43ebb40d0578, DAV server support</code></pre>
 </div>
 </div>
 </div>
@@ -1804,8 +1757,8 @@ The
 </div>
 <div id="footer">
 <div id="footer-text">
-Version 2026.1<br>
-Last updated 2026-02-27 06:01:21 +0100
+Version 2026.2.dev1<br>
+Last updated 2026-04-23 10:22:28 +0200
 </div>
 </div>
 </body>

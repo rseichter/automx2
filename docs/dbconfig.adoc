@@ -31,9 +31,8 @@ Sending an HTTP DELETE request to `/initdb/` will purge all existing data.
 Be sure to limit access to this service route accordingly!
 ====
 
-If you upgrade from an early automx2 release and wish to migrate your existing database, you can use the built-in Alembic support.
-However, this requires cloning the Git repository, modifying `alembic.ini` and invoking the migration from the command line.
-It is usually easier to export your existing data, create a fresh DB and import the data.
+Note that support for automatic, Alembic based database migration was removed in automx2 version 2026.2.
+DB changes were too infrequent to warrant the third-party dependency.
 
 ==== SQLite
 
