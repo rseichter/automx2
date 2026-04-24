@@ -1,5 +1,5 @@
-Flask>=1.1.1
-Werkzeug>=0.16.0
-Flask-SQLAlchemy>=2.4.1
-SQLAlchemy>=1.3.11
+flask-sqlalchemy-lite
+flask>=1.1.1
 ldap3>=2.6
+sqlalchemy>=1.3.11
+werkzeug>=0.16.0

@@ -4,7 +4,7 @@ requires = ["setuptools>=61.0", "wheel"]
 
 [project]
 name = "automx2"
-version = "2026.2.dev1"
+version = "2026.2.dev2"
 authors = [{name= "Ralph Seichter", email="automx2@seichter.de"}]
 classifiers = [
 	"Development Status :: 6 - Mature",
@@ -14,8 +14,8 @@ classifiers = [
 	"Topic :: Utilities",
 ]
 dependencies = [
-	"Flask-SQLAlchemy>=2.4.1",
-	"Flask>=1.1.1",
+	"flask-sqlalchemy-lite",
+	"flask>=1.1.1",
 	"ldap3>=2.6",
 ]
 description = "Mail User Agent auto-configuration service"
