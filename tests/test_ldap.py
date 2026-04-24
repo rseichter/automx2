@@ -35,6 +35,7 @@ from automx2.ldap import STATUS_SUCCESS
 from automx2.ldap import LdapAccess
 from automx2.ldap import LookupResult
 from automx2.model import Ldapserver
+from automx2.model import db
 from automx2.util import unique
 from tests import RUN_LDAP_TESTS
 from tests import TestCase
@@ -61,9 +62,9 @@ class LdapTests(TestCase):
         super().setUp()
         self.ldap = LdapAccess(
             hostname=LDAP_HOSTNAME,
+            port=int(LDAP_PORT),
             user=LDAP_BIND_USER,
             password=LDAP_BIND_PASSWORD,
-            use_ssl=True,
         )
 
     def test_attribute_exists(self):
@@ -74,7 +75,12 @@ class LdapTests(TestCase):
 
     @unittest.skipUnless(RUN_LDAP_TESTS, "LDAP tests disabled")
     def test_bind_failed(self):
-        self.ldap = LdapAccess(hostname=LDAP_HOSTNAME, user=LDAP_BIND_USER, password=self.UNIQUE)
+        self.ldap = LdapAccess(
+            hostname=LDAP_HOSTNAME,
+            port=int(LDAP_PORT),
+            user=LDAP_BIND_USER,
+            password=self.UNIQUE,
+        )
         x: LookupResult = self.ldap.lookup(LDAP_SEARCH_BASE, self.search_filter(self.EXISTS_EMAIL))
         self.assertEqual(STATUS_ERROR, x.status)
 
@@ -100,14 +106,14 @@ class LdapTests(TestCase):
 
     def test_mozilla_generator_ldap_exists(self):
         with app.app_context():
-            server = Ldapserver.query.filter_by(id=LDAP_PORT).one()
+            server = db.session.query(Ldapserver).filter_by(id=LDAP_PORT).one()
             gen = MozillaGenerator()
             x = gen.ldap_lookup(self.EXISTS_EMAIL, server)
             self.assertEqual(STATUS_SUCCESS, x.status)
 
     def test_mozilla_generator_ldap_no_match(self):
         with app.app_context():
-            server = Ldapserver.query.filter_by(id=LDAP_PORT).one()
+            server = db.session.query(Ldapserver).filter_by(id=LDAP_PORT).one()
             gen = MozillaGenerator()
             with self.assertRaises(LdapNoMatch):
                 gen.ldap_lookup(self.UNIQUE, server)
