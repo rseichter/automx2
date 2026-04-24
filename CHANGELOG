@@ -56,3 +56,5 @@
   problems when using non-SQLite databases.
 
 2026.1 (2026-02-27): Feature: Support LDAP servers in JSON-based seeding.
+
+2026.2 (TBA): Core: No longer depend on third-party Python modules Alembic and Flask-Migrate.
