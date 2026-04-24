@@ -13,11 +13,12 @@ dtest   Developer tests.
 fmt     Format Python code.
 help    Display this text.
 lint    Lint JSON files, check scripts.
+ltest   LDAP related tests.
 setup   Setup development venv.
 
 endef
 
-.PHONY:	clean dist docs dtest fmt help lint setup
+.PHONY:	clean dist docs dtest fmt help lint ltest setup
 
 help:
 	$(info $(usage))
@@ -35,6 +36,9 @@ clean:
 dtest:
 	$(test_env) coverage run --source automx2 -m unittest discover -v tests/
 	coverage html --rcfile=tests/coverage.rc
+
+ltest:
+	local/unittest-with-ldap.sh
 
 dist:	clean fmt lint docs
 	python -m build
