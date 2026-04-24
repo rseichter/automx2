@@ -90,9 +90,7 @@ class AppleRoutes(TestCase):
             self.assertEqual(200, r.status_code)
             self.assertEqual(CONTENT_TYPE_APPLE, r.mimetype)
             md = minidom.parseString(body(r))
-            self.assert_kv(
-                md, "OutgoingMailServerHostName", sample_server_names["smtp1"]
-            )
+            self.assert_kv(md, "OutgoingMailServerHostName", sample_server_names["smtp1"])
 
     def test_apple_pop(self):
         with self.app:

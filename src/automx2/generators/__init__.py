@@ -16,6 +16,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with automx2. If not, see <https://www.gnu.org/licenses/>.
 """
+
 from typing import List
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import tostring
@@ -32,11 +33,11 @@ from automx2.model import Server
 
 
 def branded_id(id_) -> str:
-    return f'{IDENTIFIER}-{id_}'
+    return f"{IDENTIFIER}-{id_}"
 
 
 def xml_to_string(root_element: Element) -> str:
-    return tostring(root_element, 'utf-8')
+    return tostring(root_element, "utf-8")
 
 
 class ConfigGenerator:
@@ -46,15 +47,24 @@ class ConfigGenerator:
     @staticmethod
     def ldap_lookup(email_address: str, server: Ldapserver) -> LookupResult:
         if not (server and server.name):
-            raise LdapLookupError('No LDAP server specified')
-        ldap = LdapAccess(server.name, port=server.port, use_ssl=server.use_ssl,
-                          user=server.bind_user, password=server.bind_password)
-        r = ldap.lookup(server.search_base, server.search_filter.format(email_address),
-                        attr_cn=server.attr_cn, attr_uid=server.attr_uid)
+            raise LdapLookupError("No LDAP server specified")
+        ldap = LdapAccess(
+            server.name,
+            port=server.port,
+            use_ssl=server.use_ssl,
+            user=server.bind_user,
+            password=server.bind_password,
+        )
+        r = ldap.lookup(
+            server.search_base,
+            server.search_filter.format(email_address),
+            attr_cn=server.attr_cn,
+            attr_uid=server.attr_uid,
+        )
         if r.status == STATUS_ERROR:  # pragma: no cover
-            raise LdapLookupError('LDAP bind failed')
+            raise LdapLookupError("LDAP bind failed")
         elif r.status == STATUS_NO_MATCH:  # pragma: no cover
-            raise LdapNoMatch(f'No LDAP match for <{email_address}>')
+            raise LdapNoMatch(f"No LDAP match for <{email_address}>")
         return r
 
     @staticmethod

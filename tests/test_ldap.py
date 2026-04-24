@@ -74,24 +74,16 @@ class LdapTests(TestCase):
 
     @unittest.skipUnless(RUN_LDAP_TESTS, "LDAP tests disabled")
     def test_bind_failed(self):
-        self.ldap = LdapAccess(
-            hostname=LDAP_HOSTNAME, user=LDAP_BIND_USER, password=self.UNIQUE
-        )
-        x: LookupResult = self.ldap.lookup(
-            LDAP_SEARCH_BASE, self.search_filter(self.EXISTS_EMAIL)
-        )
+        self.ldap = LdapAccess(hostname=LDAP_HOSTNAME, user=LDAP_BIND_USER, password=self.UNIQUE)
+        x: LookupResult = self.ldap.lookup(LDAP_SEARCH_BASE, self.search_filter(self.EXISTS_EMAIL))
         self.assertEqual(STATUS_ERROR, x.status)
 
     def test_does_not_exist(self):
-        x: LookupResult = self.ldap.lookup(
-            LDAP_SEARCH_BASE, self.search_filter(self.UNIQUE)
-        )
+        x: LookupResult = self.ldap.lookup(LDAP_SEARCH_BASE, self.search_filter(self.UNIQUE))
         self.assertEqual(STATUS_NO_MATCH, x.status)
 
     def test_exists(self):
-        x: LookupResult = self.ldap.lookup(
-            LDAP_SEARCH_BASE, self.search_filter(self.EXISTS_EMAIL), attr_cn="cn"
-        )
+        x: LookupResult = self.ldap.lookup(LDAP_SEARCH_BASE, self.search_filter(self.EXISTS_EMAIL), attr_cn="cn")
         self.assertEqual(STATUS_SUCCESS, x.status)
         self.assertEqual(self.EXISTS_CN, x.cn)
         self.assertEqual(self.EXISTS_UID, x.uid)

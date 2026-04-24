@@ -29,6 +29,7 @@ from automx2.database import LDAP_SEARCH_BASE
 from automx2.database import populate_db
 from automx2.generators.outlook import NS_REQUEST
 from automx2.generators.outlook import NS_RESPONSE_PAYLOAD
+from automx2.model import Base
 from automx2.model import Ldapserver
 from automx2.model import db
 from automx2.server import APPLE_CONFIG_ROUTE
@@ -58,9 +59,9 @@ class TestCase(unittest.TestCase):
         app.config["DEBUG"] = False
         self.app = app.test_client()
         with app.app_context():
-            db.drop_all()
+            Base.metadata.drop_all(db.engine)
             if self.create_db:
-                db.create_all()
+                Base.metadata.create_all(db.engine)
                 populate_db(None)
                 if RUN_LDAP_TESTS:
                     ls = Ldapserver(
@@ -80,7 +81,7 @@ class TestCase(unittest.TestCase):
 
     def tearDown(self) -> None:
         with app.app_context():
-            db.drop_all()
+            Base.metadata.drop_all(db.engine)
             db.session.commit()
 
     def get(self, *args, **kwargs) -> Response:
@@ -97,9 +98,7 @@ class TestCase(unittest.TestCase):
     def get_mozilla_config(self, address: str) -> Response:
         return self.get(f"{MOZILLA_CONFIG_ROUTE}?{EMAIL_MOZILLA}={address}")
 
-    def get_msoft_config(
-        self, address: str, route: str = MSOFT_CONFIG_ROUTE
-    ) -> Response:
+    def get_msoft_config(self, address: str, route: str = MSOFT_CONFIG_ROUTE) -> Response:
         data = (
             f'<Autodiscover xmlns="{NS_REQUEST}">'
             f"<AcceptableResponseSchema>{NS_RESPONSE_PAYLOAD}</AcceptableResponseSchema>"

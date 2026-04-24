@@ -76,7 +76,8 @@ def _sd_notify(message: str) -> bool:
 
 _sd_notify(f"STATUS=Starting {__name__}")
 app = Flask(__name__)
-app.config["SQLALCHEMY_DATABASE_URI"] = config.db_uri()
+app.config["SQLALCHEMY_ENGINES"] = {"default": config.db_uri()}
+# app.config["SQLALCHEMY_DATABASE_URI"] = config.db_uri()
 app.config["SQLALCHEMY_ECHO"] = config.db_echo()
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.add_url_rule("/", view_func=SiteRoot.as_view("root"), methods=["GET"])

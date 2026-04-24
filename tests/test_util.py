@@ -79,15 +79,9 @@ class UtilTests(unittest.TestCase):
     def test_expand(self):
         local = "a"
         domain = "b.c"
-        self.assertEqual(
-            "1a@b.c2", expand_placeholders(f"1{PLACEHOLDER_ADDRESS}2", local, domain)
-        )
-        self.assertEqual(
-            "3a4", expand_placeholders(f"3{PLACEHOLDER_LOCALPART}4", local, domain)
-        )
-        self.assertEqual(
-            "5b.c6", expand_placeholders(f"5{PLACEHOLDER_DOMAIN}6", local, domain)
-        )
+        self.assertEqual("1a@b.c2", expand_placeholders(f"1{PLACEHOLDER_ADDRESS}2", local, domain))
+        self.assertEqual("3a4", expand_placeholders(f"3{PLACEHOLDER_LOCALPART}4", local, domain))
+        self.assertEqual("5b.c6", expand_placeholders(f"5{PLACEHOLDER_DOMAIN}6", local, domain))
 
     def test_needs_ssl(self):
         self.assertTrue(socket_type_needs_ssl("SSL"))

@@ -22,6 +22,7 @@ from typing import Optional
 from automx2 import PLACEHOLDER_ADDRESS
 from automx2 import SeedingAborted
 from automx2 import log
+from automx2.model import Base
 from automx2.model import Davserver
 from automx2.model import Domain
 from automx2.model import Ldapserver
@@ -94,12 +95,7 @@ def populate_with_example_data():
     serverless = Domain(name=SERVERLESS_DOMAIN, provider=other)
     db.session.add_all([ex_com, ex_net, ex_org, eggs, serverless])
 
-    s1 = Server(
-        type="smtp",
-        port=587,
-        name=sample_server_names["smtp1"],
-        domains=[ex_com, ex_net],
-    )
+    s1 = Server(type="smtp", port=587, name=sample_server_names["smtp1"], domains=[ex_com, ex_net])
     s2 = Server(type="smtp", port=587, name=sample_server_names["smtp2"], domains=[ex_org])
     s3 = Server(type="imap", port=143, name=sample_server_names["imap1"], domains=[ex_com])
     s4 = Server(type="imap", port=143, name=sample_server_names["imap2"], domains=[ex_net])
@@ -257,7 +253,7 @@ def populate_db(data_source: Optional[dict]):
 def purge_db():
     c = db.engine.connect()
     t = c.begin()
-    for table in reversed(db.metadata.sorted_tables):
+    for table in reversed(Base.metadata.sorted_tables):
         x = table.delete()
         c.execute(x)
     t.commit()
