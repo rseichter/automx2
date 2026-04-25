@@ -31,7 +31,7 @@ setup:
 	.venv/bin/pip install -r requirements.txt -r requirements-ci.txt -r requirements-db.txt
 
 clean:
-	rm -fr dist/* src/*.egg-info ./**/__pycache__
+	rm -fr *.log dist/* src/*.egg-info ./**/__pycache__
 
 dtest:
 	$(test_env) coverage run --source automx2 -m unittest discover -v tests/

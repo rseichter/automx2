@@ -1,8 +1,7 @@
+*.egg-info/
 .asciidoctor/
 .coverage*
-.idea/
 .xml
-*.egg-info/
 build/
 dist/
 htmlcov/
