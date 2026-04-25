@@ -20,6 +20,8 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 import unittest
 
 from automx2 import AutomxException
+from automx2 import SeedingAborted
+from automx2.database import populate_with_dict
 from automx2.server import INITDB_ROUTE
 from tests import TestCase
 from tests import body
@@ -27,6 +29,14 @@ from tests import body
 
 class DatabaseRoute(TestCase):
     create_db = False
+
+    def test_populate_outdated(self):
+        with self.assertRaises(SeedingAborted):
+            populate_with_dict({"version": 1})
+
+    def test_populate_incomplete(self):
+        with self.assertRaises(AutomxException):
+            populate_with_dict({"version": 2})
 
     def test_init_internal(self):
         with self.app:
@@ -52,8 +62,9 @@ class DatabaseRoute(TestCase):
             "servers": [
                 {"name": "imap", "type": "imap"},
                 {"name": "pop", "type": "pop"},
-                {"name": "smtp", "type": "smtp"},
+                {"name": "smtp", "type": "smtp", "port": 25},
                 {"name": "caldav", "type": "caldav", "url": "x"},
+                {"name": "carddav", "type": "carddav", "url": "https://x"},
             ],
             "ldapservers": [
                 {

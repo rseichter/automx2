@@ -66,7 +66,7 @@ class OutlookGenerator(ConfigGenerator):
             return "on"
         return "off"
 
-    def davserver_element(self, parent: Element, server: Davserver, login_name: str) -> None:
+    def davserver_element(self, parent: Element, server: Davserver, login_name: str) -> Element:
         element = SubElement(parent, "Protocol")
         SubElement(element, "Type").text = DAVSERVER_TYPE_MAP[server.type]
         SubElement(element, "Server").text = server.url
@@ -76,8 +76,9 @@ class OutlookGenerator(ConfigGenerator):
         SubElement(element, "DomainRequired").text = self.on_off(server.domain_required)
         if login_name:
             SubElement(element, "LoginName").text = login_name
+        return element
 
-    def mailserver_element(self, parent: Element, server: Server, login_name: str) -> None:
+    def mailserver_element(self, parent: Element, server: Server, login_name: str) -> Element:
         element = SubElement(parent, "Protocol")
         SubElement(element, "Type").text = SERVER_TYPE_MAP[server.type]
         SubElement(element, "Server").text = server.name
@@ -87,11 +88,13 @@ class OutlookGenerator(ConfigGenerator):
         if server.socket_type in ENCRYPTION_TYPE_MAP:
             # [MS-OXDSCLI]-v20210817: If present, the Encryption element overrides the SSL element
             SubElement(element, "Encryption").text = ENCRYPTION_TYPE_MAP[server.socket_type]
+        return element
 
     @staticmethod
-    def user_element(parent: Element, display_name: str) -> None:
+    def user_element(parent: Element, display_name: str) -> Element:
         element = SubElement(parent, "User")
         SubElement(element, "DisplayName").text = display_name
+        return element
 
     def client_config(self, local_part, domain_part: str, display_name: str, ignored_password: str) -> str:
         domain: Domain = db.session.query(Domain).filter_by(name=domain_part).first()
@@ -104,7 +107,7 @@ class OutlookGenerator(ConfigGenerator):
         else:
             lookup_result = LookupResult(STATUS_SUCCESS, display_name, None)
         if lookup_result.cn:
-            self.user_element(response, lookup_result.cn)
+            self.user_element(response, lookup_result.cn)  # pragma: no cover (requires LDAP)
         account = SubElement(response, "Account")
         # Mandatory mail servers
         SubElement(account, "AccountType").text = "email"

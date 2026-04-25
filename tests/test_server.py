@@ -26,8 +26,12 @@ from automx2.server import _sd_notify
 class ServerTests(unittest.TestCase):
     """Tests for server.py methods."""
 
+    def test_abstract_socket(self):
+        os.environ["NOTIFY_SOCKET"] = "@missing-socket"
+        self.assertFalse(_sd_notify(""))
+
     def test_invalid_socket(self):
-        os.environ["NOTIFY_SOCKET"] = "foo"
+        os.environ["NOTIFY_SOCKET"] = "missing-socket"
         with self.assertRaises(OSError):
             _sd_notify("")
 

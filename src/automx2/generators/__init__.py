@@ -45,7 +45,9 @@ class ConfigGenerator:
         raise NotImplementedError
 
     @staticmethod
-    def ldap_lookup(email_address: str, server: Ldapserver) -> LookupResult:
+    def ldap_lookup(
+        email_address: str, server: Ldapserver
+    ) -> LookupResult:  # pragma: no cover (LDAP unavailable during coverage tests)
         if not (server and server.name):
             raise LdapLookupError("No LDAP server specified")
         ldap = LdapAccess(
@@ -61,9 +63,9 @@ class ConfigGenerator:
             attr_cn=server.attr_cn,
             attr_uid=server.attr_uid,
         )
-        if r.status == STATUS_ERROR:  # pragma: no cover
+        if r.status == STATUS_ERROR:
             raise LdapLookupError("LDAP bind failed")
-        elif r.status == STATUS_NO_MATCH:  # pragma: no cover
+        elif r.status == STATUS_NO_MATCH:
             raise LdapNoMatch(f"No LDAP match for <{email_address}>")
         return r
 

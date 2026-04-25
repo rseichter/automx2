@@ -20,6 +20,7 @@ along with automx2. If not, see <https://www.gnu.org/licenses/>.
 from typing import Optional
 
 from automx2 import PLACEHOLDER_ADDRESS
+from automx2 import AutomxException
 from automx2 import SeedingAborted
 from automx2 import log
 from automx2.model import Base
@@ -72,7 +73,8 @@ def populate_with_example_data():
     other = Provider(name=OTHER_NAME, short_name=OTHER_SHORT)
     db.session.add_all([bigcorp, eggs, other])
 
-    if LDAP_HOSTNAME:
+    ls: Ldapserver
+    if LDAP_HOSTNAME:  # pragma: no cover (LDAP unavailable during coverage tests)
         ls = Ldapserver(
             name=LDAP_HOSTNAME,
             port=LDAP_PORT,
@@ -85,7 +87,7 @@ def populate_with_example_data():
             search_filter="(mail={0})",
         )
         db.session.add(ls)
-    else:  # pragma: no cover
+    else:
         ls = None
 
     ex_com = Domain(name=EXAMPLE_COM, provider=bigcorp, ldapserver=ls)

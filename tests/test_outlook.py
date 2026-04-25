@@ -21,6 +21,7 @@ import unittest
 from typing import List
 from xml.etree.ElementTree import Element
 from xml.etree.ElementTree import ParseError
+from xml.etree.ElementTree import SubElement
 from xml.etree.ElementTree import fromstring
 
 from automx2.database import EGGS_DOMAIN
@@ -30,8 +31,10 @@ from automx2.database import EXAMPLE_ORG
 from automx2.database import SERVERLESS_DOMAIN
 from automx2.database import sample_server_names
 from automx2.generators.outlook import NS_RESPONSE_PAYLOAD
+from automx2.generators.outlook import OutlookGenerator
 from automx2.server import MSOFT_ALTERNATE_ROUTE
 from automx2.server import MSOFT_CONFIG_ROUTE
+from automx2.util import unique
 from automx2.views import CONTENT_TYPE_XML
 from tests import NETWORK_TESTS
 from tests import TestCase
@@ -111,6 +114,10 @@ class MsRoutes(TestCase):
         with self.app:
             r = self.get_msoft_config(f"a@{EGGS_DOMAIN}")
             self.assertEqual(400, r.status_code)
+
+    def test_user_element(self):
+        e = OutlookGenerator.user_element(Element("foo"), "bar")
+        self.assertIsInstance(e, Element)
 
 
 if __name__ == "__main__":

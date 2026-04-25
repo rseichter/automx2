@@ -30,6 +30,7 @@ from automx2.database import EXAMPLE_NET
 from automx2.database import EXAMPLE_ORG
 from automx2.database import SERVERLESS_DOMAIN
 from automx2.database import sample_server_names
+from automx2.generators import ConfigGenerator
 from automx2.model import Server
 from automx2.server import APPLE_CONFIG_ROUTE
 from automx2.util import unique
@@ -72,6 +73,16 @@ class AppleRoutes(TestCase):
 
     def smtp_server_names(self, _minidom) -> List[Element]:
         return self.mail_server_names(_minidom, False)
+
+    def test_pick_low(self):
+        low = unique()
+        high = None
+        self.assertEqual(ConfigGenerator.pick_one(low, high), low)
+
+    def test_pick_high(self):
+        low = unique()
+        high = unique()
+        self.assertEqual(ConfigGenerator.pick_one(low, high), high)
 
     def test_apple_missing_arg(self):
         with self.app:

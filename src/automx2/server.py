@@ -46,9 +46,7 @@ def _proxy_fix():
     p = int(config.proxy_count())
     if p > 0:  # pragma: no cover (Tests don't use a proxy)
         # See https://werkzeug.palletsprojects.com/en/0.15.x/middleware/proxy_fix/
-        app.wsgi_app = ProxyFix(
-            app.wsgi_app, x_for=p, x_host=p, x_port=p, x_prefix=p, x_proto=p
-        )
+        app.wsgi_app = ProxyFix(app.wsgi_app, x_for=p, x_host=p, x_port=p, x_prefix=p, x_proto=p)
 
 
 def _sd_notify(message: str) -> bool:
@@ -66,7 +64,7 @@ def _sd_notify(message: str) -> bool:
         sock_path = "\0" + sock_path[1:]
     elif sock_path[0] != "/":
         raise OSError(errno.EAFNOSUPPORT, f"Unsupported socket path {sock_path}")
-    with socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM) as sock:
+    with socket.socket(socket.AF_UNIX, socket.SOCK_DGRAM) as sock:  # pragma: no cover (No systemd during testing)
         if sock.connect_ex(sock_path) == 0:
             sock.sendall(message.encode())
             sock.close()
