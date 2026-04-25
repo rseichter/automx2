@@ -28,7 +28,7 @@ setup:
 	@if [[ -e .venv ]]; then echo >&2 Found existing .venv; exit 1; fi
 	python3 -m venv .venv
 	.venv/bin/pip install -U pip wheel
-	.venv/bin/pip install -r requirements.txt -r requirements-ci.txt -r requirements-db.txt
+	.venv/bin/pip install -r requirements.txt -r requirements-ci.txt -r requirements-psql.txt
 
 clean:
 	rm -fr *.log dist/* src/*.egg-info ./**/__pycache__
