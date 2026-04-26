@@ -57,6 +57,8 @@
 
 2026.1 (2026-02-27): Feature: Support LDAP servers in JSON-based seeding.
 
-2026.2 (TBA): Core: Remove dependencies on third-party Python modules Alembic and flask-migrate. Switch
-  from flask-sqlalchemy to its intended successor flask-sqlalchemy-lite. The former fails its own tests
-  with modern versions of SQLAlchemy, and has been masked as pending removal by Gentoo Linux.
+2026.2 (2026-04-26): Core: Remove dependencies on third-party Python modules Alembic and
+  Flask-Migrate. Switch from Flask-SQLAlchemy to its intended successor Flask-SQLAlchemy-Lite.
+  The former fails its own tests with modern versions of SQLAlchemy, and has been masked as
+  pending removal by Gentoo Linux.
+
