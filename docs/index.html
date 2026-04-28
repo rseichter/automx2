@@ -560,7 +560,7 @@ pre.rouge .gs {
 <h1>automx2: Email client configuration made easy</h1>
 <div class="details">
 <span id="revnumber">version 2026.2,</span>
-<span id="revdate">2026-04-26</span>
+<span id="revdate">2026-04-28</span>
 </div>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
@@ -1554,12 +1554,12 @@ Mar 01 12:54:32 mail python[126966]:  <span class="k">*</span> Running on http:/
 <div class="sect2">
 <h3 id="_manually_from_a_shell"><a class="anchor" href="#_manually_from_a_shell"></a>9.3. Manually from a shell</h3>
 <div class="paragraph">
-<p>While logged in as an unprivileged user, change into the installation directory and start the <code>.venv/bin/flask.sh</code> launch script:</p>
+<p>While logged in as an unprivileged user, change into the installation directory and start the <code>.venv/bin/flask</code> launch script:</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre class="rouge highlight"><code data-lang="bash"><span class="nb">cd</span> /srv/www/automx2
-.venv/bin/flask.sh run <span class="nt">--host</span><span class="o">=</span>127.0.0.1 <span class="nt">--port</span><span class="o">=</span>4243</code></pre>
+<span class="nv">FLASK_APP</span><span class="o">=</span>automx2.server:app .venv/bin/flask run <span class="nt">--host</span><span class="o">=</span>127.0.0.1 <span class="nt">--port</span><span class="o">=</span>4243</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -1759,7 +1759,7 @@ The
 <div id="footer">
 <div id="footer-text">
 Version 2026.2<br>
-Last updated 2026-04-26 03:19:02 +0200
+Last updated 2026-04-28 07:31:18 +0200
 </div>
 </div>
 </body>
